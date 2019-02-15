@@ -1,0 +1,26 @@
+﻿@model Zambon.Core.Module.Xml.Views.SubViews.LookupModal
+
+<div class="modal fade modal-level@(Model.Level)" id="@(Model.Id)_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="blur">
+                <partial name="./LookupModalView_Header.cshtml" model="Model" />
+
+                <div class="modal-body">
+                    <partial name="./LookupModalView_SearchPanel.cshtml" model="Model" />
+
+                    <form id="@(Model.Id)" asp-controller="View" asp-action="LookupViewSubmit" data-ajax="true" data-ajax-method="POST" data-ajax-update="#@(Model.Id)_container" data-ajax-mode="replace" data-ajax-begin="AjaxBegin" data-ajax-failure="AjaxFailure" data-ajax-success="AjaxSuccess" data-ajax-complete="AjaxComplete" data-ajax-update-loading="#@(Model.Id)_modal .modal-content" role="form">
+                        <section id="@(Model.Id)_container">
+                            <partial name="./LookupModalView_Form.cshtml" model="Model" />
+                        </section>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="CloseModal" type="button" class="btn btn-default" data-dismiss="modal" static-text-for="Modal_Button_Close"></button>
+                    <input type="submit" class="btn btn-primary" onclick="PostbackLookupModal('@Model.Id')" static-text-value="Modal_Button_Accept" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

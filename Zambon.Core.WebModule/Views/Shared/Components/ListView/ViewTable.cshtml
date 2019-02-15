@@ -1,0 +1,48 @@
+﻿@model Zambon.Core.Module.Xml.Views.ListViews.ListView
+
+@inject Zambon.Core.Module.Services.ApplicationService app
+
+<table class="table table-striped table-hover table-md mb-0 with-bg white position-relative rounded">
+    <thead listview-header-for="@Model.Columns?.Column" class="bg-primary text-white"></thead>
+    <tbody>
+
+        @{ 
+            var itemsCollection = app.GetListViewItemsCollection(Model.ViewId);
+            if (itemsCollection != null)
+            {
+                foreach (var currentObject in itemsCollection)
+                {
+                    app.SetListViewCurrentObject(Model.ViewId, currentObject);
+
+                    var backColor = ""; var foreColor = ""; var customClass = "";
+                    if ((Model.PaintOptions?.PaintOption?.Length ?? 0) > 0)
+                    {
+                        backColor = Model.PaintOptions?.GetApplicableBackColor(currentObject, app.Expressions);
+                        foreColor = Model.PaintOptions?.GetApplicableForeColor(currentObject, app.Expressions);
+                        customClass = Model.PaintOptions?.GetApplicableCustomClass(currentObject, app.Expressions);
+                    }
+
+                    <tr class="@(backColor)">
+                        <th scope="row" class="col-0 pl-0 pr-0">&nbsp;</th>
+
+                        @if ((Model?.Buttons?.Button?.Length ?? 0) > 0 && Model.Buttons.Button.Any(x => x.IsApplicable("Inline")))
+                        {
+                            <th scope="row" class="col-fit text-center">
+                                <div button-for="@Model.Buttons.Button" button-target="Inline" button-hide-text="true" button-current-object="@currentObject"></div>
+                            </th>
+                        }
+
+                        @if ((Model.Columns?.Column?.Length ?? 0) > 0)
+                        {
+                            @for (var c = 0; c < Model.Columns.Column.Length; c++)
+                            {
+                                <td listview-column-for="@Model.Columns.Column[c]" listview-column-model="@Model" listview-column-item-forecolor="@(foreColor)" listview-column-item-class="@(customClass)"></td>
+                            }
+                        }
+                    </tr>
+                }
+                app.ClearListViewCurrentObject(Model.ViewId);
+            }
+        }
+    </tbody>
+</table>

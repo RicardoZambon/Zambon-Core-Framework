@@ -1,0 +1,22 @@
+﻿@model Zambon.Core.Security.Models.Login
+
+@section scripts {
+    <script type="text/javascript">
+        function BeginPost() {
+            $("#Username").attr("disabled", "true");
+            $("#Password").attr("disabled", "true");
+            $("#btnLogin").attr("disabled", "true");
+            $("#btnLogin").html('<span class="loader-mini"><img src="@Url.Content(@"~/images/mini-loader.svg")" /></span>&nbsp;' + $("#btnLogin").attr("data-loading-text"));
+        }
+
+        function CompletePost() {
+            $("#Username").removeAttr("disabled");
+            $("#Password").removeAttr("disabled");
+            $("#btnLogin").removeAttr("disabled");
+        }
+    </script>
+}
+
+<section id="loginForm">
+    @Html.Partial("_LoginForm", Model)
+</section>

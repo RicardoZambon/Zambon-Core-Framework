@@ -1,0 +1,15 @@
+﻿@model Zambon.Core.Module.Xml.Views.SubViews.DetailModal
+
+<div class="modal fade modal-level@(Model.Level)" id="@(Model.Id)_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="blur">
+                <form form-for="@Model.DetailView" form-modalid="@Model.Id">
+                    <section id="@(Model.Id)_container">
+                        <partial name="./DetailModalView_Body.cshtml" model="Model" />
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+﻿@model Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions
+
+<div class="row no-gutters">
+    <div class="col">
+        <button type="submit" name="page" value="1" class="btn btn-secondary oi oi-media-step-backward p-2" static-text-title="ListView_Pagination_FirstPage" disabled="@(Model.ActualPage <= 1)"></button>
+
+        <button type="submit" name="page" value="@(Model.ActualPage > 1 ? Model.ActualPage - 1 : 1)" class="btn btn-secondary oi oi-media-skip-backward p-2" static-text-title="ListView_Pagination_PrevPage" disabled="@(Model.ActualPage <= 1)"></button>
+
+        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        {
+            <button type="submit" name="page" value="@(i)" class="btn btn-@(i == Model.ActualPage ? "primary" : "light") p-1" static-text-title="ListView_Pagination_Page" static-text-replace-title-0="@i" style="height: 34px; width: 34px; margin-top: 1px;" disabled="@(i == Model.ActualPage)">@(i)</button>
+        }
+
+        <button type="submit" name="page" value="@(Model.ActualPage >= Model.TotalPages ? Model.TotalPages : Model.ActualPage + 1)" class="btn btn-secondary oi oi-media-skip-forward p-2" static-text-title="ListView_Pagination_NextPage" disabled="@(Model.ActualPage >= Model.TotalPages)"></button>
+
+        <button type="submit" name="page" value="@(Model.TotalPages)" class="btn btn-secondary oi oi-media-step-forward p-2" static-text-title="ListView_Pagination_LastPage" disabled="@(Model.ActualPage >= Model.TotalPages)"></button>
+    </div>
+
+    <div class="col-2 regular-text @(Model.TotalRecords > Model.PageSize ? "small" : "pt-2")">
+        @if (Model.TotalRecords > Model.PageSize)
+        {
+            <p class="text-center m-0" static-text-for="ListView_CurrentVisibleRecords" static-text-replace-0="@(((Model.ActualPage - 1) * Model.PageSize) + 1)" static-text-replace-1="@(Model.ActualPage == Model.TotalPages ? Model.TotalRecords : Model.ActualPage * Model.PageSize)"></p>
+        }
+        <p class="text-center m-0" static-text-for="ListView_TotalRecords" static-text-replace-0="@Model.TotalRecords"></p>
+    </div>
+</div>
+
+<input type="hidden" id="List_CurrentPage" name="page" value="@Model.ActualPage">

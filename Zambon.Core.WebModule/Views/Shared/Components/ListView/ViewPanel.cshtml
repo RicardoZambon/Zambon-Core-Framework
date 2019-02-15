@@ -1,0 +1,12 @@
+﻿@model Zambon.Core.Module.Xml.Views.ListViews.ListView
+
+<div class="row no-gutters">
+    <div class="col">
+        @Html.Partial("./SearchPanel.cshtml", Model)
+    </div>
+
+    @if ((Model?.Buttons?.Button?.Length ?? 0) > 0 && Model.Buttons.Button.Any(x => x.IsApplicable("Toolbar")))
+    {
+        <div class="col-auto pl-1" button-for="@Model.Buttons.Button" button-target="Toolbar"></div>
+    }
+</div>

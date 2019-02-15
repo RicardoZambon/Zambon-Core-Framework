@@ -1,0 +1,23 @@
+﻿.modal-backdrop.modal-level1 { z-index: 1049; }
+.modal.modal-level1 { z-index: 1050; }
+.modal.modal-level1 .modal-dialog { margin-top: 1.75rem; max-width: 1030px; }
+
+.modal-backdrop.modal-level2 { z-index: 1051; }
+.modal.modal-level2 { z-index: 1052; }
+.modal.modal-level2 .modal-dialog { margin-top: 2.25rem; max-width: 1010px; }
+
+.modal-backdrop.modal-level3 { z-index: 1053; }
+.modal.modal-level3 { z-index: 1054; }
+.modal.modal-level3 .modal-dialog { margin-top: 2.75rem; max-width: 990px; }
+
+.modal-backdrop.modal-level4 { z-index: 1055; }
+.modal.modal-level4 { z-index: 1056; }
+.modal.modal-level4 .modal-dialog { margin-top: 3.25rem; max-width: 970px; }
+
+.modal-backdrop.modal-level5 { z-index: 1057; }
+.modal.modal-level5 { z-index: 1058; }
+.modal.modal-level5 .modal-dialog { margin-top: 3.75rem; max-width: 950px; }
+
+.modal-backdrop.modal-level6 { z-index: 1059; }
+.modal.modal-level6 { z-index: 1060; }
+.modal.modal-level6 .modal-dialog { margin-top: 4.25rem; max-width: 930px; }

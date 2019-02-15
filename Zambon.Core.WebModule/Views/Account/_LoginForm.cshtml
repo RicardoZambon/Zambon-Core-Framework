@@ -1,0 +1,53 @@
+﻿@model Zambon.Core.Security.Models.Login
+
+@inject Zambon.Core.Module.Services.ApplicationService _app;
+
+<div class="login-validation-error pt-4">
+    @if (!Html.ViewData.ModelState.IsValid)
+    {
+        <div asp-validation-summary="All"></div>
+    }
+</div>
+
+<form asp-controller="Account" asp-action="Login" data-ajax="true" data-ajax-method="POST" class="form-horizontal" data-ajax-mode="replace" data-ajax-update="#loginForm" data-ajax-begin="BeginPost" data-ajax-complete="CompletePost">
+    <div class="login-form-wrapper">
+        <div class="login-form-container position-relative px-3 pt-3 pb-2 mb-3">
+            <div class="login-title pb-3">
+                <h4>
+                    <span app-env-badge></span><span static-text-for="AppName"></span>&nbsp;-&nbsp;<span static-text-for="Login_Title"></span>
+                </h4>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text border-secondary"><span class="oi oi-person" style="width:16px;"></span></div>
+                </div>
+                <input type="text" class="form-control border-secondary" asp-for="@Model.Username" static-text-placeholder="Login_TypeUsername">
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text border-secondary"><span class="oi oi-lock-locked" style="width:16px;"></span></div>
+                </div>
+                <input type="password" class="form-control border-secondary" asp-for="@Model.Password" static-text-placeholder="Login_TypePassword">
+            </div>
+
+            <div class="custom-control custom-checkbox" style="margin-left: 1px">
+                <input type="checkbox" class="custom-control-input" asp-for="@Model.RememberMe">
+                <label class="custom-control-label @(!string.IsNullOrWhiteSpace(_app.GetAppSettings().EnvironmentTitle) ? "custom-control-label-danger" : "")" asp-for="@Model.RememberMe" static-text-for="Login_RememberMe"></label>
+            </div>
+        </div>
+
+        <div class="container login-commands-container">
+            <div class="row justify-content-around">
+                <div class="col-auto">
+                    <button id="btnLogin" type="submit" class="btn btn-@(!string.IsNullOrWhiteSpace(_app.GetAppSettings().EnvironmentTitle) ? "danger" : "primary")" static-text-data-loading-text="Login_SignInButtonLoading">
+                        <span class="mr-1 oi oi-account-login"></span>&nbsp;<span static-text-for="Login_SignInButton"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        @Html.AntiForgeryToken()
+    </div>
+    <input type="hidden" asp-for="@Model.ReturnUrl" />
+</form>

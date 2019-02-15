@@ -1,0 +1,37 @@
+﻿@model Zambon.Core.Module.Xml.Views.SubViews.DetailModal
+
+@inject Zambon.Core.Module.Services.ApplicationService app
+
+<partial name="./DetailModalView_Header.cshtml" model="Model" />
+
+<div class="modal-body">
+    <div class="container-fluid">
+
+        <div class="row pl-3 pr-3">
+            <div asp-validation-summary="All"></div>
+        </div>
+
+        @{
+            var currentObject = app.GetDetailViewCurrentObject(Model.ViewId);
+            var currentView = app.GetDetailViewCurrentView(Model.ViewId);
+        }
+
+        @if (currentObject != null)
+        {
+            @if (currentObject is Zambon.Core.Database.Entity.BaseDBObject)
+            {
+                <input type="hidden" name="ID" asp-for="@(((Zambon.Core.Database.Entity.BaseDBObject)currentObject).ID)" />
+            }
+            <input type="hidden" name="ParentViewId" value="@Model.ParentViewId" />
+            <input type="hidden" name="ModalId" value="@Model.Id" />
+            <input type="hidden" name="ViewId" value="@Model.ViewId" />
+            <input type="hidden" id="@(Model.DetailView.ViewId)_CurrentTabId" name="CurrentTabId" value="@(TempData["CurrentTabId"])" />
+
+            <partial name="@currentView" model="@currentObject" />
+        }
+    </div>
+</div>
+
+<div class="modal-footer p-2 pr-3 pl-3" button-for="@Model.DetailView.Buttons?.Button" button-current-object="@currentObject" button-target="ModalFooter">
+    <button id="CloseModal" type="button" class="btn btn-default" data-dismiss="modal" static-text-for="Modal_Button_Close"></button>
+</div>

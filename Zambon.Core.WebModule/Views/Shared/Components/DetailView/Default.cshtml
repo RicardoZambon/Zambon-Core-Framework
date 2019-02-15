@@ -1,0 +1,15 @@
+﻿@model Zambon.Core.Module.Xml.Views.DetailViews.DetailView
+
+<partial name="./Scripts.cshtml" model="@Model" />
+
+<form form-for="@Model">
+    <section id="@(Model.ViewId)_container">
+        <partial name="./DetailView_Body.cshtml" model="Model" />
+    </section>
+</form>
+
+@if (Model.SubViews != null)
+{
+    Model.SubViews.CurrentLevel = 0;
+    <partial name="../SubViews.cshtml" model="@Model.SubViews" />
+}

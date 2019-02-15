@@ -1,0 +1,227 @@
+<Application Name="[Your application name]" Fullname="[Your application description]">
+  <EntityTypes>
+    <Entity Id="Users" DisplayName="Users" Icon="oi-people" TypeClr="Zambon.Core.Security.BusinessObjects.Users" />
+    <Entity Id="Roles" DisplayName="Roles" Icon="oi-tags" TypeClr="Zambon.Core.Security.BusinessObjects.Roles" />
+    <Entity Id="RolesUsers" DisplayName="Roles - Users" Icon="" TypeClr="Zambon.Core.Security.BusinessObjects.RolesUsers" />
+    <Entity Id="UsersManagers" DisplayName="Users - Managers / Subordinates" Icon="" TypeClr="Zambon.Core.Security.BusinessObjects.UsersManagers" />
+    <Entity Id="RolesMenuAccesses" DisplayName="Menu Access" Icon="oi-menu" TypeClr="Zambon.Core.Security.BusinessObjects.RolesMenuAccesses" />
+    <Entity Id="RolesPermissions" DisplayName="Access Permissions" Icon="oi-puzzle-piece" TypeClr="Zambon.Core.Security.BusinessObjects.RolesPermissions" />
+  </EntityTypes>
+
+  <StaticTexts>
+    <StaticText Key="Menu_SignIn" Value="Sign In" />
+    <StaticText Key="Menu_LogOff" Value="Sign Out" />
+    <StaticText Key="Menu_Help" Value="Help" />
+    <StaticText Key="Menu_TechnicalSpec" Value="Technical Guide" />
+    <StaticText Key="Menu_UserGuide" Value="User Guide" />
+
+    <StaticText Key="Login_Title" Value="Login" />
+    <StaticText Key="Login_Username" Value="Username" />
+    <StaticText Key="Login_TypeUsername" Value="Type your username" />
+    <StaticText Key="Login_Password" Value="Password" />
+    <StaticText Key="Login_TypePassword" Value="Type your password" />
+    <StaticText Key="Login_RememberMe" Value="Remember me?" />
+    <StaticText Key="Login_SignInButton" Value="Sign In" />
+    <StaticText Key="Login_SignInButtonLoading" Value="Signing In..." />
+    <StaticText Key="Login_SignInError" Value="The informed data are invalid or you are not allowed to login." />
+
+    <StaticText Key="Home_Title" Value="Welcome to {0}" />
+    <StaticText Key="Home_SuperTitle" Value="Hello, {0}" />
+    <StaticText Key="Home_SubTitle" Value="{0}" />
+
+    <StaticText Key="Home_Panel1_Title" Value="" />
+    <StaticText Key="Home_Panel1_Content" Value="" />
+    <StaticText Key="Home_Panel1_IconName" Value="" />
+    <StaticText Key="Home_Panel1_IconColor" Value="primary" />
+    <StaticText Key="Home_Panel1_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
+    
+    <StaticText Key="Home_Panel2_Title" Value="" />
+    <StaticText Key="Home_Panel2_Content" Value="" />
+    <StaticText Key="Home_Panel2_IconName" Value="" />
+    <StaticText Key="Home_Panel2_IconColor" Value="success" />
+    <StaticText Key="Home_Panel2_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
+    
+    <StaticText Key="Home_Panel3_Title" Value="" />
+    <StaticText Key="Home_Panel3_Content" Value="" />
+    <StaticText Key="Home_Panel3_IconName" Value="" />
+    <StaticText Key="Home_Panel3_IconColor" Value="warning" />
+    <StaticText Key="Home_Panel3_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
+
+    <StaticText Key="ListView_Pagination_FirstPage" Value="First Page" />
+    <StaticText Key="ListView_Pagination_PrevPage" Value="Previous Page" />
+    <StaticText Key="ListView_Pagination_Page" Value="Page {0}" />
+    <StaticText Key="ListView_Pagination_NextPage" Value="Next Page" />
+    <StaticText Key="ListView_Pagination_LastPage" Value="Last Page" />
+    <StaticText Key="ListView_CurrentVisibleRecords" Value="Showing {0} to {1}." />
+    <StaticText Key="ListView_TotalRecords" Value="Total: {0} records." />
+
+    <StaticText Key="Error_Message" Value="An error occurred: {0}" />
+    <StaticText Key="Modal_Button_Close" Value="Close" />
+    <StaticText Key="Modal_Button_Accept" Value="Accept" />
+    
+    <StaticText Key="DatePicker_PrevText" Value="&amp;#x3c; Previous" />
+    <StaticText Key="DatePicker_PrevJumpText" Value="&amp;#x3c;&amp;#x3c;" />
+    <StaticText Key="DatePicker_NextText" Value="Next &amp;#x3e;" />
+    <StaticText Key="DatePicker_NextJumpText" Value="&amp;#x3e;&amp;#x3e;" />
+    <StaticText Key="DatePicker_CurrentText" Value="today" />
+    <StaticText Key="DatePicker_TodayText" Value="today" />
+    <StaticText Key="DatePicker_CloseText" Value="Close" />
+    <StaticText Key="DatePicker_MonthNames" Value="'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'" />
+    <StaticText Key="DatePicker_MonthNamesShort" Value="'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'" />
+    <StaticText Key="DatePicker_DayNames" Value="'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'" />
+    <StaticText Key="DatePicker_DayNamesShort" Value="'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'" />
+    <StaticText Key="DatePicker_DayNamesMin" Value="'S', 'M', 'T', 'W', 'T', 'F', 'S'" />
+    <StaticText Key="DatePicker_DateFormat" Value="dd/mm/yy" />
+
+    <StaticText Key="ValidationMessageDefault_RuleRequired" Value="The property '{0}' is mandatory." />
+    <StaticText Key="ValidationMessageDefault_RuleUniqueValue" Value="The property '{0}' value is already registered." />
+
+    <StaticText Key="Users_Deleted" Value="User {0} successfully deleted!" />
+    <StaticText Key="Users_Saved" Value="User {0} successfully saved!" />
+    <StaticText Key="Users_NotFound" Value="User could not be found, please, update the page and try again." />
+
+    <StaticText Key="Roles_Deleted" Value="Role {0} successfully deleted!" />
+    <StaticText Key="Roles_Saved" Value="Role {0} successfully saved!" />
+    <StaticText Key="Roles_NotFound" Value="Role could not be found, please, update the page and try again." />
+  </StaticTexts>
+
+  <ModuleConfiguration>
+    <LoginDefaults Theme="" />
+    <ListViewDefaults CanEdit="True" ShowPagination="True" PageSize="20" PagesToShow="14" />
+  </ModuleConfiguration>
+
+  <Navigation>
+    <Menu Id="Reports" DisplayName="Reports" Icon="oi-print">
+    </Menu>
+    <Menu Id="Security" DisplayName="Security" Icon="oi-key">
+      <Menu Id="User" Index="0" Type="ListView" ViewID="ListView_Users" />
+      <Menu Id="Role" Index="1" Type="ListView" ViewID="ListView_Roles" />
+    </Menu>
+    <Menu Id="Configuration" DisplayName="Configuration" Icon="oi-cog" />
+  </Navigation>
+  
+  <Views>
+    <DetailView ViewId="DetailView_Users" ControllerName="Users" ActionName="Save" Type="Users">
+      <Buttons>
+        <Button Id="NewRole" DisplayName="Link new role" ClassName="btn-primary" Target="ListView_RolesUsers" ActionName="AddRoles" OpenModal="ModalView_Roles" />
+        <Button Id="NewManager" DisplayName="Link new manager" ClassName="btn-primary" Target="ListView_UsersManagers" ActionName="AddManagers" OpenModal="ModalView_Managers" />
+        <Button Id="NewSubordinate" DisplayName="Link new subordinate" ClassName="btn-primary" Target="ListView_UsersSubordinates" ActionName="AddSubordinates" OpenModal="ModalView_Subordinates" />
+
+        <Button Id="SaveChanges" DisplayName="Save Changes" ClassName="btn-primary" Target="ModalFooter" />
+      </Buttons>
+
+      <SubViews>
+        <LookupView Id="ModalView_Roles" ViewId="LookupView_Roles" Title="Select the roles to add to the user" />
+        <LookupView Id="ModalView_Managers" ViewId="LookupView_Users" Title="Select the managers to add to the user" />
+        <LookupView Id="ModalView_Subordinates" ViewId="LookupView_Users" Title="Select the subordinates to add to the user" />
+        <SubListView Id="SubList_RolesUsers" ViewId="ListView_RolesUsers" ScrollSize="sm" />
+        <SubListView Id="SubList_UsersManagers" ViewId="ListView_UsersManagers" ScrollSize="md" />
+        <SubListView Id="SubList_UsersSubordinates" ViewId="ListView_UsersSubordinates" ScrollSize="md" />
+      </SubViews>
+    </DetailView>
+    <ListView ViewId="ListView_Users" ControllerName="Users" ActionName="Edit" Type="Users" Sort="FullName">
+      <SearchProperties>
+        <SearchProperty PropertyName="FullName" Index="0" />
+        <SearchProperty PropertyName="Username" Index="1" />
+      </SearchProperties>
+
+      <Buttons>
+        <Button Id="New" DisplayName="New user" ClassName="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Users" />
+        <Button Id="Delete" DisplayName="Delete user" ClassName="text-danger" IconName="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the user?" />
+      </Buttons>
+
+      <Columns>
+        <Column PropertyName="FullName" />
+        <Column PropertyName="Username" Index="1" Size="5" />
+      </Columns>
+
+      <SubViews>
+        <DetailView Id="ModalView_Users" ViewId="DetailView_Users" Title="User Information" />
+      </SubViews>
+    </ListView>
+    <ListView ViewId="ListView_RolesUsers" CanEdit="False" Type="RolesUsers" Sort="Role.Name">
+      <Buttons>
+        <Button Id="Delete" DisplayName="Remove role" ClassName="text-danger" IconName="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveRole" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this role?" />
+      </Buttons>
+
+      <Columns>
+        <Column PropertyName="Role" />
+      </Columns>
+    </ListView>
+    <ListView ViewId="ListView_UsersManagers" CanEdit="False" Type="UsersManagers" Sort="Manager.FullName" Criteria="Manager != null">
+      <Buttons>
+        <Button Id="Delete" DisplayName="Remove manager" ClassName="text-danger" IconName="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveManager" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this manager?" />
+      </Buttons>
+
+      <Columns>
+        <Column PropertyName="Manager.FullName" />
+        <Column PropertyName="Manager.Username" Index="1" Size="4" />
+      </Columns>
+    </ListView>
+    <ListView ViewId="ListView_UsersSubordinates" CanEdit="False" Type="UsersManagers" Sort="Subordinate.FullName" Criteria="Subordinate != null">
+      <Buttons>
+        <Button Id="Delete" DisplayName="Remove subordinate" ClassName="text-danger" IconName="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveSubordinate" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this subordinate?" />
+      </Buttons>
+
+      <Columns>
+        <Column PropertyName="Subordinate.FullName" />
+        <Column PropertyName="Subordinate.Username" Index="1" Size="4" />
+      </Columns>
+    </ListView>
+    <LookupView ViewId="LookupView_Users" Type="Users" Sort="FullName">
+      <SearchProperties>
+        <SearchProperty PropertyName="FullName" />
+      </SearchProperties>
+      
+      <Columns>
+        <Column PropertyName="FullName" />
+      </Columns>
+    </LookupView>
+
+    <DetailView ViewId="DetailView_Roles" ControllerName="Roles" ActionName="Save" Type="Roles">
+      
+      <Buttons>
+        <Button Id="SaveChanges" DisplayName="Save Changes" ClassName="btn-primary" Target="ModalFooter" />
+      </Buttons>
+    </DetailView>
+    <ListView ViewId="ListView_Roles" ControllerName="Roles" ActionName="Edit" Type="Roles">
+      <SearchProperties>
+        <SearchProperty PropertyName="Name" />
+      </SearchProperties>
+
+      <Buttons>
+        <Button Id="New" DisplayName="New role" ClassName="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Roles" />
+        <Button Id="Delete" DisplayName="Delete role" ClassName="text-danger" IconName="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the role?" />
+      </Buttons>
+
+      <Columns>
+        <Column PropertyName="Name" />
+        <Column PropertyName="IsAdministrative" Index="1" Size="1" RecordClass="text-center" />
+      </Columns>
+
+      <SubViews>
+        <DetailView Id="ModalView_Roles" ViewId="DetailView_Roles" Title="Role Information" />
+        <!--<DetailView Id="ModalView_RoleMenuAccess" Level="2" ViewId="DetailView_RoleMenuAccess" />
+        <DetailView Id="ModalView_RolesPermissions" Level="2" ViewId="DetailView_RolesPermissions" />
+        <LookupView Id="ModalView_User" Level="2" PostbackController="Role" PostbackActionName="AddEmployees" PostbackFormId="DetailView_Role" ViewId="LookupView_User" />-->
+      </SubViews>
+    </ListView>
+    <LookupView ViewId="LookupView_Roles" Type="Roles" Sort="Name">
+      <SearchProperties>
+        <SearchProperty PropertyName="Name" />
+      </SearchProperties>
+      
+      <Columns>
+        <Column PropertyName="Name" />
+      </Columns>
+    </LookupView>
+
+    <DetailView ViewId="DetailView_RolesMenuAccesses" ControllerName="RolesMenuAccesses" ActionName="Save" Type="RolesMenuAccesses">
+
+    </DetailView>
+
+    <DetailView ViewId="DetailView_RolesPermissions" ControllerName="RolesPermissions" ActionName="Save" Type="RolesPermissions">
+
+    </DetailView>
+  </Views>
+</Application>

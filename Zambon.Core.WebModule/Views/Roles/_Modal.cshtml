@@ -1,0 +1,23 @@
+﻿@model Zambon.Core.Security.BusinessObjects.Roles
+
+<div class="card">
+    <div class="card-body">
+        
+        <div class="form-row">
+            <div class="form-group col">
+                <label asp-for="@Model.Name"></label>
+                <input asp-for="@Model.Name" autofocus />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group form-check col pl-0 mb-0">
+                <div class="custom-control custom-checkbox" style="margin-left: 1px">
+                    <input type="checkbox" class="custom-control-input" asp-for="@Model.IsAdministrative">
+                    <label class="custom-control-label" asp-for="@Model.IsAdministrative"></label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

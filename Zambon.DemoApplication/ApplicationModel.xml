@@ -1,0 +1,51 @@
+<Application Name="Zambon Demo Application" MenuName="Zambon Demo" Fullname="Demo application for Zambon .NET Core Framework">
+  <EntityTypes>
+    <!--<Entity Id="AccountDistribution" DisplayName="Account Distribution" Icon="oi-spreadsheet" TypeClr="Smart.eRFP.BusinessObjects.RequestsAccountDistribution" />-->
+  </EntityTypes>
+
+  <StaticTexts>
+    
+  </StaticTexts>
+  
+  <Navigation>
+    
+  </Navigation>
+|  
+  <Views>
+    
+    <!--Accounts-->
+    <DetailView ViewId="DetailView_Accounts" ControllerName="Accounts" ActionName="Save" Title="Account Information" ViewFolder="Configuration" Type="Accounts">
+      <Buttons>
+        <Button Id="SaveChanges" DisplayName="Save Changes" ClassName="btn-primary" Target="ModalFooter" />
+      </Buttons>
+    </DetailView>
+    <ListView ViewId="ListView_Accounts" ControllerName="Accounts" ActionName="Edit" Type="Accounts">
+      <SearchProperties>
+        <SearchProperty PropertyName="Name" />
+        <SearchProperty PropertyName="DisplayID" Index="1" />
+      </SearchProperties>
+      <Buttons>
+        <Button Id="New" DisplayName="New account" ClassName="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Accounts" />
+        <Button Id="Delete" DisplayName="Delete account" ClassName="text-danger" IconName="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the account?" />
+      </Buttons>
+      <Columns>
+        <Column PropertyName="DisplayID" Size="1" RecordClass="text-center" />
+        <Column PropertyName="Name" Index="1" />
+      </Columns>
+      <SubViews>
+        <DetailView Id="ModalView_Accounts" ViewId="DetailView_Accounts" />
+      </SubViews>
+    </ListView>
+    <LookupView ViewId="LookupView_Accounts" Type="Accounts">
+      <SearchProperties>
+        <SearchProperty PropertyName="Name" />
+        <SearchProperty PropertyName="DisplayID" Index="1" />
+      </SearchProperties>
+      <Columns>
+        <Column PropertyName="DisplayID" Size="2" RecordClass="text-center" />
+        <Column PropertyName="Name" Index="1" />
+      </Columns>
+    </LookupView>
+    
+  </Views>
+</Application>

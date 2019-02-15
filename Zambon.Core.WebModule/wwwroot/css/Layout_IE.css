@@ -1,0 +1,4 @@
+﻿
+.loading::after {
+    background-image: url('../images/loader.gif') !important;
+}

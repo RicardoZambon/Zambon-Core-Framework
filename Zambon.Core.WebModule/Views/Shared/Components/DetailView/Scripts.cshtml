@@ -1,0 +1,29 @@
+﻿@model Zambon.Core.Module.Xml.Views.View
+
+@if (Model is Zambon.Core.Module.Xml.Views.DetailViews.DetailView)
+{
+    var detailView = (Zambon.Core.Module.Xml.Views.DetailViews.DetailView)Model;
+    if ((detailView?.Scripts?.Script?.Count() ?? 0) > 0)
+    {
+        for (var s = 0; s < detailView.Scripts.Script.Count(); s++)
+        {
+            <script src="@Url.Content(detailView.Scripts.Script[s].Src)"></script>
+        }
+    }
+}
+
+@if ((Model.SubViews?.DetailViews?.Count() ?? 0) > 0)
+{
+    for (var d = 0; d < Model.SubViews.DetailViews.Count(); d++)
+    {
+        <partial name="./Scripts.cshtml" model="@Model.SubViews.DetailViews[d].DetailView" />
+    }
+}
+
+@if ((Model.SubViews?.SubListViews?.Count() ?? 0) > 0)
+{
+    for (var l = 0; l < Model.SubViews.SubListViews.Count(); l++)
+    {
+        <partial name="./Scripts.cshtml" model="@Model.SubViews.SubListViews[l].ListView" />
+    }
+}
