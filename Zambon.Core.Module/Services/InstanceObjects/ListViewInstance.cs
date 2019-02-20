@@ -12,17 +12,17 @@ namespace Zambon.Core.Module.Services.InstanceObjects
 
         public SearchOptions SearchOptions { get; set; }
 
-        public IQueryable<BaseDBObject> ItemsCollection { get; set; }
+        public IQueryable ItemsCollection { get; set; }
 
-        public BaseDBObject CurrentObject { get; set; }
+        public object CurrentObject { get; set; }
 
 
-        public ListViewInstance(IQueryable<BaseDBObject> itemsCollection)
+        public ListViewInstance(IQueryable itemsCollection)
         {
             ItemsCollection = itemsCollection;
         }
 
-        public ListViewInstance(BaseDBObject currentObject)
+        public ListViewInstance(object currentObject)
         {
             CurrentObject = currentObject;
         }
@@ -31,7 +31,6 @@ namespace Zambon.Core.Module.Services.InstanceObjects
         {
             SearchOptions = searchOptions;
         }
-
 
     }
 }

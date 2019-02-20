@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel;
 using Zambon.Core.Database.Cache.ChangeTracker;
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 
 namespace Zambon.Core.Database
 {
@@ -26,10 +27,13 @@ namespace Zambon.Core.Database
 
         public CoreContext(DbContextOptions options) : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
 
-            //if (Database.EnsureCreated())
-            //    DatabaseCreated();
+            try
+            {
+                TrackedEntities = this.GetService<CoreChangeTracker>();
+            }
+            catch { }
         }
 
         #endregion
@@ -38,15 +42,17 @@ namespace Zambon.Core.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            Assembly.Load(typeof(CoreContext).Assembly.FullName);
+            var options = this.GetService<IDbContextOptions>();
+            var migrationsAssemblyName = RelationalOptionsExtension.Extract(options).MigrationsAssembly;
+            var assembly = Assembly.Load(migrationsAssemblyName);
 
-            foreach (var entity in AssemblyHelper.GetReferencedClasses<IEntity>())
+            foreach (var entity in AssemblyHelper.GetReferencedClasses<IEntity>(assembly))
             {
                 var modelBuilderEntity = modelBuilder.Entity(entity.GetType());
                 entity.ConfigureEntity(modelBuilderEntity);
             }
 
-            foreach (var query in AssemblyHelper.GetReferencedClasses<IQuery>())
+            foreach (var query in AssemblyHelper.GetReferencedClasses<IQuery>(assembly))
                 modelBuilder.Query(query.GetType());
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -59,7 +65,7 @@ namespace Zambon.Core.Database
 
         #region Change Tracker
 
-        private CoreChangeTracker TrackedEntities { get { return this.GetService<CoreChangeTracker>(); } }
+        private readonly CoreChangeTracker TrackedEntities;
 
 
         public void LoadTrackedEntities()

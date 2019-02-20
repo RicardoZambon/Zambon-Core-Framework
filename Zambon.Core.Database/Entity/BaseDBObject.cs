@@ -62,11 +62,6 @@ namespace Zambon.Core.Database.Entity
             entity.Property<int>("ID").Metadata.BeforeSaveBehavior = PropertySaveBehavior.Ignore;
         }
 
-        //public virtual void ConfigureDatabase(ModelBuilder modelBuilder)
-        //{
-
-        //}
-
         public virtual void OnSaving(CoreContext ctx)
         {
 

@@ -17,15 +17,9 @@ namespace Zambon.Core.Module.Xml.Configuration
         }
         [XmlIgnore]
         public bool CanEdit { get; set; }
-        
-        //[XmlAttribute("EditModalID")]
-        //public string EditModalID { get; set; }
 
-        //[XmlAttribute("EditUpdateContainerID")]
-        //public string EditUpdateContainerID { get; set; }
-
-        //[XmlAttribute("ListUpdateContainerID")]
-        //public string ListUpdateContainerID { get; set; }
+        [XmlAttribute("DefaultAction")]
+        public string DefaultAction { get; set; }
 
         [XmlAttribute("ShowPagination")]
         public string BoolShowPagination

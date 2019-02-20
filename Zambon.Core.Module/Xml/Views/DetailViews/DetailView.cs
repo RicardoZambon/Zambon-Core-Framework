@@ -34,8 +34,11 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
         {
             base.OnLoading(app, ctx);
 
+            if (string.IsNullOrWhiteSpace(ActionName))
+                    ActionName = app.ModuleConfiguration.DetailViewDefaults.DefaultAction;
+
             if (string.IsNullOrWhiteSpace(DefaultView))
-                DefaultView = "_Modal";
+                DefaultView = app.ModuleConfiguration.DetailViewDefaults.DefaultView;
 
             if ((SubViews?.DetailViews?.Length ?? 0) > 0)
                 for (var d = 0; d < SubViews.DetailViews.Length; d++)

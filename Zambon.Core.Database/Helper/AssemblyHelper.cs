@@ -12,13 +12,13 @@ namespace Zambon.Core.Database.Helper
 
         #region Methods
 
-        public static List<I> GetReferencedClasses<I>() where I : class
+        public static List<I> GetReferencedClasses<I>(Assembly rootAssembly) where I : class
         {
             var list = new List<I>();
 
-            list.AddRange(Assembly.GetEntryAssembly().GetActualClasses<I>(Assembly.GetEntryAssembly().GetTypesByInterface<I>()));
+            list.AddRange(rootAssembly.GetActualClasses<I>(rootAssembly.GetTypesByInterface<I>()));
 
-            foreach (var assembly in Assembly.GetEntryAssembly().GetReferencedAssemblies())
+            foreach (var assembly in rootAssembly.GetReferencedAssemblies())
             {
                 var dll = Assembly.Load(assembly);
 

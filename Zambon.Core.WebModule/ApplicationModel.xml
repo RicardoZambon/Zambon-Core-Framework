@@ -87,7 +87,8 @@
 
   <ModuleConfiguration>
     <LoginDefaults Theme="" />
-    <ListViewDefaults CanEdit="True" ShowPagination="True" PageSize="20" PagesToShow="14" />
+    <DetailViewDefaults DefaultAction="Save" DefaultView="_Modal" />
+    <ListViewDefaults CanEdit="True" DefaultAction="Edit" ShowPagination="True" PageSize="20" PagesToShow="14" />
   </ModuleConfiguration>
 
   <Navigation>

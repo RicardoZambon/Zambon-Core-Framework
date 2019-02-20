@@ -18,6 +18,7 @@ using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Serialization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
@@ -77,6 +78,12 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         internal override void OnLoading(Application app, CoreContext ctx)
         {
             base.OnLoading(app, ctx);
+
+            if (string.IsNullOrWhiteSpace(ControllerName))
+                ControllerName = Entity.DefaultController;
+
+            if (string.IsNullOrWhiteSpace(ActionName))
+                ActionName = app.ModuleConfiguration.ListViewDefaults.DefaultAction;
 
             if ((SubViews?.DetailViews?.Length ?? 0) > 0)
             {
@@ -190,12 +197,22 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         {
             typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "SetCurrentPage" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx, _page, searchOptions });
         }
-        public void SetCurrentPage<T>(ApplicationService _app, CoreContext _ctx, int _page = 1, SearchOptions searchOptions = null) where T : BaseDBObject
+        public void SetCurrentPage<T>(ApplicationService _app, CoreContext _ctx, int _page = 1, SearchOptions searchOptions = null) where T : class
         {
             GC.Collect();
 
             _app.SetListViewSearchOptions(ViewId, searchOptions);
-            var list = _ctx.Set<T>().AsQueryable();
+
+            IQueryable<T> list;
+            if (typeof(T).IsAssignableFrom(typeof(IEntity)))
+                list = _ctx.Set<T>().AsQueryable();
+            else if (typeof(T).IsAssignableFrom(typeof(IEntity)))
+                list = _ctx.Query<T>();
+            else
+                throw new ApplicationException($"The ClrType informed in EntityType \"{Type}\" is does not implement IEntity or IQuery interfaces.");
+
+            if (!string.IsNullOrEmpty(Entity.FromSql))
+                list = list.FromSql(Entity.FromSql);
 
             if (!string.IsNullOrWhiteSpace(Criteria))
                 list = list.Where(Criteria, _app.Expressions.FormatExpressionValues(CriteriaArguments.Split(',')));
@@ -230,6 +247,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             _app.SetListViewItemsCollection(ViewId, list);
         }
 
+
         public object GetCellValue(ApplicationService _app, Column column)
         {
             return typeof(ListView).GetMethod("GetTypedCellValue").MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, column.PropertyName, column.FormatType, column.IsNullValue });
@@ -248,7 +266,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             }
             return null;
         }
-        public object GetTypedCellValue<T>(ApplicationService _app, string propertyName, string formatType = "", string isNullValue = "") where T : BaseDBObject
+        public object GetTypedCellValue<T>(ApplicationService _app, string propertyName, string formatType = "", string isNullValue = "") where T : class
         {
             var value = GetObjectValue((new[] { (T)_app.GetListViewCurrentObject(ViewId) }).AsQueryable(), propertyName);
 
@@ -292,7 +310,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         {
             typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "SetItemsCollection" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, entity.GetType().GetProperty(collection).GetValue(entity) });
         }
-        public void SetItemsCollection<T>(ApplicationService _app, ICollection<T> collection) where T : BaseDBObject
+        public void SetItemsCollection<T>(ApplicationService _app, ICollection<T> collection) where T : class
         {
             IQueryable<T> list = null;
             if (collection != null)
@@ -301,10 +319,12 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
                 if (typeof(T).IsSubclassOf(typeof(DBObject)))
                 {
-                    var param = System.Linq.Expressions.Expression.Parameter(typeof(T));
-                    var exp = System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Property(param, "IsDeleted"), System.Linq.Expressions.Expression.Constant(false));
-                    var lambda = System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(exp, param);
-                    list = list.Where(lambda);
+                    //var param = System.Linq.Expressions.Expression.Parameter(typeof(T));
+                    //var exp = System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Property(param, "IsDeleted"), System.Linq.Expressions.Expression.Constant(false));
+                    //var lambda = System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(exp, param);
+                    //list = list.Where(lambda);
+
+                    list = list.Where("!IsDeleted");
                 }
 
                 if (!string.IsNullOrWhiteSpace(Criteria))
@@ -325,7 +345,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         {
             return (int)typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "GetItemsCount" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _ctx, _app });
         }
-        public int GetItemsCount<T>(CoreContext _ctx, ApplicationService _app) where T : BaseDBObject
+        public int GetItemsCount<T>(CoreContext _ctx, ApplicationService _app) where T : class
         {
             var list = _ctx.Set<T>().AsQueryable();
 

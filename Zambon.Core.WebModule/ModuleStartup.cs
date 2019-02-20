@@ -91,11 +91,6 @@ namespace Zambon.Core.WebModule
             CustomConfigureServices<Users, Roles>(services, Configuration);
         }
 
-        //public void CustomConfigureServices<AM>(IServiceCollection services, IConfigurationRoot Configuration) where AM : IAppMigration
-        //{
-        //    CustomConfigureServices<AM, Users, Roles>(services, Configuration);
-        //}
-
         public void CustomConfigureServices<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : Users where R : Roles
         {
             StartConfiguringServices(services, Configuration);
@@ -104,15 +99,6 @@ namespace Zambon.Core.WebModule
 
             EndConfiguringServices<U, R>(services, Configuration);
         }
-
-        //public void CustomConfigureServices<AM, U, R>(IServiceCollection services, IConfigurationRoot Configuration) where AM : IAppMigration where U : Users where R : Roles
-        //{
-        //    StartConfiguringServices(services, Configuration);
-
-        //    ConfigureDatabase<AM>(services, Configuration);
-
-        //    EndConfiguringServices<U, R>(services, Configuration);
-        //}
 
 
         private void StartConfiguringServices(IServiceCollection services, IConfigurationRoot Configuration)
@@ -176,15 +162,6 @@ namespace Zambon.Core.WebModule
 
         #region Database
 
-        //private void ConfigureDatabase<AM>(IServiceCollection services, IConfigurationRoot Configuration) where AM : IAppMigration
-        //{
-        //    ConfigureDatabase(services, Configuration);
-
-        //    var migration = (AM)Activator.CreateInstance(typeof(AM), new object[] { });
-        //    if (migration != null)
-        //        CoreContext.OnDatabaseCreated += migration.OnDataBaseCreated;
-        //}
-
         private void ConfigureDatabase(IServiceCollection services, IConfigurationRoot Configuration)
         {
             services.AddSingleton<IInstanceKeyService, ChangeTrackerService>();
@@ -202,7 +179,9 @@ namespace Zambon.Core.WebModule
 
             services.AddDbContextPool<CoreContext>((serviceProvider, optionsBuilder) =>
             {
-                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly(this.GetType().Assembly.GetName().Name).MigrationsHistoryTable("MigrationsHistory", "EF")
+                );
                 optionsBuilder.UseInternalServiceProvider(serviceProvider);
             });
         }

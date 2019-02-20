@@ -26,11 +26,18 @@ namespace Zambon.Core.Module.Xml.EntityTypes
         [XmlAttribute("Icon")]
         public string Icon { get; set; }
 
+        [XmlAttribute("DefaultController")]
+        public string DefaultController { get; set; }
+
+        [XmlAttribute("FromSql")]
+        public string FromSql { get; set; }
+
         [XmlAttribute("TypeClr")]
         public string TypeClr { get; set; }
 
         [XmlIgnore]
         private Type EntityType { get; set; }
+
 
         [XmlElement("Properties")]
         public Properties Properties { get; set; }
@@ -119,10 +126,8 @@ namespace Zambon.Core.Module.Xml.EntityTypes
             return Properties?.Property?.FirstOrDefault(x => x.Name == name);
         }
 
-        public Type GetEntityType()//CoreContext ctx)
+        public Type GetEntityType()
         {
-            //if (EntityType == null)
-            //    EntityType = ctx.Model.GetEntityTypes(TypeClr).FirstOrDefault();
             return EntityType;
         }
 

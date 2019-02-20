@@ -12,7 +12,5 @@ namespace Zambon.Core.Database.Entity
 
         void ConfigureEntity(EntityTypeBuilder entity);
 
-        //void ConfigureDatabase(ModelBuilder modelBuilder);
-
     }
 }

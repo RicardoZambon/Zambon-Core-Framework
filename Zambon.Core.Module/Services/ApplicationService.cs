@@ -218,89 +218,6 @@ namespace Zambon.Core.Module.Services
             return list.ToArray();
         }
 
-        //private Menu[] UpdateMenus(Menu[] _subMenus = null)
-        //{
-        //    if ((_UserMenu?.Length ?? 0) == 0 && CurrentUser != null)
-        //    {
-        //        if (_subMenus == null)
-        //            _subMenus = Model.Navigation.Menus;
-
-        //        var menus = new Menu[0];
-        //        for (var i = 0; i < _subMenus.Count(); i++)
-        //        {
-        //            var menu = (Menu)_subMenus[i].Clone();
-        //            if (menu.Type == "Separator" && (menus.Length == 0 || menus[menus.Length - 1].Type == "Separator"))
-        //                menu = null;
-        //            else if ((menu.SubMenus?.Length ?? 0) > 0)
-        //            {
-        //                menu.SubMenus = UpdateMenus(menu.SubMenus);
-        //                if ((menu.SubMenus?.Length ?? 0) == 0)
-        //                    menu = null;
-        //            }
-        //            else if (!menu.UserHasAccess(CurrentUser) && menu.Type != "Separator")
-        //                menu = null;
-
-        //            if (menu != null)
-        //            {
-        //                Array.Resize(ref menus, menus.Length + 1);
-        //                menus[menus.Length - 1] = menu;
-        //            }
-        //        }
-
-        //        if (menus.Length > 0)
-        //        {
-        //            if (menus[menus.Length - 1].Type == "Separator")
-        //                Array.Resize(ref menus, menus.Length - 1);
-        //            return menus;
-        //        }
-        //    }
-        //    return new Menu[0];
-        //}
-
-
-
-        //public KeyValuePair<string, int>[] GetMenusUpdatedBadgesCount(Menu[] _menus = null)
-        //{
-        //    var list = new Dictionary<string, int>();
-
-        //    if (_menus == null)
-        //        _menus = UserMenu;
-
-        //    if (_menus != null && _menus.Length > 0)
-        //    {
-        //        for (var i = 0; i < _menus.Length; i++)
-        //        {
-        //            var menu = _menus[i];
-        //            if (menu.ShowBadge)
-        //            {
-        //                if (menu.SubMenus != null && menu.SubMenus.Length > 0)
-        //                {
-        //                    var childMenus = GetMenusUpdatedBadgesCount(menu.SubMenus);
-        //                    if (childMenus.Length > 0)
-        //                    {
-        //                        menu.BadgeCount = childMenus[0].Value;
-        //                        for(var u = 0; u < childMenus.Length; u++)
-        //                            list.Add(childMenus[u].Key, childMenus[u].Value);
-        //                    }
-        //                }
-        //                list.Add(menu.Id, menu.BadgeCount);
-        //            }
-        //        }
-        //    }
-        //    return list.ToArray();
-        //}
-        
-        //public ListView GetListView(ListView _currentList, int? _page = null)
-        //{
-        //    if (_currentList?.ViewId != null)
-        //    {
-        //        _currentList = Merge.MergeObject(Model.FindListView(_currentList.ViewId), _currentList);
-        //        _currentList.SetCurrentPage(_ctx, _page);
-        //        return _currentList;
-        //    }
-        //    return null;
-        //}
-
         public LookupModal LoadLookupView(LookupModal _modalLookup)
         {
             //if (_modalLookup.View == null)
@@ -313,14 +230,6 @@ namespace Zambon.Core.Module.Services
             return null;
         }
 
-
-        //[Obsolete]
-        //public ListView GetListView<T>(string id) where T : IEntity
-        //{
-        //    var xmlView = Model.Views.ListViews.FirstOrDefault(x => x.ViewId == id);
-        //    return xmlView;
-        //}
-
         #endregion
 
         #region ListView Instance
@@ -330,28 +239,28 @@ namespace Zambon.Core.Module.Services
             if (ListViewInstances.ContainsKey(listViewId))
                 ListViewInstances[listViewId].CurrentObject = null;
         }
-        public void SetListViewCurrentObject(string listViewId, BaseDBObject currentObject)
+        public void SetListViewCurrentObject(string listViewId, object currentObject)
         {
             if (ListViewInstances.ContainsKey(listViewId))
                 ListViewInstances[listViewId].CurrentObject = currentObject;
             else
                 ListViewInstances.Add(listViewId, new ListViewInstance(currentObject));
         }
-        public BaseDBObject GetListViewCurrentObject(string listViewId)
+        public object GetListViewCurrentObject(string listViewId)
         {
             if (ListViewInstances.ContainsKey(listViewId))
                 return ListViewInstances[listViewId].CurrentObject;
             return null;
         }
 
-        public void SetListViewItemsCollection(string listViewId, IQueryable<BaseDBObject> collection)
+        public void SetListViewItemsCollection(string listViewId, IQueryable collection)
         {
             if (ListViewInstances.ContainsKey(listViewId))
                 ListViewInstances[listViewId].ItemsCollection = collection;
             else
                 ListViewInstances.Add(listViewId, new ListViewInstance(collection));
         }
-        public IQueryable<BaseDBObject> GetListViewItemsCollection(string listViewId)
+        public IQueryable GetListViewItemsCollection(string listViewId)
         {
             if (ListViewInstances.ContainsKey(listViewId))
                 return ListViewInstances[listViewId].ItemsCollection;
