@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 
 namespace Zambon.Core.Database.Entity
 {
+    /// <summary>
+    /// Represents database tables with primary key and soft delete column.
+    /// </summary>
     public abstract class DBObject : BaseDBObject
     {
 
         #region Properties
 
+        /// <summary>
+        /// Determines when the object is deleted and should be hidden in application.
+        /// </summary>
         [Display(Name = "Deleted?")]
         public bool IsDeleted { get; set; }
 
@@ -25,6 +22,10 @@ namespace Zambon.Core.Database.Entity
 
         #region Overrides
 
+        /// <summary>
+        /// Called when executing OnConfiguring from CoreContext.
+        /// </summary>
+        /// <param name="entity">The object that can be used to configure a given entity type in the model.</param>
         public override void ConfigureEntity(EntityTypeBuilder entity)
         {
             base.ConfigureEntity(entity);

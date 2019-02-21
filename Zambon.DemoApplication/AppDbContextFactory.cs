@@ -7,9 +7,9 @@ using Zambon.Core.WebModule;
 
 namespace Zambon.DemoApplication
 {
-    public class ApplicationContextFactory : WebContextFactory
+    public class AppDbContextFactory : WebContextFactory
     {
-        public override CoreContext CreateDbContext(string[] args)
+        public override CoreDbContext CreateDbContext(string[] args)
         {
             return base.CreateDbContext(new[] { GetType().Assembly.GetName().Name });
         }

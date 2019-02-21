@@ -31,7 +31,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             base.OnLoading(app, ctx);
 

@@ -33,10 +33,10 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         protected IOptions<AppSettings> AppConfigs { get; }
 
-        protected CoreContext Ctx { get; }
+        protected CoreDbContext Ctx { get; }
 
 
-        public MenuTagHelper(IHtmlGenerator generator, ApplicationService app, IOptions<AppSettings> appConfigs, CoreContext ctx)
+        public MenuTagHelper(IHtmlGenerator generator, ApplicationService app, IOptions<AppSettings> appConfigs, CoreDbContext ctx)
         {
             Generator = generator;
             AppConfigs = appConfigs;

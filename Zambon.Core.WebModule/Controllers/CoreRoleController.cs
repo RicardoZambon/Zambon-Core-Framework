@@ -17,7 +17,7 @@ namespace Zambon.Core.WebModule.Controllers
     public class CoreRoleController<R> : CoreController<R> where R : Roles, new()
     {
 
-        public CoreRoleController(CoreContext ctx, ApplicationService app) : base(ctx, app)
+        public CoreRoleController(CoreDbContext ctx, ApplicationService app) : base(ctx, app)
         {
             
         }

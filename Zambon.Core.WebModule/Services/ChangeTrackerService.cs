@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Zambon.Core.Database.Cache.ChangeTracker;
 using Zambon.Core.Database.Cache.Services;
@@ -12,12 +13,10 @@ namespace Zambon.Core.WebModule.Services
     {
 
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly ICurrentUserService currentUserService;
 
-        public ChangeTrackerService(IHttpContextAccessor _httpContextAccessor, ICurrentUserService _currentUserService)
+        public ChangeTrackerService(IHttpContextAccessor _httpContextAccessor)
         {
             httpContextAccessor = _httpContextAccessor;
-            currentUserService = _currentUserService;
         }
 
 
@@ -29,7 +28,8 @@ namespace Zambon.Core.WebModule.Services
             else
                 StoreKey(databaseKey);
 
-            return new InstanceKey(databaseKey, currentUserService.CurrentUser.ID);
+            var userId = Convert.ToInt32(httpContextAccessor.HttpContext?.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+            return new InstanceKey(databaseKey, userId);
         }
 
         public void StoreKey(Guid databaseInstanceKey)

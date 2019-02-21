@@ -11,7 +11,7 @@ namespace Zambon.Core.WebModule.ActionFilters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (context.HttpContext.RequestServices.GetService(typeof(CoreContext)) is CoreContext ctx)
+            if (context.HttpContext.RequestServices.GetService(typeof(CoreDbContext)) is CoreDbContext ctx)
             {
                 if (context.ActionArguments.ContainsKey("viewInfo") && context.ActionArguments["viewInfo"] is ViewInfo viewInfo && !string.IsNullOrWhiteSpace(viewInfo.ParentViewId)
                     && context.HttpContext.RequestServices.GetService(typeof(ApplicationService)) is ApplicationService app)

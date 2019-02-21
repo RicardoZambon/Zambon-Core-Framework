@@ -20,10 +20,10 @@ namespace Zambon.Core.WebModule.Controllers
     public class ViewController : Controller
     {
 
-        private readonly CoreContext _ctx;
+        private readonly CoreDbContext _ctx;
         private readonly ApplicationService _app;
 
-        public ViewController(ApplicationService appService, CoreContext ctx)
+        public ViewController(ApplicationService appService, CoreDbContext ctx)
         {
             _app = appService;
             _ctx = ctx;

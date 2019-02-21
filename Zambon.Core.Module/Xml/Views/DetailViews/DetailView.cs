@@ -30,7 +30,7 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             base.OnLoading(app, ctx);
 
@@ -62,11 +62,11 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
                 }
         }
 
-        public void ActivateInstance(ApplicationService _app, CoreContext _ctx)
+        public void ActivateInstance(ApplicationService _app, CoreDbContext _ctx)
         {
             typeof(DetailView).GetMethods().FirstOrDefault(x => x.Name == "ActivateInstance" && x.GetGenericArguments().Any()).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx });
         }
-        public void ActivateInstance<T>(ApplicationService _app, CoreContext _ctx) where T : class
+        public void ActivateInstance<T>(ApplicationService _app, CoreDbContext _ctx) where T : class
         {
             object detailObject = null;
 

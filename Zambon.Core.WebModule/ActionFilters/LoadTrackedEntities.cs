@@ -10,7 +10,7 @@ namespace Zambon.Core.WebModule.ActionFilters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ActionDescriptor is ControllerActionDescriptor descriptor
-                && context.HttpContext.RequestServices.GetService(typeof(CoreContext)) is CoreContext ctx)
+                && context.HttpContext.RequestServices.GetService(typeof(CoreDbContext)) is CoreDbContext ctx)
             {
                 ctx.LoadTrackedEntities();
             }

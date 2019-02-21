@@ -12,13 +12,13 @@ using Zambon.Core.Security.BusinessObjects;
 
 namespace Zambon.Core.WebModule.Services
 {
-    public class CurrentUserService<TUser,TRole> : ICurrentUserService where TUser : Users where TRole : Roles
+    public class CurrentUserService<TUser,TRole> : ICurrentUserService where TUser : class, IUsers where TRole : class, IRoles
     {
 
         #region Variables
 
         private readonly IHttpContextAccessor _contextHttp;
-        private readonly CoreContext _ctx;
+        private readonly CoreDbContext _ctx;
 
         #endregion
 
@@ -47,7 +47,7 @@ namespace Zambon.Core.WebModule.Services
 
         #region Constructors
 
-        public CurrentUserService(IHttpContextAccessor contextHttp, CoreContext ctx)
+        public CurrentUserService(IHttpContextAccessor contextHttp, CoreDbContext ctx)
         {
             _contextHttp = contextHttp;
             _ctx = ctx;

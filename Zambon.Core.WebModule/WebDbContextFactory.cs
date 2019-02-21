@@ -5,9 +5,9 @@ using Zambon.Core.Database;
 
 namespace Zambon.Core.WebModule
 {
-    public class WebContextFactory : CoreContextFactory
+    public class WebContextFactory : CoreDbContextFactory
     {
-        public override CoreContext CreateDbContext(string[] args)
+        public override CoreDbContext CreateDbContext(string[] args)
         {
             if (args.Length != 1)
                 throw new Exception("Missing arguments for MigrationsAssembly.");

@@ -28,7 +28,7 @@ namespace Zambon.Core.Module.Services
 
         #region Variables
 
-        private readonly CoreContext _ctx;
+        private readonly CoreDbContext _ctx;
 
         private readonly ModelService _modelService;
 
@@ -43,7 +43,7 @@ namespace Zambon.Core.Module.Services
             get
             {
                 if (_model == null)
-                    _model = (Application)_modelService.GetModel().Clone();
+                    _model = (Application)_modelService.GetModel(_ctx).Clone();
                 return _model;
             }
         }
@@ -73,7 +73,7 @@ namespace Zambon.Core.Module.Services
 
         #region Constructors
 
-        public ApplicationService(CoreContext ctx, ModelService modelService, GlobalExpressionsService expressions, ICurrentUserService currentUserService)
+        public ApplicationService(CoreDbContext ctx, ModelService modelService, GlobalExpressionsService expressions, ICurrentUserService currentUserService)
         {
             _ctx = ctx;
             _modelService = modelService;

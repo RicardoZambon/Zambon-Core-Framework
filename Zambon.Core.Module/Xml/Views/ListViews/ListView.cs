@@ -19,6 +19,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Database.ExtensionMethods;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
@@ -75,7 +77,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             base.OnLoading(app, ctx);
 
@@ -193,20 +195,20 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             return null;
         }
 
-        public void SetCurrentPage(ApplicationService _app, CoreContext _ctx, int _page = 1, SearchOptions searchOptions = null)
+        public void SetCurrentPage(ApplicationService _app, CoreDbContext _ctx, int _page = 1, SearchOptions searchOptions = null)
         {
             typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "SetCurrentPage" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx, _page, searchOptions });
         }
-        public void SetCurrentPage<T>(ApplicationService _app, CoreContext _ctx, int _page = 1, SearchOptions searchOptions = null) where T : class
+        public void SetCurrentPage<T>(ApplicationService _app, CoreDbContext _ctx, int _page = 1, SearchOptions searchOptions = null) where T : class
         {
             GC.Collect();
 
             _app.SetListViewSearchOptions(ViewId, searchOptions);
 
             IQueryable<T> list;
-            if (typeof(T).IsAssignableFrom(typeof(IEntity)))
+            if (typeof(T).ImplementsInterface<IEntity>())
                 list = _ctx.Set<T>().AsQueryable();
-            else if (typeof(T).IsAssignableFrom(typeof(IEntity)))
+            else if (typeof(T).ImplementsInterface<IQuery>())
                 list = _ctx.Query<T>();
             else
                 throw new ApplicationException($"The ClrType informed in EntityType \"{Type}\" is does not implement IEntity or IQuery interfaces.");
@@ -341,11 +343,11 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             _app.SetListViewItemsCollection(ViewId, list);
         }
 
-        public int GetItemsCount(CoreContext _ctx, ApplicationService _app)
+        public int GetItemsCount(CoreDbContext _ctx, ApplicationService _app)
         {
             return (int)typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "GetItemsCount" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _ctx, _app });
         }
-        public int GetItemsCount<T>(CoreContext _ctx, ApplicationService _app) where T : class
+        public int GetItemsCount<T>(CoreDbContext _ctx, ApplicationService _app) where T : class
         {
             var list = _ctx.Set<T>().AsQueryable();
 

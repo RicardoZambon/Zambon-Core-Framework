@@ -6,8 +6,8 @@ using System.Linq;
 using Zambon.Core.Database;
 using Zambon.Core.Database.Cache.ChangeTracker;
 using Zambon.Core.Database.Entity;
-using Zambon.Core.Database.Helper;
-using Zambon.Core.Database.Operations;
+using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Helper;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views;
@@ -19,14 +19,14 @@ using Zambon.Core.WebModule.Helper;
 
 namespace Zambon.Core.WebModule.Controllers
 {
-    public abstract class CoreController<T> : Controller where T : BaseDBObject, new()
+    public abstract class CoreController<T> : Controller where T : class, IEntity, IKeyed, new()
     {
 
-        protected readonly CoreContext _ctx;
+        protected readonly CoreDbContext _ctx;
 
         protected readonly ApplicationService _app;
 
-        public CoreController(CoreContext ctx, ApplicationService app)
+        public CoreController(CoreDbContext ctx, ApplicationService app)
         {
             _ctx = ctx;
             _app = app;
@@ -179,7 +179,7 @@ namespace Zambon.Core.WebModule.Controllers
 
         #region SubListViews
 
-        protected ActionResult<DetailModal> AddSubListViewItems<C>(ViewInfo viewInfo, T entity, ICollection<C> collection, int[] addIds, Func<C, int> childExistsCompare, Action<C> setChildToEntity, Action<C, int> setChildToItem) where C : class
+        protected ActionResult<DetailModal> AddSubListViewItems<C>(ViewInfo viewInfo, T entity, ICollection<C> collection, int[] addIds, Func<C, int> childExistsCompare, Action<C> setChildToEntity, Action<C, int> setChildToItem) where C : class, IEntity
         {
             if (_app.GetView(viewInfo.ViewId) is BaseView view)
                 try
@@ -214,7 +214,7 @@ namespace Zambon.Core.WebModule.Controllers
             return NotFound();
         }
         
-        protected ActionResult<DetailModal> RemoveSubListViewItems<C>(ViewInfo viewInfo, T entity, ICollection<C> collection, int deleteId) where C : BaseDBObject
+        protected ActionResult<DetailModal> RemoveSubListViewItems<C>(ViewInfo viewInfo, T entity, ICollection<C> collection, int deleteId) where C : class, IEntity, IKeyed
         {
             if (_app.GetView(viewInfo.ViewId) is BaseView view)
                 try
@@ -364,12 +364,17 @@ namespace Zambon.Core.WebModule.Controllers
             });
         }
 
-        protected string GetMessageText(string key, BaseView view = null, T currentObject = null)
+        protected string GetMessageText(string key, BaseView view)
         {
-            return GetMessageText(key, view?.GetEntityType(), currentObject);
+            var type = view?.GetEntityType();
+            if (type != null)
+                return _app.GetStaticText(string.Format(key, type.Name));
+            return _app.GetStaticText(key);
         }
-        protected string GetMessageText(string key, Type type = null, T currentObject = null)
+
+        protected string GetMessageText(string key, BaseView view, T currentObject)
         {
+            var type = view?.GetEntityType();
             if (type != null && currentObject != null)
             {
                 var text = _app.GetStaticText(string.Format(key, type.Name));
@@ -388,7 +393,7 @@ namespace Zambon.Core.WebModule.Controllers
             else
                 return _app.GetStaticText(key);
         }
-
+        
         #endregion
 
     }

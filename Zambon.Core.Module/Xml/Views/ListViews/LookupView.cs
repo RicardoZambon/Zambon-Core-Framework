@@ -35,7 +35,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             base.OnLoading(app, ctx);
 
@@ -67,11 +67,11 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
         #region Methods
 
-        public void PopulateView(ApplicationService _app, CoreContext _ctx, SearchOptions searchOptions = null)
+        public void PopulateView(ApplicationService _app, CoreDbContext _ctx, SearchOptions searchOptions = null)
         {
             typeof(LookupView).GetMethods().FirstOrDefault(x => x.Name == "PopulateView" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx, searchOptions });
         }
-        public void PopulateView<T>(ApplicationService _app, CoreContext _ctx, SearchOptions searchOptions = null) where T : BaseDBObject
+        public void PopulateView<T>(ApplicationService _app, CoreDbContext _ctx, SearchOptions searchOptions = null) where T : BaseDBObject
         {
             GC.Collect();
             _app.SetLookUpViewSearchOptions(ViewId, searchOptions);

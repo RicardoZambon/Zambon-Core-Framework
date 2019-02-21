@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Zambon.Core.Database;
 using Zambon.Core.Database.Entity;
-using Zambon.Core.Database.Helper;
+using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Expressions;
 using Zambon.Core.Module.Services;
 using System;
@@ -51,7 +51,7 @@ namespace Zambon.Core.Module.Validations
                 && value != null
                 && (value is string stringValue && (!string.IsNullOrWhiteSpace(stringValue) || !IgnoreEmptyStrings)))
             {
-                if (validationContext.GetService(typeof(CoreContext)) is CoreContext ctx && validationContext.ObjectInstance is BaseDBObject dbInstance)
+                if (validationContext.GetService(typeof(CoreDbContext)) is CoreDbContext ctx && validationContext.ObjectInstance is BaseDBObject dbInstance)
                 {
                     string query;
                     switch (value)

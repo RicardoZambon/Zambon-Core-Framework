@@ -17,10 +17,6 @@ namespace Zambon.Core.Module.Services
 
         #region Variables
 
-        private readonly string ResourceName;
-
-        private readonly CoreContext _ctx;
-
         private readonly IOptions<AppSettings> _appConfigs;
 
         #endregion
@@ -32,37 +28,30 @@ namespace Zambon.Core.Module.Services
         private string AppCopyright { get; set; }
 
         private Application _Model;
-        private Application Model { get { if (_Model == null) LoadModel(); return _Model; } }
 
         #endregion
 
         #region Constructors
 
-        public ModelService(CoreContext ctx, IOptions<AppSettings> appConfigs)
+        public ModelService(IOptions<AppSettings> appConfigs)
         {
-            ResourceName = "ApplicationModel.xml";
-            _ctx = ctx;
             _appConfigs = appConfigs;
-        }
-
-        public ModelService(string _resourceName, CoreContext ctx, IOptions<AppSettings> appConfigs) : this(ctx, appConfigs)
-        {
-            ResourceName = _resourceName;
         }
 
         #endregion
 
         #region Methods
 
-        private void LoadModel()
+        private void LoadModel(CoreDbContext ctx)
         {
             var assembly = Assembly.GetEntryAssembly();
+            var resourceName = "ApplicationModel.xml";
 
             System.IO.Stream stream;
 
             //Read from the WebModule
             Application application = null;
-            stream = Assembly.Load("Zambon.Core.WebModule").GetManifestResourceStream(string.Format("Zambon.Core.WebModule.{0}", ResourceName));
+            stream = Assembly.Load("Zambon.Core.WebModule").GetManifestResourceStream(string.Format("Zambon.Core.WebModule.{0}", resourceName));
             if (stream != null)
                 using (stream)
                 {
@@ -71,11 +60,11 @@ namespace Zambon.Core.Module.Services
                 }
 
             //Read from the Application
-            var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(assembly.Location), ResourceName);
+            var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(assembly.Location), resourceName);
             if (System.IO.File.Exists(path))
                 stream = System.IO.File.Open(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
             else
-                stream = assembly.GetManifestResourceStream(string.Format("{0}.{1}", assembly.GetName().Name, ResourceName));
+                stream = assembly.GetManifestResourceStream(string.Format("{0}.{1}", assembly.GetName().Name, resourceName));
 
             if (stream != null)
                 using (stream)
@@ -88,7 +77,7 @@ namespace Zambon.Core.Module.Services
                         application = (Application)serializer.Deserialize(stream);
                 }
 
-            application.OnLoading(application, _ctx);
+            application.OnLoading(application, ctx);
 
             _Model = application;
         }
@@ -120,20 +109,19 @@ namespace Zambon.Core.Module.Services
         }
         
 
-        public Application GetModel()
+        public Application GetModel(CoreDbContext ctx)
         {
-            if (Model == null)
-                LoadModel();
-            return Model;
-            //return (Application)Model.Clone();
+            if (_Model == null)
+                LoadModel(ctx);
+            return _Model;
         }
 
         public string GetPropertyDisplayName(string typeClr, string name)
         {
-            if ((Model?.EntityTypes?.Entities?.Length ?? 0) > 0)
+            if ((_Model?.EntityTypes?.Entities?.Length ?? 0) > 0)
             {
                 //var entity = Array.Find(Model.EntityTypes.Entities, e => e.TypeClr == typeClr);
-                var entity = Array.Find(Model.EntityTypes.Entities, e => e.Id == typeClr);
+                var entity = Array.Find(_Model.EntityTypes.Entities, e => e.Id == typeClr);
                 if ((entity?.Properties?.Property?.Length ?? 0) > 0)
                 {
                     var property = Array.Find(entity.Properties.Property, p => p.Name == name);

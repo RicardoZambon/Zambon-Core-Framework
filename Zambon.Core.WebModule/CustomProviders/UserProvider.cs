@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Security.BusinessObjects;
 using Zambon.Core.Security.Identity;
 
 namespace Zambon.Core.WebModule.CustomProviders
 {
-    public class UserProvider<TUser> : IUserProvider where TUser : Users
+    public class UserProvider<TUser> : IUserProvider where TUser : class, IUsers
     {
 
         private readonly CoreUserManager<TUser> _userManager;
@@ -35,8 +36,7 @@ namespace Zambon.Core.WebModule.CustomProviders
 
         public async Task<ClaimsPrincipal> CreatePrincipalAsync(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            return await _signInManager.CreateUserPrincipalAsync(user);
+            return await _signInManager.CreateUserPrincipalAsync(await _userManager.FindByNameAsync(username)); ;
         }
 
     }

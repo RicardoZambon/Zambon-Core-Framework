@@ -65,7 +65,7 @@ namespace Zambon.Core.Module.Xml.Navigation
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             if (SubMenus != null && SubMenus.Length > 0)
                 Array.Sort(SubMenus);

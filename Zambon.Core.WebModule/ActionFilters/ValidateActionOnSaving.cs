@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.WebModule.ActionFilters
 {
     public class ValidateActionOnSavingAttribute : ActionFilterAttribute
     {
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (context.ActionDescriptor is ControllerActionDescriptor descriptor)
@@ -19,17 +19,14 @@ namespace Zambon.Core.WebModule.ActionFilters
                 var parameters = descriptor.MethodInfo.GetParameters();
                 for (var i = 0; i < parameters.Length; i++)
                 {
-                    if (context.ActionArguments[parameters[i].Name].GetType().GetProperties().Count(x => x.GetCustomAttributes(typeof(ValidationAttribute), true).Count() > 0) > 0)
+                    if (context.ActionArguments[parameters[i].Name].GetType().GetProperties().Count(x => x.GetCustomAttributes(typeof(ValidationAttribute), true).Count() > 0) > 0
+                        && context.ActionArguments[parameters[i].Name] is ICustomValidated entity)
                     {
-                        context.ActionArguments[parameters[i].Name].IsModelValid(context.HttpContext.RequestServices, context.ModelState);
+                        entity.IsModelValid(context.HttpContext.RequestServices, context.ModelState);
                     }
-
-                    //if (context.ActionArguments.ContainsKey(parameters[i].Name) && context.ActionArguments[parameters[i].Name] is IDBObject model)
-                    //    model.IsModelValid(context.HttpContext.RequestServices, context.ModelState);
                 }
             }
             base.OnActionExecuting(context);
         }
-
     }
 }

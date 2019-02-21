@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Zambon.Core.Database</name>
+    </assembly>
+    <members>
+        <member name="T:Zambon.Core.Database.CoreDbContext">
+            <summary>
+            A DbContext instance represents a session with the database and can be used to query and save instances of your entities. DbContext is a combination of the Unit Of Work and Repository patterns.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions)">
+            <summary>
+            Initializes a new instance of the Microsoft.EntityFrameworkCore.DbContext class using the specified options. The Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder) method will still be called to allow further configuration of the options.
+            </summary>
+            <param name="options">The options for this context.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Override this method to further configure the model that was discovered by convention from the entity types exposed in Microsoft.EntityFrameworkCore.DbSet`1 properties on your derived context. The resulting model may be cached and re-used for subsequent instances of your derived context.
+            </summary>
+            <param name="modelBuilder">The builder being used to construct the model for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure aspects of the model that are specific to a given database.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.LoadTrackedEntities">
+            <summary>
+            Load tracked entities already stored in distributed cache.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.ClearTrackedEntities(System.Boolean,System.Boolean,System.String,System.Boolean)">
+            <summary>
+            Clears the stored entities in distributed cache.
+            </summary>
+            <param name="clearStored">If should clear the stored entities with changes already applyed.</param>
+            <param name="clearTemp">If should clear the temp stored entities.</param>
+            <param name="tempModelType">Filters the temp model to clean only this same type.</param>
+            <param name="forceClear">Force to clean all entities in temp.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.ApplyChanges``1(``0,System.Boolean)">
+            <summary>
+            Applies the changed properties into distributed cache, without saving into database.
+            </summary>
+            <typeparam name="T">Type of the entity.</typeparam>
+            <param name="entity">The entity instance.</param>
+            <param name="SaveIntoTemp">If should save into temp or in tracked items.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.ApplyChanges``1(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry{``0},System.Boolean)">
+            <summary>
+            Applies the changed properties into distributed cache, without saving into database.
+            </summary>
+            <typeparam name="T">Type of the entity.</typeparam>
+            <param name="entry">The database entry instance.</param>
+            <param name="SaveIntoTemp">If should save into temp or in tracked items.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.RemoveTrackedEntity``1(``0)">
+            <summary>
+            Remove the specified entity from the already tracked entities.
+            </summary>
+            <typeparam name="T">Type of the entity.</typeparam>
+            <param name="entity">The entity instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.RemoveTrackedEntity(System.Type,System.Int32)">
+            <summary>
+            Retrives the entity using the ID and remove it from the already tracked entities.
+            </summary>
+            <param name="modelType">Type of the entity.</param>
+            <param name="entityId">The entity id.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.SaveChanges``1(``0,System.Boolean)">
+            <summary>
+            Saves all changes made in this context to the database.
+            </summary>
+            <typeparam name="T">The type of the entity.</typeparam>
+            <param name="entity">The entity should be saved into the database.</param>
+            <param name="UseTransaction">If set to true will use a transaction to save the entity into the database. Default true.</param>
+            <returns>The number of state entries written to the database.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContext.Set(System.Type)">
+            <summary>
+            Creates a Microsoft.EntityFrameworkCore.DbSet`1 that can be used to query and save instances of TEntity.
+            </summary>
+            <param name="_type">The type of entity for which a set should be returned.</param>
+            <returns>A set for the given entity type.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.CoreDbContextFactory">
+            <summary>
+            A factory for creating derived Microsoft.EntityFrameworkCore.DbContext instances. Implement this interface to enable design-time services for context types that do not have a public default constructor. At design-time, derived Microsoft.EntityFrameworkCore.DbContext instances can be created in order to enable specific design-time experiences such as Migrations. Design-time services will automatically discover implementations of this interface that are in the startup assembly or the same assembly as the derived context.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.CoreDbContextFactory.CreateDbContext(System.String[])">
+            <summary>
+            Creates a new instance of a derived context.
+            </summary>
+            <param name="args">Arguments provided by the design-time service.</param>
+            <returns>An instance of CoreDbContext.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.ICoreDbSeedData">
+            <summary>
+            Generates initial database data
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ICoreDbSeedData.SeedData(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Used to seed the initial data, called after adding the entity types into the model.
+            </summary>
+            <param name="modelBuilder">The builder being used to construct the model for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure aspects of the model that are specific to a given database.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Entity.BaseDBObject">
+            <summary>
+            Represents base database classes with primary key.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Entity.BaseDBObject.ID">
+            <summary>
+            Primary key of the entity.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.BaseDBObject.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.BaseDBObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Default validation method, gets called everytime when submitting the object to the server. Determines whether the specified object is valid.
+            </summary>
+            <param name="validationContext">The validation context.</param>
+            <returns>Retuns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.BaseDBObject.ValidateData(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Called when validating the object using the custom validation methods.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+            <returns>Retuns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.BaseDBObject.ConfigureEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
+            <summary>
+            Called when executing OnConfiguring from CoreContext.
+            </summary>
+            <param name="entity">The object that can be used to configure a given entity type in the model.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.BaseDBObject.OnDeleting(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Executed whether the object is being deleted.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.BaseDBObject.OnSaving(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Executed whether the object is being saved into database.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Entity.DBObject">
+            <summary>
+            Represents database tables with primary key and soft delete column.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Entity.DBObject.IsDeleted">
+            <summary>
+            Determines when the object is deleted and should be hidden in application.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Entity.DBObject.ConfigureEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
+            <summary>
+            Called when executing OnConfiguring from CoreContext.
+            </summary>
+            <param name="entity">The object that can be used to configure a given entity type in the model.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.ExtensionMethods.AssemblyExtension">
+            <summary>
+            Helper extension to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetTypesByInterface``1(System.Reflection.Assembly)">
+            <summary>
+            Search for the specified type implementation within the assembly.
+            </summary>
+            <typeparam name="I">The type that should search.</typeparam>
+            <param name="assembly">The assembly to search.</param>
+            <returns>Returns a list of TypeInfo, if no implementation were found, will return a blank list.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetActualClasses``1(System.Reflection.Assembly,System.Collections.Generic.IEnumerable{System.Reflection.TypeInfo})">
+            <summary>
+            Gets the instanced elements for the informed types.
+            </summary>
+            <typeparam name="I">The type that should create the instance.</typeparam>
+            <param name="assembly">The original assembly.</param>
+            <param name="types">List of types.</param>
+            <returns>Returns a list of instanced objects.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetReferencedClasses``1(System.Reflection.Assembly)">
+            <summary>
+            Search in the assembly and referenced assemblies for a specific type.
+            </summary>
+            <typeparam name="I">Type to search.</typeparam>
+            <param name="rootAssembly">Parent assembly to search.</param>
+            <returns>Returns a list of instanced objects.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.ExtensionMethods.DbSetExtension">
+            <summary>
+            Extension methods to manipulate database objects.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.DbSetExtension.IsValid``1(``0,Zambon.Core.Database.CoreDbContext,System.Collections.Generic.List{System.Collections.Generic.KeyValuePair{System.String,System.String}}@)">
+            <summary>
+            Validate the an entity.
+            </summary>
+            <typeparam name="T">Type of the entity.</typeparam>
+            <param name="entity">Instance of the object.</param>
+            <param name="ctx">Database context instance.</param>
+            <param name="errors">Exposes the errors list if having any.</param>
+            <returns>Returns true if no errors were found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.DbSetExtension.Delete``1(Zambon.Core.Database.CoreDbContext,System.Int32,System.Boolean)">
+            <summary>
+            Deletes an object from database. If the object is of type DBObject, then will only set the IsDeleted property to true, otherwise will delete.
+            </summary>
+            <typeparam name="T">Type of the entity.</typeparam>
+            <param name="ctx">Database context instance.</param>
+            <param name="id">ID of the object to be deleted.</param>
+            <param name="_commitChanges">If should or not use transaction when deleting.</param>
+            <returns>Returns an instance of the deleted object.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.DbSetExtension.Merge(Zambon.Core.Database.CoreDbContext,Zambon.Core.Database.Interfaces.IKeyed,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Merge the actual database values with the object from Core Change Tracker.
+            </summary>
+            <param name="ctx">Database context instance.</param>
+            <param name="modalEntity">The instance returned from the action.</param>
+            <param name="formKeys">List of user informed fields.</param>
+            <returns>Returns the merged entity.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.ExtensionMethods.TypeExtension">
+            <summary>
+            Helper methods to use when having Castle.Proxies entities.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.TypeExtension.GetCorrectTypeName(System.Type)">
+            <summary>
+            Returns the correct type name if using "Caste.Proxies".
+            </summary>
+            <param name="_type">Type to detect.</param>
+            <returns>Returns the string type name.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.TypeExtension.GetCorrectType(System.Type)">
+            <summary>
+            Returns the correct type if using "Caste.Proxies".
+            </summary>
+            <param name="_type">Type to search for.</param>
+            <returns>Returns the type.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.TypeExtension.ImplementsInterface``1(System.Type)">
+            <summary>
+            Check if a type implements any interface
+            </summary>
+            <typeparam name="I">The interface type that should search.</typeparam>
+            <param name="type">The type to search for the interface.</param>
+            <returns>If the type implements the interface, returns true.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Interfaces.ICustomValidated">
+            <summary>
+            Represents database classes with custom validation method.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Interfaces.ICustomValidated.ValidateData(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Called when validating the object using the custom validation methods.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+            <returns>Retuns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Interfaces.IDBObject">
+            <summary>
+            Represents base database classes.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Interfaces.IDBObject.OnDeleting(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Executed whether the object is being deleted.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Interfaces.IDBObject.OnSaving(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Executed whether the object is being saved into database.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Interfaces.IEntity">
+            <summary>
+            Represents an entity type in database model, will automatically map into a table with the same name from OnConfiguring.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Interfaces.IEntity.ConfigureEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
+            <summary>
+            Called when executing OnConfiguring from CoreContext.
+            </summary>
+            <param name="entity">The object that can be used to configure a given entity type in the model.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Interfaces.IKeyed">
+            <summary>
+            Represents database classes with int primary key.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Interfaces.IQuery">
+            <summary>
+            Represents an object that can be used to configure a given query type in the model.
+            </summary>
+        </member>
+    </members>
+</doc>

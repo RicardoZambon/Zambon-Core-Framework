@@ -48,7 +48,7 @@ namespace Zambon.Core.Module.Xml
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             base.OnLoading(app, ctx);
 

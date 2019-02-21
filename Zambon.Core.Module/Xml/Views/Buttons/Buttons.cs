@@ -16,7 +16,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             if ((Button?.Length ?? 0) > 0)
                 Array.Sort(Button);

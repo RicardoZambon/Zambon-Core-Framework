@@ -47,7 +47,7 @@ namespace Zambon.Core.Module.Xml.EntityTypes
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreContext ctx)
+        internal override void OnLoading(Application app, CoreDbContext ctx)
         {
             var entityType = ctx.Model.GetEntityTypes(TypeClr).FirstOrDefault();
             if (entityType != null)

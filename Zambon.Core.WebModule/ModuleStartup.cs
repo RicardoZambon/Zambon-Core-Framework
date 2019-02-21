@@ -22,6 +22,7 @@ using Zambon.Core.Database.Cache.ChangeTracker;
 using Zambon.Core.Database.Cache.Services;
 using Zambon.Core.Module;
 using Zambon.Core.Module.Expressions;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Security.BusinessObjects;
 using Zambon.Core.Security.Identity;
@@ -91,7 +92,7 @@ namespace Zambon.Core.WebModule
             CustomConfigureServices<Users, Roles>(services, Configuration);
         }
 
-        public void CustomConfigureServices<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : Users where R : Roles
+        public void CustomConfigureServices<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : class, IUsers where R : class, IRoles
         {
             StartConfiguringServices(services, Configuration);
 
@@ -115,7 +116,7 @@ namespace Zambon.Core.WebModule
             services.ConfigureApplicationCookie(options => { options.Cookie.Name = string.Format(".AspNetCore.{0}.Cookies", Env.ApplicationName.Replace(".", "_")); });
         }
 
-        private void EndConfiguringServices<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : Users where R : Roles
+        private void EndConfiguringServices<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : class, IUsers where R : class, IRoles
         {
             ConfigureIdentityAuthentication<U, R>(services, Configuration);
 
@@ -177,7 +178,7 @@ namespace Zambon.Core.WebModule
             services.AddEntityFrameworkSqlServer();
             services.AddEntityFrameworkProxies();
 
-            services.AddDbContextPool<CoreContext>((serviceProvider, optionsBuilder) =>
+            services.AddDbContextPool<CoreDbContext>((serviceProvider, optionsBuilder) =>
             {
                 optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(this.GetType().Assembly.GetName().Name).MigrationsHistoryTable("MigrationsHistory", "EF")
@@ -195,7 +196,7 @@ namespace Zambon.Core.WebModule
             ConfigureIdentityAuthentication<Users, Roles>(services, Configuration);
         }
 
-        private void ConfigureIdentityAuthentication<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : Users where R : Roles
+        private void ConfigureIdentityAuthentication<U, R>(IServiceCollection services, IConfigurationRoot Configuration) where U : class, IUsers where R : class, IRoles
         {
             services.AddIdentity<U, R>(o => { o.Password = CoreUserManager<U>.passwordOptions; })
                 .AddUserManager<CoreUserManager<U>>()
@@ -203,6 +204,8 @@ namespace Zambon.Core.WebModule
                 .AddUserStore<CoreUserStore<U>>()
                 .AddRoleStore<CoreRoleStore<R>>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IUserClaimsPrincipalFactory<U>, ClaimsPrincipalFactory<U, R>>();
 
             services.AddTransient<IUserProvider, UserProvider<U>>();
 

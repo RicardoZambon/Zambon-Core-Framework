@@ -1,5 +1,4 @@
 ﻿using Zambon.Core.Database;
-using Zambon.Core.Database.Helper;
 using Zambon.Core.Module.Expressions;
 using Zambon.Core.Module.Services;
 using System;
@@ -8,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text;
+using Zambon.Core.Database.ExtensionMethods;
 
 namespace Zambon.Core.Module.Validations
 {

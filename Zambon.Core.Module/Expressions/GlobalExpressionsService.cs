@@ -1,5 +1,5 @@
 ﻿using Zambon.Core.Database.Entity;
-using Zambon.Core.Database.Helper;
+using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Services;
 using System;
 using System.Collections.Generic;
@@ -93,7 +93,7 @@ namespace Zambon.Core.Module.Expressions
         {
             return (IEnumerable<IExpression>)typeof(GlobalExpressionsService).GetMethods().FirstOrDefault(x => x.Name == "GetApplicableExpressionsItems" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(_obj.GetType()).Invoke(this, new[] { expressions, _obj });
         }
-        public IEnumerable<IExpression> GetApplicableExpressionsItems<T>(IExpression[] expressions, T _obj) where T : IDBObject
+        public IEnumerable<IExpression> GetApplicableExpressionsItems<T>(IExpression[] expressions, T _obj) where T : class
         {
             var check = (new[] { _obj }).AsQueryable();
             return expressions.Where(x =>

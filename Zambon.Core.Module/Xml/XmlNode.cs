@@ -9,7 +9,7 @@ namespace Zambon.Core.Module.Xml
     public class XmlNode : IMergeable, ICloneable
     {
 
-        internal virtual void OnLoading(Application app, CoreContext ctx)
+        internal virtual void OnLoading(Application app, CoreDbContext ctx)
         {
             var properties = GetType().GetProperties();
             for(var p = 0; p < properties.Length; p++)

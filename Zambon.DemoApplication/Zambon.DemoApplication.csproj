@@ -67,9 +67,5 @@
     <ProjectReference Include="..\Zambon.Core.Security\Zambon.Core.Security.csproj" />
     <ProjectReference Include="..\Zambon.Core.WebModule\Zambon.Core.WebModule.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
   
 </Project>

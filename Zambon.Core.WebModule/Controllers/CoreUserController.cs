@@ -15,7 +15,7 @@ namespace Zambon.Core.WebModule.Controllers
     {
         private readonly CoreUserManager<U> _coreUserManager;
 
-        public CoreUserController(CoreContext ctx, CoreUserManager<U> coreUserManager, ApplicationService app) : base(ctx, app)
+        public CoreUserController(CoreDbContext ctx, CoreUserManager<U> coreUserManager, ApplicationService app) : base(ctx, app)
         {
             _coreUserManager = coreUserManager;
         }

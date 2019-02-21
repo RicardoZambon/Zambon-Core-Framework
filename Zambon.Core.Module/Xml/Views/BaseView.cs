@@ -32,7 +32,7 @@ namespace Zambon.Core.Module.Xml.Views
 
         #region Methods
 
-        internal override void OnLoading(Application app, CoreContext ctx) //protected virtual void LoadView(Application app)
+        internal override void OnLoading(Application app, CoreDbContext ctx) //protected virtual void LoadView(Application app)
         {
             Entity = app.EntityTypes.Entities.FirstOrDefault(x => x.Id == Type);
 

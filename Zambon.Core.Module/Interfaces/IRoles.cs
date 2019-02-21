@@ -6,10 +6,11 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Zambon.Core.Database.Cache.ChangeTracker;
+using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Module.Interfaces
 {
-    public interface IRoles : ITrackableEntity
+    public interface IRoles : IDBObject
     {
 
         #region Properties

@@ -30,6 +30,11 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Projects\RicardoZambon\ZambonCoreFramework\Zambon.Core.Database\Zambon.Core.Database.xml</DocumentationFile>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>

@@ -22,8 +22,6 @@ namespace Zambon.DemoApplication.BusinessObjects
         public override void ConfigureEntity(EntityTypeBuilder entity)
         {
             base.ConfigureEntity(entity);
-
-            entity.has
         }
 
     }

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Zambon.Core.Database;
-using Zambon.Core.Database.Operations;
+using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Security.Identity
 {
-    public class CoreUserStore<TUser> : /*ICoreUserStore<TUser>,*/ IUserPasswordStore<TUser>, IQueryableUserStore<TUser> where TUser : class, IUsers
+    public class CoreUserStore<TUser> : ICoreUserStore<TUser>, IUserPasswordStore<TUser>, IQueryableUserStore<TUser> where TUser : class, IUsers
     {
-        private readonly CoreContext _ctx;
+        private readonly CoreDbContext _ctx;
 
-        public CoreUserStore(CoreContext ctx)
+        public CoreUserStore(CoreDbContext ctx)
         {
             _ctx = ctx;
         }
