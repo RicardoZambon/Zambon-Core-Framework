@@ -4,6 +4,156 @@
         <name>Zambon.Core.Database</name>
     </assembly>
     <members>
+        <member name="T:Zambon.Core.Database.ChangeTracker.CoreChangeTracker">
+            <summary>
+            Custom ChangeTracker used to track instances of all objects before actually saving in database.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.CoreChangeTracker.#ctor(Microsoft.Extensions.Caching.Distributed.IDistributedCache,Zambon.Core.Database.ChangeTracker.Services.IInstanceKeyService)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="_cache">Service for accessing the distributed cache.</param>
+            <param name="_instanceKeyService">Serviceo for accessing the instance key.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.CoreChangeTracker.LoadObjects(Microsoft.EntityFrameworkCore.DbContext)">
+            <summary>
+            Read all objects in database and loads them into the EF DbContext.
+            </summary>
+            <param name="ctx"></param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.CoreChangeTracker.Add``1(Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry{``0},System.Boolean)">
+            <summary>
+            Add an object into the ChangeTracker.
+            </summary>
+            <typeparam name="T">Must be a ITrackableEntity</typeparam>
+            <param name="entry">The object instance.</param>
+            <param name="saveToTemp">Should save in temporary edited objects or already applied changes.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.CoreChangeTracker.Remove(System.String,System.Int32,System.Boolean)">
+            <summary>
+            Removes an object from ChangeTracker
+            </summary>
+            <param name="modelType">The ModelType of the entity as string.</param>
+            <param name="entityId">The object ID of the entity.</param>
+            <param name="onlyFromTemp">Removes only from temp store or from both.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.CoreChangeTracker.Clear(System.Boolean,System.Boolean,System.String,System.Boolean)">
+            <summary>
+            Clears the stored entities in distributed cache.
+            </summary>
+            <param name="clearStored">If should clear the stored entities with changes already applyed.</param>
+            <param name="clearTemp">If should clear the temp stored entities.</param>
+            <param name="tempModelType">Filters the temp model to clean only this same type.</param>
+            <param name="forceClear">Force to clean all entities in temp.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.CoreChangeTracker.SaveObjects``1(Microsoft.EntityFrameworkCore.DbContext,``0)">
+            <summary>
+            Saves all changes made in this context to the database.
+            </summary>
+            <typeparam name="T">The type of the entity.</typeparam>
+            <param name="ctx">The DbContext instance.</param>
+            <param name="entity">The entity to be saved.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.ChangeTracker.InstanceKey">
+            <summary>
+            Represent the user key used to access the stored objects in database change tracker cache.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.ChangeTracker.InstanceKey.DatabaseKey">
+            <summary>
+            Guid unique to each user.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.ChangeTracker.InstanceKey.CurrentUserId">
+            <summary>
+            Current user ID.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.InstanceKey.#ctor(System.Guid,System.Int32)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="databaseKey">Guid unique to each user.</param>
+            <param name="currentUserId">Current user ID.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.InstanceKey.GetHashCode">
+            <summary>
+            Returns the hash code for this string.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.InstanceKey.Equals(System.Object)">
+            <summary>
+            Returns a value indicating whether this instance and a specified System.Guid object represent the same value.
+            </summary>
+            <param name="obj">An object to compare to this instance.</param>
+            <returns>true if g is equal to this instance; otherwise, false.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.InstanceKey.ToString">
+            <summary>
+            Returns a string representation of the value of this instance in registry format.
+            </summary>
+            <returns>The value of this System.Guid plus the current user ID, formatted by using the format specifier as follows: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_####.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.ChangeTracker.Services.IInstanceKeyService">
+            <summary>
+            Service used to store and retrive the instance key in user's session.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.Services.IInstanceKeyService.StoreKey(System.Guid)">
+            <summary>
+            Stores the key in user current session.
+            </summary>
+            <param name="databaseInstanceKey">Guid key unique to the user.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.Services.IInstanceKeyService.RetrieveKey">
+            <summary>
+            Retrieves the current user instance key.
+            </summary>
+            <returns>Returns an object of type InstanceKey.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.ChangeTracker.StoreKey">
+            <summary>
+            Represents the key for each object save in custom ChangeTracker.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.ChangeTracker.StoreKey.ModelType">
+            <summary>
+            The ModelType of the entity as string.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.ChangeTracker.StoreKey.EntityId">
+            <summary>
+            The ID of the entity as integer.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.StoreKey.#ctor(System.String,System.Int32)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="modelType">The ModelType of the entity as string.</param>
+            <param name="entityId">The ID of the entity as integer.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.StoreKey.GetHashCode">
+            <summary>
+            Returns the hash code for this string.
+            </summary>
+            <returns>A 32-bit signed integer hash code.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.StoreKey.Equals(System.Object)">
+            <summary>
+            Returns a value indicating whether this instance and a specified System.Guid object represent the same value.
+            </summary>
+            <param name="obj">An object to compare to this instance.</param>
+            <returns>true if g is equal to this instance; otherwise, false.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ChangeTracker.StoreKey.ToString">
+            <summary>
+            Returns a string representation of the value of this instance in registry format.
+            </summary>
+            <returns>The value of this System.Guid plus the current user ID, formatted by using the format specifier as follows: xxxx_####.</returns>
+        </member>
         <member name="T:Zambon.Core.Database.CoreDbContext">
             <summary>
             A DbContext instance represents a session with the database and can be used to query and save instances of your entities. DbContext is a combination of the Unit Of Work and Repository patterns.
@@ -169,7 +319,7 @@
         </member>
         <member name="T:Zambon.Core.Database.ExtensionMethods.AssemblyExtension">
             <summary>
-            Helper extension to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
+            Extension methods to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
             </summary>
         </member>
         <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetTypesByInterface``1(System.Reflection.Assembly)">
@@ -230,6 +380,39 @@
             <param name="modalEntity">The instance returned from the action.</param>
             <param name="formKeys">List of user informed fields.</param>
             <returns>Returns the merged entity.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.ExtensionMethods.SerializationExtensionMethods">
+            <summary>
+            Extension methods to serialize and deserialize objects from array of bytes.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.SerializationExtensionMethods.DeserializeStoreKeys(System.Byte[])">
+            <summary>
+            Deserialize an array of stored keys.
+            </summary>
+            <param name="bytes">The bytes array to deserialize.</param>
+            <returns>Returns an array of StoreKey.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.SerializationExtensionMethods.SerializeStoreKeys(Zambon.Core.Database.ChangeTracker.StoreKey[])">
+            <summary>
+            Serialize an array of stored keys.
+            </summary>
+            <param name="keys">The StoreKey array to serialize.</param>
+            <returns>Returns an array of bytes.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.SerializationExtensionMethods.DeserializeStoredObject(System.Byte[])">
+            <summary>
+            Deserialize a dictionary of the object's changed properties.
+            </summary>
+            <param name="bytes">The bytes array to deserialize.</param>
+            <returns>Returns a dictionary of string (property name) and object (value).</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.ExtensionMethods.SerializationExtensionMethods.SerializeStoredObject(System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Serialize a dictionary of the object's changed properties.
+            </summary>
+            <param name="dictionary">The dictionary to serialize.</param>
+            <returns>Returns an array of bytes.</returns>
         </member>
         <member name="T:Zambon.Core.Database.ExtensionMethods.TypeExtension">
             <summary>
@@ -303,9 +486,19 @@
             Represents database classes with int primary key.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Database.Interfaces.IKeyed.ID">
+            <summary>
+            Primary key of the entity
+            </summary>
+        </member>
         <member name="T:Zambon.Core.Database.Interfaces.IQuery">
             <summary>
             Represents an object that can be used to configure a given query type in the model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Interfaces.ITrackableEntity">
+            <summary>
+            Represents database trackable classes.
             </summary>
         </member>
     </members>

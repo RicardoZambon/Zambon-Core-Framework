@@ -37,7 +37,7 @@ namespace Zambon.DemoApplication.Database
         {
             var passwordHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Users>();
 
-            var admin = new Users() { ID = 1, AuthenticationType = Core.Module.Helper.Enums.AuthenticationType.UsernamePassword, Username = "admin", LogonAllowed = true };
+            var admin = new Users() { ID = 1, AuthenticationType = Core.Module.Helper.Enums.AuthenticationType.UserPassword, Username = "admin", LogonAllowed = true };
             admin.Password = passwordHasher.HashPassword(admin, "admin");
             modelBuilder.Entity<Users>().HasData(admin);
 

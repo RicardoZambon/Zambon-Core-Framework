@@ -48,7 +48,7 @@ namespace Zambon.Core.Security.BusinessObjects
         public DateTime CreatedOn { get; set; }
 
         [Display(Name = "Last activity on")]
-        public DateTime LastActivityOn { get; set; }
+        public DateTime? LastActivityOn { get; set; }
 
         [Display(Name = "User is administrator")]
         public bool IsAdministrator { get { return Roles?.Any(r => r.Role?.IsAdministrative ?? false) ?? false; } }

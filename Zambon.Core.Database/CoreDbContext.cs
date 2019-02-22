@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
-using Zambon.Core.Database.Cache.ChangeTracker;
+using Zambon.Core.Database.ChangeTracker;
 using Zambon.Core.Database.Entity;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;

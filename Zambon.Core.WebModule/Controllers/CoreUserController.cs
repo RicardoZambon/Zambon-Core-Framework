@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using Zambon.Core.Database;
 using Zambon.Core.Module.Services;
@@ -62,19 +63,32 @@ namespace Zambon.Core.WebModule.Controllers
 
         protected override async void ActionSave(BaseView view, U entity)
         {
-            if (entity.AuthenticationType == Module.Helper.Enums.AuthenticationType.UsernamePassword)
+            if (entity.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
             {
                 if (entity.ID <= 0)
-                    await _coreUserManager.CreateAsync(entity, entity.Password);
+                {
+                    var resultNew = await _coreUserManager.CreateAsync(entity, entity.Password);
+                    if (!resultNew.Succeeded)
+                        foreach (var error in resultNew.Errors)
+                            ModelState.AddModelError("", error.Description);
+                }
                 else
                 {
                     if (!string.IsNullOrWhiteSpace(entity.Password))
                     {
                         var token = _coreUserManager.GeneratePasswordResetTokenAsync(entity);
-                        await _coreUserManager.ResetPasswordAsync(entity, token.Result, entity.Password);
+                        var resultPassword = await _coreUserManager.ResetPasswordAsync(entity, token.Result, entity.Password);
+                        if (!resultPassword.Succeeded)
+                            foreach (var error in resultPassword.Errors)
+                                ModelState.AddModelError("", error.Description);
                     }
                     else
-                        await _coreUserManager.UpdateAsync(entity);
+                    {
+                        var resultUpdate = await _coreUserManager.UpdateAsync(entity);
+                        if (!resultUpdate.Succeeded)
+                            foreach (var error in resultUpdate.Errors)
+                                ModelState.AddModelError("", error.Description);
+                    }
                 }
             }
             else

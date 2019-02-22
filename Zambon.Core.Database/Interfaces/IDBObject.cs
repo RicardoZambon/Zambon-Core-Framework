@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents base database classes.
     /// </summary>
-    public interface IDBObject : IEntity, IKeyed, ICustomValidated
+    public interface IDBObject : IEntity, IKeyed, ITrackableEntity, ICustomValidated
     {
         /// <summary>
         /// Executed whether the object is being deleted.

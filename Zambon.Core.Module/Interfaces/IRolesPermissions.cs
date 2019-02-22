@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Zambon.Core.Database.Cache.ChangeTracker;
-using Zambon.Core.Database.Interfaces;
+﻿using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Helper;
 
 namespace Zambon.Core.Module.Interfaces

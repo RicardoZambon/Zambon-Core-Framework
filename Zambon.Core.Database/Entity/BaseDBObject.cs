@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Zambon.Core.Database.Cache.ChangeTracker;
 using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Database.Entity

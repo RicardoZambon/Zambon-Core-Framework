@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Zambon.Core.Database.Cache.ChangeTracker;
-using Zambon.Core.Database.Cache.Services;
-using Zambon.Core.Module.Services;
+using Zambon.Core.Database.ChangeTracker;
+using Zambon.Core.Database.ChangeTracker.Services;
 
 namespace Zambon.Core.WebModule.Services
 {
@@ -28,7 +24,7 @@ namespace Zambon.Core.WebModule.Services
             else
                 StoreKey(databaseKey);
 
-            var userId = Convert.ToInt32(httpContextAccessor.HttpContext?.User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+            var userId = Convert.ToInt32(httpContextAccessor.HttpContext?.User.FindFirst("ID").Value);
             return new InstanceKey(databaseKey, userId);
         }
 

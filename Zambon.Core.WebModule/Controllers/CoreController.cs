@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zambon.Core.Database;
-using Zambon.Core.Database.Cache.ChangeTracker;
-using Zambon.Core.Database.Entity;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Helper;
@@ -19,7 +17,7 @@ using Zambon.Core.WebModule.Helper;
 
 namespace Zambon.Core.WebModule.Controllers
 {
-    public abstract class CoreController<T> : Controller where T : class, IEntity, IKeyed, new()
+    public abstract class CoreController<T> : Controller where T : class, IEntity, ITrackableEntity, new()
     {
 
         protected readonly CoreDbContext _ctx;
@@ -259,12 +257,15 @@ namespace Zambon.Core.WebModule.Controllers
                     var parentView = _app.GetView(viewInfo.ParentViewId);
 
                     ActionSave(parentView, entity);
-                    TempData["CurrentTabId"] = string.Empty;
+                    if (ModelState.IsValid)
+                    {
+                        TempData["CurrentTabId"] = string.Empty;
 
-                    if (parentView is DetailView)
-                        return Ok(GetJsonResult(closeModalId: new [] { viewInfo.ModalId }, submitViewId: new [] { viewInfo.ParentViewId }, submitViewAction: Url.Action("Refresh", parentView.ControllerName)));
-                    else
-                        return Ok(GetJsonResult(GetMessageText("{0}_Saved", view, entity), "alert-success", closeModalId: new [] { viewInfo.ModalId }, submitViewId: new[] { viewInfo.ParentViewId }));
+                        if (parentView is DetailView)
+                            return Ok(GetJsonResult(closeModalId: new[] { viewInfo.ModalId }, submitViewId: new[] { viewInfo.ParentViewId }, submitViewAction: Url.Action("Refresh", parentView.ControllerName)));
+                        else
+                            return Ok(GetJsonResult(GetMessageText("{0}_Saved", view, entity), "alert-success", closeModalId: new[] { viewInfo.ModalId }, submitViewId: new[] { viewInfo.ParentViewId }));
+                    }
                 }
                 catch (Exception ex)
                 {

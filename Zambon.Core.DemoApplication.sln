@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo Application", "Demo Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zambon.DemoApplication", "Zambon.DemoApplication\Zambon.DemoApplication.csproj", "{B7DC89CA-14DB-4692-A26D-F39914238B5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zambon.Core.Database.Cache", "Zambon.Core.Database.Cache\Zambon.Core.Database.Cache.csproj", "{7997318E-B5B1-4A9D-B7B1-AEF1C0EC7A90}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,10 +43,6 @@ Global
 		{B7DC89CA-14DB-4692-A26D-F39914238B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7DC89CA-14DB-4692-A26D-F39914238B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7DC89CA-14DB-4692-A26D-F39914238B5E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7997318E-B5B1-4A9D-B7B1-AEF1C0EC7A90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7997318E-B5B1-4A9D-B7B1-AEF1C0EC7A90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7997318E-B5B1-4A9D-B7B1-AEF1C0EC7A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7997318E-B5B1-4A9D-B7B1-AEF1C0EC7A90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,7 +53,6 @@ Global
 		{B30639CD-B94D-45A3-8A3B-59854468B92E} = {2915DC32-AA14-4701-AF8B-04C7366CFF66}
 		{720DF215-A28C-46A3-955F-6A34E95F2FD3} = {2915DC32-AA14-4701-AF8B-04C7366CFF66}
 		{B7DC89CA-14DB-4692-A26D-F39914238B5E} = {ABB39220-F025-4051-80F6-B9E885076375}
-		{7997318E-B5B1-4A9D-B7B1-AEF1C0EC7A90} = {2915DC32-AA14-4701-AF8B-04C7366CFF66}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {599AB159-3E0C-4960-BC40-BF8B59E7142F}

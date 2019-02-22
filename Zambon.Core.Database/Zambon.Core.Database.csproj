@@ -45,15 +45,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="2.1.2" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Zambon.Core.Database.Cache\Zambon.Core.Database.Cache.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Zambon.Core.Database.ExtensionMethods
 {
     /// <summary>
-    /// Helper extension to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
+    /// Extension methods to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
     /// </summary>
     public static class AssemblyExtension
     {

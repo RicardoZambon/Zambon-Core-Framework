@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Zambon.Core.Module.Helper
@@ -8,7 +9,8 @@ namespace Zambon.Core.Module.Helper
     {
         public enum AuthenticationType
         {
-            UsernamePassword = 0,
+            [Display(Name = "User & Password")]
+            UserPassword = 0,
             LDAP = 1
         }
 

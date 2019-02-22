@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using Zambon.Core.Database.Cache.ChangeTracker;
 using Zambon.Core.Database.Entity;
 using Zambon.Core.Database.Interfaces;
 
@@ -46,25 +45,33 @@ namespace Zambon.Core.Database.ExtensionMethods
             var entity = ctx.Find<T>(id);
             if (entity != null)
             {
-                if (entity.ID > 0)
+                if (entity is ITrackableEntity entityTrackable)
                 {
-                    if (entity is DBObject entityDBObject)
+                    if (entityTrackable.ID > 0)
                     {
-                        entityDBObject.IsDeleted = true;
+                        if (entity is DBObject entityDBObject)
+                        {
+                            entityDBObject.IsDeleted = true;
 
-                        if (_commitChanges)
-                            ctx.SaveChanges(entity);
+                            if (_commitChanges)
+                                ctx.SaveChanges(entityDBObject);
+                            else
+                                ctx.ApplyChanges(entityDBObject);
+                        }
                         else
-                            ctx.ApplyChanges(entity);
+                        {
+                            ctx.Remove(entityTrackable);
+                            ctx.SaveChanges();
+                        }
                     }
                     else
-                    {
-                        ctx.Remove(entity);
-                        ctx.SaveChanges();
-                    }
+                        ctx.RemoveTrackedEntity(entityTrackable);
                 }
                 else
-                    ctx.RemoveTrackedEntity(entity);
+                {
+                    ctx.Remove(entity);
+                    ctx.SaveChanges();
+                }
 
                 return entity;
             }
