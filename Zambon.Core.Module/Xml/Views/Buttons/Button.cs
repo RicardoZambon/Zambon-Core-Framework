@@ -1,38 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Xml.Serialization;
 using Zambon.Core.Database;
 using Zambon.Core.Module.Expressions;
-using Zambon.Core.Module.Operations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views.Buttons
 {
-    public class Button : XmlNode, IExpression, IComparable
+    public class Button : XmlNode, IComparable, IActionParameters, ICondition
     {
 
         [XmlAttribute("Id"), MergeKey]
         public string Id { get; set; }
 
-        [XmlAttribute("IconName")]
-        public string IconName { get; set; }
+        [XmlAttribute("Icon")]
+        public string Icon { get; set; }
 
         [XmlAttribute("DisplayName")]
         public string DisplayName { get; set; }
 
-        [XmlAttribute("ClassName")]
-        public string ClassName { get; set; }
+        [XmlAttribute("CssClass")]
+        public string CssClass { get; set; }
 
-        [XmlAttribute("Index")]
-        public int Index { get; set; }
+        [XmlAttribute("Index"), Browsable(false)]
+        public string IntIndex
+        {
+            get { return Index.ToString(); }
+            set { int.TryParse(value, out int index); Index = index; }
+        }
+        [XmlIgnore]
+        public int? Index { get; set; }
 
         [XmlAttribute("Target")]
         public string Target { get; set; }
-
-        [XmlIgnore]
-        public string[] Targets { get { return Target?.Split(',') ?? new string[0]; } }
 
 
         [XmlAttribute("ControllerName")]
@@ -47,25 +49,28 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
         [XmlAttribute("ActionMethod")]
         public string ActionMethod { get; set; }
 
-        [XmlAttribute("UseFormPost")]
-        public string BoolUseFormPost { get; set; }
+        [XmlAttribute("UseFormPost"), Browsable(false)]
+        public string BoolUseFormPost
+        {
+            get { return UseFormPost?.ToString(); }
+            set { bool.TryParse(value, out bool useFormPost); UseFormPost = useFormPost; }
+        }
         [XmlIgnore]
-        public bool UseFormPost { get { return bool.Parse(BoolUseFormPost?.ToLower() ?? "false"); } }
+        public bool? UseFormPost { get; set; }
+
+        [XmlAttribute("LoadingContainer")]
+        public string LoadingContainer { get; set; }
 
 
         [XmlAttribute("ConfirmMessage")]
         public string ConfirmMessage { get; set; }
 
 
-        [XmlAttribute("ConditionExpression")]
-        public string ConditionExpression { get; set; }
+        [XmlAttribute("Condition")]
+        public string Condition { get; set; }
 
         [XmlAttribute("ConditionArguments")]
         public string ConditionArguments { get; set; }
-
-
-        [XmlAttribute("LoadingContainer")]
-        public string LoadingContainer { get; set; }
 
 
         [XmlAttribute("OpenModal")]
@@ -76,47 +81,40 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
 
 
         [XmlIgnore]
-        public string[] ConditionArgumentsList
-        {
-            get { return (ConditionArguments != null ? ConditionArguments.Split(',') : new string[] { }); }
-        }
+        public Button[] SubButtons { get { return _SubButtons?.Button; } }
 
 
-        [XmlElement("SubButtons")]
-        public Buttons SubButtons { get; set; }
+        [XmlElement("SubButtons"), Browsable(false)]
+        public Buttons _SubButtons { get; set; }
 
-        #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
-        {
-            if (SubButtons != null)
-                SubButtons.OnLoading(app, ctx);
+        [XmlIgnore]
+        public string[] Targets { get { return Target?.Split(',') ?? new string[0]; } }
 
-            base.OnLoading(app, ctx);
-        }
+        [XmlIgnore]
+        public BaseModal Modal { get; set; }
 
-        #endregion
 
         #region Methods
 
         public int CompareTo(object obj)
         {
-            if (obj is Button)
-                return Index.CompareTo(((Button)obj).Index);
+            if (obj is Button objButton)
+                return (Index ?? 0).CompareTo((objButton.Index ?? 0));
             throw new ArgumentException("Object is not a command button.");
         }
 
-        public bool IsApplicable(string _target)
+        public bool IsApplicable(string target)
         {
-            return Targets.Contains(_target);
+            return Targets.Contains(target);
         }
 
-        public bool IsApplicable(string _target, object _obj, GlobalExpressionsService _service)
+        public bool IsApplicable(GlobalExpressionsService service, string target, object obj)
         {
-            if (Targets.Contains(_target))
+            if (IsApplicable(target))
             {
-                if (!string.IsNullOrWhiteSpace(ConditionExpression))
-                    return _service.IsApplicableItem(this, _obj);
+                if (!string.IsNullOrWhiteSpace(Condition))
+                    return service.IsConditionApplicable(this, obj);
                 return true;
             }
             return false;

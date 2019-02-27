@@ -1,50 +1,55 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Module.Operations;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.IO;
+using System.Xml.Serialization;
+using Zambon.Core.Database;
+using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Xml
 {
-    public class XmlNode : IMergeable, ICloneable
+    public abstract class XmlNode : IMergeable, ICloneable
     {
+        [XmlIgnore]
+        private bool IsLoaded { get; set; }
 
-        internal virtual void OnLoading(Application app, CoreDbContext ctx)
+        internal virtual void OnLoadingXml(Application app, CoreDbContext ctx)
         {
+            if (IsLoaded)
+                return;
+
+            IsLoaded = true; 
             var properties = GetType().GetProperties();
-            for(var p = 0; p < properties.Length; p++)
+            for (var p = 0; p < properties.Length; p++)
             {
                 var itemValue = properties[p].GetValue(this);
                 if (itemValue != null)
                 {
-                    if (itemValue is XmlNode)
-                        (itemValue as XmlNode).OnLoading(app, ctx);
-                    else if (itemValue is Array)
+                    if (itemValue is XmlNode itemValueXmlNode)
+                        itemValueXmlNode.OnLoadingXml(app, ctx);
+                    else if (itemValue is XmlNode[] itemArray)
                     {
-                        var itemArray = (object[])itemValue;
-
-                        if (itemArray.Length > 0 && (itemArray[0] is XmlNode))
+                        if (itemArray.Length > 0)
                             for (var a = 0; a < itemArray.Length; a++)
-                                (itemArray[a] as XmlNode).OnLoading(app, ctx);
+                                itemArray[a].OnLoadingXml(app, ctx);
                     }
                 }
             }
         }
 
-        public object Clone()
+        internal virtual void OnLoadingUserModel(Application app, CoreDbContext ctx)
         {
-            var newObject = Activator.CreateInstance(GetType());
 
-            var properties = GetType().GetProperties();
-            for (var p = 0; p < properties.Length; p++)
-            {
-                if (properties[p].SetMethod != null)
-                    properties[p].SetValue(newObject, properties[p].GetValue(this));
-            }
-
-            return newObject;
         }
 
+        public object Clone()
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                var xmlSerializer = new XmlSerializer(GetType());
+                xmlSerializer.Serialize(memoryStream, this);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+                return xmlSerializer.Deserialize(memoryStream);
+            }
+        }
 
     }
 }

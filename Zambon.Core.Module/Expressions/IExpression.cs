@@ -7,7 +7,7 @@ namespace Zambon.Core.Module.Expressions
     public interface IExpression
     {
 
-        string ConditionExpression { get; set; }
+        string Condition { get; set; }
 
         string ConditionArguments { get; set; }
 

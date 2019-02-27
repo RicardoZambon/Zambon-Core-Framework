@@ -10,7 +10,6 @@ using Zambon.Core.Module.Xml.Navigation;
 using Zambon.Core.Module.Xml.Views.ListViews;
 using System.Text.RegularExpressions;
 using Zambon.Core.Module.Xml.Views.DetailViews;
-using Zambon.Core.Module.BusinessObjects;
 using Zambon.Core.Module.Helper;
 using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml;
@@ -126,10 +125,16 @@ namespace Zambon.Core.Module.Services
         }
 
 
+        public string GetDefaultProperty(string clrType)
+        {
+            return Model.FindEntityByClrType(clrType)?.GetDefaultProperty() ?? string.Empty;
+        }
+
         public string GetPropertyDisplayName(string clrType, string propertyName)
         {
-            return Model.FindEntityByClrType(clrType)?.GetProperty(propertyName)?.DisplayName ?? string.Empty;
+            return Model.FindEntityByClrType(clrType)?.GetPropertyDisplayName(propertyName) ?? string.Empty;
         }
+
 
         public string GetStaticText(string _key)
         {
@@ -184,20 +189,16 @@ namespace Zambon.Core.Module.Services
             var list = new List<Menu>();
             if (CurrentUser != null)
             {
-                var subMenus = _subMenus ?? Model.Navigation.Menus;
+                var subMenus = _subMenus ?? Model.Navigation;
                 for (var i = 0; i < subMenus.Count(); i++)
                 {
-                    var menu = (Menu)subMenus[i].Clone();
+                    var menu = subMenus[i];
                     if (subMenus[i].SubMenus?.Length > 0)
                     {
                         var childSubMenus = GetMenus(subMenus[i].SubMenus);
                         if (childSubMenus?.Length > 0)
                         {
                             menu.SubMenus = childSubMenus;
-
-                            //if (menu.ShowBadge)
-                            //    menu.BadgeCount = childSubMenus.FirstOrDefault(x => x.ShowBadge)?.BadgeCount ?? -1;
-
                             list.Add(menu);
                         }
                     }
@@ -206,13 +207,8 @@ namespace Zambon.Core.Module.Services
                         if (list.Count() > 0 && list[list.Count - 1].Type != "Separator")
                             list.Add(menu);
                     }
-                    else if (menu.UserHasAccess(CurrentUser))//, Model.Views))
-                    {
-                        //if (menu.ShowBadge)
-                            //if (menu.Type == "ListView")
-                                //menu.BadgeCount = Model.FindListView(menu.ViewID).GetTotalItems(_ctx, _expression);
+                    else if (menu.UserHasAccess(CurrentUser))
                         list.Add(menu);
-                    }
                 }
             }
             return list.ToArray();

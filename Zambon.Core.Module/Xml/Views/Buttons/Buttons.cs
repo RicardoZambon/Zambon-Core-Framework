@@ -1,10 +1,6 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
 
 namespace Zambon.Core.Module.Xml.Views.Buttons
 {
@@ -16,14 +12,13 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
             if ((Button?.Length ?? 0) > 0)
                 Array.Sort(Button);
 
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
         }
-
 
         #endregion
 

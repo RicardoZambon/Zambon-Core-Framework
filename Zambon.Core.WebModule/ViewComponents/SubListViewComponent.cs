@@ -1,39 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Expressions;
-using Zambon.Core.Module.Services;
-using Zambon.Core.Security;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Zambon.Core.Database;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.WebModule.ViewComponents
 {
     public class SubListViewViewComponent : ViewComponent
     {
 
-        private readonly ApplicationService app;
+        private readonly ApplicationService App;
 
-        private readonly GlobalExpressionsService _expressions;
+        private readonly CoreDbContext Ctx;
 
-
-        public SubListViewViewComponent(ApplicationService _app, GlobalExpressionsService expressions)
+        public SubListViewViewComponent(ApplicationService app, CoreDbContext ctx)
         {
-            app = _app;
-            _expressions = expressions;
+            App = app;
+            Ctx = ctx;
         }
 
-        public IViewComponentResult Invoke(BaseDBObject entity, string property, string subListViewId, string scrollSize = "md")
+        public IViewComponentResult Invoke(object entity, IQueryable property, string subListViewId)//, string scrollSize = "md")
         {
-            var listView = app.GetListView(subListViewId);
+            var listView = App.GetListView(subListViewId);
 
-            listView.SetParameter("scroll-size", scrollSize);
-
-            app.ClearListViewCurrentObject(listView.ViewId);
-            listView.SetItemsCollection(entity, app, property);
-            app.SetListViewCurrentObject(listView.ViewId, entity);
+            App.ClearListViewCurrentObject(listView.ViewId);
+            listView.SetItemsCollection(App, Ctx, property);
+            App.SetListViewCurrentObject(listView.ViewId, entity);
 
             return View(listView);
         }

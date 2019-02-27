@@ -1,8 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace Zambon.Core.Module.Xml.Configuration
 {
@@ -13,7 +9,7 @@ namespace Zambon.Core.Module.Xml.Configuration
         public string DefaultAction { get; set; }
 
         [XmlAttribute("DefaultView")]
-        public string DefaultView { get; set; }
+        public string DefaultView { get; set; }        
 
     }
 }

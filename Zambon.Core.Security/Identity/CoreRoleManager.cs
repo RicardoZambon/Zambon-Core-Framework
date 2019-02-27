@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Zambon.Core.Module.BusinessObjects;
 using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Security.Identity

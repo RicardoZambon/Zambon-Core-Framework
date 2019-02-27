@@ -1,25 +1,30 @@
-﻿using Zambon.Core.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Expressions;
+using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module.ExtensionMethods;
 using Zambon.Core.Module.Helper;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Text;
-using System.Xml.Serialization;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
-    public class LookupView : BaseView
+    public class LookupView : BaseView, ICriteria
     {
 
         [XmlAttribute("Sort")]
         public string Sort { get; set; }
+
+        [XmlAttribute("FromSql")]
+        public string FromSql { get; set; }
 
         [XmlAttribute("Criteria")]
         public string Criteria { get; set; }
@@ -27,39 +32,55 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         [XmlAttribute("CriteriaArguments")]
         public string CriteriaArguments { get; set; }
 
-        [XmlElement("SearchProperties")]
-        public SearchProperties SearchProperties { get; set; }
+        [XmlIgnore]
+        public SearchProperty[] SearchProperties { get { return _SearchProperties?.SearchProperty; } }
 
-        [XmlElement("Columns")]
-        public Columns.Columns Columns { get; set; }
+        [XmlIgnore]
+        public Column[] Columns { get { return _Columns?.Column; } }
+
+
+        [XmlElement("SearchProperties"), Browsable(false)]
+        public SearchPropertiesArray _SearchProperties { get; set; }
+
+        [XmlElement("Columns"), Browsable(false)]
+        public ColumnsArray _Columns { get; set; }
+
+        
+        [XmlIgnore]
+        public SearchOptions SearchOptions { get; private set; }
+
+        [XmlIgnore]
+        public object CurrentObject { get; set; }
+
+        [XmlIgnore]
+        public IQueryable ItemsCollection { get; set; }
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
 
-            if ((SearchProperties?.SearchProperty?.Length ?? 0) > 0)
+            if (string.IsNullOrWhiteSpace(Sort))
+                Sort = Entity.GetDefaultProperty();
+
+            if (string.IsNullOrWhiteSpace(FromSql) && !string.IsNullOrWhiteSpace(Entity.FromSql))
+                FromSql = Entity.FromSql;
+
+            if ((SearchProperties?.Length ?? 0) > 0)
             {
-                Array.Sort(SearchProperties.SearchProperty);
-                for (var s = 0; s < SearchProperties.SearchProperty.Length; s++)
-                {
-                    var property = Entity?.GetProperty(SearchProperties.SearchProperty[s].PropertyName);
-                    if (string.IsNullOrWhiteSpace(SearchProperties.SearchProperty[s].DisplayName))
-                        SearchProperties.SearchProperty[s].DisplayName = property?.DisplayName;
-                    SearchProperties.SearchProperty[s].OnLoading(app, ctx);
-                }
+                Array.Sort(SearchProperties);
+                for (var s = 0; s < SearchProperties.Length; s++)
+                    if (string.IsNullOrWhiteSpace(SearchProperties[s].DisplayName))
+                        SearchProperties[s].DisplayName = Entity?.GetPropertyDisplayName(SearchProperties[s].PropertyName); ;
             }
 
-            if ((Columns?.Column?.Length ?? 0) > 0)
+            if ((Columns?.Length ?? 0) > 0)
             {
-                Array.Sort(Columns.Column);
-                for (var s = 0; s < Columns.Column.Length; s++)
-                {
-                    var property = Entity?.GetProperty(Columns.Column[s].PropertyName);
-                    if (string.IsNullOrWhiteSpace(Columns.Column[s].DisplayName))
-                        Columns.Column[s].DisplayName = property?.DisplayName;
-                }
+                Array.Sort(Columns);
+                for (var s = 0; s < Columns.Length; s++)
+                    if (string.IsNullOrWhiteSpace(Columns[s].DisplayName))
+                        Columns[s].DisplayName = Entity?.GetPropertyDisplayName(Columns[s].PropertyName);
             }
         }
 
@@ -67,22 +88,23 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
         #region Methods
 
-        public void PopulateView(ApplicationService _app, CoreDbContext _ctx, SearchOptions searchOptions = null)
+        public void PopulateView(ApplicationService app, CoreDbContext ctx, SearchOptions searchOptions = null)
         {
-            typeof(LookupView).GetMethods().FirstOrDefault(x => x.Name == "PopulateView" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx, searchOptions });
+            GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(PopulateView) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, searchOptions });
         }
-        public void PopulateView<T>(ApplicationService _app, CoreDbContext _ctx, SearchOptions searchOptions = null) where T : BaseDBObject
+        public void PopulateView<T>(ApplicationService app, CoreDbContext ctx, SearchOptions searchOptions = null) where T : class
         {
-            GC.Collect();
-            _app.SetLookUpViewSearchOptions(ViewId, searchOptions);
-            var list = _ctx.Set<T>().AsQueryable();
+            //Todo: Validate if still needed. GC.Collect();
+            SearchOptions = searchOptions;
+
+            var list = GetItemsList<T>(ctx);
 
             if (!string.IsNullOrWhiteSpace(Criteria))
-                list = list.Where(Criteria, _app.Expressions.FormatExpressionValues(CriteriaArguments.Split(',')));
-
+                list = list.Where(app.Expressions, this);
+            
             if (searchOptions?.HasSearch() ?? false)
             {
-                var searchProperty = Array.Find(SearchProperties.SearchProperty, x => x.PropertyName == searchOptions.SearchProperty);
+                var searchProperty = Array.Find(SearchProperties, x => x.PropertyName == searchOptions.SearchProperty);
                 if (searchProperty != null)
                 {
                     searchOptions.SearchType = searchProperty.SearchType;
@@ -91,54 +113,68 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                 }
             }
 
-            var sort = Sort;
-            if (string.IsNullOrWhiteSpace(Sort))
-                sort = typeof(T).GetDefaultProperty();
+            if (!string.IsNullOrWhiteSpace(Sort))
+                list = list.OrderBy(Sort);
 
-            if (!string.IsNullOrWhiteSpace(sort))
-                list = list.OrderBy(sort);
-
-            _app.ClearLookUpViewCurrentObject(ViewId);
-            _app.SetLookUpViewItemsCollection(ViewId, list);
+            CurrentObject = null;
+            ItemsCollection = list;
         }
 
-        public object GetCellValue(ApplicationService _app, Column column)
+        public object GetCellValue(ApplicationService app, string propertyName)
         {
-            return typeof(LookupView).GetMethod("GetTypedCellValue").MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, column.PropertyName, column.FormatType, column.IsNullValue });
-        }
-        public object GetCellValue(ApplicationService _app, string propertyName)
-        {
-            if (!string.IsNullOrWhiteSpace(propertyName))
+            if (!string.IsNullOrWhiteSpace(propertyName) && (Columns?.Length ?? 0) > 0)
             {
-                if ((Columns?.Column?.Length ?? 0) > 0)
-                {
-                    var column = Array.Find(Columns.Column, x => x.PropertyName == propertyName);
-                    if (column != null)
-                        return GetCellValue(_app, column);
-                }
-                return typeof(LookupView).GetMethod("GetTypedCellValue").MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, propertyName, "", "" });
+                var column = Array.Find(Columns, x => x.PropertyName == propertyName);
+                if (column != null)
+                    return GetCellValue(app, column);
             }
             return null;
         }
-        public object GetTypedCellValue<T>(ApplicationService _app, string propertyName, string formatType = "", string isNullValue = "") where T : BaseDBObject
+        public object GetCellValue(ApplicationService app, Column column)
         {
-            var value = (new[] { (T)_app.GetLookUpViewCurrentObject(ViewId) }).AsQueryable().Select(propertyName).FirstOrDefault();
-            if (value is Enum)
-                return EnumExtension.GetEnumDisplayName(value);
-            else if (value is BaseDBObject valueDBObject)
-            {
-                var defaultProperty = valueDBObject.GetType().GetDefaultProperty();
-                if (string.IsNullOrWhiteSpace(defaultProperty))
-                    defaultProperty = "ID";
+            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column });
+        }
+        public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
+        {
+            object value = (new[] { (T)CurrentObject }).AsQueryable().Select(customProperty ?? column.PropertyName).FirstOrDefault();
 
-                return GetTypedCellValue<T>(_app, propertyName + "." + defaultProperty, formatType, isNullValue);
+            if (value is Enum enumValue)
+                return enumValue.GetEnumDisplayName();
+
+            if (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>())
+            {
+                var valueEntity = app.GetDefaultProperty(value.GetType().FullName);
+                if (!string.IsNullOrWhiteSpace(valueEntity))
+                    value = valueEntity.GetType().GetProperty(valueEntity).GetValue(value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(column.IsNullValue) && value == null)
+                value = column.IsNullValue;
+
+            return !string.IsNullOrWhiteSpace(column.FormatType) ? string.Format(column.FormatType, value ?? "") : value;
+        }
+        
+        private IQueryable<T> GetItemsList<T>(CoreDbContext ctx) where T : class
+        {
+            IQueryable<T> list;
+
+            if (typeof(T).ImplementsInterface<IEntity>())
+            {
+                list = ctx.Set<T>().AsQueryable();
+
+                if (!string.IsNullOrEmpty(FromSql))
+                    list = list.FromSql(FromSql);
+            }
+            else if (typeof(T).ImplementsInterface<IQuery>())
+            {
+                if (!string.IsNullOrWhiteSpace(FromSql))
+                    list = ctx.Set<T>().FromSql(FromSql);
+                else
+                    throw new ApplicationException($"The LookupView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in LookupView or Entity definition.");
             }
             else
-            {
-                if (value is string && value == null && !string.IsNullOrWhiteSpace(isNullValue))
-                    value = isNullValue;
-                return !string.IsNullOrWhiteSpace(formatType) ? string.Format(formatType, value ?? "") : value;
-            }
+                throw new ApplicationException($"The LookupView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
+            return list;
         }
 
         #endregion

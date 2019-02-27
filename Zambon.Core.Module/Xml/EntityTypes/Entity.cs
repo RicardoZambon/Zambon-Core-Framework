@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Interfaces;
-using Zambon.Core.Module.Operations;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
+using Zambon.Core.Database.Entity;
 
 namespace Zambon.Core.Module.Xml.EntityTypes
 {
@@ -36,26 +34,28 @@ namespace Zambon.Core.Module.Xml.EntityTypes
         public string TypeClr { get; set; }
 
         [XmlIgnore]
-        private Type EntityType { get; set; }
+        public Property[] Properties { get { return _Properties?.Property; } }
 
+        [XmlElement("Properties"), Browsable(false)]
+        public Properties _Properties { get; set; }
 
-        [XmlElement("Properties")]
-        public Properties Properties { get; set; }
 
         [XmlIgnore]
+        private IEntityType EntityType { get; set; }
+
+        [XmlIgnore, Browsable(false)]
         public IDictionary<string, Entity> Navigations { get; set; } = new Dictionary<string, Entity>();
+
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
-            var entityType = ctx.Model.GetEntityTypes(TypeClr).FirstOrDefault();
-            if (entityType != null)
+            EntityType = ctx.Model.FindEntityType(TypeClr);
+            if (EntityType != null)
             {
-                EntityType = entityType.ClrType;
-
-                var props = entityType.GetRuntimeProperties();
-                var navs = entityType.GetNavigations();
+                var props = EntityType.GetProperties();
+                var navs = EntityType.GetNavigations();
 
                 var properties = new Property[0];
                 Array.Resize(ref properties, props.Count() + navs.Count(x => x.PropertyInfo != null));
@@ -63,11 +63,11 @@ namespace Zambon.Core.Module.Xml.EntityTypes
                 var pos = 0;
                 foreach (var prop in props)
                 {
-                    properties[pos] = new Property() { Name = prop.Value.Name, DisplayName = prop.Value.GetCustomAttribute<DisplayAttribute>()?.Name ?? prop.Value.Name };
+                    properties[pos] = new Property() { Name = prop.Name, DisplayName = prop.PropertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? prop.Name };
 
-                    if (Properties != null && Properties.Property != null && Properties.Property.Length > 0)
+                    if (Properties != null && Properties.Length > 0)
                     {
-                        var custProperty = Properties.Property.FirstOrDefault(x => x.Name == prop.Value.Name);
+                        var custProperty = Properties.FirstOrDefault(x => x.Name == prop.Name);
                         if (custProperty != null)
                             properties[pos].DisplayName = custProperty.DisplayName;
                     }
@@ -79,9 +79,9 @@ namespace Zambon.Core.Module.Xml.EntityTypes
                     if (nav.PropertyInfo != null)
                     {
                         properties[pos] = new Property() { Name = nav.Name, DisplayName = nav.PropertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? nav.Name };
-                        if (Properties != null && Properties.Property != null && Properties.Property.Length > 0)
+                        if (Properties != null && Properties.Length > 0)
                         {
-                            var custProperty = Properties.Property.FirstOrDefault(x => x.Name == nav.Name);
+                            var custProperty = Properties.FirstOrDefault(x => x.Name == nav.Name);
                             if (custProperty != null)
                                 properties[pos].DisplayName = custProperty.DisplayName;
                         }
@@ -101,34 +101,62 @@ namespace Zambon.Core.Module.Xml.EntityTypes
                 }
 
                 if (Properties == null)
-                    Properties = new Properties() { Property = properties };
+                    _Properties = new Properties() { Property = properties };
                 else
-                    Properties.Property = properties;
+                    _Properties.Property = properties;
             }
             else
-                throw new Exception($"The ClrType \"{TypeClr}\" was not found. Check the application model.");
+                throw new Exception($"The ClrType \"{TypeClr}\" for the Entity \"{Id}\" was not found. Please, check your application model.");
 
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
+        }
+
+        internal override void OnLoadingUserModel(Application app, CoreDbContext ctx)
+        {
+            EntityType = ctx.Model.FindEntityType(TypeClr);
+            if (EntityType != null)
+            {
+                var navs = EntityType.GetNavigations();
+                foreach (var nav in navs)
+                    if (nav.PropertyInfo != null && !Navigations.ContainsKey(nav.Name))
+                    {
+                        var navClrType = nav.ClrType.GenericTypeArguments.Length > 0 ? nav.ClrType.GenericTypeArguments[0] : nav.ClrType;
+                        if (navClrType.IsSubclassOf(typeof(BaseDBObject)))
+                        {
+                            var entity = app.FindEntityByClrType(navClrType.FullName) ?? app.FindEntityById(navClrType.Name);
+                            if (entity != null)
+                                Navigations.Add(nav.Name, entity);
+                        }
+                    }
+            }
+
+            base.OnLoadingUserModel(app, ctx);
         }
 
         #endregion
 
         #region Methods
 
-        public Property GetProperty(string name)
+        public string GetDefaultProperty()
         {
-            if (name.IndexOf(".") >= 0)
+            var defaultProperties = EntityType.ClrType.GetCustomAttributes(typeof(DefaultPropertyAttribute), true);
+            return defaultProperties.Length > 0 ? ((DefaultPropertyAttribute)defaultProperties[0]).Name : null;
+        }
+
+        public string GetPropertyDisplayName(string property)
+        {
+            if (property.IndexOf(".") >= 0)
             {
-                var key = name.Substring(0, name.IndexOf("."));
-                var properties = name.Substring(name.IndexOf(".") + 1, name.Length - name.IndexOf(".") - 1);
-                return Navigations[key].GetProperty(properties);
+                var key = property.Substring(0, property.IndexOf("."));
+                var properties = property.Substring(property.IndexOf(".") + 1, property.Length - property.IndexOf(".") - 1);
+                return Navigations[key].GetPropertyDisplayName(properties);
             }
-            return Properties?.Property?.FirstOrDefault(x => x.Name == name);
+            return Array.Find(Properties, x => x.Name == property)?.DisplayName;
         }
 
         public Type GetEntityType()
         {
-            return EntityType;
+            return EntityType.ClrType;
         }
 
         #endregion

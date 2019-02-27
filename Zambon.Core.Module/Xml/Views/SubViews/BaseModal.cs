@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using Zambon.Core.Module.Operations;
 using Zambon.Core.Module.Xml.Views.ListViews;
 
 namespace Zambon.Core.Module.Xml.Views.SubViews

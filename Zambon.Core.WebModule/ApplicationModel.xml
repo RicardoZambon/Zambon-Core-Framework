@@ -1,13 +1,17 @@
 <Application Name="[Your application name]" Fullname="[Your application description]">
   <EntityTypes>
-    <Entity Id="Users" DisplayName="Users" Icon="oi-people" TypeClr="Zambon.Core.Security.BusinessObjects.Users" />
-    <Entity Id="Roles" DisplayName="Roles" Icon="oi-tags" TypeClr="Zambon.Core.Security.BusinessObjects.Roles" />
-    <Entity Id="RolesUsers" DisplayName="Roles - Users" Icon="" TypeClr="Zambon.Core.Security.BusinessObjects.RolesUsers" />
-    <Entity Id="UsersManagers" DisplayName="Users - Managers / Subordinates" Icon="" TypeClr="Zambon.Core.Security.BusinessObjects.UsersManagers" />
-    <Entity Id="RolesMenuAccesses" DisplayName="Menu Access" Icon="oi-menu" TypeClr="Zambon.Core.Security.BusinessObjects.RolesMenuAccesses" />
-    <Entity Id="RolesPermissions" DisplayName="Access Permissions" Icon="oi-puzzle-piece" TypeClr="Zambon.Core.Security.BusinessObjects.RolesPermissions" />
+    <Entity Id="Users" DisplayName="Users" Icon="oi-people" DefaultController="Users" TypeClr="Zambon.Core.Security.BusinessObjects.Users" />
+    <Entity Id="Roles" DisplayName="Roles" Icon="oi-tags" DefaultController="Roles" TypeClr="Zambon.Core.Security.BusinessObjects.Roles" />
+    <Entity Id="RolesUsers" DisplayName="Roles - Users" TypeClr="Zambon.Core.Security.BusinessObjects.RolesUsers" />
+    <Entity Id="UsersManagers" DisplayName="Users - Managers / Subordinates" TypeClr="Zambon.Core.Security.BusinessObjects.UsersManagers" />
+    <Entity Id="RolesMenuAccesses" DisplayName="Menu Access" Icon="oi-menu" DefaultController="RolesMenuAccesses" TypeClr="Zambon.Core.Security.BusinessObjects.RolesMenuAccesses" />
+    <Entity Id="RolesPermissions" DisplayName="Access Permissions" Icon="oi-puzzle-piece" DefaultController="RolesPermissions" TypeClr="Zambon.Core.Security.BusinessObjects.RolesPermissions" />
   </EntityTypes>
 
+  <Languages>
+    <Language Code="en-us" FlagIcon="en" DisplayName="English" />
+  </Languages>
+  
   <StaticTexts>
     <StaticText Key="Menu_SignIn" Value="Sign In" />
     <StaticText Key="Menu_LogOff" Value="Sign Out" />
@@ -31,19 +35,19 @@
 
     <StaticText Key="Home_Panel1_Title" Value="" />
     <StaticText Key="Home_Panel1_Content" Value="" />
-    <StaticText Key="Home_Panel1_IconName" Value="" />
+    <StaticText Key="Home_Panel1_Icon" Value="" />
     <StaticText Key="Home_Panel1_IconColor" Value="primary" />
     <StaticText Key="Home_Panel1_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
     
     <StaticText Key="Home_Panel2_Title" Value="" />
     <StaticText Key="Home_Panel2_Content" Value="" />
-    <StaticText Key="Home_Panel2_IconName" Value="" />
+    <StaticText Key="Home_Panel2_Icon" Value="" />
     <StaticText Key="Home_Panel2_IconColor" Value="success" />
     <StaticText Key="Home_Panel2_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
     
     <StaticText Key="Home_Panel3_Title" Value="" />
     <StaticText Key="Home_Panel3_Content" Value="" />
-    <StaticText Key="Home_Panel3_IconName" Value="" />
+    <StaticText Key="Home_Panel3_Icon" Value="" />
     <StaticText Key="Home_Panel3_IconColor" Value="warning" />
     <StaticText Key="Home_Panel3_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
 
@@ -88,7 +92,7 @@
   <ModuleConfiguration>
     <LoginDefaults Theme="" />
     <DetailViewDefaults DefaultAction="Save" DefaultView="_Modal" />
-    <ListViewDefaults CanEdit="True" DefaultAction="Edit" ShowPagination="True" PageSize="20" PagesToShow="14" />
+    <ListViewDefaults CanEdit="True" DefaultAction="Edit" DefaultEditModalParameter="objectId=[ID]" ShowPagination="True" PageSize="20" PagesToShow="14" />
   </ModuleConfiguration>
 
   <Navigation>
@@ -103,22 +107,22 @@
   
   <Views>
     <!--Roles-->
-    <DetailView ViewId="DetailView_Roles" ControllerName="Roles" ActionName="Save" Type="Roles">
+    <DetailView ViewId="DetailView_Roles" ActionName="Save" Type="Roles">
       <Buttons>
-        <Button Id="SaveChanges" DisplayName="Save Changes" ClassName="btn-primary" Target="ModalFooter" />
+        <Button Id="SaveChanges" DisplayName="Save Changes" CssClass="btn-primary" Target="ModalFooter" />
       </Buttons>
     </DetailView>
-    <ListView ViewId="ListView_Roles" ControllerName="Roles" ActionName="Edit" Type="Roles">
+    <ListView ViewId="ListView_Roles" ActionName="Edit" Type="Roles">
       <SearchProperties>
         <SearchProperty PropertyName="Name" />
       </SearchProperties>
       <Buttons>
-        <Button Id="New" DisplayName="New role" ClassName="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Roles" />
-        <Button Id="Delete" DisplayName="Delete role" ClassName="text-danger" IconName="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the role?" />
+        <Button Id="New" DisplayName="New role" CssClass="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Roles" />
+        <Button Id="Delete" DisplayName="Delete role" CssClass="text-danger" Icon="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the role?" />
       </Buttons>
       <Columns>
         <Column PropertyName="Name" />
-        <Column PropertyName="IsAdministrative" Index="1" Size="1" RecordClass="text-center" />
+        <Column PropertyName="IsAdministrative" Index="1" Size="1" CssClass="text-center" />
       </Columns>
       <SubViews>
         <DetailView Id="ModalView_Roles" ViewId="DetailView_Roles" Title="Role Information" />
@@ -136,7 +140,7 @@
     <!--Roles X Users-->
     <ListView ViewId="ListView_RolesUsers" CanEdit="False" Type="RolesUsers" Sort="Role.Name" MessageOnEmpty="** NO ROLES FOUND **">
       <Buttons>
-        <Button Id="Delete" DisplayName="Remove role" ClassName="text-danger" IconName="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveRole" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this role?" />
+        <Button Id="Delete" DisplayName="Remove role" CssClass="text-danger" Icon="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveRole" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this role?" />
       </Buttons>
       <Columns>
         <Column PropertyName="Role" />
@@ -144,23 +148,23 @@
     </ListView>
 
     <!--Roles X Menu Accesses-->
-    <DetailView ViewId="DetailView_RolesMenuAccesses" ControllerName="RolesMenuAccesses" ActionName="Save" Type="RolesMenuAccesses">
+    <DetailView ViewId="DetailView_RolesMenuAccesses" ActionName="Save" Type="RolesMenuAccesses">
 
     </DetailView>
 
     <!--Roles X Roles Permissions-->
-    <DetailView ViewId="DetailView_RolesPermissions" ControllerName="RolesPermissions" ActionName="Save" Type="RolesPermissions">
+    <DetailView ViewId="DetailView_RolesPermissions" ActionName="Save" Type="RolesPermissions">
 
     </DetailView>
 
     <!--Users-->
-    <DetailView ViewId="DetailView_Users" ControllerName="Users" ActionName="Save" Type="Users">
+    <DetailView ViewId="DetailView_Users" ActionName="Save" Type="Users">
       <Buttons>
-        <Button Id="NewRole" DisplayName="Link new role" ClassName="btn-primary" Target="ListView_RolesUsers" ActionName="AddRoles" OpenModal="ModalView_Roles" />
-        <Button Id="NewManager" DisplayName="Link new manager" ClassName="btn-primary" Target="ListView_UsersManagers" ActionName="AddManagers" OpenModal="ModalView_Managers" />
-        <Button Id="NewSubordinate" DisplayName="Link new subordinate" ClassName="btn-primary" Target="ListView_UsersSubordinates" ActionName="AddSubordinates" OpenModal="ModalView_Subordinates" />
+        <Button Id="NewRole" DisplayName="Link new role" CssClass="btn-primary" Target="ListView_RolesUsers" ActionName="AddRoles" OpenModal="ModalView_Roles" />
+        <Button Id="NewManager" DisplayName="Link new manager" CssClass="btn-primary" Target="ListView_UsersManagers" ActionName="AddManagers" OpenModal="ModalView_Managers" />
+        <Button Id="NewSubordinate" DisplayName="Link new subordinate" CssClass="btn-primary" Target="ListView_UsersSubordinates" ActionName="AddSubordinates" OpenModal="ModalView_Subordinates" />
 
-        <Button Id="SaveChanges" DisplayName="Save Changes" ClassName="btn-primary" Target="ModalFooter" />
+        <Button Id="SaveChanges" DisplayName="Save Changes" CssClass="btn-primary" Target="ModalFooter" />
       </Buttons>
       <SubViews>
         <LookupView Id="ModalView_Roles" ViewId="LookupView_Roles" Title="Select the roles to add to the user" />
@@ -171,21 +175,21 @@
         <SubListView Id="SubList_UsersSubordinates" ViewId="ListView_UsersSubordinates" ScrollSize="md" />
       </SubViews>
     </DetailView>
-    <ListView ViewId="ListView_Users" ControllerName="Users" ActionName="Edit" Type="Users" Sort="FullName">
+    <ListView ViewId="ListView_Users" Type="Users" Sort="FullName">
       <SearchProperties>
         <SearchProperty PropertyName="FullName" Index="0" />
         <SearchProperty PropertyName="Username" Index="1" />
       </SearchProperties>
       <Buttons>
-        <Button Id="New" DisplayName="New user" ClassName="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Users" />
-        <Button Id="Delete" DisplayName="Delete user" ClassName="text-danger" IconName="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the user?" />
+        <Button Id="New" DisplayName="New user" CssClass="btn-primary" Target="Toolbar" ActionName="New" OpenModal="ModalView_Users" />
+        <Button Id="Delete" DisplayName="Delete user" CssClass="text-danger" Icon="oi-x" Target="Inline" ActionName="Delete" ActionParameters="objectId=[ID]" ConfirmMessage="Do you confirm the exclusion of the user?" />
       </Buttons>
       <Columns>
         <Column PropertyName="AuthenticationType" DisplayName="Authentication" Size="fit" />
         <Column PropertyName="FullName" Index="1" />
         <Column PropertyName="Username" Index="2" Size="5" />
         <Column PropertyName="LogonAllowed" Index="3" Size="fit" />
-        <Column PropertyName="LastActivityOn" Index="4" Size="fit" FormatType="{0:g}" RecordClass="text-center" />
+        <Column PropertyName="LastActivityOn" Index="4" Size="fit" FormatType="{0:g}" CssClass="text-center" />
       </Columns>
       <PaintOptions>
         <PaintOption Id="DisabledUsers" BackColor="table-danger" ForeColor="text-danger" ConditionExpression="NOT LogonAllowed" />
@@ -206,7 +210,7 @@
     <!--Users X Managers-->
     <ListView ViewId="ListView_UsersManagers" CanEdit="False" Type="UsersManagers" Sort="Manager.FullName" Criteria="Manager != null" MessageOnEmpty="** NO MANAGERS FOUND **">
       <Buttons>
-        <Button Id="Delete" DisplayName="Remove manager" ClassName="text-danger" IconName="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveManager" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this manager?" />
+        <Button Id="Delete" DisplayName="Remove manager" CssClass="text-danger" Icon="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveManager" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this manager?" />
       </Buttons>
       <Columns>
         <Column PropertyName="Manager.FullName" />
@@ -217,7 +221,7 @@
     <!--Users X Subordinates-->
     <ListView ViewId="ListView_UsersSubordinates" CanEdit="False" Type="UsersManagers" Sort="Subordinate.FullName" Criteria="Subordinate != null" MessageOnEmpty="** NO SUBORDINATES FOUND **">
       <Buttons>
-        <Button Id="Delete" DisplayName="Remove subordinate" ClassName="text-danger" IconName="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveSubordinate" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this subordinate?" />
+        <Button Id="Delete" DisplayName="Remove subordinate" CssClass="text-danger" Icon="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveSubordinate" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this subordinate?" />
       </Buttons>
       <Columns>
         <Column PropertyName="Subordinate.FullName" />

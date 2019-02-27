@@ -1,14 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Operations;
-using Zambon.Core.Module.Xml;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
+using Zambon.Core.Module.Xml.EntityTypes;
 
 namespace Zambon.Core.Module.Xml.Views
 {
@@ -27,21 +20,38 @@ namespace Zambon.Core.Module.Xml.Views
         [XmlAttribute("Type")]
         public string Type { get; set; }
 
+
         [XmlIgnore]
-        public EntityTypes.Entity Entity { get; private set; }
+        protected Entity Entity { get; set; }
+
+
+        #region Overrides
+
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
+        {
+            Entity = app.FindEntityById(Type);
+            if (Entity != null)
+            {
+                if (string.IsNullOrWhiteSpace(Title))
+                    Title = Entity.DisplayName;
+
+                if (string.IsNullOrWhiteSpace(Icon))
+                    Icon = Entity.Icon;
+            }
+
+            base.OnLoadingXml(app, ctx);
+        }
+
+        internal override void OnLoadingUserModel(Application app, CoreDbContext ctx)
+        {
+            Entity = Array.Find(app.EntityTypes, x => x.Id == Type);
+
+            base.OnLoadingUserModel(app, ctx);
+        }
+
+        #endregion
 
         #region Methods
-
-        internal override void OnLoading(Application app, CoreDbContext ctx) //protected virtual void LoadView(Application app)
-        {
-            Entity = app.EntityTypes.Entities.FirstOrDefault(x => x.Id == Type);
-
-            if (string.IsNullOrWhiteSpace(Title))
-                Title = Entity?.DisplayName;
-
-            if (string.IsNullOrWhiteSpace(Icon))
-                Icon = Entity?.Icon;
-        }
 
         public string GetEntityTypeName()
         {

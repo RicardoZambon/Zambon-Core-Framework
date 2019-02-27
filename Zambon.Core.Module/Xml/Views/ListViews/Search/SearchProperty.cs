@@ -1,5 +1,4 @@
 ﻿using Zambon.Core.Database;
-using Zambon.Core.Module.Operations;
 using Zambon.Core.Module.Xml;
 using System;
 using System.Collections.Generic;
@@ -31,9 +30,9 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
 
             if (SearchType == null)
                 SearchType = "Text";

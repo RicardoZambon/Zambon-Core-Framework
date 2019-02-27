@@ -84,7 +84,7 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
             }
             else
             {
-                output.AddClass(For.RecordClass, HtmlEncoder.Default);
+                output.AddClass(For.CssClass, HtmlEncoder.Default);
 
                 var size = !string.IsNullOrWhiteSpace(For.Size) ? "-" + For.Size : string.Empty;
                 output.AddClass($"col{size}", HtmlEncoder.Default);
@@ -111,7 +111,7 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
                 }
 
                 var wrapper = string.Empty;
-                if (Model.CanEdit && !string.IsNullOrWhiteSpace(Model.ControllerName) && !string.IsNullOrWhiteSpace(Model.ActionName) && !string.IsNullOrWhiteSpace(Model.EditModalId))
+                if ((Model.CanEdit ?? false) && !string.IsNullOrWhiteSpace(Model.ControllerName) && !string.IsNullOrWhiteSpace(Model.ActionName) && !string.IsNullOrWhiteSpace(Model.EditModalId))
                     wrapper = $"<a href=\"{GetLinkAction()}\" class=\"{truncate} {foreColor} {CustomClass}\" " +
                         $"data-ajax=\"true\" data-ajax-method=\"POST\" data-ajax-mode=\"replace\" data-ajax-begin=\"AjaxBegin\" data-ajax-failure=\"AjaxFailure\" data-ajax-success=\"AjaxSuccess\" data-ajax-complete=\"AjaxComplete\" data-ajax-update-loading=\"body\" " +
                         $"data-ajax-update=\"#{Model.EditModalId}_container\" data-ajax-open-modal=\"#{Model.EditModalId}\" {onClick}>{{0}}</a>";

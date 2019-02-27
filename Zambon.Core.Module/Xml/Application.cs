@@ -1,18 +1,16 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Operations;
-using Zambon.Core.Module.Xml.Configuration;
-using Zambon.Core.Module.Xml.Views;
-using Zambon.Core.Module.Xml.Views.DetailViews;
-using Zambon.Core.Module.Xml.Views.ListViews;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
+using Zambon.Core.Module.Xml.Configuration;
+using Zambon.Core.Module.Xml.EntityTypes;
+using Zambon.Core.Module.Xml.Languages;
+using Zambon.Core.Module.Xml.Navigation;
+using Zambon.Core.Module.Xml.StaticTexts;
+using Zambon.Core.Module.Xml.Views.DetailViews;
+using Zambon.Core.Module.Xml.Views.ListViews;
 
 namespace Zambon.Core.Module.Xml
 {
@@ -30,27 +28,43 @@ namespace Zambon.Core.Module.Xml
         public string MenuName { get; set; }
 
 
-        [XmlElement("EntityTypes")]
-        public EntityTypes.EntityTypes EntityTypes { get; set; }
+        [XmlIgnore]
+        public Entity[] EntityTypes { get { return _EntityTypes?.Entities; } }
 
-        [XmlElement("StaticTexts")]
-        public StaticTexts.StaticTexts StaticTexts { get; set; }
+        [XmlIgnore]
+        public Language[] Languages { get { return _Languages?.Languages; } }
+
+        [XmlIgnore]
+        public StaticText[] StaticTexts { get { return _StaticTexts?.Texts; } }
 
         [XmlElement("ModuleConfiguration")]
         public ModuleConfiguration ModuleConfiguration { get; set; }
 
+        [XmlIgnore]
+        public Menu[] Navigation { get { return _Navigation?.Menus; } }
+
         [XmlElement("Views")]
         public Views.Views Views { get; set; }
 
-        [XmlElement("Navigation")]
-        public Navigation.Navigation Navigation { get; set; }
+
+        [XmlElement("EntityTypes"), Browsable(false)]
+        public EntityTypesArray _EntityTypes { get; set; }
+
+        [XmlElement("Languages"), Browsable(false)]
+        public LanguagesArray _Languages { get; set; }
+
+        [XmlElement("StaticTexts"), Browsable(false)]
+        public StaticTextsArray _StaticTexts { get; set; }
+
+        [XmlElement("Navigation"), Browsable(false)]
+        public NavigationArray _Navigation { get; set; }
 
 
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
 
             if (string.IsNullOrWhiteSpace(MenuName))
                 MenuName = Name;
@@ -59,6 +73,37 @@ namespace Zambon.Core.Module.Xml
         #endregion
 
         #region Methods
+
+        public Entity FindEntityById(string Id)
+        {
+            return Array.Find(EntityTypes, x => x.Id == Id);
+        }
+
+        public Entity FindEntityByClrType(string typeClr)
+        {
+            return Array.Find(EntityTypes, x => x.TypeClr == typeClr);
+        }
+
+
+        public Language FindLanguage(string languageCode)
+        {
+            if ((Languages?.Length ?? 0) > 0)
+                return Array.Find(Languages, l => l.Code == languageCode);
+            return null;
+        }
+
+
+        public string GetStaticText(string _key)
+        {
+            if (StaticTexts != null && StaticTexts != null && StaticTexts.Length > 0)
+            {
+                var returnStr = Array.Find(StaticTexts, x => x.Key == _key);
+                if (returnStr != null && !string.IsNullOrWhiteSpace(returnStr.Value))
+                    return Regex.Replace(returnStr.Value, @"\[(.*?)\]", match => { return match.ToString().Replace("[", "<").Replace("]", ">"); });
+            }
+            return string.Empty;
+        }
+
 
         public DetailView FindDetailView(string Id)
         {
@@ -79,27 +124,6 @@ namespace Zambon.Core.Module.Xml
             if ((Views?.LookupViews?.Length ?? 0) > 0)
                 return Array.Find(Views.LookupViews, view => view.ViewId == Id);
             return null;
-        }
-
-
-        public EntityTypes.Entity FindEntityById(string Id)
-        {
-            return EntityTypes.Entities.FirstOrDefault(x => x.Id == Id);
-        }
-        public EntityTypes.Entity FindEntityByClrType(string typeClr)
-        {
-            return EntityTypes.Entities.FirstOrDefault(x => x.TypeClr == typeClr);
-        }
-
-        public string GetStaticText(string _key)
-        {
-            if (StaticTexts != null && StaticTexts.Texts != null && StaticTexts.Texts.Length > 0)
-            {
-                var returnStr = Array.Find(StaticTexts.Texts, x => x.Key == _key);
-                if (returnStr != null && !string.IsNullOrWhiteSpace(returnStr.Value))
-                    return Regex.Replace(returnStr.Value, @"\[(.*?)\]", match => { return match.ToString().Replace("[", "<").Replace("]", ">"); });
-            }
-            return string.Empty;
         }
 
         #endregion

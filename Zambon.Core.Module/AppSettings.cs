@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Zambon.Core.Module
 {
@@ -10,20 +7,35 @@ namespace Zambon.Core.Module
 
         #region Properties
 
-        public Dictionary<string, string> ApplicationConfigs { get; set; }
+        private IDictionary<string, string> ApplicationConfigs { get; set; }
 
 
-        public string EnvironmentTitle { get { return ApplicationConfigs.ContainsKey("EnvironmentTitle") ? ApplicationConfigs["EnvironmentTitle"].ToString() : string.Empty; } }
+        public string[] Languages { get { return Get("Languages")?.ToString()?.Split(";"); } }
 
-        public string FileStorePath { get { return ApplicationConfigs.ContainsKey("FileStorePath") ? ApplicationConfigs["FileStorePath"].ToString() : string.Empty; } }
+        public string EnvironmentTitle { get { return Get("EnvironmentTitle")?.ToString(); } }
 
-        public string DefaultDomainName { get { return ApplicationConfigs.ContainsKey("DefaultDomainName") ? ApplicationConfigs["DefaultDomainName"].ToString() : string.Empty; } }
+        public string FileStorePath { get { return Get("FileStorePath")?.ToString(); } }
 
-        public string ReportsURLServer { get { return ApplicationConfigs.ContainsKey("ReportsURLServer") ? ApplicationConfigs["ReportsURLServer"].ToString() : string.Empty; } }
+        public string DefaultDomainName { get { return Get("DefaultDomainName")?.ToString(); } }
 
-        public string ReportsFolderBasePath { get { return ApplicationConfigs.ContainsKey("ReportsFolderBasePath") ? ApplicationConfigs["ReportsFolderBasePath"].ToString() : string.Empty; } }
+        public string ReportsURLServer { get { return Get("ReportsURLServer")?.ToString(); } }
+
+        public string ReportsFolderBasePath { get { return Get("ReportsFolderBasePath")?.ToString(); } }
 
         #endregion
 
+        #region Methods
+
+        private object Get(string key)
+        {
+            return ApplicationConfigs.ContainsKey(key) ? ApplicationConfigs[key] : null;
+        }
+
+        public void Set(IDictionary<string, string> appSettings)
+        {
+            ApplicationConfigs = appSettings;
+        }
+
+        #endregion
     }
 }

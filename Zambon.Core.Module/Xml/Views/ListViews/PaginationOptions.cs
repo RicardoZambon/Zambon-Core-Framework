@@ -1,35 +1,43 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
     public class PaginationOptions : XmlNode
     {
-        [XmlAttribute("PageSize")]
-        public int PageSize { get; set; }
+        [XmlAttribute("PageSize"), Browsable(false)]
+        public string IntPageSize
+        {
+            get { return PageSize.ToString(); }
+            set { int.TryParse(value, out int pageSize); PageSize = pageSize; }
+        }
+        [XmlIgnore]
+        public int? PageSize { get; set; }
 
-        [XmlAttribute("PagesToShow")]
-        public int PagesToShow { get; set; }
+        [XmlAttribute("PagesToShow"), Browsable(false)]
+        public string IntPagesToShow
+        {
+            get { return PagesToShow?.ToString(); }
+            set { int.TryParse(value, out int pagesToShow); PagesToShow = pagesToShow; }
+        }
+        [XmlIgnore]
+        public int? PagesToShow { get; set; }
 
         [XmlIgnore]
-        public int ActualPage { get; private set; }
+        public int? ActualPage { get; private set; }
 
         [XmlIgnore]
-        public int TotalPages { get; private set; }
+        public int? TotalPages { get; private set; }
 
         [XmlIgnore]
-        public int StartPage { get; private set; }
+        public int? StartPage { get; private set; }
 
         [XmlIgnore]
-        public int EndPage { get; private set; }
+        public int? EndPage { get; private set; }
 
         [XmlIgnore]
-        public int TotalRecords { get; private set; }
+        public int? TotalRecords { get; private set; }
 
         #region Methods
 

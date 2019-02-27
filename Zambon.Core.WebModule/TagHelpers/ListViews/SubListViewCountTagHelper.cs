@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Linq.Dynamic.Core;
+using Zambon.Core.Database;
 
 namespace Zambon.Core.WebModule.TagHelpers.ListViews
 {
@@ -19,8 +20,6 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
         private const string ForAttributeName = "sublistview-count-for";
 
         #region Properties
-
-        public override int Order => 0;
 
         [HtmlAttributeName(ForAttributeName)]
         public string For { get; set; }
@@ -32,18 +31,18 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
         public string Collection { get; set; }
 
 
-        [HtmlAttributeNotBound, ViewContext]
-        public ViewContext ViewContext { get; set; }
-
         protected ApplicationService App { get; }
+
+        protected CoreDbContext Ctx { get; set; }
 
         #endregion
 
         #region Constructors
 
-        public SubListViewCountTagHelper(ApplicationService app)
+        public SubListViewCountTagHelper(ApplicationService app, CoreDbContext ctx)
         {
             App = app;
+            Ctx = ctx;
         }
 
         #endregion
@@ -55,7 +54,8 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
 
             if (App.GetListView(For) is ListView listView)
             {
-                listView.SetItemsCollection(Model, App, Collection);
+                //TODO: Review, maybe we can remove the listview name in string and use direct the object.
+                listView.SetItemsCollection(App, Ctx, Model, Collection);
 
                 var itemsCollection = App.GetListViewItemsCollection(listView.ViewId);
                 output.Content.Append((itemsCollection?.Count() ?? 0).ToString());

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Xml;
 
-namespace Zambon.Core.Module.Operations
+namespace Zambon.Core.Module.ExtensionMethods
 {
-    public static class Merge
+    public static class MergeExtension
     {
 
-        public static TObject MergeObject<TObject>(TObject target, TObject source) where TObject : IMergeable
+        public static TObject MergeObject<TObject>(this TObject target, TObject source) where TObject : class, IMergeable
         {
             var properties = target.GetType().GetProperties();
             for (var i = 0; i < properties.Length; i++)
@@ -19,17 +19,17 @@ namespace Zambon.Core.Module.Operations
                     var targetValue = properties[i].GetValue(target);
                     var sourceValue = properties[i].GetValue(source);
 
-                    if (targetValue is IMergeable)
+                    if (targetValue is IMergeable targetValueMergeable && sourceValue is IMergeable sourceValueMergeable)
                     {
                         if (sourceValue != null)
                         {
-                            targetValue = typeof(Merge).GetMethod("MergeObject").MakeGenericMethod(targetValue.GetType()).Invoke(null, new object[] { targetValue, sourceValue });
+                            targetValue = targetValueMergeable.MergeObject(sourceValueMergeable);
                             properties[i].SetValue(target, targetValue);
                         }
                     }
-                    else if (targetValue is Array)
+                    else if (targetValue != null && targetValue.GetType().IsArray)
                     {
-                        targetValue = typeof(Merge).GetMethod("MergeArray").MakeGenericMethod(targetValue.GetType().GetElementType()).Invoke(null, new object[] { targetValue, sourceValue });
+                        targetValue = typeof(MergeExtension).GetMethod("MergeArray").MakeGenericMethod(targetValue.GetType().GetElementType()).Invoke(null, new object[] { targetValue, sourceValue });
                         properties[i].SetValue(target, targetValue);
                     }
                     else
@@ -42,7 +42,7 @@ namespace Zambon.Core.Module.Operations
             return target;
         }
 
-        public static TObject[] MergeArray<TObject>(TObject[] target, TObject[] source) where TObject : class
+        public static T[] MergeArray<T>(this T[] target, T[] source) where T : class, IMergeable
         {
             if (source != null && source.Length > 0)
             {
@@ -64,7 +64,7 @@ namespace Zambon.Core.Module.Operations
                     var key = string.Empty;
                     var originalLength = target.Length;
 
-                    var newItems = new List<TObject>();
+                    var newItems = new List<T>();
                     for (var s = 0; s < source.Length; s++)
                         newItems.Add(source[s]);
 
@@ -73,7 +73,7 @@ namespace Zambon.Core.Module.Operations
                         var targetItem = target[t];
 
                         if (key == string.Empty)
-                            key = targetItem.GetType().GetProperties().FirstOrDefault(x => x.CustomAttributes.Where(a => a.AttributeType == typeof(MergeKey)).Count() > 0).Name;
+                            key = targetItem.GetType().GetProperties().FirstOrDefault(x => x.CustomAttributes.Where(a => a.AttributeType == typeof(MergeKeyAttribute)).Count() > 0).Name;
 
                         var targetKeyValue = targetItem.GetType().GetProperty(key).GetValue(targetItem);
 
@@ -87,7 +87,8 @@ namespace Zambon.Core.Module.Operations
                             {
                                 s--;
                                 newItems.Remove(sourceItem);
-                                typeof(Merge).GetMethod("MergeObject").MakeGenericMethod(targetItem.GetType()).Invoke(null, new object[] { targetItem, sourceItem });
+                                ((IMergeable)targetItem).MergeObject((IMergeable)sourceItem);
+                                //typeof(MergeExtension).GetMethod("MergeObject").MakeGenericMethod(targetItem.GetType()).Invoke(null, new object[] { targetItem, sourceItem });
                             }
                         }
 

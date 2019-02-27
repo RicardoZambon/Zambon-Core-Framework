@@ -186,7 +186,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             a.InnerHtml.AppendHtml(displayName.RenderBody());
             a.InnerHtml.AppendHtml(displayName.RenderEndTag());
 
-            if (menu.ShowBadge)
+            if (menu.ShowBadge ?? false)
             {
                 var badge = new TagBuilder("span");
                 badge.AddCssClass("badge");
@@ -199,7 +199,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                     a.Attributes.Add("menu-has-badge", menu.ViewID);
                     badgeCount = ((ListView)menu.View).GetItemsCount(Ctx, App);
                 }
-                else if ((menu.SubMenus?.Length ?? 0) > 0 && menu.SubMenus.FirstOrDefault(x => x.ShowBadge) is Menu menuBadge && menuBadge.View is ListView)
+                else if ((menu.SubMenus?.Length ?? 0) > 0 && menu.SubMenus.FirstOrDefault(x => x.ShowBadge ?? false) is Menu menuBadge && menuBadge.View is ListView)
                 {
                     a.Attributes.Add("menu-has-badge", menuBadge.ViewID);
                     badgeCount = ((ListView)menuBadge.View).GetItemsCount(Ctx, App);

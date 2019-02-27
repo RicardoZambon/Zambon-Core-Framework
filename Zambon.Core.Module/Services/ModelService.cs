@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Zambon.Core.Database;
-using Zambon.Core.Module.Operations;
 using Zambon.Core.Module.Xml;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using Zambon.Core.Module.ExtensionMethods;
 
 namespace Zambon.Core.Module.Services
 {
@@ -72,12 +72,12 @@ namespace Zambon.Core.Module.Services
                     var serializer = new XmlSerializer(typeof(Application));
 
                     if (application != null)
-                        application = Merge.MergeObject(application, (Application)serializer.Deserialize(stream));
+                        application = application.MergeObject((Application)serializer.Deserialize(stream));
                     else
                         application = (Application)serializer.Deserialize(stream);
                 }
 
-            application.OnLoading(application, ctx);
+            application.OnLoadingXml(application, ctx);
 
             _Model = application;
         }
@@ -118,13 +118,12 @@ namespace Zambon.Core.Module.Services
 
         public string GetPropertyDisplayName(string typeClr, string name)
         {
-            if ((_Model?.EntityTypes?.Entities?.Length ?? 0) > 0)
+            if ((_Model?.EntityTypes?.Length ?? 0) > 0)
             {
-                //var entity = Array.Find(Model.EntityTypes.Entities, e => e.TypeClr == typeClr);
-                var entity = Array.Find(_Model.EntityTypes.Entities, e => e.Id == typeClr);
-                if ((entity?.Properties?.Property?.Length ?? 0) > 0)
+                var entity = Array.Find(_Model.EntityTypes, e => e.Id == typeClr);
+                if ((entity?.Properties?.Length ?? 0) > 0)
                 {
-                    var property = Array.Find(entity.Properties.Property, p => p.Name == name);
+                    var property = Array.Find(entity.Properties, p => p.Name == name);
                     return property?.DisplayName ?? string.Empty;
                 }
             }

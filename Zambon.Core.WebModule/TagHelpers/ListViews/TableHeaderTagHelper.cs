@@ -59,7 +59,7 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
                 switch(ViewContext.ViewData.Model)
                 {
                     case ListView listView:
-                        if ((listView.Buttons?.Button?.Length ?? 0) > 0 && listView.Buttons.Button.Any(x => x.IsApplicable("Inline")))
+                        if ((listView.Buttons?.Length ?? 0) > 0 && listView.Buttons.Any(x => x.IsApplicable("Inline")))
                             output.Content.AppendHtml("<th scope=\"col\" class=\"col-fit text-center\"><span class=\"oi oi-command\"></span></th>");
                         break;
                     case LookupModal lookupModal:

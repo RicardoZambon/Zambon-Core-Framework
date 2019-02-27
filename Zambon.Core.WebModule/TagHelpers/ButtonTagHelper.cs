@@ -123,10 +123,10 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable("Toolbar", null, Expressions))
+                if (button.IsApplicable("Toolbar"))
                 {
                     var tag = string.Empty;
-                    if ((button.SubButtons?.Button?.Length ?? 0) == 0)
+                    if ((button.SubButtons?.Length ?? 0) == 0)
                         tag = CreateToolbarItem(button);
                     else
                         tag = CreateToolbarParents(button);
@@ -138,17 +138,17 @@ namespace Zambon.Core.WebModule.TagHelpers
         private string CreateToolbarParents(Button button)
         {
             var icon = string.Empty;
-            if (!string.IsNullOrWhiteSpace(button.IconName))
-                icon = $"<span class=\"oi {button.IconName}\"></span>";
+            if (!string.IsNullOrWhiteSpace(button.Icon))
+                icon = $"<span class=\"oi {button.Icon}\"></span>";
 
-            var anchor = $"<a class=\"btn {button.ClassName} dropdown-toggle {ButtonClass}\" data-toggle=\"dropdown\" title=\"{button.DisplayName}\" href>{icon}{(!HideText ? button.DisplayName : string.Empty)}</a>";
-            if ((button.SubButtons?.Button?.Length ?? 0) > 0)
+            var anchor = $"<a class=\"btn {button.CssClass} dropdown-toggle {ButtonClass}\" data-toggle=\"dropdown\" title=\"{button.DisplayName}\" href>{icon}{(!HideText ? button.DisplayName : string.Empty)}</a>";
+            if ((button.SubButtons?.Length ?? 0) > 0)
             {
                 anchor += "<div class=\"dropdown-menu dropdown-menu-right\">{0}</div>";
-                for (var u = 0; u < button.SubButtons.Button.Length; u++)
+                for (var u = 0; u < button.SubButtons.Length; u++)
                 {
-                    if (string.IsNullOrWhiteSpace(button.SubButtons.Button[u].ConditionExpression) || Expressions.IsApplicableItem(button.SubButtons.Button[u], new object()))
-                        anchor = anchor.Replace("{0}", CreateToolbarItem(button.SubButtons.Button[u], true) + "{0}");
+                    if (string.IsNullOrWhiteSpace(button.SubButtons[u].Condition) || Expressions.IsConditionApplicable(button.SubButtons[u]))
+                        anchor = anchor.Replace("{0}", CreateToolbarItem(button.SubButtons[u], true) + "{0}");
                 }
                 anchor = anchor.Replace("{0}", "");
             }
@@ -171,10 +171,10 @@ namespace Zambon.Core.WebModule.TagHelpers
                 ajaxOpenModal = $"data-ajax-mode=\"replace\" data-ajax-update=\"#{button.OpenModal}_container\" data-ajax-open-modal=\"#{button.OpenModal}\"";
 
             var icon = string.Empty;
-            if (!string.IsNullOrWhiteSpace(button.IconName))
-                icon = $"<span class=\"oi {button.IconName} mr-1\"></span>";
+            if (!string.IsNullOrWhiteSpace(button.Icon))
+                icon = $"<span class=\"oi {button.Icon} mr-1\"></span>";
 
-            return $"<a href=\"{GetButtonAction(button)}\" class=\"{(isDropDown ? "dropdown-item" : "btn")} {button.ClassName} {ButtonClass}\" " +
+            return $"<a href=\"{GetButtonAction(button)}\" class=\"{(isDropDown ? "dropdown-item" : "btn")} {button.CssClass} {ButtonClass}\" " +
                 $"data-ajax=\"true\" data-ajax-method=\"POST\" data-ajax-begin=\"AjaxBegin\" data-ajax-failure=\"AjaxFailure\" data-ajax-complete=\"AjaxComplete\" data-ajax-success=\"AjaxSuccess\" " +
                 $"{ajaxLoadingContainer} {ajaxConfirm} {ajaxOpenModal} title=\"{button.DisplayName}\">{icon}{button.DisplayName}</a>";
         }
@@ -191,7 +191,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable("Inline", CurrentObject, Expressions))
+                if (button.IsApplicable(Expressions, "Inline", CurrentObject))
                 {
                     output.Content.AppendHtml(CreateInlineItems(button, For.Length > 1));
                     index++;
@@ -209,7 +209,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                 if (!string.IsNullOrWhiteSpace(button.ConfirmMessage))
                     buttonMethod += $" onclick=\"return confirm('{button.ConfirmMessage}');\"";
             }
-            else if (button.UseFormPost && string.IsNullOrEmpty(button.OpenModal))
+            else if ((button.UseFormPost ?? false) && string.IsNullOrEmpty(button.OpenModal))
             {
                 buttonMethod = $"data-form-post=\"true\"";
 
@@ -231,12 +231,12 @@ namespace Zambon.Core.WebModule.TagHelpers
             }
 
             var icon = string.Empty;
-            if (!string.IsNullOrWhiteSpace(button.IconName))
-                icon = $"<span class=\"oi {button.IconName}\"></span>";
+            if (!string.IsNullOrWhiteSpace(button.Icon))
+                icon = $"<span class=\"oi {button.Icon}\"></span>";
 
             var margin = addMargin ? "mr-1" : "";
 
-            return $"<a href=\"{GetButtonAction(button)}\" class=\"{button.ClassName} {ButtonClass} {margin}\" " +
+            return $"<a href=\"{GetButtonAction(button)}\" class=\"{button.CssClass} {ButtonClass} {margin}\" " +
                 $"{buttonMethod} title=\"{button.DisplayName}\">{icon}{(!HideText ? button.DisplayName : string.Empty)}</a>";
         }
 
@@ -256,15 +256,15 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable("Toolbar", Application.GetDetailViewCurrentObject(CurrentView.ViewId), Expressions))
+                if (button.IsApplicable(Expressions, "Toolbar", Application.GetDetailViewCurrentObject(CurrentView.ViewId)))
                     output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
             }
             
-            if ((CurrentView?.Buttons?.Button?.Length ?? 0) > 0)
-                for (var i = 0; i < CurrentView.Buttons.Button.Length; i++)
+            if ((CurrentView?.Buttons?.Length ?? 0) > 0)
+                for (var i = 0; i < CurrentView.Buttons.Length; i++)
                 {
-                    var button = CurrentView.Buttons.Button[i];
-                    if (button.IsApplicable(Target, CurrentObject, Expressions))
+                    var button = CurrentView.Buttons[i];
+                    if (button.IsApplicable(Expressions, Target, CurrentObject))
                         output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
                 }
         }
@@ -281,7 +281,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                 if (!string.IsNullOrWhiteSpace(button.ConfirmMessage))
                     buttonMethod += $" onclick=\"return confirm('{button.ConfirmMessage}');\"";
             }
-            else if (button.UseFormPost && string.IsNullOrEmpty(button.OpenModal))
+            else if ((button.UseFormPost ?? false) && string.IsNullOrEmpty(button.OpenModal))
             {
                 buttonMethod = $"data-form-post=\"true\"";
                 action = GetButtonAction(button);
@@ -313,10 +313,10 @@ namespace Zambon.Core.WebModule.TagHelpers
             }
 
             var icon = string.Empty;
-            if (!string.IsNullOrWhiteSpace(button.IconName))
-                icon = $"<span class=\"oi mr-1 {button.IconName}\"></span>";
+            if (!string.IsNullOrWhiteSpace(button.Icon))
+                icon = $"<span class=\"oi mr-1 {button.Icon}\"></span>";
 
-            return $"<a href=\"{action}\" class=\"btn text-white btn-sm {button.ClassName}\" {buttonMethod} title=\"{button.DisplayName}\">{icon}{button.DisplayName}</a>"; //ajax-modal-postback=\"true\"
+            return $"<a href=\"{action}\" class=\"btn text-white btn-sm {button.CssClass}\" {buttonMethod} title=\"{button.DisplayName}\">{icon}{button.DisplayName}</a>"; //ajax-modal-postback=\"true\"
         }
 
         #endregion
@@ -326,11 +326,11 @@ namespace Zambon.Core.WebModule.TagHelpers
         private void CustomLocationButtons(TagHelperOutput output)
         {
             var index = 0;
-            var buttons = For ?? CurrentView.Buttons.Button;
+            var buttons = For ?? CurrentView.Buttons;
             for (var i = 0; i < buttons.Length; i++)
             {
                 var button = buttons[i];
-                if (CurrentObject != null && button.IsApplicable(Target, CurrentObject, Expressions))
+                if (CurrentObject != null && button.IsApplicable(Expressions, Target, CurrentObject))
                 {
                     output.Content.AppendHtml(CreateCustomLocationItems(button, index == 0 ? "ml-2" : string.Empty));
                     index++;
@@ -350,7 +350,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                     if (!string.IsNullOrWhiteSpace(button.ConfirmMessage))
                         buttonMethod += $" onclick=\"return confirm('{button.ConfirmMessage}');\"";
                 }
-                else if (button.UseFormPost && string.IsNullOrEmpty(button.OpenModal))
+                else if ((button.UseFormPost ?? false) && string.IsNullOrEmpty(button.OpenModal))
                 {
                     buttonMethod = $"data-form-post=\"true\"";
 
@@ -369,18 +369,18 @@ namespace Zambon.Core.WebModule.TagHelpers
                 }
 
                 var icon = string.Empty;
-                if (!string.IsNullOrWhiteSpace(button.IconName))
-                    icon = $"<span class=\"oi mr-1 {button.IconName}\"></span>";
+                if (!string.IsNullOrWhiteSpace(button.Icon))
+                    icon = $"<span class=\"oi mr-1 {button.Icon}\"></span>";
 
-                return $"<a id=\"{button.Id}\" href=\"{GetButtonAction(button)}\" {buttonMethod} class=\"btn {button.ClassName} {ButtonClass} {customClass} {icon}\" title=\"{button.DisplayName}\">{(!HideText ? button.DisplayName : string.Empty)}</a>";
+                return $"<a id=\"{button.Id}\" href=\"{GetButtonAction(button)}\" {buttonMethod} class=\"btn {button.CssClass} {ButtonClass} {customClass} {icon}\" title=\"{button.DisplayName}\">{(!HideText ? button.DisplayName : string.Empty)}</a>";
             }
             else
             {
                 var icon = string.Empty;
-                if (!string.IsNullOrWhiteSpace(button.IconName))
-                    icon = $"oi {button.IconName}";
+                if (!string.IsNullOrWhiteSpace(button.Icon))
+                    icon = $"oi {button.Icon}";
 
-                return $"<input id=\"{button.Id}\" type=\"submit\" class=\"btn {button.ClassName} {ButtonClass} {customClass} {icon}\" value=\"{(!HideText ? button.DisplayName : string.Empty)}\"></input>";
+                return $"<input id=\"{button.Id}\" type=\"submit\" class=\"btn {button.CssClass} {ButtonClass} {customClass} {icon}\" value=\"{(!HideText ? button.DisplayName : string.Empty)}\"></input>";
             }
         }
 

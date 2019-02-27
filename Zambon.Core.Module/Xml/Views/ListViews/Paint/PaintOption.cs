@@ -1,14 +1,9 @@
-﻿using Zambon.Core.Module.Expressions;
-using Zambon.Core.Module.Operations;
-using Zambon.Core.Module.Xml;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
 {
-    public class PaintOption : XmlNode, IExpression
+    public class PaintOption : XmlNode, ICondition
     {
 
         [XmlAttribute("Id"), MergeKey]
@@ -20,20 +15,15 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
         [XmlAttribute("ForeColor")]
         public string ForeColor { get; set; }
 
-        [XmlAttribute("CustomClass")]
-        public string CustomClass { get; set; }
+        [XmlAttribute("CssClass")]
+        public string CssClass { get; set; }
+
 
         [XmlAttribute("ConditionExpression")]
-        public string ConditionExpression { get; set; }
+        public string Condition { get; set; }
 
         [XmlAttribute("ConditionArguments")]
         public string ConditionArguments { get; set; }
-
-        [XmlIgnore]
-        public string[] ConditionArgumentsList
-        {
-            get { return (ConditionArguments != null ? ConditionArguments.Split(',') : new string[] { }); }
-        }
 
     }
 }

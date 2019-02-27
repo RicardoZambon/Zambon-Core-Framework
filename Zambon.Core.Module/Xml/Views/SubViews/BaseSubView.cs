@@ -1,8 +1,5 @@
-﻿using Zambon.Core.Module.Operations;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using Zambon.Core.Database;
 
 namespace Zambon.Core.Module.Xml.Views.SubViews
 {
@@ -22,16 +19,30 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
         public BaseView View { get; private set; }
 
 
-        #region Methods
+        #region Overrides
 
-        public virtual void LoadView(Application _app)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
             if (this is DetailModal)
-                View = _app.FindDetailView(ViewId);
+                View = app.FindDetailView(ViewId);
             else if (this is LookupModal)
-                View = _app.FindLookupView(ViewId);
+                View = app.FindLookupView(ViewId);
             else if (this is SubListView)
-                View = _app.FindListView(ViewId);
+                View = app.FindListView(ViewId);
+
+            base.OnLoadingXml(app, ctx);
+        }
+
+        internal override void OnLoadingUserModel(Application app, CoreDbContext ctx)
+        {
+            if (this is DetailModal)
+                View = app.FindDetailView(ViewId);
+            else if (this is LookupModal)
+                View = app.FindLookupView(ViewId);
+            else if (this is SubListView)
+                View = app.FindListView(ViewId);
+
+            base.OnLoadingUserModel(app, ctx);
         }
 
         #endregion

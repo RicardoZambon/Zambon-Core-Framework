@@ -1,18 +1,14 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Module.BusinessObjects;
-using Zambon.Core.Module.Operations;
+﻿using System;
+using System.ComponentModel;
+using System.Xml.Serialization;
+using Zambon.Core.Database;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml.Views.DetailViews;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Xml.Navigation
 {
-    public class Menu : XmlNode, IComparable, ICloneable
+    public class Menu : XmlNode, IComparable
     {
 
         [XmlAttribute("Id"), MergeKey]
@@ -24,18 +20,20 @@ namespace Zambon.Core.Module.Xml.Navigation
         [XmlAttribute("Icon")]
         public string Icon { get; set; }
 
-        [XmlAttribute("Index")]
-        public int Index { get; set; }
-
+        [XmlAttribute("Index"), Browsable(false)]
+        public string IntIndex
+        {
+            get { return Index.ToString(); }
+            set { int.TryParse(value, out int index); Index = index; }
+        }
+        [XmlIgnore]
+        public int? Index { get; set; }
 
         [XmlAttribute("Type")]
         public string Type { get; set; }
 
         [XmlAttribute("ViewID")]
         public string ViewID { get; set; }
-
-        [XmlIgnore]
-        public BaseView View { get; private set; }
 
         [XmlAttribute("ControllerName")]
         public string ControllerName { get; set; }
@@ -48,49 +46,69 @@ namespace Zambon.Core.Module.Xml.Navigation
 
         [XmlAttribute("URL")]
         public string URL { get; set; }
-
-
-        [XmlAttribute("ShowBadge")]
-        public string BoolShowBadge { get; set; }
+        
+        [XmlAttribute("ShowBadge"), Browsable(false)]
+        public string BoolShowBadge
+        {
+            get { return ShowBadge?.ToString(); }
+            set { bool.TryParse(value, out bool showBadge); ShowBadge = showBadge; }
+        }
         [XmlIgnore]
-        public bool ShowBadge { get { return bool.Parse(BoolShowBadge?.ToLower() ?? "false"); } }
-
-        [XmlIgnore]
-        public bool IsDropdown { get; set; }
-
+        public bool? ShowBadge { get; set; }
 
         [XmlElement("Menu")]
         public Menu[] SubMenus { get; set; }
 
 
+        [XmlIgnore]
+        public BaseView View { get; private set; }
+
+
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
             if (SubMenus != null && SubMenus.Length > 0)
                 Array.Sort(SubMenus);
 
+            View view = null;
             switch (Type)
             {
                 case "ListView":
-                    View = app.Views.ListViews.FirstOrDefault(x => x.ViewId == ViewID);
+                    view = app.FindListView(ViewID);
                     break;
                 case "DetailView":
-                    View = app.Views.DetailViews.FirstOrDefault(x => x.ViewId == ViewID);
-
+                    view = app.FindDetailView(ViewID);
                     if (string.IsNullOrWhiteSpace(ControllerName))
                         ControllerName = ((DetailView)View).ControllerName;
-
                     break;
             }
 
-            if (string.IsNullOrWhiteSpace(DisplayName))
-                DisplayName = View?.Title;
+            if (view != null)
+            {
+                if (string.IsNullOrWhiteSpace(DisplayName))
+                    DisplayName = View?.Title;
 
-            if (string.IsNullOrWhiteSpace(Icon))
-                Icon = View?.Icon;
+                if (string.IsNullOrWhiteSpace(Icon))
+                    Icon = View?.Icon;
+            }
 
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
+        }
+
+        internal override void OnLoadingUserModel(Application app, CoreDbContext ctx)
+        {
+            switch (Type)
+            {
+                case "ListView":
+                    View = app.FindListView(ViewID);
+                    break;
+                case "DetailView":
+                    View = app.FindDetailView(ViewID);
+                    break;
+            }
+
+            base.OnLoadingUserModel(app, ctx);
         }
 
         #endregion
@@ -99,8 +117,8 @@ namespace Zambon.Core.Module.Xml.Navigation
 
         public int CompareTo(object obj)
         {
-            if (obj is Menu)
-                return Index.CompareTo(((Menu)obj).Index);
+            if (obj is Menu objMenu)
+                return (Index ?? 0).CompareTo(objMenu.Index ?? 0);
             throw new ArgumentException("Object is not a menu.");
         }
 

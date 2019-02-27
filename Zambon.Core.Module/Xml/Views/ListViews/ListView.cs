@@ -1,49 +1,41 @@
-﻿using Zambon.Core.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Expressions;
+using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module.ExtensionMethods;
 using Zambon.Core.Module.Helper;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Configuration;
-using Zambon.Core.Module.Xml.Views.DetailViews;
+using Zambon.Core.Module.Xml.Views.Buttons;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;
 using Zambon.Core.Module.Xml.Views.ListViews.Paint;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
 using Zambon.Core.Module.Xml.Views.SubViews;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Xml.Serialization;
-using Microsoft.EntityFrameworkCore;
-using Zambon.Core.Database.Interfaces;
-using Zambon.Core.Database.ExtensionMethods;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
-    public class ListView : View
+    public class ListView : View, ICriteria
     {
 
-        [XmlAttribute("CanEdit")]
-        public string BoolCanEdit { get; set; }
+        [XmlAttribute("CanEdit"), Browsable(false)]
+        public string BoolCanEdit
+        {
+            get { return CanEdit?.ToString(); }
+            set { bool.TryParse(value, out bool canEdit); CanEdit = canEdit; }
+        }
         [XmlIgnore]
-        public bool CanEdit { get { return bool.Parse(BoolCanEdit?.ToLower() ?? "false"); } }
+        public bool? CanEdit { get; set; }
 
         [XmlAttribute("EditModalId")]
         public string EditModalId { get; set; }
 
-        [XmlAttribute("EditModalParameters")]
-        public string EditModalParameters { get; set; }
-
-
-        [XmlIgnore]
-        public DetailModal EditModal { get; private set; }
-
-        [XmlAttribute("Sort")]
-        public string Sort { get; set; }
 
         [XmlAttribute("Criteria")]
         public string Criteria { get; set; }
@@ -51,35 +43,72 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         [XmlAttribute("CriteriaArguments")]
         public string CriteriaArguments { get; set; }
 
+        [XmlAttribute("FromSql")]
+        public string FromSql { get; set; }
+
+        [XmlAttribute("Sort")]
+        public string Sort { get; set; }
+
+
         [XmlAttribute("MessageOnEmpty")]
         public string MessageOnEmpty { get; set; }
 
-        [XmlElement("SearchProperties")]
-        public SearchProperties SearchProperties { get; set; }
-
-        [XmlElement("Columns")]
-        public Columns.Columns Columns { get; set; }
-
-        [XmlElement("PaintOptions")]
-        public PaintOptions PaintOptions { get; set; }
 
         [XmlAttribute("ShowPagination")]
         public string BoolShowPagination { get; set; }
         [XmlIgnore]
         public bool ShowPagination { get { return bool.Parse(BoolShowPagination?.ToLower() ?? "false"); } }
 
+
+        [XmlAttribute("EditModalParameters")]
+        public string EditModalParameters { get; set; }
+
+
+        [XmlIgnore]
+        public SearchProperty[] SearchProperties { get { return _SearchProperties?.SearchProperty; } }
+
+        [XmlIgnore]
+        public Column[] Columns { get { return _Columns?.Column; } }
+
+        [XmlIgnore]
+        public PaintOption[] PaintOptions { get { return _PaintOptions?.PaintOption; } }
+
         [XmlElement("PaginationOptions")]
         public PaginationOptions PaginationOptions { get; set; }
+
+
+        [XmlElement("SearchProperties"), Browsable(false)]
+        public SearchPropertiesArray _SearchProperties { get; set; }
+
+        [XmlElement("Columns"), Browsable(false)]
+        public ColumnsArray _Columns { get; set; }
+
+        [XmlElement("PaintOptions"), Browsable(false)]
+        public PaintOptionsArray _PaintOptions { get; set; }
 
 
         [XmlIgnore]
         public IDictionary<string, object> CustomParameters { get; private set; } = new Dictionary<string, object>();
 
+        [XmlIgnore]
+        public DetailModal EditModal { get; private set; }
+
+
+        [XmlIgnore]
+        public SearchOptions SearchOptions { get; private set; }
+
+        [XmlIgnore]
+        public object CurrentObject { get; private set; }
+
+        [XmlIgnore]
+        public IQueryable ItemsCollection { get; private set; }
+
+
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
 
             if (string.IsNullOrWhiteSpace(ControllerName))
                 ControllerName = Entity.DefaultController;
@@ -87,36 +116,31 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             if (string.IsNullOrWhiteSpace(ActionName))
                 ActionName = app.ModuleConfiguration.ListViewDefaults.DefaultAction;
 
+            if (string.IsNullOrWhiteSpace(EditModalParameters))
+                EditModalParameters = app.ModuleConfiguration.ListViewDefaults.DefaultEditModalParameter;
+
+            if (string.IsNullOrWhiteSpace(Sort))
+                Sort = Entity.GetDefaultProperty();
+
             if ((SubViews?.DetailViews?.Length ?? 0) > 0)
             {
                 for (var d = 0; d < SubViews.DetailViews.Length; d++)
-                {
                     SubViews.DetailViews[d].ParentViewId = ViewId;
-                    SubViews.DetailViews[d].LoadView(app);
-                }
-
+                    
                 if (string.IsNullOrWhiteSpace(EditModalId))
                     EditModalId = Array.Find(SubViews.DetailViews, x => x.View.Type == Type)?.Id;
-
-                if (string.IsNullOrWhiteSpace(EditModalParameters))
-                    EditModalParameters = "objectId=[ID]";
 
                 EditModal = Array.Find(SubViews.DetailViews, x => x.Id == EditModalId);
             }
 
             if ((SubViews?.LookupViews?.Length ?? 0) > 0)
                 for (var l = 0; l < SubViews.LookupViews.Length; l++)
-                {
                     SubViews.LookupViews[l].ParentViewId = ViewId;
-                    SubViews.LookupViews[l].LoadView(app);
-                }
-
+                 
             if ((SubViews?.SubListViews?.Length ?? 0) > 0)
                 for (var s = 0; s < SubViews.SubListViews.Length; s++)
-                {
                     SubViews.SubListViews[s].ParentViewId = ViewId;
-                    SubViews.SubListViews[s].LoadView(app);
-                }
+            
 
             if (string.IsNullOrWhiteSpace(BoolCanEdit))
                 BoolCanEdit = app.ModuleConfiguration?.ListViewDefaults?.BoolCanEdit;
@@ -124,32 +148,32 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             if (string.IsNullOrWhiteSpace(BoolShowPagination))
                 BoolShowPagination = app.ModuleConfiguration?.ListViewDefaults?.BoolShowPagination;
 
-            if ((SearchProperties?.SearchProperty?.Length ?? 0) > 0)
+            if ((SearchProperties?.Length ?? 0) > 0)
             {
-                Array.Sort(SearchProperties.SearchProperty);
-                for (var s = 0; s < SearchProperties.SearchProperty.Length; s++)
+                Array.Sort(SearchProperties);
+                for (var s = 0; s < SearchProperties.Length; s++)
                 {
-                    var property = Entity?.GetProperty(SearchProperties.SearchProperty[s].PropertyName);
-                    if (string.IsNullOrWhiteSpace(SearchProperties.SearchProperty[s].DisplayName))
-                        SearchProperties.SearchProperty[s].DisplayName = property?.DisplayName;
-                    SearchProperties.SearchProperty[s].OnLoading(app, ctx);
+                    var property = Entity?.GetPropertyDisplayName(SearchProperties[s].PropertyName);
+                    if (string.IsNullOrWhiteSpace(SearchProperties[s].DisplayName))
+                        SearchProperties[s].DisplayName = property;
+                    SearchProperties[s].OnLoadingXml(app, ctx);
                 }
             }
 
-            if ((Buttons?.Button?.Length ?? 0) > 0)
+            if ((Buttons?.Length ?? 0) > 0)
             {
-                for (var b = 0; b < Buttons.Button.Length; b++)
-                    OnLoadingSubButtons(Buttons.Button[b]);
+                for (var b = 0; b < Buttons.Length; b++)
+                    OnLoadingSubButtons(Buttons[b]);
             }
 
-            if ((Columns?.Column?.Length ?? 0) > 0)
+            if ((Columns?.Length ?? 0) > 0)
             {
-                Array.Sort(Columns.Column);
-                for (var s = 0; s < Columns.Column.Length; s++)
+                Array.Sort(Columns);
+                for (var s = 0; s < Columns.Length; s++)
                 {
-                    var property = Entity?.GetProperty(Columns.Column[s].PropertyName);
-                    if (string.IsNullOrWhiteSpace(Columns.Column[s].DisplayName))
-                        Columns.Column[s].DisplayName = property?.DisplayName;
+                    var property = Entity?.GetPropertyDisplayName(Columns[s].PropertyName);
+                    if (string.IsNullOrWhiteSpace(Columns[s].DisplayName))
+                        Columns[s].DisplayName = property;
                 }
             }
 
@@ -157,13 +181,21 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                 PaginationOptions = new PaginationOptions();
 
             if (PaginationOptions.PageSize == 0)
-                PaginationOptions.PageSize = app.ModuleConfiguration.ListViewDefaults.PageSize;
+                PaginationOptions.PageSize = app.ModuleConfiguration.ListViewDefaults.PageSize.Value;
 
             if (PaginationOptions.PagesToShow == 0)
-                PaginationOptions.PagesToShow = app.ModuleConfiguration.ListViewDefaults.PagesToShow;
+                PaginationOptions.PagesToShow = app.ModuleConfiguration.ListViewDefaults.PagesToShow.Value;
         }
 
-        private void OnLoadingSubButtons(Buttons.Button button)
+        internal override void OnLoadingUserModel(Application app, CoreDbContext ctx)
+        {
+            if ((SubViews?.DetailViews?.Length ?? 0) > 0)
+                EditModal = Array.Find(SubViews.DetailViews, x => x.Id == EditModalId);
+
+            base.OnLoadingUserModel(app, ctx);
+        }
+
+        private void OnLoadingSubButtons(Button button)
         {
             if (string.IsNullOrWhiteSpace(button.ControllerName))
                 button.ControllerName = ControllerName;
@@ -179,49 +211,28 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                     button.LoadingContainer = "body";
             }
 
-            if ((button.SubButtons?.Button?.Length ?? 0) > 0)
-                for (var b = 0; b < button.SubButtons.Button.Length; b++)
-                    OnLoadingSubButtons(button.SubButtons.Button[b]);
+            if ((button.SubButtons?.Length ?? 0) > 0)
+                for (var b = 0; b < button.SubButtons.Length; b++)
+                    OnLoadingSubButtons(button.SubButtons[b]);
         }
 
         #endregion
 
         #region Methods
 
-        public DetailModal GetDetailModal(string Id)
+        public void SetCurrentPage(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null)
         {
-            if ((SubViews?.DetailViews?.Length ?? 0) > 0)
-                return Array.Find(SubViews.DetailViews, modal => modal.Id == Id);
-            return null;
+            GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetCurrentPage) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, currentPage, searchOptions });
         }
-
-        public void SetCurrentPage(ApplicationService _app, CoreDbContext _ctx, int _page = 1, SearchOptions searchOptions = null)
+        public void SetCurrentPage<T>(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null) where T : class
         {
-            typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "SetCurrentPage" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx, _page, searchOptions });
-        }
-        public void SetCurrentPage<T>(ApplicationService _app, CoreDbContext _ctx, int _page = 1, SearchOptions searchOptions = null) where T : class
-        {
-            GC.Collect();
-
-            _app.SetListViewSearchOptions(ViewId, searchOptions);
-
-            IQueryable<T> list;
-            if (typeof(T).ImplementsInterface<IEntity>())
-                list = _ctx.Set<T>().AsQueryable();
-            else if (typeof(T).ImplementsInterface<IQuery>())
-                list = _ctx.Query<T>();
-            else
-                throw new ApplicationException($"The ClrType informed in EntityType \"{Type}\" is does not implement IEntity or IQuery interfaces.");
-
-            if (!string.IsNullOrEmpty(Entity.FromSql))
-                list = list.FromSql(Entity.FromSql);
-
-            if (!string.IsNullOrWhiteSpace(Criteria))
-                list = list.Where(Criteria, _app.Expressions.FormatExpressionValues(CriteriaArguments.Split(',')));
+            //Todo: Validate if still needed. GC.Collect();
+            SearchOptions = searchOptions;
+            var list = GetItemsList<T>(ctx, app);
 
             if (searchOptions?.HasSearch() ?? false)
             {
-                var searchProperty = Array.Find(SearchProperties.SearchProperty, x => x.PropertyName == searchOptions.SearchProperty);
+                var searchProperty = Array.Find(SearchProperties, x => x.PropertyName == searchOptions.SearchProperty);
                 if (searchProperty != null)
                 {
                     searchOptions.SearchType = searchProperty.SearchType;
@@ -230,145 +241,127 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                 }
             }
 
-            var sort = Sort;
-            if (string.IsNullOrWhiteSpace(Sort))
-                sort = typeof(T).GetDefaultProperty();
-
-            if (!string.IsNullOrWhiteSpace(sort))
-                list = list.OrderBy(sort);
+            if (!string.IsNullOrWhiteSpace(Sort))
+                list = list.OrderBy(Sort);
 
             if (ShowPagination && PaginationOptions != null)
             {
-                PaginationOptions.ChangePage(_page, list.Count());
-
+                PaginationOptions.ChangePage(currentPage, list.Count());
                 if (list.Count() > PaginationOptions.PageSize)
-                    list = list.Skip(PaginationOptions.PageSize * (PaginationOptions.ActualPage - 1)).Take(PaginationOptions.PageSize);
+                    list = list.Skip((PaginationOptions.PageSize ?? 0) * ((PaginationOptions.ActualPage ?? 0) - 1)).Take(PaginationOptions.PageSize ?? 0);
             }
 
-            _app.ClearListViewCurrentObject(ViewId);
-            _app.SetListViewItemsCollection(ViewId, list);
+            CurrentObject = null;
+            ItemsCollection = list;
         }
 
-
-        public object GetCellValue(ApplicationService _app, Column column)
+        public object GetCellValue(ApplicationService app, string propertyName)
         {
-            return typeof(ListView).GetMethod("GetTypedCellValue").MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, column.PropertyName, column.FormatType, column.IsNullValue });
-        }
-        public object GetCellValue(ApplicationService _app, string propertyName)
-        {
-            if (!string.IsNullOrWhiteSpace(propertyName))
+            if (!string.IsNullOrWhiteSpace(propertyName) && (Columns?.Length ?? 0) > 0)
             {
-                if ((Columns?.Column?.Length ?? 0) > 0)
-                {
-                    var column = Array.Find(Columns.Column, x => x.PropertyName == propertyName);
-                    if (column != null)
-                        return GetCellValue(_app, column);
-                }
-                return typeof(ListView).GetMethod("GetTypedCellValue").MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, propertyName, "", "" });
+                var column = Array.Find(Columns, x => x.PropertyName == propertyName);
+                if (column != null)
+                    return GetCellValue(app, column);
             }
             return null;
         }
-        public object GetTypedCellValue<T>(ApplicationService _app, string propertyName, string formatType = "", string isNullValue = "") where T : class
+        public object GetCellValue(ApplicationService app, Column column)
         {
-            var value = GetObjectValue((new[] { (T)_app.GetListViewCurrentObject(ViewId) }).AsQueryable(), propertyName);
+            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column });
+        }
+        public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
+        {
+            object value = (new[] { (T)CurrentObject }).AsQueryable().Select(customProperty ?? column.PropertyName).FirstOrDefault();
 
-            if (value is Enum)
-                return EnumExtension.GetEnumDisplayName(value);
-            else if (value is BaseDBObject valueDBObject)
-            {
-                var defaultProperty = valueDBObject.GetType().GetDefaultProperty();
-                if (string.IsNullOrWhiteSpace(defaultProperty))
-                    defaultProperty = "ID";
+            if (value is Enum enumValue)
+                return enumValue.GetEnumDisplayName();
 
-                return GetTypedCellValue<T>(_app, propertyName + "." + defaultProperty, formatType, isNullValue);
-            }
-            else
+            if (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>())
             {
-                if (value is string && value == null && !string.IsNullOrWhiteSpace(isNullValue))
-                    value = isNullValue;
-                return !string.IsNullOrWhiteSpace(formatType) ? string.Format(formatType, value ?? "") : value;
+                var valueEntity = app.GetDefaultProperty(value.GetType().FullName);
+                if (!string.IsNullOrWhiteSpace(valueEntity))
+                    value = valueEntity.GetType().GetProperty(valueEntity).GetValue(value);
             }
+
+            if (!string.IsNullOrWhiteSpace(column.IsNullValue) && value == null)
+                value = column.IsNullValue;
+
+            return !string.IsNullOrWhiteSpace(column.FormatType) ? string.Format(column.FormatType, value ?? "") : value;
         }
 
-        private object GetObjectValue(IQueryable query, string propertyName)
+        public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, object entity, string collection)
         {
-            var properties = propertyName.Split(".");
-            var property = properties[0];
-
-            query = query.Where(property + " != null");
-
-            var value = query.Select(property).FirstOrDefault();
-            if (value != null)
-            {
-                if (properties.Length > 1)
-                    return GetObjectValue(query.Select( property, null), string.Join(".", properties, 1, properties.Length - 1));
-                else
-                    return value;
-            }
-            return null;
+            SetItemsCollection(app, ctx, (IQueryable)entity.GetType().GetProperty(collection).GetValue(entity));
         }
-
-        public void SetItemsCollection(BaseDBObject entity, ApplicationService _app, string collection)
+        public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, IQueryable collection)
         {
-            typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "SetItemsCollection" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, entity.GetType().GetProperty(collection).GetValue(entity) });
+            GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetItemsCollection) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, collection });
         }
-        public void SetItemsCollection<T>(ApplicationService _app, ICollection<T> collection) where T : class
+        public void SetItemsCollection<T>(ApplicationService app, CoreDbContext ctx, ICollection<T> collection) where T : class
         {
             IQueryable<T> list = null;
-            if (collection != null)
+
+            if (typeof(T).ImplementsInterface<IEntity>())
             {
                 list = collection.AsQueryable();
 
+                if (!string.IsNullOrEmpty(FromSql))
+                    list = list.FromSql(FromSql);
+
                 if (typeof(T).IsSubclassOf(typeof(DBObject)))
-                {
-                    //var param = System.Linq.Expressions.Expression.Parameter(typeof(T));
-                    //var exp = System.Linq.Expressions.Expression.Equal(System.Linq.Expressions.Expression.Property(param, "IsDeleted"), System.Linq.Expressions.Expression.Constant(false));
-                    //var lambda = System.Linq.Expressions.Expression.Lambda<Func<T, bool>>(exp, param);
-                    //list = list.Where(lambda);
-
                     list = list.Where("!IsDeleted");
-                }
-
-                if (!string.IsNullOrWhiteSpace(Criteria))
-                    list = list.Where(Criteria, _app.Expressions.FormatExpressionValues(CriteriaArguments?.Split(',')) ?? new string[0]);
-
-                var sort = Sort;
-                if (string.IsNullOrWhiteSpace(Sort))
-                    sort = typeof(T).GetDefaultProperty();
-
-                if (!string.IsNullOrWhiteSpace(sort))
-                    list = list.OrderBy(sort);
             }
-            _app.ClearListViewCurrentObject(ViewId);
-            _app.SetListViewItemsCollection(ViewId, list);
+            else if (typeof(T).ImplementsInterface<IQuery>())
+            {
+                if (!string.IsNullOrWhiteSpace(FromSql))
+                    list = ctx.Set<T>().FromSql(FromSql);
+                else
+                    throw new ApplicationException($"The ListView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in ListView or Entity definition.");
+            }
+            else
+                throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
+
+            if (!string.IsNullOrWhiteSpace(Sort))
+                list = list.OrderBy(Sort);
+
+            CurrentObject = null;
+            ItemsCollection = list;
         }
 
-        public int GetItemsCount(CoreDbContext _ctx, ApplicationService _app)
+        public int GetItemsCount(CoreDbContext ctx, ApplicationService app)
         {
-            return (int)typeof(ListView).GetMethods().FirstOrDefault(x => x.Name == "GetItemsCount" && x.GetGenericArguments().Count() == 1).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _ctx, _app });
+            return (int)GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetItemsCount) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { ctx, app });
         }
-        public int GetItemsCount<T>(CoreDbContext _ctx, ApplicationService _app) where T : class
+        public int GetItemsCount<T>(CoreDbContext ctx, ApplicationService app) where T : class
         {
-            var list = _ctx.Set<T>().AsQueryable();
+            return GetItemsList<T>(ctx, app).Count();
+        }
+
+        private IQueryable<T> GetItemsList<T>(CoreDbContext ctx, ApplicationService app) where T : class
+        {
+            IQueryable<T> list;
+
+            if (typeof(T).ImplementsInterface<IEntity>())
+            {
+                list = ctx.Set<T>().AsQueryable();
+
+                if (!string.IsNullOrEmpty(FromSql))
+                    list = list.FromSql(FromSql);
+            }
+            else if (typeof(T).ImplementsInterface<IQuery>())
+            {
+                if (!string.IsNullOrWhiteSpace(FromSql))
+                    list = ctx.Set<T>().FromSql(FromSql);
+                else
+                    throw new ApplicationException($"The ListView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in ListView or Entity definition.");
+            }
+            else
+                throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
 
             if (!string.IsNullOrWhiteSpace(Criteria))
-                list = list.Where(Criteria, _app.Expressions.FormatExpressionValues(CriteriaArguments.Split(',')));
+                list = list.Where(app.Expressions, this);
 
-            return list.Count();
-        }
-
-
-        public void SetParameter(string key, object value)
-        {
-            if (CustomParameters.ContainsKey(key))
-                CustomParameters[key] = value;
-            else
-                CustomParameters.Add(key, value);
-        }
-
-        public void ClearParameters()
-        {
-            CustomParameters.Clear();
+            return list;
         }
 
         #endregion

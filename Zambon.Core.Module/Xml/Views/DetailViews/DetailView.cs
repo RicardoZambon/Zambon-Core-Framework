@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
-using Microsoft.EntityFrameworkCore;
 using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Views.SubViews;
+using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Module.Xml.Views.DetailViews
 {
@@ -28,11 +25,16 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
         [XmlElement("Scripts")]
         public Scripts.Scripts Scripts { get; set; }
 
+
+        [XmlIgnore]
+        public object CurrentObject { get; private set; }
+
+
         #region Overrides
 
-        internal override void OnLoading(Application app, CoreDbContext ctx)
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
-            base.OnLoading(app, ctx);
+            base.OnLoadingXml(app, ctx);
 
             if (string.IsNullOrWhiteSpace(ActionName))
                     ActionName = app.ModuleConfiguration.DetailViewDefaults.DefaultAction;
@@ -42,50 +44,54 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
 
             if ((SubViews?.DetailViews?.Length ?? 0) > 0)
                 for (var d = 0; d < SubViews.DetailViews.Length; d++)
-                {
                     SubViews.DetailViews[d].ParentViewId = ViewId;
-                    SubViews.DetailViews[d].LoadView(app);
-                }
 
             if ((SubViews?.LookupViews?.Length ?? 0) > 0)
                 for (var l = 0; l < SubViews.LookupViews.Length; l++)
-                {
                     SubViews.LookupViews[l].ParentViewId = ViewId;
-                    SubViews.LookupViews[l].LoadView(app);
-                }
 
             if ((SubViews?.SubListViews?.Length ?? 0) > 0)
                 for (var s = 0; s < SubViews.SubListViews.Length; s++)
-                {
                     SubViews.SubListViews[s].ParentViewId = ViewId;
-                    SubViews.SubListViews[s].LoadView(app);
-                }
         }
 
-        public void ActivateInstance(ApplicationService _app, CoreDbContext _ctx)
-        {
-            typeof(DetailView).GetMethods().FirstOrDefault(x => x.Name == "ActivateInstance" && x.GetGenericArguments().Any()).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { _app, _ctx });
-        }
-        public void ActivateInstance<T>(ApplicationService _app, CoreDbContext _ctx) where T : class
-        {
-            object detailObject = null;
+        #endregion
 
-            if (typeof(DBObject).IsAssignableFrom(typeof(T)))
+        #region Methods
+
+        public void ActivateInstance(CoreDbContext ctx)
+        {
+            GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(ActivateInstance) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { ctx });
+        }
+        public void ActivateInstance<T>(CoreDbContext ctx) where T : class
+        {
+            T detailObject = null;
+            if (typeof(T).ImplementsInterface<IEntity>())
             {
-                //Database object
                 if (ViewType?.ToLower() == "single")
                 {
-                    detailObject = _ctx.Set<T>().FirstOrDefault();
+                    if (!string.IsNullOrEmpty(Entity.FromSql))
+                        detailObject = ctx.Set<T>().FromSql(Entity.FromSql).FirstOrDefault();
+                    else
+                        detailObject = ctx.Set<T>().FirstOrDefault();
+
                     if (detailObject == null)
-                        detailObject = _ctx.CreateProxy<T>();
+                        detailObject = ctx.CreateProxy<T>();
                 }
-                else 
-                    detailObject = _ctx.CreateProxy<T>();
+                else
+                    detailObject = ctx.CreateProxy<T>();
+            }
+            else if (typeof(T).ImplementsInterface<IEntity>())
+            {
+                if (!string.IsNullOrEmpty(Entity.FromSql))
+                    detailObject = ctx.Set<T>().FromSql(Entity.FromSql).FirstOrDefault();
+                else
+                    throw new ApplicationException($"The DetailView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in Entity definition.");
             }
             else
-                detailObject = typeof(T).Assembly.CreateInstance(typeof(T).FullName);
+                detailObject = (T)typeof(T).Assembly.CreateInstance(typeof(T).FullName);
 
-            _app.SetDetailViewCurrentObject(ViewId, detailObject);
+            CurrentObject = detailObject;
         }
 
         #endregion

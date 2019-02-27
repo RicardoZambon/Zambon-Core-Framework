@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Principal;
-using Zambon.Core.Module.BusinessObjects;
 using Zambon.Core.WebModule.CustomProviders;
 
 namespace Zambon.Core.WebModule.Controllers

@@ -63,7 +63,7 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
             }
             else
             {
-                output.AddClass(For.RecordClass, HtmlEncoder.Default);
+                output.AddClass(For.CssClass, HtmlEncoder.Default);
 
                 var size = !string.IsNullOrWhiteSpace(For.Size) ? "-" + For.Size : string.Empty;
                 output.AddClass($"col{size}", HtmlEncoder.Default);

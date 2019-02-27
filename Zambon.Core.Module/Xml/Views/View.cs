@@ -1,9 +1,9 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Module.Xml.Views.SubViews;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
+using Zambon.Core.Module.Xml.Views.Buttons;
+using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views
 {
@@ -16,12 +16,30 @@ namespace Zambon.Core.Module.Xml.Views
         [XmlAttribute("ActionName")]
         public string ActionName { get; set; }
 
-        [XmlElement("Buttons")]
-        public Buttons.Buttons Buttons { get; set; }
+        [XmlIgnore]
+        public Button[] Buttons { get { return _Buttons?.Button; } }
 
         [XmlElement("SubViews")]
         public SubViews.SubViews SubViews { get; set; }
 
+
+        [XmlElement("Buttons"), Browsable(false)]
+        public Buttons.Buttons _Buttons { get; set; }
+
+
+        #region Overrides
+
+        internal override void OnLoadingXml(Application app, CoreDbContext ctx)
+        {
+            base.OnLoadingXml(app, ctx);
+
+            if (string.IsNullOrWhiteSpace(ControllerName) && !string.IsNullOrWhiteSpace(Entity.DefaultController))
+                ControllerName = Entity.DefaultController;
+        }
+
+        #endregion
+
+        #region Methods
 
         public BaseSubView GetSubView(string Id)
         {
@@ -35,7 +53,6 @@ namespace Zambon.Core.Module.Xml.Views
             if (view == null && (SubViews?.SubListViews?.Length ?? 0) > 0)
             {
                 view = Array.Find(SubViews.SubListViews, m => m.Id == Id);
-
                 if (view == null)
                     for (var s = 0; s < SubViews.SubListViews.Length; s++)
                     {
@@ -47,6 +64,8 @@ namespace Zambon.Core.Module.Xml.Views
 
             return view;
         }
+
+        #endregion
 
     }
 }

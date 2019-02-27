@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zambon.Core.Database;
-using Zambon.Core.Module.BusinessObjects;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Security.BusinessObjects;

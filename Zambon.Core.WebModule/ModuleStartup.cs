@@ -106,7 +106,7 @@ namespace Zambon.Core.WebModule
         {
             var appSettings = Configuration.GetSection("ApplicationConfigs").AsEnumerable().Where(x => x.Key != "ApplicationConfigs").ToDictionary(x => x.Key.Replace("ApplicationConfigs:", ""), y => y.Value);
 
-            services.Configure<AppSettings>(a => { a.ApplicationConfigs = appSettings; });
+            services.Configure<AppSettings>(a => { a.Set(appSettings); });
 
             if (UseDataProtectionInFileSystem)
                 services.AddDataProtection()
