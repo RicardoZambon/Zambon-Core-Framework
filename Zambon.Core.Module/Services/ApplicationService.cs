@@ -33,7 +33,7 @@ namespace Zambon.Core.Module.Services
 
         private readonly ModelService ModelService;
 
-        public readonly ExpressionsService Expressions;
+        public readonly ExpressionsService ExpressionsService;
 
         private readonly IUserService UserService;
 
@@ -70,12 +70,12 @@ namespace Zambon.Core.Module.Services
 
         #region Constructors
 
-        public ApplicationService(CoreDbContext ctx, ILanguageService languageService, ModelService modelService, ExpressionsService expressions, IUserService userService)
+        public ApplicationService(CoreDbContext ctx, ILanguageService languageService, ModelService modelService, ExpressionsService expressionsService, IUserService userService)
         {
             Ctx = ctx;
             LanguageService = languageService;
             ModelService = modelService;
-            Expressions = expressions;
+            ExpressionsService = expressionsService;
             UserService = userService;
         }
 

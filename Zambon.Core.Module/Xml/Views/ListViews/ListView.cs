@@ -367,7 +367,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                 throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
 
             if (!string.IsNullOrWhiteSpace(Criteria))
-                list = list.Where(app.Expressions, this);
+                list = list.Where(app.ExpressionsService, this);
 
             return list;
         }
