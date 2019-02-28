@@ -24,6 +24,9 @@ namespace Zambon.Core.Module.Xml.Views
         [XmlIgnore]
         protected Entity Entity { get; set; }
 
+        [XmlIgnore]
+        public object CurrentObject { get; protected set; }
+
 
         #region Overrides
 
@@ -62,7 +65,17 @@ namespace Zambon.Core.Module.Xml.Views
         {
             return Entity?.GetEntityType();
         }
-        
+
+        public void SetCurrentObject(object currentObject)
+        {
+            CurrentObject = currentObject;
+        }
+
+        public void ClearCurrentObject()
+        {
+            CurrentObject = null;
+        }
+
         #endregion
 
     }

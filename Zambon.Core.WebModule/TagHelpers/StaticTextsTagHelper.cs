@@ -1,22 +1,15 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using Zambon.Core.Module.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.WebModule.TagHelpers
 {
-    [HtmlTargetElement(Attributes = ForAttributeName)]
+    [HtmlTargetElement(Attributes = "static-text*")]
     public class StaticTextsTagHelper : TagHelper
     {
 
-        private const string ForAttributeName = "static-text*";
-
         #region Properties
-
-        public override int Order => 0;
 
         [HtmlAttributeName("static-text-for")]
         public string For { get; set; }
@@ -24,24 +17,21 @@ namespace Zambon.Core.WebModule.TagHelpers
         [HtmlAttributeName(DictionaryAttributePrefix = "static-text-")]
         public IDictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
-        protected ApplicationService App { get; }
+        protected ApplicationService ApplicationService { get; }
 
         #endregion
 
         #region Constructors
 
-        public StaticTextsTagHelper(ApplicationService _app)
+        public StaticTextsTagHelper(ApplicationService ApplicationService)
         {
-            App = _app;
+            this.ApplicationService = ApplicationService;
         }
 
         #endregion
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (output == null) throw new ArgumentNullException(nameof(output));
-
             if (Attributes.Count() > 0)
                 foreach (var attribute in Attributes.Where(x => !x.Key.StartsWith("replace-")))
                 {
@@ -62,7 +52,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             {
                 var staticValue = GetKeyValue(For);
 
-                var replaceValues = Attributes.Where(x => x.Key.StartsWith("replace-") && !x.Key.Replace("replace-","").Contains("-"));
+                var replaceValues = Attributes.Where(x => x.Key.StartsWith("replace-") && !x.Key.Replace("replace-", "").Contains("-"));
                 if (replaceValues.Count() > 0)
                     foreach (var replace in replaceValues)
                     {
@@ -79,15 +69,17 @@ namespace Zambon.Core.WebModule.TagHelpers
             switch(key)
             {
                 case "AppName":
-                    return App.GetAppName();
+                    return ApplicationService.AppName;
                 case "AppMenuName":
-                    return App.GetAppMenuName();
-                case "AppVersion":
-                    return App.GetAppVersion();
-                case "AppCopyright":
-                    return App.GetAppCopyright();
+                    return ApplicationService.AppMenuName;
+                case "AppFullName":
+                    return ApplicationService.AppFullName;
+                case "Version":
+                    return ApplicationService.Version;
+                case "Copyright":
+                    return ApplicationService.Copyright;
                 default:
-                    return App.GetStaticText(key);
+                    return ApplicationService.GetStaticText(key);
             }
         }
 

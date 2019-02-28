@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Collections;
 using Zambon.Core.Database;
 using Zambon.Core.Module.Services;
 
@@ -18,13 +18,12 @@ namespace Zambon.Core.WebModule.ViewComponents
             Ctx = ctx;
         }
 
-        public IViewComponentResult Invoke(object entity, IQueryable property, string subListViewId)//, string scrollSize = "md")
+        public IViewComponentResult Invoke(object entity, IEnumerable collection, string subListViewId)
         {
             var listView = App.GetListView(subListViewId);
 
-            App.ClearListViewCurrentObject(listView.ViewId);
-            listView.SetItemsCollection(App, Ctx, property);
-            App.SetListViewCurrentObject(listView.ViewId, entity);
+            listView.SetItemsCollection(App, Ctx, collection);
+            listView.SetCurrentObject(entity);
 
             return View(listView);
         }

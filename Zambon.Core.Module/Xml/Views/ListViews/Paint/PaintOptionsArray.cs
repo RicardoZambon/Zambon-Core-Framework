@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Xml.Serialization;
-using Zambon.Core.Module.Expressions;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
 {
@@ -12,17 +12,17 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
 
         #region Methods
 
-        public string GetApplicableBackColor(GlobalExpressionsService service, object obj)
+        public string GetApplicableBackColor(ExpressionsService service, object obj)
         {
             return string.Join(' ', service.GetApplicableItems(PaintOption, obj).Select(x => x.BackColor));
         }
 
-        public string GetApplicableForeColor(GlobalExpressionsService service, object obj)
+        public string GetApplicableForeColor(ExpressionsService service, object obj)
         {
             return string.Join(' ', service.GetApplicableItems(PaintOption, obj).Select(x => x.ForeColor));
         }
 
-        public string GetApplicableCssClass(GlobalExpressionsService service, object obj)
+        public string GetApplicableCssClass(ExpressionsService service, object obj)
         {
             return string.Join(' ', service.GetApplicableItems(PaintOption, obj).Select(x => x.CssClass));
         }

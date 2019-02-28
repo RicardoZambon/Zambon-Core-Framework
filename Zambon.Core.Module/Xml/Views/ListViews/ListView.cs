@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -98,9 +99,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public SearchOptions SearchOptions { get; private set; }
 
         [XmlIgnore]
-        public object CurrentObject { get; private set; }
-
-        [XmlIgnore]
         public IQueryable ItemsCollection { get; private set; }
 
 
@@ -180,10 +178,10 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             if (PaginationOptions == null)
                 PaginationOptions = new PaginationOptions();
 
-            if (PaginationOptions.PageSize == 0)
+            if (PaginationOptions.PageSize == null)
                 PaginationOptions.PageSize = app.ModuleConfiguration.ListViewDefaults.PageSize.Value;
 
-            if (PaginationOptions.PagesToShow == 0)
+            if (PaginationOptions.PagesToShow == null)
                 PaginationOptions.PagesToShow = app.ModuleConfiguration.ListViewDefaults.PagesToShow.Value;
         }
 
@@ -267,7 +265,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         }
         public object GetCellValue(ApplicationService app, Column column)
         {
-            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column });
+            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column, null });
         }
         public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
         {
@@ -275,54 +273,64 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
             if (value is Enum enumValue)
                 return enumValue.GetEnumDisplayName();
+            else
+            {
+                value = TryGetDefaultPropertyValue(app, value);
 
+                if (!string.IsNullOrWhiteSpace(column.IsNullValue) && value == null)
+                    value = column.IsNullValue;
+            }
+            return !string.IsNullOrWhiteSpace(column.FormatType) ? string.Format(column.FormatType, value ?? "") : value;
+        }
+
+        private object TryGetDefaultPropertyValue(ApplicationService app, object value)
+        {
             if (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>())
             {
-                var valueEntity = app.GetDefaultProperty(value.GetType().FullName);
+                var valueEntity = app.GetDefaultProperty(value.GetType().GetCorrectType().FullName);
                 if (!string.IsNullOrWhiteSpace(valueEntity))
-                    value = valueEntity.GetType().GetProperty(valueEntity).GetValue(value);
+                    return TryGetDefaultPropertyValue(app, value.GetType().GetProperty(valueEntity).GetValue(value));
             }
-
-            if (!string.IsNullOrWhiteSpace(column.IsNullValue) && value == null)
-                value = column.IsNullValue;
-
-            return !string.IsNullOrWhiteSpace(column.FormatType) ? string.Format(column.FormatType, value ?? "") : value;
+            return value;
         }
 
         public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, object entity, string collection)
         {
-            SetItemsCollection(app, ctx, (IQueryable)entity.GetType().GetProperty(collection).GetValue(entity));
+            SetItemsCollection(app, ctx, (IEnumerable)entity.GetType().GetProperty(collection).GetValue(entity));
         }
-        public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, IQueryable collection)
+        public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, IEnumerable collection)
         {
             GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetItemsCollection) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, collection });
         }
-        public void SetItemsCollection<T>(ApplicationService app, CoreDbContext ctx, ICollection<T> collection) where T : class
+        public void SetItemsCollection<T>(ApplicationService app, CoreDbContext ctx, IEnumerable<T> collection) where T : class
         {
             IQueryable<T> list = null;
 
-            if (typeof(T).ImplementsInterface<IEntity>())
+            if (collection != null)
             {
-                list = collection.AsQueryable();
+                if (typeof(T).ImplementsInterface<IEntity>())
+                {
+                    list = collection.AsQueryable();
 
-                if (!string.IsNullOrEmpty(FromSql))
-                    list = list.FromSql(FromSql);
+                    if (!string.IsNullOrEmpty(FromSql))
+                        list = list.FromSql(FromSql);
 
-                if (typeof(T).IsSubclassOf(typeof(DBObject)))
-                    list = list.Where("!IsDeleted");
-            }
-            else if (typeof(T).ImplementsInterface<IQuery>())
-            {
-                if (!string.IsNullOrWhiteSpace(FromSql))
-                    list = ctx.Set<T>().FromSql(FromSql);
+                    if (typeof(T).IsSubclassOf(typeof(DBObject)))
+                        list = list.Where("!IsDeleted");
+                }
+                else if (typeof(T).ImplementsInterface<IQuery>())
+                {
+                    if (!string.IsNullOrWhiteSpace(FromSql))
+                        list = ctx.Set<T>().FromSql(FromSql);
+                    else
+                        throw new ApplicationException($"The ListView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in ListView or Entity definition.");
+                }
                 else
-                    throw new ApplicationException($"The ListView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in ListView or Entity definition.");
-            }
-            else
-                throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
+                    throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
 
-            if (!string.IsNullOrWhiteSpace(Sort))
-                list = list.OrderBy(Sort);
+                if (!string.IsNullOrWhiteSpace(Sort))
+                    list = list.OrderBy(Sort);
+            }
 
             CurrentObject = null;
             ItemsCollection = list;

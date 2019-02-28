@@ -56,13 +56,13 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
 
         protected ApplicationService Application { get; }
 
-        protected GlobalExpressionsService Expressions { get; }
+        protected ExpressionsService Expressions { get; }
 
         #endregion
 
         #region Constructors
 
-        public ListViewColumnTagHelper(IHtmlGenerator generator, IUrlHelperFactory urlHelperFactory, ApplicationService application, GlobalExpressionsService expressions)
+        public ListViewColumnTagHelper(IHtmlGenerator generator, IUrlHelperFactory urlHelperFactory, ApplicationService application, ExpressionsService expressions)
         {
             Generator = generator;
             UrlHelperFactory = urlHelperFactory;
@@ -134,19 +134,10 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
 
         private string GetLinkAction()
         {
-            var parameters = new Dictionary<string, string>();
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
 
             if (!string.IsNullOrWhiteSpace(Model.EditModalParameters))
-            {
-                var currentObject = Application.GetListViewCurrentObject(Model.ViewId);
-                if (currentObject == null)
-                    parameters = Model.EditModalParameters.Split('&').ToDictionary(k => k.Split('=')[0], v => v.Split('=')[1]);
-                else
-                {
-                    var method = typeof(GlobalExpressionsService).GetMethod("FormatExpressionTypedValue").MakeGenericMethod(currentObject.GetType().GetCorrectType());
-                    parameters = Model.EditModalParameters.Split('&').ToDictionary(k => k.Split('=')[0], v => method.Invoke(Expressions, new object[] { v.Split('=')[1], currentObject }).ToString());
-                }
-            }
+                parameters = Expressions.FormatActionParameters(Model.EditModalParameters, Model.CurrentObject);
 
             if (!string.IsNullOrWhiteSpace(IsSubListView) && IsSubListView.ToUpper() == "TRUE")
                 parameters.Add("ParentViewId", ViewContext.TempData["CurrentViewID"].ToString());

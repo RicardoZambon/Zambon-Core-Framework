@@ -293,10 +293,8 @@ namespace Zambon.Core.WebModule.Controllers
 
         protected ActionResult<DetailModal> GetPartialView(ViewInfo viewInfo, object currentObject)
         {
-            _app.ClearDetailViewCurrentObject(viewInfo.ViewId);
-            _app.SetDetailViewCurrentObject(viewInfo.ViewId, currentObject);
-
             var view = _app.GetDetailView(viewInfo.ViewId);
+            view.SetCurrentObject(currentObject);
 
             var viewFolder = view.ViewFolder;
             if (!string.IsNullOrEmpty(viewFolder))
@@ -308,7 +306,7 @@ namespace Zambon.Core.WebModule.Controllers
             if (string.IsNullOrWhiteSpace(viewCshtml))
                 viewCshtml = view.DefaultView;
 
-            _app.SetDetailViewCurrentView(viewInfo.ViewId, $"~/Views/{viewFolder}{ControllerContext.ActionDescriptor.ControllerName}/{viewCshtml}.cshtml");
+            view.SetCurrentView($"~/Views/{viewFolder}{ControllerContext.ActionDescriptor.ControllerName}/{viewCshtml}.cshtml");
 
             TempData["CurrentModalID"] = viewInfo.ModalId;
             TempData["CurrentViewID"] = viewInfo.ViewId;

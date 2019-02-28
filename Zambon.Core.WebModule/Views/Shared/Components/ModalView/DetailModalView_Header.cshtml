@@ -3,14 +3,15 @@
 @inject Zambon.Core.Module.Services.ApplicationService app;
 
 @{ 
-    var currentObject = app.GetDetailViewCurrentObject(Model.ViewId);
+    var currentObject = ((Zambon.Core.Module.Xml.Views.DetailViews.DetailView)Model.View).CurrentObject;
 }
 
 <div class="modal-header p-2 pr-3 pl-3">
     @if (currentObject != null)
     {
         <h5 class="modal-title">
-            @app.Expressions.FormatExpressionValue(TempData["CurrentModalTitle"].ToString(), currentObject)
+            @* TODO: *@
+            @*@app.Expressions..FormatExpressionValue(TempData["CurrentModalTitle"].ToString(), currentObject)*@
         </h5>
     }
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

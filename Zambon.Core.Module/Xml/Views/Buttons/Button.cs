@@ -2,14 +2,13 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
-using Zambon.Core.Database;
-using Zambon.Core.Module.Expressions;
 using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views.Buttons
 {
-    public class Button : XmlNode, IComparable, IActionParameters, ICondition
+    public class Button : XmlNode, IComparable, ICondition
     {
 
         [XmlAttribute("Id"), MergeKey]
@@ -109,7 +108,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
             return Targets.Contains(target);
         }
 
-        public bool IsApplicable(GlobalExpressionsService service, string target, object obj)
+        public bool IsApplicable(ExpressionsService service, string target, object obj)
         {
             if (IsApplicable(target))
             {

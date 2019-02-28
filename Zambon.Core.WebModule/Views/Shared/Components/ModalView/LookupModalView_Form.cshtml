@@ -1,7 +1,5 @@
 ﻿@model Zambon.Core.Module.Xml.Views.SubViews.LookupModal
 
-@inject Zambon.Core.Module.Services.ApplicationService app
-
 <div class="rounded mb-2 table-scrollable scrollable-md" style="border: 1px solid rgba(0,0,0,.125);">
     @Html.Partial("./LookupModalView_Table.cshtml", Model)
 </div>
@@ -12,7 +10,8 @@
 
 @{
     var view = (Zambon.Core.Module.Xml.Views.ListViews.LookupView)Model.View;
-    var searchOptions = app.GetLookUpViewSearchOptions(view.ViewId);
+    var searchOptions = view.SearchOptions;
+    var postBackOptions = view.PostBackOptions;
 }
 
 <input type="hidden" id="@(Model.Id)_SearchProperty" name="SearchProperty" asp-for="@searchOptions.SearchProperty" />
@@ -21,10 +20,6 @@
 <input type="hidden" id="@(Model.Id)_SearchNumber2" name="SearchNumber2" asp-for="@searchOptions.SearchNumber2" />
 <input type="hidden" id="@(Model.Id)_SearchDateTime1" name="SearchDateTime1" asp-for="@searchOptions.SearchDateTime1" />
 <input type="hidden" id="@(Model.Id)_SearchDateTime2" name="SearchDateTime2" asp-for="@searchOptions.SearchDateTime2" />
-
-@{
-    var postBackOptions = app.GetLookUpViewPostBackOptions(Model.ViewId);
-}
 
 <input type="hidden" id="@(Model.Id)_PostbackActionName" name="PostbackActionName" asp-for="@postBackOptions.PostbackActionName" />
 <input type="hidden" id="@(Model.Id)_PostbackFormId" name="PostbackFormId" asp-for="@postBackOptions.PostbackFormId" />

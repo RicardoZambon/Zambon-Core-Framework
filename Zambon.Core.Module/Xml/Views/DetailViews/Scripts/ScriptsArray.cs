@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Xml.Views.DetailViews.Scripts
 {
-    public class Scripts : XmlNode
+    public class ScriptsArray : XmlNode
     {
 
         [XmlElement("Script")]

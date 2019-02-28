@@ -1,41 +1,41 @@
 ﻿@model Zambon.Core.Module.Xml.Views.SubViews.LookupModal
 
-@inject Zambon.Core.Module.Services.ApplicationService app
+@inject Zambon.Core.Module.Services.ApplicationService ApplicationService
 
 @{ var view = (Zambon.Core.Module.Xml.Views.ListViews.LookupView)Model.View; }
 <table class="table table-striped table-hover table-sm mb-0 position-relative rounded table-clickable-rows">
-    <thead listview-header-for="@view.Columns?.Column" class="bg-primary text-white"></thead>
+    <thead listview-header-for="@view.Columns" class="bg-primary text-white"></thead>
     <tbody>
-        @{ 
-            var itemsCollection = app.GetLookUpViewItemsCollection(Model.ViewId);
+        @{
+            var itemsCollection = view.ItemsCollection;
             if (itemsCollection != null)
             {
                 foreach (var currentObject in itemsCollection)
                 {
-                    app.SetLookUpViewCurrentObject(Model.ViewId, currentObject);
-                    var id = view.GetCellValue(app, "ID");
+                    view.SetCurrentObject(currentObject);
+                    var id = view.GetCellValue(ApplicationService, "ID");
 
+                    //TODO: Need improve this part, maybe add a tag helper?
                     <tr id="@(Model.Id)_table_tr@(id)">
                         <th scope="row" class="col-0 pl-0 pr-0">&nbsp;</th>
 
                         <th scope="row" class="col-fit text-center">
-                            @*<div button-for="@Model.Buttons.Button" button-target="Inline" button-hide-text="true" asp-route-ListViewId="@Model.ViewId" button-current-object="@Model.CurrentObject"></div>*@
                             <div class="custom-control custom-checkbox lookupview">
                                 <input type="checkbox" class="custom-control-input" id="@(Model.Id)_table_item@(id)" name="LookupSelection" value="@id">
                                 <label class="custom-control-label" for="@(Model.Id)_table_item@(id)">&nbsp;</label>
                             </div>
                         </th>
 
-                        @if ((view.Columns?.Column?.Length ?? 0) > 0)
+                        @if ((view.Columns?.Length ?? 0) > 0)
                         {
-                            @for (var c = 0; c < view.Columns.Column.Length; c++)
+                            @for (var c = 0; c < view.Columns.Length; c++)
                             {
-                                <td lookupview-column-for="@view.Columns.Column[c]" lookupview-column-model="@view"></td>
+                                <td lookupview-column-for="@view.Columns[c]" lookupview-column-model="@view"></td>
                             }
                         }
                     </tr>
                 }
-                app.ClearLookUpViewCurrentObject(Model.ViewId);
+                view.ClearCurrentObject();
             }
         }
     </tbody>

@@ -37,7 +37,26 @@ namespace Zambon.Core.Module.Xml
 
         internal virtual void OnLoadingUserModel(Application app, CoreDbContext ctx)
         {
+            if (IsLoaded)
+                return;
 
+            IsLoaded = true;
+            var properties = GetType().GetProperties();
+            for (var p = 0; p < properties.Length; p++)
+            {
+                var itemValue = properties[p].GetValue(this);
+                if (itemValue != null)
+                {
+                    if (itemValue is XmlNode itemValueXmlNode)
+                        itemValueXmlNode.OnLoadingUserModel(app, ctx);
+                    else if (itemValue is XmlNode[] itemArray)
+                    {
+                        if (itemArray.Length > 0)
+                            for (var a = 0; a < itemArray.Length; a++)
+                                itemArray[a].OnLoadingUserModel(app, ctx);
+                    }
+                }
+            }
         }
 
         public object Clone()

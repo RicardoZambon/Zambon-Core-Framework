@@ -67,13 +67,13 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         protected ApplicationService Application { get; }
 
-        protected GlobalExpressionsService Expressions { get; }
+        protected ExpressionsService Expressions { get; }
 
         #endregion
 
         #region Constructors
 
-        public ButtonTagHelper(IHtmlGenerator generator, IUrlHelperFactory urlHelperFactory, ApplicationService application, GlobalExpressionsService expressions)
+        public ButtonTagHelper(IHtmlGenerator generator, IUrlHelperFactory urlHelperFactory, ApplicationService application, ExpressionsService expressions)
         {
             Generator = generator;
             UrlHelperFactory = urlHelperFactory;
@@ -256,7 +256,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable(Expressions, "Toolbar", Application.GetDetailViewCurrentObject(CurrentView.ViewId)))
+                if (button.IsApplicable(Expressions, "Toolbar", CurrentView.CurrentObject))
                     output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
             }
             
@@ -455,18 +455,10 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         private string GetButtonAction(Button button)
         {
-            var parameters = new Dictionary<string, string>();
+            IDictionary<string, string> parameters = new Dictionary<string, string>();
 
             if (!string.IsNullOrWhiteSpace(button.ActionParameters))
-            {
-                if (CurrentObject == null)
-                    parameters = button.ActionParameters.Split('&').ToDictionary(k => k.Split('=')[0], v => v.Split('=')[1]);
-                else
-                {
-                    var method = typeof(GlobalExpressionsService).GetMethod("FormatExpressionTypedValue").MakeGenericMethod(CurrentObject.GetType().GetCorrectType());
-                    parameters = button.ActionParameters.Split('&').ToDictionary(k => k.Split('=')[0], v => method.Invoke(Expressions, new object[] { v.Split('=')[1], CurrentObject }).ToString());
-                }
-            }
+                parameters = Expressions.FormatActionParameters(button.ActionParameters, CurrentObject);
 
             if (RouteValues.Count() > 0)
                 foreach (var route in RouteValues)

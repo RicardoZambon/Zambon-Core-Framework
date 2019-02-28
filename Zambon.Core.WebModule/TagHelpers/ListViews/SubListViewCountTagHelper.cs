@@ -57,7 +57,7 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
                 //TODO: Review, maybe we can remove the listview name in string and use direct the object.
                 listView.SetItemsCollection(App, Ctx, Model, Collection);
 
-                var itemsCollection = App.GetListViewItemsCollection(listView.ViewId);
+                var itemsCollection = listView.ItemsCollection;
                 output.Content.Append((itemsCollection?.Count() ?? 0).ToString());
             }
         }

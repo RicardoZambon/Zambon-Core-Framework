@@ -1,9 +1,7 @@
 ﻿@model Zambon.Core.Module.Xml.Views.SubViews.LookupModal
 
-@inject Zambon.Core.Module.Services.ApplicationService app
-
 @{ var view = (Zambon.Core.Module.Xml.Views.ListViews.LookupView)Model.View; }
-@if ((view.SearchProperties?.SearchProperty?.Length ?? 0) > 0)
+@if ((view.SearchProperties?.Length ?? 0) > 0)
 {
     <div class="card mb-2">
         <div class="card-body p-1">
@@ -11,29 +9,29 @@
                 <button type="submit" class="btn btn-secondary mr-1"><span class="oi oi-magnifying-glass"></span></button>
 
                 @{
-                    var searchOptions = app.GetLookUpViewSearchOptions(Model.ViewId);
+                    var searchOptions = view.SearchOptions;
                 }
 
                 <div class="input-group-prepend">
                     <select id="@(Model.Id)_Search_SearchProperty" name="SearchProperty" asp-for="@searchOptions.SearchProperty" class="btn btn-outline-secondary combo rounded-left" onchange="ChangeSearchProperty(this)">
-                        @for (var i = 0; i < view.SearchProperties.SearchProperty.Length; i++)
+                        @for (var i = 0; i < view.SearchProperties.Length; i++)
                         {
-                            <option value="@view.SearchProperties.SearchProperty[i].PropertyName"
-                                    data-search-type="@view.SearchProperties.SearchProperty[i].SearchType"
-                                    data-search-default-value="@view.SearchProperties.SearchProperty[i].DefaultValue">
-                                @view.SearchProperties.SearchProperty[i].DisplayName
+                            <option value="@view.SearchProperties[i].PropertyName"
+                                    data-search-type="@view.SearchProperties[i].SearchType"
+                                    data-search-default-value="@view.SearchProperties[i].DefaultValue">
+                                @view.SearchProperties[i].DisplayName
                             </option>
                         }
                     </select>
                 </div>
 
-                <input type="text" class="form-control rounded-right search-text" id="@(Model.Id)_Search_SearchText" name="SearchText" asp-for="@searchOptions.SearchText" style="@(view.SearchProperties.SearchProperty[0].SearchType == "Text" ? "" : "display:none;")" />
+                <input type="text" class="form-control rounded-right search-text" id="@(Model.Id)_Search_SearchText" name="SearchText" asp-for="@searchOptions.SearchText" style="@(view.SearchProperties[0].SearchType == "Text" ? "" : "display:none;")" />
 
-                <input type="number" class="form-control search-number1" id="@(Model.Id)_Search_SearchNumber1" name="SearchNumber1" asp-for="@searchOptions.SearchNumber1" style="@(view.SearchProperties.SearchProperty[0].SearchType == "Number" || view.SearchProperties.SearchProperty[0].SearchType == "NumberRange" ? "" : "display:none;")" />
-                <input type="number" class="form-control rounded-right search-number2" id="@(Model.Id)_Search_SearchNumber2" name="SearchNumber2" asp-for="@searchOptions.SearchNumber2" style="@(view.SearchProperties.SearchProperty[0].SearchType == "NumberRange" ? "" : "display:none;")" />
+                <input type="number" class="form-control search-number1" id="@(Model.Id)_Search_SearchNumber1" name="SearchNumber1" asp-for="@searchOptions.SearchNumber1" style="@(view.SearchProperties[0].SearchType == "Number" || view.SearchProperties[0].SearchType == "NumberRange" ? "" : "display:none;")" />
+                <input type="number" class="form-control rounded-right search-number2" id="@(Model.Id)_Search_SearchNumber2" name="SearchNumber2" asp-for="@searchOptions.SearchNumber2" style="@(view.SearchProperties[0].SearchType == "NumberRange" ? "" : "display:none;")" />
 
-                <input type="text" class="form-control datepicker search-datepicker1" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime1" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties.SearchProperty[0].SearchType == "DateTime" || view.SearchProperties.SearchProperty[0].SearchType == "DateTimeRange" ? "" : "display:none;")" />
-                <input type="text" class="form-control datepicker rounded-right search-datepicker2" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime2" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties.SearchProperty[0].SearchType == "DateTimeRange" ? "" : "display:none;")" />
+                <input type="text" class="form-control datepicker search-datepicker1" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime1" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties[0].SearchType == "DateTime" || view.SearchProperties[0].SearchType == "DateTimeRange" ? "" : "display:none;")" />
+                <input type="text" class="form-control datepicker rounded-right search-datepicker2" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime2" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties[0].SearchType == "DateTimeRange" ? "" : "display:none;")" />
 
                 <input type="hidden" class="search-date1" id="@(Model.Id)_Search_SearchDateTime1" name="SearchDateTime1" asp-for="@searchOptions.SearchDateTime1" />
                 <input type="hidden" class="search-date2" id="@(Model.Id)_Search_SearchDateTime2" name="SearchDateTime2" asp-for="@searchOptions.SearchDateTime2" />
@@ -43,7 +41,7 @@
                 <input type="hidden" id="@(Model.Id)_Search_ViewId" name="ViewId" asp-for="@Model.ViewId" />
 
                 @{
-                    var postBackOptions = app.GetLookUpViewPostBackOptions(Model.ViewId);
+                    var postBackOptions = view.PostBackOptions;
                 }
 
                 <input type="hidden" id="@(Model.Id)_Search_PostbackActionName" name="PostbackActionName" asp-for="@postBackOptions.PostbackActionName" />

@@ -5,8 +5,8 @@
         @Html.Partial("./SearchPanel.cshtml", Model)
     </div>
 
-    @if ((Model?.Buttons?.Button?.Length ?? 0) > 0 && Model.Buttons.Button.Any(x => x.IsApplicable("Toolbar")))
+    @if ((Model?.Buttons?.Length ?? 0) > 0 && Model.Buttons.Any(x => x.IsApplicable("Toolbar")))
     {
-        <div class="col-auto pl-1" button-for="@Model.Buttons.Button" button-target="Toolbar"></div>
+        <div class="col-auto pl-1" button-for="@Model.Buttons" button-target="Toolbar"></div>
     }
 </div>

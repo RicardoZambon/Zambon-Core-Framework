@@ -1,7 +1,5 @@
 ﻿@model Zambon.Core.Module.Xml.Views.ListViews.ListView
 
-@inject Zambon.Core.Module.Services.ApplicationService app
-
 <form id="@(Model.ViewId)" asp-controller="View" asp-action="ListView" data-ajax="true" data-ajax-method="POST" data-ajax-update="#@(Model.ViewId)_container" data-ajax-mode="replace" data-ajax-begin="AjaxBegin" data-ajax-failure="AjaxFailure" data-ajax-success="AjaxSuccess" data-ajax-complete="AjaxComplete" data-ajax-update-loading="body" role="form">
     <div class="rounded mb-2" style="border: 1px solid rgba(0,0,0,.125);">
         @Html.Partial("./ViewTable.cshtml", Model)
@@ -16,9 +14,7 @@
 
     <input type="hidden" id="@(Model.ViewId)_ViewId" name="ViewId" asp-for="@Model.ViewId" />
 
-    @{
-        var searchOptions = app.GetListViewSearchOptions(Model.ViewId);
-    }
+    @{ var searchOptions = Model.SearchOptions; }
 
     <input type="hidden" id="@(Model.ViewId)_SearchProperty" name="SearchProperty" asp-for="@searchOptions.SearchProperty" />
     <input type="hidden" id="@(Model.ViewId)_SearchText" name="SearchText" asp-for="@searchOptions.SearchText" />

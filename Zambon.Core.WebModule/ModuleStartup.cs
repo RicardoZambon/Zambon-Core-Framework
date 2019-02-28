@@ -104,13 +104,12 @@ namespace Zambon.Core.WebModule
 
         private void StartConfiguringServices(IServiceCollection services, IConfigurationRoot Configuration)
         {
-            var appSettings = Configuration.GetSection("ApplicationConfigs").AsEnumerable().Where(x => x.Key != "ApplicationConfigs").ToDictionary(x => x.Key.Replace("ApplicationConfigs:", ""), y => y.Value);
-
-            services.Configure<AppSettings>(a => { a.Set(appSettings); });
+            var appConfigs = Configuration.GetSection(nameof(ApplicationConfigs)).AsEnumerable().Where(x => x.Key != nameof(ApplicationConfigs)).ToDictionary(x => x.Key.Replace($"{nameof(ApplicationConfigs)}:", ""), y => y.Value);
+            services.Configure<ApplicationConfigs>(a => { a.Set(appConfigs); });
 
             if (UseDataProtectionInFileSystem)
                 services.AddDataProtection()
-                    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(appSettings.ContainsKey("FileStorePath") ? appSettings["FileStorePath"].ToString() : string.Empty, "DataProtection")))
+                    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(appConfigs.ContainsKey("FileStorePath") ? appConfigs["FileStorePath"].ToString() : string.Empty, "DataProtection")))
                     .SetApplicationName(Env.ApplicationName.Replace(".", "_"));
 
             services.ConfigureApplicationCookie(options => { options.Cookie.Name = string.Format(".AspNetCore.{0}.Cookies", Env.ApplicationName.Replace(".", "_")); });
@@ -221,7 +220,7 @@ namespace Zambon.Core.WebModule
                 o.Cookie.Name = string.Format(".AspNetCore.{0}.Cookies", Env.ApplicationName.Replace(".", "_"));
             });
 
-            services.AddScoped<ICurrentUserService, CurrentUserService<U,R>>();
+            services.AddScoped<IUserService, CurrentUserService<U,R>>();
         }
 
         #endregion
@@ -231,8 +230,9 @@ namespace Zambon.Core.WebModule
         private void ConfigureApplicationModel(IServiceCollection services, IConfigurationRoot Configuration)
         {
             services.AddSingleton<ModelService>();
+            services.AddScoped<ILanguageService, LanguageService>();
             services.AddScoped<ApplicationService>();
-            services.AddScoped<GlobalExpressionsService>();
+            services.AddScoped<ExpressionsService>();
         }
 
         #endregion

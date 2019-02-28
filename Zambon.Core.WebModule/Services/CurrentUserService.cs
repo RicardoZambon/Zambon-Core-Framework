@@ -11,13 +11,13 @@ using Zambon.Core.Security.BusinessObjects;
 
 namespace Zambon.Core.WebModule.Services
 {
-    public class CurrentUserService<TUser,TRole> : ICurrentUserService where TUser : class, IUsers where TRole : class, IRoles
+    public class CurrentUserService<TUser,TRole> : IUserService where TUser : class, IUsers where TRole : class, IRoles
     {
 
         #region Variables
 
-        private readonly IHttpContextAccessor _contextHttp;
-        private readonly CoreDbContext _ctx;
+        private readonly IHttpContextAccessor HttpContextAccessor;
+        private readonly CoreDbContext Ctx;
 
         #endregion
 
@@ -26,10 +26,10 @@ namespace Zambon.Core.WebModule.Services
         private string _currentIdentityName;
         public string CurrentIdentityName
         {
-            get { if (_currentIdentityName == null) _currentIdentityName = _contextHttp.HttpContext?.User?.Identity?.Name; return _currentIdentityName; }
+            get { if (_currentIdentityName == null) _currentIdentityName = HttpContextAccessor.HttpContext?.User?.Identity?.Name; return _currentIdentityName; }
         }
 
-        IUsers ICurrentUserService.CurrentUser => CurrentUser;
+        IUsers IUserService.CurrentUser => CurrentUser;
 
         private TUser _currentUser;
         public TUser CurrentUser
@@ -46,10 +46,10 @@ namespace Zambon.Core.WebModule.Services
 
         #region Constructors
 
-        public CurrentUserService(IHttpContextAccessor contextHttp, CoreDbContext ctx)
+        public CurrentUserService(IHttpContextAccessor httpContextAccessor, CoreDbContext ctx)
         {
-            _contextHttp = contextHttp;
-            _ctx = ctx;
+            HttpContextAccessor = httpContextAccessor;
+            Ctx = ctx;
         }
 
         #endregion
@@ -60,7 +60,7 @@ namespace Zambon.Core.WebModule.Services
         {
             if (!string.IsNullOrWhiteSpace(CurrentIdentityName))
             {
-                var user = _ctx.Set<TUser>().FirstOrDefault(x => string.Equals(x.Username, CurrentIdentityName, StringComparison.InvariantCultureIgnoreCase));
+                var user = Ctx.Set<TUser>().FirstOrDefault(x => string.Equals(x.Username, CurrentIdentityName, StringComparison.InvariantCultureIgnoreCase));
                 _currentUser = user;
 
                 RefreshCurrentUserData();

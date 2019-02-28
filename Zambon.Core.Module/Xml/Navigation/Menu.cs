@@ -71,26 +71,27 @@ namespace Zambon.Core.Module.Xml.Navigation
             if (SubMenus != null && SubMenus.Length > 0)
                 Array.Sort(SubMenus);
 
-            View view = null;
             switch (Type)
             {
                 case "ListView":
-                    view = app.FindListView(ViewID);
+                    View = app.FindListView(ViewID);
                     break;
                 case "DetailView":
-                    view = app.FindDetailView(ViewID);
+                    View = app.FindDetailView(ViewID);
                     if (string.IsNullOrWhiteSpace(ControllerName))
                         ControllerName = ((DetailView)View).ControllerName;
                     break;
             }
 
-            if (view != null)
+            if (View != null)
             {
+                View.OnLoadingXml(app, ctx);
+
                 if (string.IsNullOrWhiteSpace(DisplayName))
-                    DisplayName = View?.Title;
+                    DisplayName = View.Title;
 
                 if (string.IsNullOrWhiteSpace(Icon))
-                    Icon = View?.Icon;
+                    Icon = View.Icon;
             }
 
             base.OnLoadingXml(app, ctx);

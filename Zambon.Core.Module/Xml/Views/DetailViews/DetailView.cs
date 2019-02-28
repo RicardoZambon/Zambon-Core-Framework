@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module.Xml.Views.DetailViews.Scripts;
 
 namespace Zambon.Core.Module.Xml.Views.DetailViews
 {
@@ -22,12 +24,17 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
         [XmlAttribute("ViewFolder")]
         public string ViewFolder { get; set; }
 
+
+        [XmlIgnore, Browsable(false)]
+        public Script[] Scripts { get { return _Scripts?.Script; } }
+
+
         [XmlElement("Scripts")]
-        public Scripts.Scripts Scripts { get; set; }
+        public ScriptsArray _Scripts { get; set; }
 
 
         [XmlIgnore]
-        public object CurrentObject { get; private set; }
+        public string CurrentView { get; private set; }
 
 
         #region Overrides
@@ -92,6 +99,11 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
                 detailObject = (T)typeof(T).Assembly.CreateInstance(typeof(T).FullName);
 
             CurrentObject = detailObject;
+        }
+
+        public void SetCurrentView(string currentView)
+        {
+            CurrentView = currentView;
         }
 
         #endregion

@@ -27,103 +27,61 @@ namespace Zambon.Core.Module.Services
 
         #region Variables
 
-        private readonly CoreDbContext _ctx;
+        private readonly CoreDbContext Ctx;
 
-        private readonly ModelService _modelService;
+        private readonly ILanguageService LanguageService;
 
-        private readonly GlobalExpressionsService _expressions;
-        public GlobalExpressionsService Expressions { get { return _expressions; } }
+        private readonly ModelService ModelService;
 
-        private readonly ICurrentUserService _currentUser;
+        public readonly ExpressionsService Expressions;
 
-
-        private Application _model;
-        private Application Model {
-            get
-            {
-                if (_model == null)
-                    _model = (Application)_modelService.GetModel(_ctx).Clone();
-                return _model;
-            }
-        }
-
-        public IDictionary<string, ListViewInstance> ListViewInstances { get; set; }
-        public IDictionary<string, LookUpViewInstance> LookUpViewInstances { get; set; }
-        public IDictionary<string, DetailViewInstance> DetailViewInstances { get; set; }
+        private readonly IUserService UserService;
 
         #endregion
 
         #region Properties
 
-        private Menu[] _UserMenu;
-        public Menu[] UserMenu
-        {
-            get
-            {
-                _currentUser.CheckUserChanged();
-                if (_UserMenu == null || _UserMenu.Length == 0) _UserMenu = GetMenus();
-                return _UserMenu;
-            }
-        }
+        private Application _Model;
+        private Application Model { get { if (_Model == null) _Model = ModelService.GetModel(Ctx, LanguageService.GetCurrentLanguage()); return _Model; } }
 
-        public IUsers CurrentUser { get { return _currentUser.CurrentUser; } }
+        public ApplicationConfigs AppConfigs { get { return ModelService.GetAppSettings(); } }
+
+
+        public string AppName { get { return Model.Name; } }
+
+        public string AppMenuName { get { return Model.MenuName; } }
+
+        public string AppFullName { get { return Model.FullName; } }
+
+        public string Version { get { return ModelService.AppVersion; } }
+
+        public string Copyright { get { return ModelService.AppCopyright; } }
+
+
+        public string LoginTheme { get { return Model.ModuleConfiguration?.LoginDefaults?.Theme ?? string.Empty; } }
+
+
+        private Menu[] _UserMenu;
+        public Menu[] UserMenu { get { if (_UserMenu == null || _UserMenu.Length == 0) _UserMenu = GetMenus(); return _UserMenu; } }
+
+        public IUsers CurrentUser { get { return UserService.CurrentUser; } }
 
         #endregion
 
         #region Constructors
 
-        public ApplicationService(CoreDbContext ctx, ModelService modelService, GlobalExpressionsService expressions, ICurrentUserService currentUserService)
+        public ApplicationService(CoreDbContext ctx, ILanguageService languageService, ModelService modelService, ExpressionsService expressions, IUserService userService)
         {
-            _ctx = ctx;
-            _modelService = modelService;
-            _expressions = expressions;
-            _currentUser = currentUserService;
-
-            ListViewInstances = new Dictionary<string, ListViewInstance>();
-            LookUpViewInstances = new Dictionary<string, LookUpViewInstance>();
-            DetailViewInstances = new Dictionary<string, DetailViewInstance>();
+            Ctx = ctx;
+            LanguageService = languageService;
+            ModelService = modelService;
+            Expressions = expressions;
+            UserService = userService;
         }
 
         #endregion
 
         #region Methods
-
-        public string GetAppName()
-        {
-            return Model.Name;
-        }
-
-        public string GetAppMenuName()
-        {
-            return Model.MenuName;
-        }
-
-        public string GetAppFullName()
-        {
-            return Model.FullName;
-        }
-
-        public string GetAppVersion()
-        {
-            return _modelService.GetAppVersion();
-        }
-
-        public string GetAppCopyright()
-        {
-            return _modelService.GetAppCopyright();
-        }
-
-        public AppSettings GetAppSettings()
-        {
-            return _modelService.GetAppSettings();
-        }
-
-
-        public string GetLoginTheme()
-        {
-            return Model.ModuleConfiguration?.LoginDefaults?.Theme ?? string.Empty;
-        }
-
 
         public string GetDefaultProperty(string clrType)
         {
@@ -183,7 +141,6 @@ namespace Zambon.Core.Module.Services
         }
 
 
-
         private Menu[] GetMenus(Menu[] _subMenus = null)
         {
             var list = new List<Menu>();
@@ -212,185 +169,6 @@ namespace Zambon.Core.Module.Services
                 }
             }
             return list.ToArray();
-        }
-
-        public LookupModal LoadLookupView(LookupModal _modalLookup)
-        {
-            //if (_modalLookup.View == null)
-            //    _modalLookup.View = Model.GetModel().FindLookupView(_modalLookup.ViewId);
-            //else
-            //    _modalLookup.View = Merge.MergeObject(Model.GetModel().FindLookupView(_modalLookup.ViewId), _modalLookup.View);
-
-            ////_modalLookup.View.PopulateView(_ctx);
-            //return _modalLookup;
-            return null;
-        }
-
-        #endregion
-
-        #region ListView Instance
-
-        public void ClearListViewCurrentObject(string listViewId)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                ListViewInstances[listViewId].CurrentObject = null;
-        }
-        public void SetListViewCurrentObject(string listViewId, object currentObject)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                ListViewInstances[listViewId].CurrentObject = currentObject;
-            else
-                ListViewInstances.Add(listViewId, new ListViewInstance(currentObject));
-        }
-        public object GetListViewCurrentObject(string listViewId)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                return ListViewInstances[listViewId].CurrentObject;
-            return null;
-        }
-
-        public void SetListViewItemsCollection(string listViewId, IQueryable collection)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                ListViewInstances[listViewId].ItemsCollection = collection;
-            else
-                ListViewInstances.Add(listViewId, new ListViewInstance(collection));
-        }
-        public IQueryable GetListViewItemsCollection(string listViewId)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                return ListViewInstances[listViewId].ItemsCollection;
-            return null;
-        }
-
-        public void SetListViewSearchOptions(string listViewId, SearchOptions searchOptions)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                ListViewInstances[listViewId].SearchOptions = searchOptions;
-            else if (searchOptions != null)
-                ListViewInstances.Add(listViewId, new ListViewInstance(searchOptions));
-        }
-        public SearchOptions GetListViewSearchOptions(string listViewId)
-        {
-            if (ListViewInstances.ContainsKey(listViewId))
-                return ListViewInstances[listViewId].SearchOptions;
-            return null;
-        }
-
-        #endregion
-
-        #region LookUpView Instance
-
-        public void ClearLookUpViewCurrentObject(string lookUpViewId)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                LookUpViewInstances[lookUpViewId].CurrentObject = null;
-        }
-        public void SetLookUpViewCurrentObject(string lookUpViewId, BaseDBObject currentObject)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                LookUpViewInstances[lookUpViewId].CurrentObject = currentObject;
-            else
-                LookUpViewInstances.Add(lookUpViewId, new LookUpViewInstance(currentObject));
-        }
-        public BaseDBObject GetLookUpViewCurrentObject(string lookUpViewId)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                return LookUpViewInstances[lookUpViewId].CurrentObject;
-            return null;
-        }
-
-        public void SetLookUpViewItemsCollection(string lookUpViewId, IQueryable<BaseDBObject> collection)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                LookUpViewInstances[lookUpViewId].ItemsCollection = collection;
-            else
-                LookUpViewInstances.Add(lookUpViewId, new LookUpViewInstance(collection));
-        }
-        public IQueryable<BaseDBObject> GetLookUpViewItemsCollection(string lookUpViewId)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                return LookUpViewInstances[lookUpViewId].ItemsCollection;
-            return null;
-        }
-
-        public void SetLookUpViewSearchOptions(string lookUpViewId, SearchOptions searchOptions)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                LookUpViewInstances[lookUpViewId].SearchOptions = searchOptions;
-            else if (searchOptions != null)
-                LookUpViewInstances.Add(lookUpViewId, new LookUpViewInstance(searchOptions));
-        }
-        public SearchOptions GetLookUpViewSearchOptions(string lookUpViewId)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                return LookUpViewInstances[lookUpViewId].SearchOptions;
-            return null;
-        }
-
-        public void SetLookUpViewPostBackOptions(string lookUpViewId, PostBackOptions postBackOptions)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                LookUpViewInstances[lookUpViewId].PostBackOptions = postBackOptions;
-            else if (postBackOptions != null)
-                LookUpViewInstances.Add(lookUpViewId, new LookUpViewInstance(postBackOptions));
-        }
-        public PostBackOptions GetLookUpViewPostBackOptions(string lookUpViewId)
-        {
-            if (LookUpViewInstances.ContainsKey(lookUpViewId))
-                return LookUpViewInstances[lookUpViewId].PostBackOptions;
-            return null;
-        }
-
-        #endregion
-
-        #region DetailView Instance
-
-        public void ClearDetailViewCurrentObject(string detailViewId)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                DetailViewInstances[detailViewId].CurrentObject = null;
-        }
-        public void SetDetailViewCurrentObject(string detailViewId, object currentObject)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                DetailViewInstances[detailViewId].CurrentObject = currentObject;
-            else
-                DetailViewInstances.Add(detailViewId, new DetailViewInstance(currentObject));
-        }
-        public object GetDetailViewCurrentObject(string detailViewId)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                return DetailViewInstances[detailViewId].CurrentObject;
-            return null;
-        }
-
-        public void SetDetailViewCurrentView(string detailViewId, string currentView)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                DetailViewInstances[detailViewId].CurrentView = currentView;
-            else
-                DetailViewInstances.Add(detailViewId, new DetailViewInstance(currentView));
-        }
-        public string GetDetailViewCurrentView(string detailViewId)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                return DetailViewInstances[detailViewId].CurrentView;
-            return null;
-        }
-
-        public void SetDetailViewTitle(string detailViewId, string title)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                DetailViewInstances[detailViewId].Title = title;
-            else
-                DetailViewInstances.Add(detailViewId, new DetailViewInstance() { Title = title });
-        }
-        public string GetDetailViewTitle(string detailViewId)
-        {
-            if (DetailViewInstances.ContainsKey(detailViewId))
-                return DetailViewInstances[detailViewId].Title;
-            return null;
         }
 
         #endregion

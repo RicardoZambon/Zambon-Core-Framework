@@ -14,6 +14,7 @@ using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
+using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
@@ -50,10 +51,10 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public SearchOptions SearchOptions { get; private set; }
 
         [XmlIgnore]
-        public object CurrentObject { get; set; }
+        public IQueryable ItemsCollection { get; private set; }
 
         [XmlIgnore]
-        public IQueryable ItemsCollection { get; set; }
+        public PostBackOptions PostBackOptions { get; private set; }
 
         #region Overrides
 
@@ -132,7 +133,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         }
         public object GetCellValue(ApplicationService app, Column column)
         {
-            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column });
+            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column, null });
         }
         public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
         {
@@ -175,6 +176,11 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             else
                 throw new ApplicationException($"The LookupView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
             return list;
+        }
+
+        public void SetPostBackOptions(PostBackOptions postBackOptions)
+        {
+            PostBackOptions = postBackOptions;
         }
 
         #endregion

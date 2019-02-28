@@ -1,9 +1,9 @@
 ﻿@model Zambon.Core.Module.Xml.Views.ListViews.ListView
 
 <div class="card" style="overflow:hidden;">
-    <div class="card-header p-1" button-for="@Model.Buttons?.Button" button-target="@Model.ViewId"></div>
+    <div class="card-header p-1" button-for="@Model.Buttons" button-target="@Model.ViewId"></div>
 
-    <div class="card-body p-0 table-scrollable scrollable-@Model.CustomParameters["scroll-size"].ToString()" data-hasButtons="@(((Model.Buttons?.Button?.Length ?? 0) > 0).ToString())">
+    <div class="card-body p-0 table-scrollable scrollable-@(Model.CustomParameters.ContainsKey("scroll-size") ? Model.CustomParameters["scroll-size"].ToString() : "md")" data-hasButtons="@(((Model.Buttons?.Length ?? 0) > 0).ToString())">
         @Html.Partial("./ViewTable.cshtml", Model)
     </div>
 </div>

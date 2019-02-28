@@ -6,7 +6,7 @@
 
         <button type="submit" name="page" value="@(Model.ActualPage > 1 ? Model.ActualPage - 1 : 1)" class="btn btn-secondary oi oi-media-skip-backward p-2" static-text-title="ListView_Pagination_PrevPage" disabled="@(Model.ActualPage <= 1)"></button>
 
-        @for (int i = Model.StartPage; i <= Model.EndPage; i++)
+        @for (int i = Model.StartPage ?? 0; i <= Model.EndPage; i++)
         {
             <button type="submit" name="page" value="@(i)" class="btn btn-@(i == Model.ActualPage ? "primary" : "light") p-1" static-text-title="ListView_Pagination_Page" static-text-replace-title-0="@i" style="height: 34px; width: 34px; margin-top: 1px;" disabled="@(i == Model.ActualPage)">@(i)</button>
         }

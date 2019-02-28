@@ -2,17 +2,19 @@
 
 namespace Zambon.Core.Module
 {
-    public class AppSettings
+    public class ApplicationConfigs
     {
 
         #region Properties
 
-        private IDictionary<string, string> ApplicationConfigs { get; set; }
+        private IDictionary<string, string> Configs { get; set; }
 
 
         public string[] Languages { get { return Get("Languages")?.ToString()?.Split(";"); } }
 
-        public string EnvironmentTitle { get { return Get("EnvironmentTitle")?.ToString(); } }
+        public string EnvironmentTitle { get { return Get("EnvironmentTitle")?.ToString().ToUpper().Trim(); } }
+
+        public bool HasEnvironmentTitle { get { return !string.IsNullOrWhiteSpace(EnvironmentTitle); } }
 
         public string FileStorePath { get { return Get("FileStorePath")?.ToString(); } }
 
@@ -28,12 +30,12 @@ namespace Zambon.Core.Module
 
         private object Get(string key)
         {
-            return ApplicationConfigs.ContainsKey(key) ? ApplicationConfigs[key] : null;
+            return Configs.ContainsKey(key) ? Configs[key] : null;
         }
 
-        public void Set(IDictionary<string, string> appSettings)
+        public void Set(IDictionary<string, string> configs)
         {
-            ApplicationConfigs = appSettings;
+            Configs = configs;
         }
 
         #endregion

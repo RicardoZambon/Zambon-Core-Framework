@@ -55,7 +55,7 @@
                     <div class="form-group col">
                         <label asp-for="@Model.Roles"></label>
 
-                        @await Component.InvokeAsync("SubListView", new { entity = Model, property = "Roles", subListViewId = "ListView_RolesUsers", scrollSize = "sm" })
+                        @await Component.InvokeAsync("SubListView", new { entity = Model, collection = Model.Roles, subListViewId = "ListView_RolesUsers" })
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
     <div class="tab-pane fade @(currentTab.Equals("managers") ? "show active" : "")" id="managers">
         <div class="card border-top-0">
             <div class="card-body p-2">
-                @await Component.InvokeAsync("SubListView", new { entity = Model, property = "Managers", subListViewId = "ListView_UsersManagers", scrollSize = "md" })
+                @await Component.InvokeAsync("SubListView", new { entity = Model, collection = Model.Managers, subListViewId = "ListView_UsersManagers" })
             </div>
         </div>
     </div>
@@ -73,7 +73,7 @@
     <div class="tab-pane fade @(currentTab.Equals("subordinates") ? "show active" : "")" id="subordinates">
         <div class="card border-top-0">
             <div class="card-body p-2">
-                @await Component.InvokeAsync("SubListView", new { entity = Model, property = "Subordinates", subListViewId = "ListView_UsersSubordinates", scrollSize = "md" })
+                @await Component.InvokeAsync("SubListView", new { entity = Model, collection = Model.Subordinates, subListViewId = "ListView_UsersSubordinates" })
             </div>
         </div>
     </div>

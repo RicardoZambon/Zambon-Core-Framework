@@ -3,11 +3,11 @@
 @if (Model is Zambon.Core.Module.Xml.Views.DetailViews.DetailView)
 {
     var detailView = (Zambon.Core.Module.Xml.Views.DetailViews.DetailView)Model;
-    if ((detailView?.Scripts?.Script?.Count() ?? 0) > 0)
+    if ((detailView?.Scripts?.Count() ?? 0) > 0)
     {
-        for (var s = 0; s < detailView.Scripts.Script.Count(); s++)
+        for (var s = 0; s < detailView.Scripts.Count(); s++)
         {
-            <script src="@Url.Content(detailView.Scripts.Script[s].Src)"></script>
+            <script src="@Url.Content(detailView.Scripts[s].Src)"></script>
         }
     }
 }

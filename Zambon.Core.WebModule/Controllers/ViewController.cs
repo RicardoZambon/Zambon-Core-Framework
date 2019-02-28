@@ -119,7 +119,7 @@ namespace Zambon.Core.WebModule.Controllers
                 var lookupModal = view.GetSubView(viewInfo.ModalId) as LookupModal;
 
                 ((LookupView)lookupModal.View).PopulateView(_app, _ctx, searchOptions);
-                _app.SetLookUpViewPostBackOptions(viewInfo.ViewId, postBackOptions ?? new PostBackOptions() { PostbackActionName = "", PostbackFormId = "" });
+                ((LookupView)lookupModal.View).SetPostBackOptions(postBackOptions ?? new PostBackOptions() { PostbackActionName = "", PostbackFormId = "" });
 
                 return PartialView("~/Views/Shared/Components/ModalView/LookupModalView_Form.cshtml", lookupModal);
             }

@@ -10,35 +10,28 @@ using System.Threading.Tasks;
 
 namespace Zambon.Core.WebModule.TagHelpers
 {
-    [HtmlTargetElement("div", Attributes = ForAttributeName)]
+    [HtmlTargetElement("div", Attributes = "app-set-login-theme")]
     public class LoginTagHelper : TagHelper
     {
 
-        private const string ForAttributeName = "app-set-login-theme";
-
         #region Properties
 
-        public override int Order => 0;
-
-        protected ApplicationService App { get; }
+        private readonly ApplicationService ApplicationService;
 
         #endregion
 
         #region Constructors
 
-        public LoginTagHelper(ApplicationService _app)
+        public LoginTagHelper(ApplicationService applicationService)
         {
-            App = _app;
+            ApplicationService = applicationService;
         }
 
         #endregion
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (output == null) throw new ArgumentNullException(nameof(output));
-
-            output.AddClass(App.GetLoginTheme(), HtmlEncoder.Default);
+            output.AddClass(ApplicationService.LoginTheme, HtmlEncoder.Default);
         }
 
     }

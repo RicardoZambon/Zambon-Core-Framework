@@ -1,135 +1,139 @@
 ﻿using Microsoft.Extensions.Options;
-using Zambon.Core.Database;
-using Zambon.Core.Module.Xml;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Module.ExtensionMethods;
+using Zambon.Core.Module.Xml;
 
 namespace Zambon.Core.Module.Services
 {
     public class ModelService
     {
-
+        
         #region Variables
 
-        private readonly IOptions<AppSettings> _appConfigs;
+        private readonly IOptions<ApplicationConfigs> AppConfigs;
+
+        private Dictionary<string, Application> Model;
 
         #endregion
 
         #region Properties
 
-        private string AppVersion { get; set; }
+        private string _AppVersion;
+        public string AppVersion {
+            get {
+                if (string.IsNullOrWhiteSpace(_AppVersion))
+                {
+                    var assembly = Assembly.GetEntryAssembly();
+                    _AppVersion = (assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
+                    _AppCopyright = (assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute)).FirstOrDefault() as AssemblyCopyrightAttribute).Copyright;
+                }
+                return _AppVersion;
+            }
+        }
 
-        private string AppCopyright { get; set; }
+        private string _AppCopyright;
+        public string AppCopyright {
+            get {
+                if (string.IsNullOrWhiteSpace(_AppCopyright))
+                {
+                    var assembly = Assembly.GetEntryAssembly();
+                    _AppVersion = (assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
+                    _AppCopyright = (assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute)).FirstOrDefault() as AssemblyCopyrightAttribute).Copyright;
+                }
+                return _AppCopyright;
 
-        private Application _Model;
+            }
+        }
 
         #endregion
 
         #region Constructors
 
-        public ModelService(IOptions<AppSettings> appConfigs)
+        public ModelService(IOptions<ApplicationConfigs> appConfigs)
         {
-            _appConfigs = appConfigs;
+            AppConfigs = appConfigs;
         }
 
         #endregion
 
         #region Methods
 
-        private void LoadModel(CoreDbContext ctx)
+        public Application GetModel(CoreDbContext ctx, string language)
         {
-            var assembly = Assembly.GetEntryAssembly();
-            var resourceName = "ApplicationModel.xml";
+            if (Model == null)
+                LoadAllModelFiles(ctx);
 
-            System.IO.Stream stream;
-
-            //Read from the WebModule
-            Application application = null;
-            stream = Assembly.Load("Zambon.Core.WebModule").GetManifestResourceStream(string.Format("Zambon.Core.WebModule.{0}", resourceName));
-            if (stream != null)
-                using (stream)
-                {
-                    var serializer = new XmlSerializer(typeof(Application));
-                    application = (Application)serializer.Deserialize(stream);
-                }
-
-            //Read from the Application
-            var path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(assembly.Location), resourceName);
-            if (System.IO.File.Exists(path))
-                stream = System.IO.File.Open(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            Application model;
+            if (string.IsNullOrWhiteSpace(language) || !Model.ContainsKey(language))
+                model = (Application)Model.FirstOrDefault().Value.Clone();
             else
-                stream = assembly.GetManifestResourceStream(string.Format("{0}.{1}", assembly.GetName().Name, resourceName));
+                model = (Application)Model[language].Clone();
 
-            if (stream != null)
-                using (stream)
+            model.OnLoadingUserModel(model, ctx);
+            return model;
+        }
+
+        private void LoadAllModelFiles(CoreDbContext ctx)
+        {
+            if (Model == null)
+                Model = new Dictionary<string, Application>();
+            else
+                Model.Clear();
+
+            if ((AppConfigs.Value.Languages?.Length ?? 0) == 0)
+                Model.Add("", LoadModelFile(ctx));
+            else
+                for (var l = 0; l < AppConfigs.Value.Languages.Length; l++)
                 {
-                    var serializer = new XmlSerializer(typeof(Application));
-
-                    if (application != null)
-                        application = application.MergeObject((Application)serializer.Deserialize(stream));
-                    else
-                        application = (Application)serializer.Deserialize(stream);
+                    var language = l == 0 ? "" : AppConfigs.Value.Languages[l];
+                    Model.Add(language, LoadModelFile(ctx, language));
                 }
 
-            application.OnLoadingXml(application, ctx);
-
-            _Model = application;
+            foreach (var applicationModel in Model.Values)
+                applicationModel.OnLoadingXml(applicationModel, ctx);
         }
 
-
-        internal string GetAppVersion()
+        private Application LoadModelFile(CoreDbContext ctx, string language = "")
         {
-            if (string.IsNullOrWhiteSpace(AppVersion))
+            var fileName = string.Format("ApplicationModel{0}.xml", !string.IsNullOrWhiteSpace(language) ? "." + language : "");
+            var serializer = new XmlSerializer(typeof(Application));
+
+            Application model = null;
+
+            //Search in WebModule if exists the ApplicationModel XML base file.
+            using (var webModuleStream = Assembly.Load("Zambon.Core.WebModule").GetManifestResourceStream(string.Format("Zambon.Core.WebModule.{0}", fileName)))
+                if(webModuleStream != null)
+                    model = (Application)serializer.Deserialize(webModuleStream);
+
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
+            using (var applicationStream = File.Exists(path) ? File.Open(path, FileMode.Open, FileAccess.Read) : Assembly.GetEntryAssembly().GetManifestResourceStream($"{Assembly.GetEntryAssembly().GetName().Name}.{fileName}"))
+                if (applicationStream != null)
+                {
+                    var applicationModel = (Application)serializer.Deserialize(applicationStream);
+                    model = model != null ? model.MergeObject(applicationModel) : applicationModel; 
+                }
+
+            if(!string.IsNullOrWhiteSpace(language) && Model.Count() > 0)
             {
-                var assembly = Assembly.GetEntryAssembly();
-                AppVersion = (assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)).FirstOrDefault() as AssemblyInformationalVersionAttribute).InformationalVersion;
+                //If is inserting any language and has already inserted at least one in _Model, this means this in an alternative language.
+                //Must then merge with the default (First) language.
+                model = ((Application)Model.FirstOrDefault().Value.Clone()).MergeObject(model);
             }
-            return AppVersion;
+
+            return model;
         }
 
-        internal string GetAppCopyright()
-        {
-            if (string.IsNullOrWhiteSpace(AppCopyright))
-            {
-                var assembly = Assembly.GetEntryAssembly();
-                AppCopyright = (assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute)).FirstOrDefault() as AssemblyCopyrightAttribute).Copyright;
-            }
-            return AppCopyright;
-        }
 
-        internal AppSettings GetAppSettings()
+        internal ApplicationConfigs GetAppSettings()
         {
-            return _appConfigs.Value;
+            return AppConfigs.Value;
         }
         
-
-        public Application GetModel(CoreDbContext ctx)
-        {
-            if (_Model == null)
-                LoadModel(ctx);
-            return _Model;
-        }
-
-        public string GetPropertyDisplayName(string typeClr, string name)
-        {
-            if ((_Model?.EntityTypes?.Length ?? 0) > 0)
-            {
-                var entity = Array.Find(_Model.EntityTypes, e => e.Id == typeClr);
-                if ((entity?.Properties?.Length ?? 0) > 0)
-                {
-                    var property = Array.Find(entity.Properties, p => p.Name == name);
-                    return property?.DisplayName ?? string.Empty;
-                }
-            }
-            return string.Empty;
-        }
-
         #endregion
 
     }

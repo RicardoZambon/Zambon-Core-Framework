@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using Zambon.Core.Module.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Zambon.Core.WebModule.TagHelpers
 {
@@ -10,25 +7,19 @@ namespace Zambon.Core.WebModule.TagHelpers
     public class TitleTagHelper : TagHelper
     {
 
-        private readonly ApplicationService _app;
+        private readonly ApplicationService ApplicationService;
 
-        #region Constructors
 
-        public TitleTagHelper(ApplicationService app)
+        public TitleTagHelper(ApplicationService applicationService)
         {
-            _app = app;
+            ApplicationService = applicationService;
         }
 
-        #endregion
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (output == null) throw new ArgumentNullException(nameof(output));
-
-            output.Content.Append(string.Format("{0}{1} v{2}", _app.GetAppName(), (!string.IsNullOrWhiteSpace(_app.GetAppSettings().EnvironmentTitle) ? " " + _app.GetAppSettings().EnvironmentTitle.Trim() : string.Empty), _app.GetAppVersion()));
+            output.Content.Append($"{(ApplicationService.AppConfigs.HasEnvironmentTitle ? "[" + ApplicationService.AppConfigs.EnvironmentTitle + "] " : "")}{ApplicationService.AppName} v{ApplicationService.Version}");
         }
-
 
     }
 }
