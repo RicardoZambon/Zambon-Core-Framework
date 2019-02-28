@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zambon.Core.Module.Xml.Views.SubViews
+﻿namespace Zambon.Core.Module.Xml.Views.SubViews
 {
     public class PostBackOptions
     {
