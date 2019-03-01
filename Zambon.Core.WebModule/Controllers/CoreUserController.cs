@@ -63,7 +63,7 @@ namespace Zambon.Core.WebModule.Controllers
 
         protected override async void ActionSave(BaseView view, U entity)
         {
-            if (entity.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
+            if (entity.AuthenticationType == Module.Enums.AuthenticationType.UserPassword)
             {
                 if (entity.ID <= 0)
                 {

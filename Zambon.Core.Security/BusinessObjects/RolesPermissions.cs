@@ -19,13 +19,13 @@ namespace Zambon.Core.Security.BusinessObjects
         public string Entity { get; set; }
 
         [Display(Name = "Permission type")]
-        public Module.Helper.Enums.PermissionTypes PermissionType { get; set; }
+        public Module.Enums.PermissionTypes PermissionType { get; set; }
 
-        public bool CanNavigate { get { return PermissionType.Equals(Module.Helper.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.ReadOnly) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.Navigate); } }
-        public bool CanRead { get { return PermissionType.Equals(Module.Helper.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.ReadOnly) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.Read); } }
-        public bool CanWrite { get { return PermissionType.Equals(Module.Helper.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.Write); } }
-        public bool CanCreate { get { return PermissionType.Equals(Module.Helper.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.Create); } }
-        public bool CanDelete { get { return PermissionType.Equals(Module.Helper.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Helper.Enums.PermissionTypes.Delete); } }
+        public bool CanNavigate { get { return PermissionType.Equals(Module.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Enums.PermissionTypes.ReadOnly) || PermissionType.Equals(Module.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Enums.PermissionTypes.Navigate); } }
+        public bool CanRead { get { return PermissionType.Equals(Module.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Enums.PermissionTypes.ReadOnly) || PermissionType.Equals(Module.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Enums.PermissionTypes.Read); } }
+        public bool CanWrite { get { return PermissionType.Equals(Module.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Enums.PermissionTypes.Write); } }
+        public bool CanCreate { get { return PermissionType.Equals(Module.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Enums.PermissionTypes.ReadWrite) || PermissionType.Equals(Module.Enums.PermissionTypes.Create); } }
+        public bool CanDelete { get { return PermissionType.Equals(Module.Enums.PermissionTypes.FullAccess) || PermissionType.Equals(Module.Enums.PermissionTypes.Delete); } }
 
         #endregion
 

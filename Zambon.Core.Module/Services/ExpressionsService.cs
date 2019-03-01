@@ -81,16 +81,27 @@ namespace Zambon.Core.Module.Services
             return new object[0];
         }
 
+        public bool IsConditionApplicable(string condition, object obj = null)
+        {
+            if (obj == null)
+                return (new[] { new object() }).AsQueryable().Any(condition);
+
+            return (bool)GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(IsConditionApplicable) && x.IsGenericMethod && x.GetParameters()[0].Name == nameof(condition)).MakeGenericMethod(obj.GetType()).Invoke(this, new[] { condition, obj });
+        }
         public bool IsConditionApplicable(ICondition element, object obj = null)
         {
             if (obj == null)
                 return (new[] { new object() }).AsQueryable().Any(element.Condition, FormatArguments(element.ConditionArguments));
 
-            return (bool)GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(IsConditionApplicable) && x.IsGenericMethod).MakeGenericMethod(obj.GetType()).Invoke(this, new[] { element, obj });
+            return (bool)GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(IsConditionApplicable) && x.IsGenericMethod && x.GetParameters()[0].Name == nameof(element)).MakeGenericMethod(obj.GetType()).Invoke(this, new[] { element, obj });
         }
         public bool IsConditionApplicable<T>(ICondition element, T obj) where T : class
         {
             return (new[] { obj }).AsQueryable().Any(element.Condition, FormatArguments(element.ConditionArguments, obj));
+        }
+        public bool IsConditionApplicable<T>(string condition, T obj) where T : class
+        {
+            return (new[] { obj }).AsQueryable().Any(condition);
         }
 
         public string FormatExpression(string expression, object obj = null)

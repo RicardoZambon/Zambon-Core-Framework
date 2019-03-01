@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Zambon.Core.Database;
 using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module;
 using Zambon.Core.Security.BusinessObjects;
 
 namespace Zambon.DemoApplication.Database
@@ -37,7 +38,7 @@ namespace Zambon.DemoApplication.Database
         {
             var passwordHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Users>();
 
-            var admin = new Users() { ID = 1, AuthenticationType = Core.Module.Helper.Enums.AuthenticationType.UserPassword, Username = "admin", LogonAllowed = true };
+            var admin = new Users() { ID = 1, AuthenticationType = Enums.AuthenticationType.UserPassword, Username = "admin", LogonAllowed = true };
             admin.Password = passwordHasher.HashPassword(admin, "admin");
             modelBuilder.Entity<Users>().HasData(admin);
 

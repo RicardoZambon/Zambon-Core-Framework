@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Zambon.Core.Database;
-using Zambon.Core.Module.Xml.Views.SubViews;
-using Zambon.Core.Module.Xml.Navigation;
-using Zambon.Core.Module.Xml.Views.ListViews;
-using System.Text.RegularExpressions;
-using Zambon.Core.Module.Xml.Views.DetailViews;
-using Zambon.Core.Module.Helper;
-using Zambon.Core.Module.Xml.Views;
-using Zambon.Core.Module.Xml;
-using Zambon.Core.Module.Services.InstanceObjects;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Expressions;
-using Zambon.Core.Module.Xml.Views.ListViews.Search;
 using Zambon.Core.Module.Interfaces;
-using Microsoft.Extensions.Options;
+using Zambon.Core.Module.Xml;
+using Zambon.Core.Module.Xml.Navigation;
+using Zambon.Core.Module.Xml.Views;
+using Zambon.Core.Module.Xml.Views.DetailViews;
+using Zambon.Core.Module.Xml.Views.ListViews;
 
 namespace Zambon.Core.Module.Services
 {

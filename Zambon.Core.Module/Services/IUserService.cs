@@ -1,4 +1,6 @@
-﻿namespace Zambon.Core.Module.Interfaces
+﻿using Zambon.Core.Module.Interfaces;
+
+namespace Zambon.Core.Module.Services
 {
     public interface IUserService
     {

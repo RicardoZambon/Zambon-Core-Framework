@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Zambon.Core.Module.Helper
+namespace Zambon.Core.Module.ExtensionMethods
 {
     public static class EnumExtension
     {

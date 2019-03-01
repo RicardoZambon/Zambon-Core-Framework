@@ -8,5 +8,8 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
         [XmlAttribute("Title")]
         public string Title { get; set; }
 
+        [XmlIgnore]
+        public int Level { get; set; }
+
     }
 }

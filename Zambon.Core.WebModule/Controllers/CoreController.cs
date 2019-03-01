@@ -7,7 +7,6 @@ using Zambon.Core.Database;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.ExtensionMethods;
-using Zambon.Core.Module.Helper;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml.Views.DetailViews;

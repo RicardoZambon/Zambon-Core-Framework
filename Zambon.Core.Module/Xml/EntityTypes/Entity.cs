@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
 using Zambon.Core.Database.Entity;
+using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Module.Xml.EntityTypes
 {
@@ -90,7 +92,7 @@ namespace Zambon.Core.Module.Xml.EntityTypes
                         if (!Navigations.ContainsKey(nav.Name))
                         {
                             var navClrType = nav.ClrType.GenericTypeArguments.Length > 0 ? nav.ClrType.GenericTypeArguments[0] : nav.ClrType;
-                            if (navClrType.IsSubclassOf(typeof(BaseDBObject)))
+                            if (navClrType.ImplementsInterface<IEntity>() || navClrType.ImplementsInterface<IQuery>())
                             {
                                 var entity = app.FindEntityByClrType(navClrType.FullName) ?? app.FindEntityById(navClrType.Name);
                                 if (entity != null)
@@ -121,7 +123,7 @@ namespace Zambon.Core.Module.Xml.EntityTypes
                     if (nav.PropertyInfo != null && !Navigations.ContainsKey(nav.Name))
                     {
                         var navClrType = nav.ClrType.GenericTypeArguments.Length > 0 ? nav.ClrType.GenericTypeArguments[0] : nav.ClrType;
-                        if (navClrType.IsSubclassOf(typeof(BaseDBObject)))
+                        if (navClrType.ImplementsInterface<IEntity>() || navClrType.ImplementsInterface<IQuery>())
                         {
                             var entity = app.FindEntityByClrType(navClrType.FullName) ?? app.FindEntityById(navClrType.Name);
                             if (entity != null)

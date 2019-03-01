@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Zambon.Core.Module.Helper
+namespace Zambon.Core.Module
 {
     public class Enums
     {

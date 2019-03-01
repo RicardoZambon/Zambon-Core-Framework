@@ -20,7 +20,7 @@ namespace Zambon.Core.Security.BusinessObjects
         #region Properties
 
         [Display(Name = "Authentication type")]
-        public Module.Helper.Enums.AuthenticationType AuthenticationType { get; set; }
+        public Module.Enums.AuthenticationType AuthenticationType { get; set; }
 
 
         [Display(Name = "Full name"), StringLength(100)]
@@ -85,17 +85,17 @@ namespace Zambon.Core.Security.BusinessObjects
 
         public bool UserHasAccessToType(string typeFullName, int _access)
         {
-            var access = (Module.Helper.Enums.PermissionTypes)_access;
+            var access = (Module.Enums.PermissionTypes)_access;
             return !string.IsNullOrWhiteSpace(typeFullName)
                 && (IsAdministrator
                     || Roles?.Where(
                     r => r.Role is Roles && ((Roles)r.Role).Permissions != null && ((Roles)r.Role).Permissions.Where(
                         p => p.Entity == typeFullName
-                            && ((access == Module.Helper.Enums.PermissionTypes.Create && p.CanCreate)
-                                || (access == Module.Helper.Enums.PermissionTypes.Delete && p.CanDelete)
-                                || (access == Module.Helper.Enums.PermissionTypes.Navigate && p.CanNavigate)
-                                || (access == Module.Helper.Enums.PermissionTypes.Read && p.CanRead)
-                                || (access == Module.Helper.Enums.PermissionTypes.Write && p.CanWrite))
+                            && ((access == Module.Enums.PermissionTypes.Create && p.CanCreate)
+                                || (access == Module.Enums.PermissionTypes.Delete && p.CanDelete)
+                                || (access == Module.Enums.PermissionTypes.Navigate && p.CanNavigate)
+                                || (access == Module.Enums.PermissionTypes.Read && p.CanRead)
+                                || (access == Module.Enums.PermissionTypes.Write && p.CanWrite))
                         ).Count() > 0
                     ).Count() > 0
                 );

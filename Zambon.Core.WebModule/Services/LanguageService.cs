@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.WebModule.Services
 {

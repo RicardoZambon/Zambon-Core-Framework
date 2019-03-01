@@ -1,6 +1,5 @@
 ﻿using System;
 using Zambon.Core.Database.Interfaces;
-using Zambon.Core.Module.Helper;
 
 namespace Zambon.Core.Module.Interfaces
 {

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Expressions;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.ListViews;
 using System;

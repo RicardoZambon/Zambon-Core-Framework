@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Module.Expressions;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.ListViews;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;

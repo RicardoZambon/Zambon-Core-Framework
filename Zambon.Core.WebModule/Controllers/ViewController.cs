@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System;
+using System.Net;
 using Zambon.Core.Database;
-using Zambon.Core.Module.Expressions;
 using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml.Views.ListViews;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
 using Zambon.Core.Module.Xml.Views.SubViews;
 using Zambon.Core.WebModule.ActionFilters;
 using Zambon.Core.WebModule.Helper;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 
 namespace Zambon.Core.WebModule.Controllers
 {

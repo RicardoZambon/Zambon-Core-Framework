@@ -1,13 +1,7 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Module.Expressions;
-using Zambon.Core.Module.Services;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Text;
 using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.Module.Validations
 {
@@ -38,24 +32,25 @@ namespace Zambon.Core.Module.Validations
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if (string.IsNullOrWhiteSpace(Condition) || Expression.ConditionIsApplicable(Condition, validationContext.ObjectInstance))
+            var expressionService = validationContext.GetService(typeof(ExpressionsService)) as ExpressionsService;
+            if (string.IsNullOrWhiteSpace(Condition) || expressionService == null || expressionService.IsConditionApplicable(Condition, validationContext.ObjectInstance))
             {
                 if (value == null || (value is int intValue && intValue.Equals(0)) || (value is string stringValue && stringValue.Equals(string.Empty)))
                 {
                     var defaultMessage = "The property '{0}' is mandatory.";
                     var displayName = validationContext.DisplayName;
 
-                    if (validationContext.GetService(typeof(ApplicationService)) is ApplicationService app)
+                    if (validationContext.GetService(typeof(ApplicationService)) is ApplicationService appService)
                     {
-                        defaultMessage = app.GetStaticText("ValidationMessageDefault_RuleRequired");
-                        var displayText = app.GetPropertyDisplayName(validationContext.ObjectType.GetCorrectType().FullName, validationContext.MemberName);
+                        defaultMessage = appService.GetStaticText("ValidationMessageDefault_RuleRequired");
+                        var displayText = appService.GetPropertyDisplayName(validationContext.ObjectType.GetCorrectType().FullName, validationContext.MemberName);
                         if (!string.IsNullOrWhiteSpace(displayText))
                             displayName = displayText;
                     }
 
                     return new ValidationResult(
-                        (!string.IsNullOrWhiteSpace(ErrorMessage) ? ErrorMessage : string.Format(defaultMessage, displayName)),
-                        (string.IsNullOrWhiteSpace(ElementId) ? new[] { validationContext.MemberName }  : ElementId.Split(",")));
+                        !string.IsNullOrWhiteSpace(ErrorMessage) ? ErrorMessage : string.Format(defaultMessage, displayName),
+                        string.IsNullOrWhiteSpace(ElementId) ? new[] { validationContext.MemberName }  : ElementId.Split(","));
                 }
             }
 

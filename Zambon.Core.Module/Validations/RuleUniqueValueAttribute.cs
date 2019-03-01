@@ -1,15 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Module.Expressions;
-using Zambon.Core.Module.Services;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Text;
+using Zambon.Core.Database;
+using Zambon.Core.Database.Entity;
+using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.Module.Validations
 {
@@ -46,21 +43,22 @@ namespace Zambon.Core.Module.Validations
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            var expressionService = validationContext.GetService(typeof(ExpressionsService)) as ExpressionsService;
             if ((string.IsNullOrWhiteSpace(Condition)
-                || Expression.ConditionIsApplicable(Condition, validationContext.ObjectInstance))
+                || expressionService == null || expressionService.IsConditionApplicable(Condition, validationContext.ObjectInstance))
                 && value != null
                 && (value is string stringValue && (!string.IsNullOrWhiteSpace(stringValue) || !IgnoreEmptyStrings)))
             {
-                if (validationContext.GetService(typeof(CoreDbContext)) is CoreDbContext ctx && validationContext.ObjectInstance is BaseDBObject dbInstance)
+                if (validationContext.GetService(typeof(CoreDbContext)) is CoreDbContext ctx && validationContext.ObjectInstance is IKeyed dbInstance)
                 {
-                    string query;
+                    string query = validationContext.ObjectInstance is BaseDBObject ? "IsDeleted = false AND " : "";
                     switch (value)
                     {
                         case string valueString:
-                            query = "IsDeleted = false AND ID != @0 AND {0}.ToLower().Equals(@1.ToLower())";
+                            query += "ID != @0 AND {0}.ToLower().Equals(@1.ToLower())";
                             break;
                         default:
-                            query = "IsDeleted = false AND ID != @0 AND {0} = @1";
+                            query = "AND ID != @0 AND {0} = @1";
                             break;
                     }
 
@@ -78,7 +76,7 @@ namespace Zambon.Core.Module.Validations
                         }
 
                         return new ValidationResult(
-                            (!string.IsNullOrWhiteSpace(ErrorMessage) ? ErrorMessage : string.Format(defaultMessage, displayName)),
+                            !string.IsNullOrWhiteSpace(ErrorMessage) ? ErrorMessage : string.Format(defaultMessage, displayName),
                             new[] { validationContext.MemberName });
                     }
                 }

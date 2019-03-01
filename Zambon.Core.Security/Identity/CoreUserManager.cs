@@ -59,7 +59,7 @@ namespace Zambon.Core.Security.Identity
         }
         public async Task<IdentityResult> AddPasswordAsync(TUser user, string password, bool useTransaction = true)
         {
-            if (user.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
+            if (user.AuthenticationType == Module.Enums.AuthenticationType.UserPassword)
             {
                 var passwordStore = GetPasswordStore();
                 if (user == null)
@@ -85,7 +85,7 @@ namespace Zambon.Core.Security.Identity
         }
         public async Task<IdentityResult> ChangePasswordAsync(TUser user, string currentPassword, string newPassword, bool useTransaction = true)
         {
-            if (user.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
+            if (user.AuthenticationType == Module.Enums.AuthenticationType.UserPassword)
             {
                 var passwordStore = GetPasswordStore();
                 if (user == null)
@@ -108,9 +108,9 @@ namespace Zambon.Core.Security.Identity
         public override Task<bool> CheckPasswordAsync(TUser user, string password)
         {
             if (user.LogonAllowed)
-                if (user.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
+                if (user.AuthenticationType == Module.Enums.AuthenticationType.UserPassword)
                     return base.CheckPasswordAsync(user, password);
-                else if (user.AuthenticationType == Module.Helper.Enums.AuthenticationType.LDAP)
+                else if (user.AuthenticationType == Module.Enums.AuthenticationType.LDAP)
                 {
                     if (string.IsNullOrWhiteSpace(_options.Value.DefaultDomainName))
                         throw new ApplicationException("Missing domain configuration in appsettings.json file.");
@@ -177,7 +177,7 @@ namespace Zambon.Core.Security.Identity
         }
         public async Task<IdentityResult> RemovePasswordAsync(TUser user, bool useTransaction = true)
         {
-            if (user.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
+            if (user.AuthenticationType == Module.Enums.AuthenticationType.UserPassword)
             {
                 var passwordStore = GetPasswordStore();
                 if (user == null)
@@ -195,7 +195,7 @@ namespace Zambon.Core.Security.Identity
         }
         public async Task<IdentityResult> ResetPasswordAsync(TUser user, string token, string newPassword, bool useTransaction = true)
         {
-            if (user.AuthenticationType == Module.Helper.Enums.AuthenticationType.UserPassword)
+            if (user.AuthenticationType == Module.Enums.AuthenticationType.UserPassword)
             {
                 if (user == null)
                     throw new ArgumentNullException(nameof(user));
