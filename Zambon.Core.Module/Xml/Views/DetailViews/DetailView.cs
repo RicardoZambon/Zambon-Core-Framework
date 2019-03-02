@@ -10,29 +10,54 @@ using Zambon.Core.Module.Xml.Views.DetailViews.Scripts;
 
 namespace Zambon.Core.Module.Xml.Views.DetailViews
 {
+    /// <summary>
+    /// Represents views showing detailed data.
+    /// </summary>
     public class DetailView : View
     {
+
+        /// <summary>
+        /// The type of the view, if set to Single will only show the first element from the database. Default is empty.
+        /// </summary>
         [XmlAttribute("ViewType")]
         public string ViewType { get; set; }
 
+        /// <summary>
+        /// Enctype should be used from the <form></form> html element. Default is empty.
+        /// </summary>
         [XmlAttribute("FormEnctype")]
         public string FormEnctype { get; set; }
 
+        /// <summary>
+        /// Override the view .cshtml default name from DetailViewConfiguration node.
+        /// </summary>
         [XmlAttribute("DefaultView")]
         public string DefaultView { get; set; }
 
+        /// <summary>
+        /// If Views folder is organized in three levels, should use this property. {ViewFolder}\ControllerName\ViewName.cshtml
+        /// </summary>
         [XmlAttribute("ViewFolder")]
         public string ViewFolder { get; set; }
 
 
+        /// <summary>
+        /// List of all scripts in this detail view.
+        /// </summary>
         [XmlIgnore, Browsable(false)]
         public Script[] Scripts { get { return _Scripts?.Script; } }
 
 
+        /// <summary>
+        /// List of all scripts in this detail view.
+        /// </summary>
         [XmlElement("Scripts")]
         public ScriptsArray _Scripts { get; set; }
 
 
+        /// <summary>
+        /// The current displayed view path. {ViewFolder}\ControllerName\ViewName.cshtml
+        /// </summary>
         [XmlIgnore]
         public string CurrentView { get; private set; }
 
@@ -66,10 +91,18 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
 
         #region Methods
 
+        /// <summary>
+        /// Creates an instance of the EntityType object and set the CurrentObject property.
+        /// </summary>
+        /// <param name="ctx">The CoreDbContext database instance.</param>
         public void ActivateInstance(CoreDbContext ctx)
         {
             GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(ActivateInstance) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { ctx });
         }
+        /// <summary>
+        /// Creates an instance of the EntityType object and set the CurrentObject property.
+        /// </summary>
+        /// <param name="ctx">The CoreDbContext database instance.</param>
         public void ActivateInstance<T>(CoreDbContext ctx) where T : class
         {
             T detailObject = null;
@@ -101,6 +134,10 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
             CurrentObject = detailObject;
         }
 
+        /// <summary>
+        /// Set the current view.
+        /// </summary>
+        /// <param name="currentView"></param>
         public void SetCurrentView(string currentView)
         {
             CurrentView = currentView;

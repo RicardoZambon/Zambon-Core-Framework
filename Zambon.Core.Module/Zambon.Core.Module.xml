@@ -1,0 +1,807 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Zambon.Core.Module</name>
+    </assembly>
+    <members>
+        <member name="T:Zambon.Core.Module.ApplicationConfigs">
+            <summary>
+            Represents the AppSettings.json file
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.Configs">
+            <summary>
+            List of all configs in "ApplicationConfigs" node with the key and value.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.Languages">
+            <summary>
+            List of languages in "Languages" already separated by ";". If no languages were informed will return null.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.EnvironmentTitle">
+            <summary>
+            The name of the current environment.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.HasEnvironmentTitle">
+            <summary>
+            Will return true if the EnvironmentTitle was informed.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.FileStorePath">
+            <summary>
+            The path where the files from the application should be stored.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.DefaultDomainName">
+            <summary>
+            The default domain name where the users with "LDAP" should be validated.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.ReportsURLServer">
+            <summary>
+            The URL of the report server, will be used in menu options of the type "Report".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.ApplicationConfigs.ReportsFolderBasePath">
+            <summary>
+            The folder base path of the reports in report server, will be used in menu options of the type "Report".
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.ApplicationConfigs.Set(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Populate the Configs property with the AppSettings.json file. Should only called when the application is starting.
+            </summary>
+            <param name="configs"></param>
+        </member>
+        <member name="T:Zambon.Core.Module.Services.ApplicationService">
+            <summary>
+            The main service used in application, is registered under Scoped lifecycle.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.AppConfigs">
+            <summary>
+            Returns the current instance of the AppSettings.json file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.AppName">
+            <summary>
+            The name of the application, from ApplicationModel.xml <Application Name=""></Application>.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.AppMenuName">
+            <summary>
+            The name of the application used in menu (If null will use the application name), from ApplicationModel.xml <Application MenuName=""></Application>.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.AppFullName">
+            <summary>
+            The full name of the application used in home page, from ApplicationModel.xml <Application FullName=""></Application>.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.Version">
+            <summary>
+            The current version of the application, from the startup project Package > Package version.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.Copyright">
+            <summary>
+            The copyright of the application, from the startup project Package > Copyright.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.LoginTheme">
+            <summary>
+            The login theme used in Login page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.UserMenu">
+            <summary>
+            The user menu array, already filtered accordingly to the available options.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ApplicationService.CurrentUser">
+            <summary>
+            Current active user object from UserService.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.#ctor(Zambon.Core.Database.CoreDbContext,Zambon.Core.Module.Services.ILanguageService,Zambon.Core.Module.Services.ModelService,Zambon.Core.Module.Services.ExpressionsService,Zambon.Core.Module.Services.IUserService)">
+            <summary>
+            Default constructor for the ApplicationService.
+            </summary>
+            <param name="ctx">Database instance service.</param>
+            <param name="languageService">Current language service.</param>
+            <param name="modelService">ApplicationModel.xml service.</param>
+            <param name="expressionsService">Expressions service.</param>
+            <param name="userService">Current active user service.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetExpressionsService">
+            <summary>
+            Returns the current used instance of the ExpressionsService.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetDefaultProperty(System.String)">
+            <summary>
+            Search for the default property from the entity type.
+            </summary>
+            <param name="clrType">The EntityType ClrType to search for.</param>
+            <returns>Return the System.ComponentModel.DefaultProperty attribute value, string.Empty if not found any default property defined.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetPropertyDisplayName(System.String,System.String)">
+            <summary>
+            Search for the display name of a property from a entity type.
+            </summary>
+            <param name="clrType">The EntityType ClrType to search for.</param>
+            <param name="propertyName">The name of the property.</param>
+            <returns>Return the System.ComponentModel.DataAnnotations.DisplayAttribute value, string.Empty if not found the display attribute.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetStaticText(System.String)">
+            <summary>
+            Search all Static Texts using the Key property.
+            </summary>
+            <param name="key">The static text key to search.</param>
+            <returns>Return the Static Text value string, string.Empty if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetBaseView(System.String)">
+            <summary>
+            Search all Views using the Id property.
+            </summary>
+            <param name="viewId">The id of the view to search.</param>
+            <returns>Return the BaseView object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetView(System.String)">
+            <summary>
+            Search DetailViews and ListViews using the Id property.
+            </summary>
+            <param name="viewId">The id of the view to search.</param>
+            <returns>Return the View object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetDetailView(System.String)">
+            <summary>
+            Search all DetailViews using the Id property.
+            </summary>
+            <param name="detailViewId">The id of the view to search.</param>
+            <returns>Return the DetailView object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetListView(System.String)">
+            <summary>
+            Search all ListViews using the Id property.
+            </summary>
+            <param name="listViewId">The id of the view to search.</param>
+            <returns>Return the ListView object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetLookupView(System.String)">
+            <summary>
+            Search all LookUpViews using the Id property.
+            </summary>
+            <param name="lookUpViewId">The id of the view to search.</param>
+            <returns>Return the LookUpView object, null if not found.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Application">
+            <summary>
+            Represents the root class from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.Name">
+            <summary>
+            Application name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.FullName">
+            <summary>
+            Long name for application
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.MenuName">
+            <summary>
+            Name to display in menu, if empty will use the Name property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.EntityTypes">
+            <summary>
+            List all entities, later used to construct the menus and views.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.Languages">
+            <summary>
+            List all available languages, will use the languages listed to show the language selection box.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.StaticTexts">
+            <summary>
+            Static texts used across the application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.ModuleConfiguration">
+            <summary>
+            Module default configuration.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.Navigation">
+            <summary>
+            List all menu items.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.Views">
+            <summary>
+            List all views items.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application._EntityTypes">
+            <summary>
+            Element representation of the Xml <EntityTipes></EntityTipes> node.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application._Languages">
+            <summary>
+            Element representation of the Xml <Languages></Languages> node.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application._StaticTexts">
+            <summary>
+            Element representation of the Xml <StaticTexts></StaticTexts> node.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application._Navigation">
+            <summary>
+            Element representation of the Xml <Navigation></Navigation> node.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.FindEntityById(System.String)">
+            <summary>
+            Search all entities using the Id.
+            </summary>
+            <param name="Id">The entity Id.</param>
+            <returns>Return the Entity object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.FindEntityByClrType(System.String)">
+            <summary>
+            Search all entities using the CLR Type.
+            </summary>
+            <param name="typeClr">The entity CLR Type.</param>
+            <returns>Return the Entity object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.FindLanguage(System.String)">
+            <summary>
+            Search all languages using the Code property.
+            </summary>
+            <param name="languageCode">The language code to search.</param>
+            <returns>Return the Language object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.GetStaticText(System.String)">
+            <summary>
+            Search all Static Texts using the Key property.
+            </summary>
+            <param name="key">The static text key to search.</param>
+            <returns>Return the Static Text value string, string.Empty if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.FindDetailView(System.String)">
+            <summary>
+            Search all DetailViews using the Id property.
+            </summary>
+            <param name="viewId">The id of the view to search.</param>
+            <returns>Return the DetailView object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.FindListView(System.String)">
+            <summary>
+            Search all ListViews using the Id property.
+            </summary>
+            <param name="viewId">The id of the view to search.</param>
+            <returns>Return the ListView object, null if not found.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Application.FindLookupView(System.String)">
+            <summary>
+            Search all LookUpViews using the Id property.
+            </summary>
+            <param name="viewId">The id of the view to search.</param>
+            <returns>Return the LookUpView object, null if not found.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Configuration.DetailViewDefaults">
+            <summary>
+            Define default configuration values for all DetailViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.DetailViewDefaults.DefaultAction">
+            <summary>
+            Define the default action name the DetailView should post when submitting the form.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.DetailViewDefaults.DefaultView">
+            <summary>
+            Define the default name of the .cshtml file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.EntityTypes.Entity">
+            <summary>
+            Represents entities used in CoreDbContext. IEntity or IQuery.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.Id">
+            <summary>
+            The Id of the entity type, used to merge same elements across ApplicationModels.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.DisplayName">
+            <summary>
+            Display name of the entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.Icon">
+            <summary>
+            Icon of the entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.DefaultController">
+            <summary>
+            Default controller name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.FromSql">
+            <summary>
+            If this entity should be returned directly from the database.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.TypeClr">
+            <summary>
+            The CLR type of the entity type, with the full type name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.Properties">
+            <summary>
+            Properties from the entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity._Properties">
+            <summary>
+            Properties from the entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.EntityType">
+            <summary>
+            The entity type from Entity Framework.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Entity.Navigations">
+            <summary>
+            Navigations from the entity type (ICollections, IList, etc.).
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.EntityTypes.Entity.GetDefaultProperty">
+            <summary>
+            Returns the default property set in DefaultPropertyAttribute. string.Empty if no property were informed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.EntityTypes.Entity.GetPropertyDisplayName(System.String)">
+            <summary>
+            Get the display name of a property.
+            </summary>
+            <param name="property">The name of the property.</param>
+            <returns>Returns the display name in ApplicationModel, if not found any, from the DisplayAttribut, if not found, will return the property.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.EntityTypes.Entity.GetEntityType">
+            <summary>
+            Get the CLR type object from the entity type.
+            </summary>
+            <returns>Returns the type object.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.EntityTypes.EntityTypesArray">
+            <summary>
+            Represents a list of entity types used in CoreDbContext. IEntity or IQuery.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.EntityTypesArray.Entities">
+            <summary>
+            List of all entity types.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.BaseView">
+            <summary>
+            Base view class used for all Views.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseView.ViewId">
+            <summary>
+            The ViewId, used to merge same elements across ApplicationModels.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseView.Title">
+            <summary>
+            The view title, if leave blank will use the DisplayName from the EntityType informed in Type property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseView.Icon">
+            <summary>
+            The view icon, if leave blank will use the Icon from the EntityType informed in Type property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseView.Type">
+            <summary>
+            The type type, must exist in EntityTypes list.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseView.Entity">
+            <summary>
+            The Entity object from the Type property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseView.CurrentObject">
+            <summary>
+            The current active object being shown.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseView.GetEntityTypeName">
+            <summary>
+            Return the TypeCLR string from the entity type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseView.GetEntityType">
+            <summary>
+            Return the Type object from the entity type.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseView.SetCurrentObject(System.Object)">
+            <summary>
+            Set the current object.
+            </summary>
+            <param name="currentObject">Current object. being show in page.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseView.ClearCurrentObject">
+            <summary>
+            Clears the current object.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.Buttons.Button">
+            <summary>
+            Represents buttons used in DetailViews or ListViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Id">
+            <summary>
+            The button Id, used to merge same elements across ApplicationModels.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Icon">
+            <summary>
+            The icon should be shows along with the button.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.DisplayName">
+            <summary>
+            The display name should show with the button (Inline buttons does not use DisplayName). The display name is also used to set the Title html property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.CssClass">
+            <summary>
+            Custom CSS class to use with the button.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.IntIndex">
+            <summary>
+            The index value returned from Xml file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Index">
+            <summary>
+            The button index order to display.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Target">
+            <summary>
+            The target container of the button, where the button should be shown (Toolbar, Inline, ModalFooter, Custom...). Can have more than one container separated by ",".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ControllerName">
+            <summary>
+            The controller name of the button, if no controller is informed will use the controller from the View where is inserted.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ActionName">
+            <summary>
+            The action name this button should execute when clicked.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ActionParameters">
+            <summary>
+            List of custom parameters to pass to the action, is possible to use object properties with [ ], ex: id=[ID].
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ActionMethod">
+            <summary>
+            The action method the button should execute, by default is POST.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.BoolUseFormPost">
+            <summary>
+            If the button should use the form post from DetailView, passing the entire object to the server. Defaut false.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.UseFormPost">
+            <summary>
+            If the button should use the form post from DetailView, passing the entire object to the server. Defaut false.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.LoadingContainer">
+            <summary>
+            Name of the loading container this button should use, default blank and will use the same from the form.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ConfirmMessage">
+            <summary>
+            If this button should show a confirmation message before submitting.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Condition">
+            <summary>
+            Condition to show this button.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ConditionArguments">
+            <summary>
+            Arguments pass to the condition separated by ",".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.OpenModal">
+            <summary>
+            The modal id in SubViews > SubModal > Id this button should open when clicked.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.ModalTitle">
+            <summary>
+            Override the modal Title property set in the modal itself and in the SubDetailView.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.SubButtons">
+            <summary>
+            Sub buttons list. Only used in Toolbar buttons.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button._SubButtons">
+            <summary>
+            Sub buttons list. Only used in Toolbar buttons.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Targets">
+            <summary>
+            List of targets set in Target property separated by ",".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Button.Modal">
+            <summary>
+            The modal object this button should open. Null if is not opening any modal.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.Buttons.Button.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other button, to sort the buttons array.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.Buttons.Button.IsApplicable(System.String)">
+            <summary>
+            Checks if the button is application to the target.
+            </summary>
+            <param name="target">The target container to check.</param>
+            <returns>Returns true if the button is applicable.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.Buttons.Button.IsApplicable(Zambon.Core.Module.Services.ExpressionsService,System.String,System.Object)">
+            <summary>
+            Checks if the button is application to the target and with the current object.
+            </summary>
+            <param name="service">Expressions service to compare the object with the condition property.</param>
+            <param name="target">The target container to check.</param>
+            <param name="obj">The object instance to compare the Criteria property.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.Buttons.Buttons">
+            <summary>
+            Represents a list of buttons used in DetailViews or ListViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Buttons.Buttons.Button">
+            <summary>
+            List of all buttons.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.DetailViews.DetailView">
+            <summary>
+            Represents views showing detailed data.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ViewType">
+            <summary>
+            The type of the view, if set to Single will only show the first element from the database. Default is empty.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.FormEnctype">
+            <summary>
+            Enctype should be used from the <form></form> html element. Default is empty.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.DefaultView">
+            <summary>
+            Override the view .cshtml default name from DetailViewConfiguration node.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ViewFolder">
+            <summary>
+            If Views folder is organized in three levels, should use this property. {ViewFolder}\ControllerName\ViewName.cshtml
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.Scripts">
+            <summary>
+            List of all scripts in this detail view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView._Scripts">
+            <summary>
+            List of all scripts in this detail view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.CurrentView">
+            <summary>
+            The current displayed view path. {ViewFolder}\ControllerName\ViewName.cshtml
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ActivateInstance(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Creates an instance of the EntityType object and set the CurrentObject property.
+            </summary>
+            <param name="ctx">The CoreDbContext database instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ActivateInstance``1(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Creates an instance of the EntityType object and set the CurrentObject property.
+            </summary>
+            <param name="ctx">The CoreDbContext database instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.SetCurrentView(System.String)">
+            <summary>
+            Set the current view.
+            </summary>
+            <param name="currentView"></param>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column">
+            <summary>
+            Represents columns used in ListViews and LookUpViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.PropertyName">
+            <summary>
+            The property name this column should show, ex: "Name" or "Role.Name".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.DisplayName">
+            <summary>
+            The column header display name, by default will take from EntityType Property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.IntIndex">
+            <summary>
+            The index value returned from Xml file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.Index">
+            <summary>
+            The column index order to display.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.Size">
+            <summary>
+            The size of the column, by default will take the available space equally, input numbers from 1 to 12 or "fit" to set to the minimum width possible without truncating the text. The sum of all columns can not be greater than 12.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.FormatType">
+            <summary>
+            The format the value should be formated in string.Format pattern: {0:MM/dd/yyyy}.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.Alignment">
+            <summary>
+            The alignment of the cell, by default is "Left". Can set "Left", "Center" or "Right".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.IsNullValue">
+            <summary>
+            Value to show when the column value is null.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.CssClass">
+            <summary>
+            Custom CSS class to use with the cell.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other column, to sort the columns array.
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Columns.ColumnsArray">
+            <summary>
+            Represents a list of columns used in ListViews or LookUpViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Columns.ColumnsArray.Column">
+            <summary>
+            List of all columns.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchType">
+            <summary>
+            Text (Default)
+            Number
+            NumberRange
+            DateTime
+            DateTimeRange
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.ComparisonType">
+            <summary>
+            Contains (Default)
+            Equal
+            GreatherThan
+            LowerThan
+            GreatherOrEqual
+            LowerOrEqual
+            StartsWith
+            EndsWith
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.BaseModal">
+            <summary>
+            Base class used for ModalViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.BaseModal.Title">
+            <summary>
+            Text to show in the modal title.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.BaseModal.Level">
+            <summary>
+            Current level of the modal, automatically calculated when generating the pages.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.BaseSubView">
+            <summary>
+            Base class used for SubViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.BaseSubView.Id">
+            <summary>
+            The SubView Id, used to merge same elements across ApplicationModels.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.BaseSubView.ViewId">
+            <summary>
+            The ViewId this SubView should show, must exist.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.BaseSubView.ParentViewId">
+            <summary>
+            The ViewId of the parent view. Automatically set from the application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.BaseSubView.View">
+            <summary>
+            The View object from the ViewId property.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.DetailModal">
+            <summary>
+            Modal used to show DetailViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.DetailModal.DetailView">
+            <summary>
+            The DetailView object from the ViewId property.
+            </summary>
+        </member>
+    </members>
+</doc>

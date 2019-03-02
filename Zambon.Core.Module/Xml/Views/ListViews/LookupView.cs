@@ -99,7 +99,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             var list = GetItemsList<T>(ctx);
 
             if (!string.IsNullOrWhiteSpace(Criteria))
-                list = list.Where(app.ExpressionsService, this);
+                list = list.Where(app.GetExpressionsService(), this);
             
             if (searchOptions?.HasSearch() ?? false)
             {

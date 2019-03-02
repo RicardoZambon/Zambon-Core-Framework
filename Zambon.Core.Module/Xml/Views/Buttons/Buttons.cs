@@ -4,9 +4,15 @@ using Zambon.Core.Database;
 
 namespace Zambon.Core.Module.Xml.Views.Buttons
 {
+    /// <summary>
+    /// Represents a list of buttons used in DetailViews or ListViews.
+    /// </summary>
     public class Buttons : XmlNode
     {
 
+        /// <summary>
+        /// List of all buttons.
+        /// </summary>
         [XmlElement("Button")]
         public Button[] Button { get; set; }
 

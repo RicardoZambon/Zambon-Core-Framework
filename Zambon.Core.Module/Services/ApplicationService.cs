@@ -10,6 +10,9 @@ using Zambon.Core.Module.Xml.Views.ListViews;
 
 namespace Zambon.Core.Module.Services
 {
+    /// <summary>
+    /// The main service used in application, is registered under Scoped lifecycle.
+    /// </summary>
     public class ApplicationService
     {
 
@@ -21,7 +24,7 @@ namespace Zambon.Core.Module.Services
 
         private readonly ModelService ModelService;
 
-        public readonly ExpressionsService ExpressionsService;
+        private readonly ExpressionsService ExpressionsService;
 
         private readonly IUserService UserService;
 
@@ -32,32 +35,68 @@ namespace Zambon.Core.Module.Services
         private Application _Model;
         private Application Model { get { if (_Model == null) _Model = ModelService.GetModel(Ctx, LanguageService.GetCurrentLanguage()); return _Model; } }
 
+
+        /// <summary>
+        /// Returns the current instance of the AppSettings.json file.
+        /// </summary>
         public ApplicationConfigs AppConfigs { get { return ModelService.GetAppSettings(); } }
 
 
+        /// <summary>
+        /// The name of the application, from ApplicationModel.xml <Application Name=""></Application>.
+        /// </summary>
         public string AppName { get { return Model.Name; } }
 
+        /// <summary>
+        /// The name of the application used in menu (If null will use the application name), from ApplicationModel.xml <Application MenuName=""></Application>.
+        /// </summary>
         public string AppMenuName { get { return Model.MenuName; } }
 
+        /// <summary>
+        /// The full name of the application used in home page, from ApplicationModel.xml <Application FullName=""></Application>.
+        /// </summary>
         public string AppFullName { get { return Model.FullName; } }
 
+        /// <summary>
+        /// The current version of the application, from the startup project Package > Package version.
+        /// </summary>
         public string Version { get { return ModelService.AppVersion; } }
 
+        /// <summary>
+        /// The copyright of the application, from the startup project Package > Copyright.
+        /// </summary>
         public string Copyright { get { return ModelService.AppCopyright; } }
 
 
+        /// <summary>
+        /// The login theme used in Login page.
+        /// </summary>
         public string LoginTheme { get { return Model.ModuleConfiguration?.LoginDefaults?.Theme ?? string.Empty; } }
 
 
         private Menu[] _UserMenu;
-        public Menu[] UserMenu { get { if (_UserMenu == null || _UserMenu.Length == 0) _UserMenu = GetMenus(); return _UserMenu; } }
+        /// <summary>
+        /// The user menu array, already filtered accordingly to the available options.
+        /// </summary>
+        public Menu[] UserMenu { get { if ((_UserMenu?.Length ?? 0) == 0) _UserMenu = GetMenus(); return _UserMenu; } }
 
+        /// <summary>
+        /// Current active user object from UserService.
+        /// </summary>
         public IUsers CurrentUser { get { return UserService.CurrentUser; } }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor for the ApplicationService.
+        /// </summary>
+        /// <param name="ctx">Database instance service.</param>
+        /// <param name="languageService">Current language service.</param>
+        /// <param name="modelService">ApplicationModel.xml service.</param>
+        /// <param name="expressionsService">Expressions service.</param>
+        /// <param name="userService">Current active user service.</param>
         public ApplicationService(CoreDbContext ctx, ILanguageService languageService, ModelService modelService, ExpressionsService expressionsService, IUserService userService)
         {
             Ctx = ctx;
@@ -71,70 +110,121 @@ namespace Zambon.Core.Module.Services
 
         #region Methods
 
+        /// <summary>
+        /// Returns the current used instance of the ExpressionsService.
+        /// </summary>
+        /// <returns></returns>
+        public ExpressionsService GetExpressionsService()
+        {
+            return ExpressionsService;
+        }
+
+
+        /// <summary>
+        /// Search for the default property from the entity type.
+        /// </summary>
+        /// <param name="clrType">The EntityType ClrType to search for.</param>
+        /// <returns>Return the System.ComponentModel.DefaultProperty attribute value, string.Empty if not found any default property defined.</returns>
         public string GetDefaultProperty(string clrType)
         {
             return Model.FindEntityByClrType(clrType)?.GetDefaultProperty() ?? string.Empty;
         }
 
+        /// <summary>
+        /// Search for the display name of a property from a entity type.
+        /// </summary>
+        /// <param name="clrType">The EntityType ClrType to search for.</param>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <returns>Return the System.ComponentModel.DataAnnotations.DisplayAttribute value, string.Empty if not found the display attribute.</returns>
         public string GetPropertyDisplayName(string clrType, string propertyName)
         {
             return Model.FindEntityByClrType(clrType)?.GetPropertyDisplayName(propertyName) ?? string.Empty;
         }
 
 
-        public string GetStaticText(string _key)
+        /// <summary>
+        /// Search all Static Texts using the Key property.
+        /// </summary>
+        /// <param name="key">The static text key to search.</param>
+        /// <returns>Return the Static Text value string, string.Empty if not found.</returns>
+        public string GetStaticText(string key)
         {
-            return Model.GetStaticText(_key);
+            return Model.GetStaticText(key);
         }
 
 
-        public BaseView GetBaseView(string _viewId)
+        /// <summary>
+        /// Search all Views using the Id property.
+        /// </summary>
+        /// <param name="viewId">The id of the view to search.</param>
+        /// <returns>Return the BaseView object, null if not found.</returns>
+        public BaseView GetBaseView(string viewId)
         {
-            if (GetView(_viewId) is View view)
+            if (GetView(viewId) is View view)
                 return view;
 
-            if (GetLookupView(_viewId) is LookupView lookupView)
+            if (GetLookupView(viewId) is LookupView lookupView)
                 return lookupView;
 
             return null;
         }
 
-        public View GetView(string _viewId)
+        /// <summary>
+        /// Search DetailViews and ListViews using the Id property.
+        /// </summary>
+        /// <param name="viewId">The id of the view to search.</param>
+        /// <returns>Return the View object, null if not found.</returns>
+        public View GetView(string viewId)
         {
-            if (!string.IsNullOrWhiteSpace(_viewId))
+            if (!string.IsNullOrWhiteSpace(viewId))
             {
-                if (GetDetailView(_viewId) is DetailView detailView)
+                if (GetDetailView(viewId) is DetailView detailView)
                     return detailView;
 
-                if (GetListView(_viewId) is ListView listView)
+                if (GetListView(viewId) is ListView listView)
                     return listView;
             }
             return null;
         }
 
 
-        public DetailView GetDetailView(string _detailViewId)
+        /// <summary>
+        /// Search all DetailViews using the Id property.
+        /// </summary>
+        /// <param name="detailViewId">The id of the view to search.</param>
+        /// <returns>Return the DetailView object, null if not found.</returns>
+        public DetailView GetDetailView(string detailViewId)
         {
-            return Model.FindDetailView(_detailViewId);
+            return Model.FindDetailView(detailViewId);
         }
 
-        public ListView GetListView(string _listViewId)
+        /// <summary>
+        /// Search all ListViews using the Id property.
+        /// </summary>
+        /// <param name="listViewId">The id of the view to search.</param>
+        /// <returns>Return the ListView object, null if not found.</returns>
+        public ListView GetListView(string listViewId)
         {
-            return Model.FindListView(_listViewId);
+            return Model.FindListView(listViewId);
         }
 
-        public LookupView GetLookupView(string _lookupViewId)
+        /// <summary>
+        /// Search all LookUpViews using the Id property.
+        /// </summary>
+        /// <param name="lookUpViewId">The id of the view to search.</param>
+        /// <returns>Return the LookUpView object, null if not found.</returns>
+        public LookupView GetLookupView(string lookUpViewId)
         {
-            return Model.FindLookupView(_lookupViewId);
+            return Model.FindLookupView(lookUpViewId);
         }
 
 
-        private Menu[] GetMenus(Menu[] _subMenus = null)
+        private Menu[] GetMenus(Menu[] subMenus = null)
         {
             var list = new List<Menu>();
             if (CurrentUser != null)
             {
-                var subMenus = _subMenus ?? Model.Navigation;
+                subMenus = subMenus ?? Model.Navigation;
                 for (var i = 0; i < subMenus.Count(); i++)
                 {
                     var menu = subMenus[i];

@@ -14,37 +14,70 @@ using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Module.Xml.EntityTypes
 {
+    /// <summary>
+    /// Represents entities used in CoreDbContext. IEntity or IQuery.
+    /// </summary>
     public class Entity : XmlNode
     {
 
+        /// <summary>
+        /// The Id of the entity type, used to merge same elements across ApplicationModels.
+        /// </summary>
         [XmlAttribute("Id"), MergeKey]
         public string Id { get; set; }
 
+        /// <summary>
+        /// Display name of the entity type.
+        /// </summary>
         [XmlAttribute("DisplayName")]
         public string DisplayName { get; set; }
 
+        /// <summary>
+        /// Icon of the entity type.
+        /// </summary>
         [XmlAttribute("Icon")]
         public string Icon { get; set; }
 
+        /// <summary>
+        /// Default controller name.
+        /// </summary>
         [XmlAttribute("DefaultController")]
         public string DefaultController { get; set; }
 
+        /// <summary>
+        /// If this entity should be returned directly from the database.
+        /// </summary>
         [XmlAttribute("FromSql")]
         public string FromSql { get; set; }
 
+        /// <summary>
+        /// The CLR type of the entity type, with the full type name.
+        /// </summary>
         [XmlAttribute("TypeClr")]
         public string TypeClr { get; set; }
 
+        /// <summary>
+        /// Properties from the entity type.
+        /// </summary>
         [XmlIgnore]
         public Property[] Properties { get { return _Properties?.Property; } }
 
+        /// <summary>
+        /// Properties from the entity type.
+        /// </summary>
         [XmlElement("Properties"), Browsable(false)]
         public Properties _Properties { get; set; }
 
 
+        /// <summary>
+        /// The entity type from Entity Framework.
+        /// </summary>
         [XmlIgnore]
         private IEntityType EntityType { get; set; }
 
+        /// <summary>
+        /// Navigations from the entity type (ICollections, IList, etc.).
+        /// </summary>
         [XmlIgnore, Browsable(false)]
         public IDictionary<string, Entity> Navigations { get; set; } = new Dictionary<string, Entity>();
 
@@ -139,12 +172,21 @@ namespace Zambon.Core.Module.Xml.EntityTypes
 
         #region Methods
 
+        /// <summary>
+        /// Returns the default property set in DefaultPropertyAttribute. string.Empty if no property were informed.
+        /// </summary>
+        /// <returns></returns>
         public string GetDefaultProperty()
         {
             var defaultProperties = EntityType.ClrType.GetCustomAttributes(typeof(DefaultPropertyAttribute), true);
             return defaultProperties.Length > 0 ? ((DefaultPropertyAttribute)defaultProperties[0]).Name : null;
         }
 
+        /// <summary>
+        /// Get the display name of a property.
+        /// </summary>
+        /// <param name="property">The name of the property.</param>
+        /// <returns>Returns the display name in ApplicationModel, if not found any, from the DisplayAttribut, if not found, will return the property.</returns>
         public string GetPropertyDisplayName(string property)
         {
             if (property.IndexOf(".") >= 0)
@@ -156,6 +198,10 @@ namespace Zambon.Core.Module.Xml.EntityTypes
             return Array.Find(Properties, x => x.Name == property)?.DisplayName;
         }
 
+        /// <summary>
+        /// Get the CLR type object from the entity type.
+        /// </summary>
+        /// <returns>Returns the type object.</returns>
         public Type GetEntityType()
         {
             return EntityType.ClrType;
