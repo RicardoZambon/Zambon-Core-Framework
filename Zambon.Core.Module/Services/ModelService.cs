@@ -10,6 +10,9 @@ using Zambon.Core.Module.Xml;
 
 namespace Zambon.Core.Module.Services
 {
+    /// <summary>
+    /// Service used to deserialize the Application Model from XML.
+    /// </summary>
     public class ModelService
     {
         
@@ -24,6 +27,9 @@ namespace Zambon.Core.Module.Services
         #region Properties
 
         private string _AppVersion;
+        /// <summary>
+        /// The current version of the application, from the startup project Package > Package version.
+        /// </summary>
         public string AppVersion {
             get {
                 if (string.IsNullOrWhiteSpace(_AppVersion))
@@ -37,6 +43,9 @@ namespace Zambon.Core.Module.Services
         }
 
         private string _AppCopyright;
+        /// <summary>
+        /// The copyright of the application, from the startup project Package > Copyright.
+        /// </summary>
         public string AppCopyright {
             get {
                 if (string.IsNullOrWhiteSpace(_AppCopyright))
@@ -54,6 +63,10 @@ namespace Zambon.Core.Module.Services
 
         #region Constructors
 
+        /// <summary>
+        /// Default constructor for the ApplicationService.
+        /// </summary>
+        /// <param name="appConfigs">Instance of the AppSettings.json file.</param>
         public ModelService(IOptions<ApplicationConfigs> appConfigs)
         {
             AppConfigs = appConfigs;
@@ -63,6 +76,12 @@ namespace Zambon.Core.Module.Services
 
         #region Methods
 
+        /// <summary>
+        /// Get a cloned instance of the Application Model.
+        /// </summary>
+        /// <param name="ctx">The CoreDbContext instance.</param>
+        /// <param name="language">The current language of the model, if null will return the default language.</param>
+        /// <returns>Return a cloned instance of the Application Model</returns>
         public Application GetModel(CoreDbContext ctx, string language)
         {
             if (Model == null)

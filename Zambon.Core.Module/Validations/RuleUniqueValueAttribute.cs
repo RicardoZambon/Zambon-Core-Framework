@@ -10,30 +10,57 @@ using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.Module.Validations
 {
+    /// <summary>
+    /// Specifies that a data field value can not be duplicated.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class RuleUniqueValueAttribute : ValidationAttribute
     {
 
+        /// <summary>
+        /// The condition when the validation should occurs.
+        /// </summary>
         public string Condition { get; set; }
 
+        /// <summary>
+        /// If should ignore when the field is empty.
+        /// </summary>
         public bool IgnoreEmptyStrings { get; set; } = true;
 
 
+        /// <summary>
+        /// Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+        /// </summary>
         public RuleUniqueValueAttribute()
         {
             
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+        /// </summary>
+        /// <param name="errorMessage">The custom error message.</param>
         public RuleUniqueValueAttribute(string errorMessage) : base(errorMessage)
         {
 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+        /// </summary>
+        /// <param name="errorMessage">The custom error message.</param>
+        /// <param name="condition">The condition when the validation should occurs.</param>
         public RuleUniqueValueAttribute(string errorMessage, string condition) : base(errorMessage)
         {
             Condition = condition;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+        /// </summary>
+        /// <param name="errorMessage">The custom error message.</param>
+        /// <param name="condition">The condition when the validation should occurs.</param>
+        /// <param name="ignoreEmptyStrings">If should ignore when the field is empty.</param>
         public RuleUniqueValueAttribute(string errorMessage, string condition, bool ignoreEmptyStrings) : base(errorMessage)
         {
             Condition = condition;
@@ -41,6 +68,12 @@ namespace Zambon.Core.Module.Validations
         }
 
 
+        /// <summary>
+        /// Checks that the value of the required data field is not duplicated in database.
+        /// </summary>
+        /// <param name="value">The data field value to validate.</param>
+        /// <param name="validationContext">The context of the validation.</param>
+        /// <returns>true if validation is successful; otherwise, false.</returns>
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var expressionService = validationContext.GetService(typeof(ExpressionsService)) as ExpressionsService;

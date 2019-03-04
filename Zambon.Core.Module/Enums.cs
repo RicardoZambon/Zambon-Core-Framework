@@ -2,8 +2,14 @@
 
 namespace Zambon.Core.Module
 {
+    /// <summary>
+    /// Enums used in Module.
+    /// </summary>
     public class Enums
     {
+        /// <summary>
+        /// Types the user can authenticate.
+        /// </summary>
         public enum AuthenticationType
         {
             [Display(Name = "User & Password")]
@@ -11,6 +17,9 @@ namespace Zambon.Core.Module
             LDAP = 1
         }
 
+        /// <summary>
+        /// Types of permission.
+        /// </summary>
         public enum PermissionTypes
         {
             FullAccess = 0,

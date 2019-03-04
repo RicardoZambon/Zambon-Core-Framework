@@ -196,12 +196,12 @@ namespace Zambon.Core.WebModule.TagHelpers
                 if (!string.IsNullOrWhiteSpace(menu.ViewID) && menu.View is ListView)
                 {
                     a.Attributes.Add("menu-has-badge", menu.ViewID);
-                    badgeCount = ((ListView)menu.View).GetItemsCount(Ctx, App);
+                    badgeCount = ((ListView)menu.View).GetItemsCount(App, Ctx);
                 }
                 else if ((menu.SubMenus?.Length ?? 0) > 0 && menu.SubMenus.FirstOrDefault(x => x.ShowBadge ?? false) is Menu menuBadge && menuBadge.View is ListView)
                 {
                     a.Attributes.Add("menu-has-badge", menuBadge.ViewID);
-                    badgeCount = ((ListView)menuBadge.View).GetItemsCount(Ctx, App);
+                    badgeCount = ((ListView)menuBadge.View).GetItemsCount(App, Ctx);
                 }
 
                 badge.AddCssClass(badgeCount > 0 ? "badge-warning" : _class == "nav-link" ? "badge-light" : "badge-secondary");

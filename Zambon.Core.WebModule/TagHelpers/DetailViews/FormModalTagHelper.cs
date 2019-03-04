@@ -57,7 +57,7 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #endregion
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             if (output == null) throw new ArgumentNullException(nameof(output));
@@ -102,6 +102,5 @@ namespace Zambon.Core.WebModule.TagHelpers
                 }
             }
         }
-
     }
 }

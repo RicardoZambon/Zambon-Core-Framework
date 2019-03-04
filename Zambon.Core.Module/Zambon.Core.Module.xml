@@ -55,6 +55,350 @@
             </summary>
             <param name="configs"></param>
         </member>
+        <member name="T:Zambon.Core.Module.Enums">
+            <summary>
+            Enums used in Module.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Enums.AuthenticationType">
+            <summary>
+            Types the user can authenticate.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Enums.PermissionTypes">
+            <summary>
+            Types of permission.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.ExtensionMethods.EnumExtension">
+            <summary>
+            Extensions used in enums.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.ExtensionMethods.EnumExtension.GetEnumItems``1">
+            <summary>
+            Get a list of all enum values.
+            </summary>
+            <typeparam name="T">The type of the enum.</typeparam>
+            <returns>Return a dictionary with the enum number and its display name.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.ExtensionMethods.EnumExtension.GetEnumDisplayName(System.Enum)">
+            <summary>
+            Get the display name of a enum value.
+            </summary>
+            <param name="value">The enum item.</param>
+            <returns>Return the enum display name from DisplayName attribute.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.ExtensionMethods.LinqDynamicExtension">
+            <summary>
+            Extension methods used in Linq.Dynamic.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.ExtensionMethods.LinqDynamicExtension.Where``2(System.Linq.IQueryable{``0},Zambon.Core.Module.Services.ExpressionsService,``1)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TCriteria"></typeparam>
+            <param name="source"></param>
+            <param name="expressions"></param>
+            <param name="objCriteria"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Zambon.Core.Module.ExtensionMethods.MergeExtension">
+            <summary>
+            Extension method used merging the XML files of the Applicaton Model.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.ExtensionMethods.MergeExtension.MergeObject``1(``0,``0)">
+            <summary>
+            Merges two objects that implements the interface IMergeable.
+            </summary>
+            <typeparam name="TObject">The type of the objects.</typeparam>
+            <param name="target">The original value, that should have the properties overwriten.</param>
+            <param name="source">The source value, containing only the changed values.</param>
+            <returns>Returns the target value plus all changes made in source value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.ExtensionMethods.MergeExtension.MergeArray``1(``0[],``0[])">
+            <summary>
+            Merges two arrays of objects that implements the interface IMergeable.
+            </summary>
+            <typeparam name="T">The element type of the array.</typeparam>
+            <param name="target">The target array, that should have the items overwriten.</param>
+            <param name="source">The source array, containing only the changed items.</param>
+            <returns>Returns the target array plus all changes made in source array.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.ICondition">
+            <summary>
+            Interfaced used by objects that can apply conditions.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.ICondition.Condition">
+            <summary>
+            The condition to search, can reference arguments by @0, @1, etc.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.ICondition.ConditionArguments">
+            <summary>
+            Arguments separated by ",".
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.ICriteria">
+            <summary>
+            Interfaced used by objects that can apply crterias.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.ICriteria.Criteria">
+            <summary>
+            The criteria apply, can reference arguments by @0, @1, etc.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.ICriteria.CriteriaArguments">
+            <summary>
+            Arguments separated by ",".
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IFormFile">
+            <summary>
+            Interfaced used to upload files.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IFormFile.ContentType">
+            <summary>
+            The content type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IFormFile.ContentDisposition">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IFormFile.Headers">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IFormFile.Length">
+            <summary>
+            Length of the tile.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IFormFile.Name">
+            <summary>
+            Name of the file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IFormFile.FileName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IFormFile.OpenReadStream">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IFormFile.CopyTo(System.IO.Stream)">
+            <summary>
+            
+            </summary>
+            <param name="target"></param>
+        </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IFormFile.CopyToAsync(System.IO.Stream,System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="target"></param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IMergeable">
+            <summary>
+            Interface used by XML nodes that can merge with other files.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IRoles">
+            <summary>
+            Interfaced used by roles.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRoles.Name">
+            <summary>
+            The name of the role.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRoles.IsAdministrative">
+            <summary>
+            Indicates if the role is administrative (have access to all items).
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IRolesMenuAccesses">
+            <summary>
+            Interface used by menu access control.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesMenuAccesses.RoleId">
+            <summary>
+            The role this menu access belongs.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesMenuAccesses.MenuId">
+            <summary>
+            The ID of the menu should allow/deny the access.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesMenuAccesses.AllowAccess">
+            <summary>
+            Indicates if the users should have access (true) or not (false) to the menu ID.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IRolesPermissions">
+            <summary>
+            Interface used by roles permission control.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.RoleId">
+            <summary>
+            The role this permission access belongs.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.Entity">
+            <summary>
+            The entity the permission should affect.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.PermissionType">
+            <summary>
+            The type of the permission.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.CanNavigate">
+            <summary>
+            Indicates if the role will be able to navigate (menu).
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.CanRead">
+            <summary>
+            Indicates if the role will be able to read any record.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.CanWrite">
+            <summary>
+            Indicates if the role will be able to write (update/insert).
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.CanCreate">
+            <summary>
+            Indicates if the role will be able to create new records (insert).
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesPermissions.CanDelete">
+            <summary>
+            Indicates if the role will be able to delete any record.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IRolesUsers">
+            <summary>
+            Interface used to control the relation between roles and users.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesUsers.RoleId">
+            <summary>
+            The role ID.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IRolesUsers.UserId">
+            <summary>
+            The user ID.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IUsers">
+            <summary>
+            Interface used to map basic user properties.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.AuthenticationType">
+            <summary>
+            Controls how this user should be authenticated when accessing the system.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.FullName">
+            <summary>
+            The user complete name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.Username">
+            <summary>
+            The username the user should user to logon.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.Password">
+            <summary>
+            The user password ecripted if the authentication method is 0 (UserPassword), otherwise can be null null.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.LogonAllowed">
+            <summary>
+            When false the user is not able to logon.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.Email">
+            <summary>
+            The user current email.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.SendEmail">
+            <summary>
+            Indication if the system should send emails or not.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.CreatedOn">
+            <summary>
+            Date/time when this user was created.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.LastActivityOn">
+            <summary>
+            Date/time indicating the last acitivity in the system.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsers.IsAdministrator">
+            <summary>
+            If this user is inserted in any IsAdministrative roles, will return true.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IUsers.UserHasAccessToType(System.String,System.Int32)">
+            <summary>
+            Checks if the user has the specific access to the type.
+            </summary>
+            <param name="typeFullName">The type to search.</param>
+            <param name="_access">The access to check.</param>
+            <returns>If the user has access will return true.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IUsers.UserHasAccessToMenuID(System.String,System.String)">
+            <summary>
+            Checks if the user has access to the menu item.
+            </summary>
+            <param name="_menuID">The menu ID.</param>
+            <param name="_menuType">The menu type.</param>
+            <returns>If the user has access will return true.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IUsersManagers">
+            <summary>
+            Interface used to map user with managers and subordinates.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsersManagers.ManagerID">
+            <summary>
+            The user ID.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IUsersManagers.SubordinateID">
+            <summary>
+            The user ID.
+            </summary>
+        </member>
         <member name="T:Zambon.Core.Module.Services.ApplicationService">
             <summary>
             The main service used in application, is registered under Scoped lifecycle.
@@ -178,6 +522,272 @@
             <param name="lookUpViewId">The id of the view to search.</param>
             <returns>Return the LookUpView object, null if not found.</returns>
         </member>
+        <member name="T:Zambon.Core.Module.Services.ExpressionsService">
+            <summary>
+            Expression service used in custom criterias.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.#ctor(Zambon.Core.Module.Services.IUserService)">
+            <summary>
+            
+            </summary>
+            <param name="userService">The current user service based from IUserService.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.GetReplacementValue(System.String)">
+            <summary>
+            Get the text for replacement values, if contains "CurrentUser" will return the current logged user, otherwise will return the text itself. 
+            </summary>
+            <param name="text">The text to search.</param>
+            <returns>Returns the text or the IUserService.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.GetReplacementValue``1(System.String,``0)">
+            <summary>
+            Get the text for replacement values, if contains "CurrentUser" will return the current logged user, otherwise will return the property from the object.
+            </summary>
+            <typeparam name="T">The type of the object.</typeparam>
+            <param name="text">The text to search.</param>
+            <param name="obj">The object to get the property from.</param>
+            <returns>Returns the property value or the IUserService.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.FormatArguments(System.String)">
+            <summary>
+            Searchs all criteria arguments for [] and will try to replace them for the IUserService.
+            </summary>
+            <param name="criteriaArguments">The criteria arguments.</param>
+            <returns>Return an array of arguments.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.FormatArguments``1(System.String,``0)">
+            <summary>
+            earchs all criteria arguments for [] and will try to replace them for the IUserService or the object property.
+            </summary>
+            <typeparam name="T">The type of the object.</typeparam>
+            <param name="criteriaArguments">The criteria arguments.</param>
+            <param name="obj">The object to get the properties values from.</param>
+            <returns>Return an array of arguments.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.IsConditionApplicable(System.String,System.Object)">
+            <summary>
+            Checks if the condition is applicable for the object.
+            </summary>
+            <param name="condition">The condition to check.</param>
+            <param name="obj">The object, if null will use a new object().</param>
+            <returns>Returns if the condition is applicable (true) or not (false).</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.IsConditionApplicable(Zambon.Core.Module.Interfaces.ICondition,System.Object)">
+            <summary>
+            Checks if the condition is applicable for the object.
+            </summary>
+            <param name="element">The condition to check.</param>
+            <param name="obj">The object, if null will use a new object().</param>
+            <returns>Returns if the condition is applicable (true) or not (false).</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.IsConditionApplicable``1(Zambon.Core.Module.Interfaces.ICondition,``0)">
+            <summary>
+            Checks if the condition is applicable for the object.
+            </summary>
+            <param name="element">The condition to check.</param>
+            <param name="obj">The object.</param>
+            <returns>Returns if the condition is applicable (true) or not (false).</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.IsConditionApplicable``1(System.String,``0)">
+            <summary>
+            Checks if the condition is applicable for the object.
+            </summary>
+            <param name="condition">The condition to check.</param>
+            <param name="obj">The object.</param>
+            <returns>Returns if the condition is applicable (true) or not (false).</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.FormatExpression(System.String,System.Object)">
+            <summary>
+            Format an expression replacing [] by the objects values.
+            </summary>
+            <param name="expression"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.FormatActionParameters(System.String,System.Object)">
+            <summary>
+            Format action parameters, replacing [] for the global value or the current object value.
+            </summary>
+            <param name="actionParameters">A string with all action paratemers.</param>
+            <param name="obj">The object to search the properties from.</param>
+            <returns>Return a dictionaty of parameters and respective values.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.GetApplicableItems``1(``0[],System.Object)">
+            <summary>
+            Get a list of applicable items for that condition.
+            </summary>
+            <typeparam name="TCondition">The condition type.</typeparam>
+            <param name="conditions">The condition object.</param>
+            <param name="obj">The object to search for.</param>
+            <returns>Return a list of object where the condition is true.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ExpressionsService.GetApplicableItems``2(``0[],``1)">
+            <summary>
+            Get a list of applicable items for that condition.
+            </summary>
+            <typeparam name="TCondition">The condition type.</typeparam>
+            <typeparam name="TObject">The type of the object.</typeparam>
+            <param name="expressions">The condition object.</param>
+            <param name="obj">The object to search for.</param>
+            <returns>Return a list of object where the condition is true.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Services.ILanguageService">
+            <summary>
+            Interface to implements in methods responsible to the current active language.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ILanguageService.ChangeLanguage(System.String)">
+            <summary>
+            Change the language by specifying a new language.
+            </summary>
+            <param name="newLanguage">The code of the new language to display.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ILanguageService.GetCurrentLanguage">
+            <summary>
+            Get the current active language.
+            </summary>
+            <returns>Returns the current active language code.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Services.IUserService">
+            <summary>
+            Interface to implements in methods responsible to the handle the current logged user.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.IUserService.CurrentIdentityName">
+            <summary>
+            The current identity logged.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.IUserService.CurrentUser">
+            <summary>
+            The object of the curent logged user.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.IUserService.CheckUserChanged">
+            <summary>
+            Checks if the current user has changed.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Services.ModelService">
+            <summary>
+            Service used to deserialize the Application Model from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ModelService.AppVersion">
+            <summary>
+            The current version of the application, from the startup project Package > Package version.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Services.ModelService.AppCopyright">
+            <summary>
+            The copyright of the application, from the startup project Package > Copyright.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ModelService.#ctor(Microsoft.Extensions.Options.IOptions{Zambon.Core.Module.ApplicationConfigs})">
+            <summary>
+            Default constructor for the ApplicationService.
+            </summary>
+            <param name="appConfigs">Instance of the AppSettings.json file.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ModelService.GetModel(Zambon.Core.Database.CoreDbContext,System.String)">
+            <summary>
+            Get a cloned instance of the Application Model.
+            </summary>
+            <param name="ctx">The CoreDbContext instance.</param>
+            <param name="language">The current language of the model, if null will return the default language.</param>
+            <returns>Return a cloned instance of the Application Model</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Validations.RuleRequiredAttribute">
+            <summary>
+            Specifies that a data field value is required.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Validations.RuleRequiredAttribute.Condition">
+            <summary>
+            The condition when the validation should occurs.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Validations.RuleRequiredAttribute.ElementId">
+            <summary>
+            The ID of the element in the page separated by ",", if null will use the data field name.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleRequiredAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleRequiredAttribute.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleRequiredAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleRequiredAttribute.
+            </summary>
+            <param name="errorMessage">The custom error message.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleRequiredAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleRequiredAttribute.
+            </summary>
+            <param name="errorMessage">The custom error message.</param>
+            <param name="Condition">The condition when the validation should occurs.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleRequiredAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Checks that the value of the required data field is not empty.
+            </summary>
+            <param name="value">The data field value to validate.</param>
+            <param name="validationContext">The context of the validation.</param>
+            <returns>true if validation is successful; otherwise, false.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Validations.RuleUniqueValueAttribute">
+            <summary>
+            Specifies that a data field value can not be duplicated.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.Condition">
+            <summary>
+            The condition when the validation should occurs.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.IgnoreEmptyStrings">
+            <summary>
+            If should ignore when the field is empty.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.#ctor">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+            </summary>
+            <param name="errorMessage">The custom error message.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+            </summary>
+            <param name="errorMessage">The custom error message.</param>
+            <param name="condition">The condition when the validation should occurs.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the Zambon.Core.Module.Validations.RuleUniqueValueAttribute.
+            </summary>
+            <param name="errorMessage">The custom error message.</param>
+            <param name="condition">The condition when the validation should occurs.</param>
+            <param name="ignoreEmptyStrings">If should ignore when the field is empty.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Validations.RuleUniqueValueAttribute.IsValid(System.Object,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Checks that the value of the required data field is not duplicated in database.
+            </summary>
+            <param name="value">The data field value to validate.</param>
+            <param name="validationContext">The context of the validation.</param>
+            <returns>true if validation is successful; otherwise, false.</returns>
+        </member>
         <member name="T:Zambon.Core.Module.Xml.Application">
             <summary>
             Represents the root class from XML.
@@ -299,17 +909,102 @@
         </member>
         <member name="T:Zambon.Core.Module.Xml.Configuration.DetailViewDefaults">
             <summary>
-            Define default configuration values for all DetailViews.
+            Represents a node <DetailViewDefaults /> from XML Application Model. Define default values for all DetailViews.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Configuration.DetailViewDefaults.DefaultAction">
             <summary>
-            Define the default action name the DetailView should post when submitting the form.
+            The DefaultAction attribute from XML. The default action name the DetailView should post when submitting the form.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Configuration.DetailViewDefaults.DefaultView">
             <summary>
-            Define the default name of the .cshtml file.
+            The DefaultView attribute from XML. The default name of the .cshtml file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Configuration.ListViewDefaults">
+            <summary>
+            Represents a node <ListViewDefaults /> from XML Application Model. Define default values for all ListViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.BoolCanEdit">
+            <summary>
+            The CanEdit attribute from XML. Indicates if the list views should be editable or not.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.CanEdit">
+            <summary>
+            The CanEdit attribute from XML. Indicates if the list views should be editable or not.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.DefaultAction">
+            <summary>
+            The DefaultAction attribute from XML. The default action should be used when editing ListViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.DefaultEditModalParameter">
+            <summary>
+            The DefaultEditModalParameter attribute from XML. The default paramters should be passed to the modal when editing ListViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.BoolShowPagination">
+            <summary>
+            The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.ShowPagination">
+            <summary>
+            The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.IntPageSize">
+            <summary>
+            The PageSize attribute from XML. The maximum number of records to display in a same page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.PageSize">
+            <summary>
+            The PageSize attribute from XML. The maximum number of records to display in a same page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.IntPagesToShow">
+            <summary>
+            The PagesToShow attribute from XML. The maximum number of pages to show in footer.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ListViewDefaults.PagesToShow">
+            <summary>
+            The PagesToShow attribute from XML. The maximum number of pages to show in footer.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Configuration.LoginDefaults">
+            <summary>
+            Represents a node <LoginDefaults /> from XML Application Model. Define default values for login page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.LoginDefaults.Theme">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration">
+            <summary>
+            Represents a node <ModuleConfiguration></ModuleConfiguration> from XML Application Model. Define default values for all application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration.LoginDefaults">
+            <summary>
+            Represents an element <LoginDefaults /> from XML Application Model. Define default values for login page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration.DetailViewDefaults">
+            <summary>
+            Represents an element <DetailViewDefaults /> from XML Application Model. Define default values for all DetailViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration.ListViewDefaults">
+            <summary>
+            Represents an element <ListViewDefaults /> from XML Application Model. Define default values for all ListViews.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.EntityTypes.Entity">
@@ -394,6 +1089,164 @@
         <member name="P:Zambon.Core.Module.Xml.EntityTypes.EntityTypesArray.Entities">
             <summary>
             List of all entity types.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.EntityTypes.Properties">
+            <summary>
+            Represents a node <Properties></Properties> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Properties.Property">
+            <summary>
+            Represent elements <Property /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.EntityTypes.Property">
+            <summary>
+            Represents a node <Property /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Property.Name">
+            <summary>
+            The Name attribute from XML. The name of the property.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.EntityTypes.Property.DisplayName">
+            <summary>
+            The DisplayName attribute from XML. The display name should be used in application, by default will use the DisplayName attribute.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Languages.Language">
+            <summary>
+            Represents a node <Language /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.Language.Code">
+            <summary>
+            The code of the language, the same from AppSettings.json file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.Language.FlagIcon">
+            <summary>
+            The icon should be used to display the language flag in languages list.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.Language.DisplayName">
+            <summary>
+            The language display name should be displayed in languages list.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Languages.LanguagesArray">
+            <summary>
+            Represents a node <Languages></Languages> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.LanguagesArray.Languages">
+            <summary>
+            List of <Language /> elements.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.MergeKeyAttribute">
+            <summary>
+            Indicates the attribute should be used when merging to detect same records in both files.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Navigation.Menu">
+            <summary>
+            Represents a node <Menu></Menu> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.Id">
+            <summary>
+            The Id attribute from XML. The ID of the menu item.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.DisplayName">
+            <summary>
+            The DisplayName attribute from XML. The display name of the menu item, if null and of type DetailView or ListView will use the title from the view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.Icon">
+            <summary>
+            The Icon attribute from XML. The icon of the menu item, if null and of type DetailView or ListView will use the icon from the view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.IntIndex">
+            <summary>
+            The Index attribute from XML. The index order of the menu item.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.Index">
+            <summary>
+            The Index attribute from XML. The index order of the menu item.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.Type">
+            <summary>
+            The Type attribute from XML. The type defines what the action the menu should execute when accessed.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.ViewID">
+            <summary>
+            The ViewID attribute from XML. The ViewID of the view the menu should show, when the type is DetailView or ListView.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.ControllerName">
+            <summary>
+            The ControllerName attribute from XML. The controller of the action the menu should execute when accessed, only used with DetailView type, by default will get the same controller from view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.ActionName">
+            <summary>
+            The ActionName attribute from XML. The action the menu should execute when accessed, only used with DetailView type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.ReportPath">
+            <summary>
+            The ReportPath attribute from XML. The path of the report the menu should open, only used with Report type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.URL">
+            <summary>
+            The URL attribute from XML. The URL the menu should open, only used with External type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.BoolShowBadge">
+            <summary>
+            The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with submenus or ListViews, indicating the number of records (count) are available.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.ShowBadge">
+            <summary>
+            The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with submenus or ListViews, indicating the number of records (count) are available.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.SubMenus">
+            <summary>
+            The submenus included in this menu. If the menu has submenus the menu Type is ignored.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.Menu.View">
+            <summary>
+            The view object from ViewID, when available.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Zambon.Core.Module.Xml.Navigation.Menu.CompareTo(System.Object)" -->
+        <member name="M:Zambon.Core.Module.Xml.Navigation.Menu.UserHasAccess(Zambon.Core.Module.Interfaces.IUsers)">
+            <summary>
+            Checks if the informed user has access to this menu item.
+            </summary>
+            <param name="user">The user to check the access.</param>
+            <returns>If the user has access returns true.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Navigation.NavigationArray">
+            <summary>
+            Represents a node <Navigation></Navigation> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Navigation.NavigationArray.Menus">
+            <summary>
+            Represents elements <Menu></Menu> from XML Application Model.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.BaseView">
@@ -665,6 +1518,26 @@
             </summary>
             <param name="currentView"></param>
         </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.DetailViews.Scripts.Script">
+            <summary>
+            Represents a node <Script /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.Scripts.Script.Src">
+            <summary>
+            The Src attribute from XML. The source path to the .js script file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.DetailViews.Scripts.ScriptsArray">
+            <summary>
+            Represents a node <Scripts></Scripts> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.Scripts.ScriptsArray.Script">
+            <summary>
+            Represent elements <Script /> from XML Application Model.
+            </summary>
+        </member>
         <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column">
             <summary>
             Represents columns used in ListViews and LookUpViews.
@@ -731,6 +1604,444 @@
             <summary>
             List of all columns.
             </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.ListView">
+            <summary>
+            Represents a node <ListView></ListView> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.BoolCanEdit">
+            <summary>
+            The CanEdit attribute from XML. Indicates if the list view should be editable or not.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.CanEdit">
+            <summary>
+            The CanEdit attribute from XML. Indicates if the list view should be editable or not.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.EditModalId">
+            <summary>
+            The EditModalId attribute from XML. ID of the ModalView should be used when editting records. By default will search for DetailViews with the same Type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Criteria">
+            <summary>
+            The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.CriteriaArguments">
+            <summary>
+            The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.FromSql">
+            <summary>
+            The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Sort">
+            <summary>
+            The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.MessageOnEmpty">
+            <summary>
+            The MessageOnEmpty attribute from XML. Message to show when no records are found.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.BoolShowPagination">
+            <summary>
+            The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.ShowPagination">
+            <summary>
+            The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.EditModalParameters">
+            <summary>
+            The EditModalParameters attribute from XML. Passes the modal parameters arguments when editing an object. By defualt will use object=[ID].
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.SearchProperties">
+            <summary>
+            List all search properties should be possible to search.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Columns">
+            <summary>
+            List all columns.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.PaintOptions">
+            <summary>
+            List all paint options and their conditions.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.PaginationOptions">
+            <summary>
+            The PaginationOptions element from XML. Indicates how the pagination should behave.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._SearchProperties">
+            <summary>
+            The PaginationOptions element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._Columns">
+            <summary>
+            The Columns element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._PaintOptions">
+            <summary>
+            The PaintOptions element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.CustomParameters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.EditModal">
+            <summary>
+            The EditModalID modal object.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.SearchOptions">
+            <summary>
+            The active search options.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.ItemsCollection">
+            <summary>
+            The active list of items being displayed in this list view. Only availble when listing the items in page.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetCurrentPage(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Int32,Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions)">
+            <summary>
+            Set the ListView contents to the current page.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="currentPage">Current page should be displayed. By default is "1".</param>
+            <param name="searchOptions">If applyng search, otherwise null.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetCurrentPage``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Int32,Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions)">
+            <summary>
+            Set the ListView contents to the current page.
+            </summary>
+            <typeparam name="T">The type of the ListView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="currentPage">Current page should be displayed. By default is "1".</param>
+            <param name="searchOptions">If applyng search, otherwise null.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,System.String)">
+            <summary>
+            Get the value of a property.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="propertyName">The property name.</param>
+            <returns>Returns the property value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column)">
+            <summary>
+            Get the value of a column.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="column">The column to get the value.</param>
+            <returns>Returns the column value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetCellValue``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column,System.String)">
+            <summary>
+            Get the value of a column.
+            </summary>
+            <typeparam name="T">The type of the ListView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="column">The column to get the value.</param>
+            <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
+            <returns>Returns the column value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetItemsCollection(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Object,System.String)">
+            <summary>
+            Set the ListView contents to the value of an entity.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="entity">The entity that has the collection.</param>
+            <param name="collection">The collection name.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetItemsCollection(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Collections.IEnumerable)">
+            <summary>
+            Set the ListView contents to the value of an Enumerable.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="collection">The collection Enumerable value.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetItemsCollection``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Set the ListView contents to the value of an Enumerable.
+            </summary>
+            <typeparam name="T">The type of the Enumerable.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="collection">The collection Enumerable value.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetItemsCount(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Get the ListView items Count().
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <returns>Returns the Count() of items as integer.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetItemsCount``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Get the ListView items Count().
+            </summary>
+            /// <typeparam name="T">The type of the ListView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <returns>Returns the Count() of items as integer.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.LookupView">
+            <summary>
+            Represents a node <LookupView></LookupView> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.Criteria">
+            <summary>
+            The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.CriteriaArguments">
+            <summary>
+            The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.FromSql">
+            <summary>
+            The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.Sort">
+            <summary>
+            The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.SearchProperties">
+            <summary>
+            List all search properties should be possible to search.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.Columns">
+            <summary>
+            List all columns.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView._SearchProperties">
+            <summary>
+            The PaginationOptions element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView._Columns">
+            <summary>
+            The Columns element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.SearchOptions">
+            <summary>
+            The active search options.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.ItemsCollection">
+            <summary>
+            The active list of items being displayed in this list view. Only availble when listing the items in page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.PostBackOptions">
+            <summary>
+            The postback options the LookUpView should use when submitting back to the parent view.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.PopulateView(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions)">
+            <summary>
+            Set the LookUpView contents items.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="searchOptions">If applyng search, otherwise null.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.PopulateView``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions)">
+            <summary>
+            Set the LookUpView contents items.
+            </summary>
+            <typeparam name="T">The type of the LookUpView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="searchOptions">If applyng search, otherwise null.</param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,System.String)">
+            <summary>
+            Get the value of a property.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="propertyName">The property name.</param>
+            <returns>Returns the property value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column)">
+            <summary>
+            Get the value of a column.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="column">The column to get the value.</param>
+            <returns>Returns the column value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.GetCellValue``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column,System.String)">
+            <summary>
+            Get the value of a column.
+            </summary>
+            <typeparam name="T">The type of the LookUpView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="column">The column to get the value.</param>
+            <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
+            <returns>Returns the column value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.SetPostBackOptions(Zambon.Core.Module.Xml.Views.SubViews.PostBackOptions)">
+            <summary>
+            Set the value of the PostBackOptions property.
+            </summary>
+            <param name="postBackOptions">The PostBackOptions object.</param>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions">
+            <summary>
+            Represents a node <PaginationOptions></PaginationOptions> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.IntPageSize">
+            <summary>
+            The PageSize attribute from XML. The maximum number of records to display in a same page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.PageSize">
+            <summary>
+            The PageSize attribute from XML. The maximum number of records to display in a same page.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.IntPagesToShow">
+            <summary>
+            The PagesToShow attribute from XML. The maximum number of pages to show in footer.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.PagesToShow">
+            <summary>
+            The PagesToShow attribute from XML. The maximum number of pages to show in footer.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.ActualPage">
+            <summary>
+            The actual page being displayed in view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.TotalPages">
+            <summary>
+            The total amount of pages.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.StartPage">
+            <summary>
+            The start page begin displayed in pages footer.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.EndPage">
+            <summary>
+            The last page begin displayed in pages footer.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.TotalRecords">
+            <summary>
+            The total amount of records available in view.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.PaginationOptions.ChangePage(System.Int32,System.Int32)">
+            <summary>
+            Changes the page to the informed page and recalculates start and end pages.
+            </summary>
+            <param name="newPage">The new page to set the view.</param>
+            <param name="totalRecords">The total amount of records.</param>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption">
+            <summary>
+            Represents a node <PaintOption></PaintOption> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.Id">
+            <summary>
+            The Id attribute from XML. The identification of this rule used when merging.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.BackColor">
+            <summary>
+            The BackColor attribute from XML. The back color name to paint the row when the Condition is true.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.ForeColor">
+            <summary>
+            The ForeColor attribute from XML. The fore color name to paint the row when the Condition is true.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.CssClass">
+            <summary>
+            The CssClass attribute from XML. The css class name to use in row when the Condition is true.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.Condition">
+            <summary>
+            The Condition attribute from XML. Condition to determine when use or not this rule.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.ConditionArguments">
+            <summary>
+            The ConditionArguments attribute from XML. Condition arguments to determine when use or not this rule, should be separated by ",".
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray">
+            <summary>
+            Represents a node <PaintOptions></PaintOptions> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.PaintOption">
+            <summary>
+            Represent elements <PaintOption /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.GetApplicableBackColor(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.GetApplicableForeColor(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.GetApplicableCssClass(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+            <param name="obj"></param>
+            <returns></returns>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchType">
             <summary>
@@ -801,6 +2112,31 @@
         <member name="P:Zambon.Core.Module.Xml.Views.SubViews.DetailModal.DetailView">
             <summary>
             The DetailView object from the ViewId property.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.LookupModal">
+            <summary>
+            Represents a node <LookupModal /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.LookupModal.LookUpView">
+            <summary>
+            The LookUpView view object.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.PostBackOptions">
+            <summary>
+            Post back parameters informed when opening/submiting LookUpViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.PostBackOptions.PostbackActionName">
+            <summary>
+            The post back action name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.PostBackOptions.PostbackFormId">
+            <summary>
+            The Id of the form where should be posted the information.
             </summary>
         </member>
     </members>

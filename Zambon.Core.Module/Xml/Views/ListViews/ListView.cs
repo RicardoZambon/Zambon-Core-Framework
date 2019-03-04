@@ -21,82 +21,151 @@ using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
+    /// <summary>
+    /// Represents a node <ListView></ListView> from XML Application Model.
+    /// </summary>
     public class ListView : View, ICriteria
     {
 
+        /// <summary>
+        /// The CanEdit attribute from XML. Indicates if the list view should be editable or not.
+        /// </summary>
         [XmlAttribute("CanEdit"), Browsable(false)]
         public string BoolCanEdit
         {
             get { return CanEdit?.ToString(); }
             set { bool.TryParse(value, out bool canEdit); CanEdit = canEdit; }
         }
+        /// <summary>
+        /// The CanEdit attribute from XML. Indicates if the list view should be editable or not.
+        /// </summary>
         [XmlIgnore]
         public bool? CanEdit { get; set; }
 
+        /// <summary>
+        /// The EditModalId attribute from XML. ID of the ModalView should be used when editting records. By default will search for DetailViews with the same Type.
+        /// </summary>
         [XmlAttribute("EditModalId")]
         public string EditModalId { get; set; }
 
 
+        /// <summary>
+        /// The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
+        /// </summary>
         [XmlAttribute("Criteria")]
         public string Criteria { get; set; }
 
+        /// <summary>
+        /// The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
+        /// </summary>
         [XmlAttribute("CriteriaArguments")]
         public string CriteriaArguments { get; set; }
 
+        /// <summary>
+        /// The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
+        /// </summary>
         [XmlAttribute("FromSql")]
         public string FromSql { get; set; }
 
+        /// <summary>
+        /// The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
+        /// </summary>
         [XmlAttribute("Sort")]
         public string Sort { get; set; }
 
 
+        /// <summary>
+        /// The MessageOnEmpty attribute from XML. Message to show when no records are found.
+        /// </summary>
         [XmlAttribute("MessageOnEmpty")]
         public string MessageOnEmpty { get; set; }
 
 
+        /// <summary>
+        /// The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+        /// </summary>
         [XmlAttribute("ShowPagination")]
         public string BoolShowPagination { get; set; }
+        /// <summary>
+        /// The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+        /// </summary>
         [XmlIgnore]
         public bool ShowPagination { get { return bool.Parse(BoolShowPagination?.ToLower() ?? "false"); } }
 
 
+        /// <summary>
+        /// The EditModalParameters attribute from XML. Passes the modal parameters arguments when editing an object. By defualt will use object=[ID].
+        /// </summary>
         [XmlAttribute("EditModalParameters")]
         public string EditModalParameters { get; set; }
 
 
+        /// <summary>
+        /// List all search properties should be possible to search.
+        /// </summary>
         [XmlIgnore]
         public SearchProperty[] SearchProperties { get { return _SearchProperties?.SearchProperty; } }
 
+        /// <summary>
+        /// List all columns.
+        /// </summary>
         [XmlIgnore]
         public Column[] Columns { get { return _Columns?.Column; } }
 
+        /// <summary>
+        /// List all paint options and their conditions.
+        /// </summary>
         [XmlIgnore]
         public PaintOption[] PaintOptions { get { return _PaintOptions?.PaintOption; } }
 
+
+        /// <summary>
+        /// The PaginationOptions element from XML. Indicates how the pagination should behave.
+        /// </summary>
         [XmlElement("PaginationOptions")]
         public PaginationOptions PaginationOptions { get; set; }
 
-
+        /// <summary>
+        /// The PaginationOptions element from XML.
+        /// </summary>
         [XmlElement("SearchProperties"), Browsable(false)]
         public SearchPropertiesArray _SearchProperties { get; set; }
 
+        /// <summary>
+        /// The Columns element from XML.
+        /// </summary>
         [XmlElement("Columns"), Browsable(false)]
         public ColumnsArray _Columns { get; set; }
 
+        /// <summary>
+        /// The PaintOptions element from XML.
+        /// </summary>
         [XmlElement("PaintOptions"), Browsable(false)]
         public PaintOptionsArray _PaintOptions { get; set; }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
         [XmlIgnore]
         public IDictionary<string, object> CustomParameters { get; private set; } = new Dictionary<string, object>();
 
+        /// <summary>
+        /// The EditModalID modal object.
+        /// </summary>
         [XmlIgnore]
         public DetailModal EditModal { get; private set; }
 
 
+        /// <summary>
+        /// The active search options.
+        /// </summary>
         [XmlIgnore]
         public SearchOptions SearchOptions { get; private set; }
 
+        /// <summary>
+        /// The active list of items being displayed in this list view. Only availble when listing the items in page.
+        /// </summary>
         [XmlIgnore]
         public IQueryable ItemsCollection { get; private set; }
 
@@ -217,15 +286,30 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
         #region Methods
 
+        /// <summary>
+        /// Set the ListView contents to the current page.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="currentPage">Current page should be displayed. By default is "1".</param>
+        /// <param name="searchOptions">If applyng search, otherwise null.</param>
         public void SetCurrentPage(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null)
         {
             GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetCurrentPage) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, currentPage, searchOptions });
         }
+        /// <summary>
+        /// Set the ListView contents to the current page.
+        /// </summary>
+        /// <typeparam name="T">The type of the ListView.</typeparam>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="currentPage">Current page should be displayed. By default is "1".</param>
+        /// <param name="searchOptions">If applyng search, otherwise null.</param>
         public void SetCurrentPage<T>(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null) where T : class
         {
             //Todo: Validate if still needed. GC.Collect();
             SearchOptions = searchOptions;
-            var list = GetItemsList<T>(ctx, app);
+            var list = GetItemsList<T>(app, ctx);
 
             if (searchOptions?.HasSearch() ?? false)
             {
@@ -252,6 +336,12 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             ItemsCollection = list;
         }
 
+        /// <summary>
+        /// Get the value of a property.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>Returns the property value.</returns>
         public object GetCellValue(ApplicationService app, string propertyName)
         {
             if (!string.IsNullOrWhiteSpace(propertyName) && (Columns?.Length ?? 0) > 0)
@@ -262,10 +352,24 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             }
             return null;
         }
+        /// <summary>
+        /// Get the value of a column.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="column">The column to get the value.</param>
+        /// <returns>Returns the column value.</returns>
         public object GetCellValue(ApplicationService app, Column column)
         {
             return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column, null });
         }
+        /// <summary>
+        /// Get the value of a column.
+        /// </summary>
+        /// <typeparam name="T">The type of the ListView.</typeparam>
+        /// <param name="app">The application service.</param>
+        /// <param name="column">The column to get the value.</param>
+        /// <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
+        /// <returns>Returns the column value.</returns>
         public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
         {
             object value = (new[] { (T)CurrentObject }).AsQueryable().Select(customProperty ?? column.PropertyName).FirstOrDefault();
@@ -293,14 +397,34 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             return value;
         }
 
+        /// <summary>
+        /// Set the ListView contents to the value of an entity.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="entity">The entity that has the collection.</param>
+        /// <param name="collection">The collection name.</param>
         public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, object entity, string collection)
         {
             SetItemsCollection(app, ctx, (IEnumerable)entity.GetType().GetProperty(collection).GetValue(entity));
         }
+        /// <summary>
+        /// Set the ListView contents to the value of an Enumerable.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="collection">The collection Enumerable value.</param>
         public void SetItemsCollection(ApplicationService app, CoreDbContext ctx, IEnumerable collection)
         {
             GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetItemsCollection) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, collection });
         }
+        /// <summary>
+        /// Set the ListView contents to the value of an Enumerable.
+        /// </summary>
+        /// <typeparam name="T">The type of the Enumerable.</typeparam>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="collection">The collection Enumerable value.</param>
         public void SetItemsCollection<T>(ApplicationService app, CoreDbContext ctx, IEnumerable<T> collection) where T : class
         {
             IQueryable<T> list = null;
@@ -335,16 +459,29 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             ItemsCollection = list;
         }
 
-        public int GetItemsCount(CoreDbContext ctx, ApplicationService app)
+        /// <summary>
+        /// Get the ListView items Count().
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <returns>Returns the Count() of items as integer.</returns>
+        public int GetItemsCount(ApplicationService app, CoreDbContext ctx)
         {
-            return (int)GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetItemsCount) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { ctx, app });
+            return (int)GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetItemsCount) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx });
         }
-        public int GetItemsCount<T>(CoreDbContext ctx, ApplicationService app) where T : class
+        /// <summary>
+        /// Get the ListView items Count().
+        /// </summary>
+        /// /// <typeparam name="T">The type of the ListView.</typeparam>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <returns>Returns the Count() of items as integer.</returns>
+        public int GetItemsCount<T>(ApplicationService app, CoreDbContext ctx) where T : class
         {
-            return GetItemsList<T>(ctx, app).Count();
+            return GetItemsList<T>(app, ctx).Count();
         }
 
-        private IQueryable<T> GetItemsList<T>(CoreDbContext ctx, ApplicationService app) where T : class
+        private IQueryable<T> GetItemsList<T>(ApplicationService app, CoreDbContext ctx) where T : class
         {
             IQueryable<T> list;
 

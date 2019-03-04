@@ -4,9 +4,15 @@ using Zambon.Core.Database;
 
 namespace Zambon.Core.Module.Xml.Navigation
 {
+    /// <summary>
+    /// Represents a node <Navigation></Navigation> from XML Application Model.
+    /// </summary>
     public class NavigationArray : XmlNode
     {
 
+        /// <summary>
+        /// Represents elements <Menu></Menu> from XML Application Model.
+        /// </summary>
         [XmlElement("Menu")]
         public Menu[] Menus { get; set; }
 

@@ -16,41 +16,78 @@ using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews
 {
+    /// <summary>
+    /// Represents a node <LookupView></LookupView> from XML Application Model.
+    /// </summary>
     public class LookupView : BaseView, ICriteria
     {
 
-        [XmlAttribute("Sort")]
-        public string Sort { get; set; }
-
-        [XmlAttribute("FromSql")]
-        public string FromSql { get; set; }
-
+        /// <summary>
+        /// The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
+        /// </summary>
         [XmlAttribute("Criteria")]
         public string Criteria { get; set; }
 
+        /// <summary>
+        /// The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
+        /// </summary>
         [XmlAttribute("CriteriaArguments")]
         public string CriteriaArguments { get; set; }
 
+        /// <summary>
+        /// The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
+        /// </summary>
+        [XmlAttribute("FromSql")]
+        public string FromSql { get; set; }
+
+        /// <summary>
+        /// The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
+        /// </summary>
+        [XmlAttribute("Sort")]
+        public string Sort { get; set; }
+
+
+        /// <summary>
+        /// List all search properties should be possible to search.
+        /// </summary>
         [XmlIgnore]
         public SearchProperty[] SearchProperties { get { return _SearchProperties?.SearchProperty; } }
 
+        /// <summary>
+        /// List all columns.
+        /// </summary>
         [XmlIgnore]
         public Column[] Columns { get { return _Columns?.Column; } }
 
 
+        /// <summary>
+        /// The PaginationOptions element from XML.
+        /// </summary>
         [XmlElement("SearchProperties"), Browsable(false)]
         public SearchPropertiesArray _SearchProperties { get; set; }
 
+        /// <summary>
+        /// The Columns element from XML.
+        /// </summary>
         [XmlElement("Columns"), Browsable(false)]
         public ColumnsArray _Columns { get; set; }
 
-        
+
+        /// <summary>
+        /// The active search options.
+        /// </summary>
         [XmlIgnore]
         public SearchOptions SearchOptions { get; private set; }
 
+        /// <summary>
+        /// The active list of items being displayed in this list view. Only availble when listing the items in page.
+        /// </summary>
         [XmlIgnore]
         public IQueryable ItemsCollection { get; private set; }
 
+        /// <summary>
+        /// The postback options the LookUpView should use when submitting back to the parent view.
+        /// </summary>
         [XmlIgnore]
         public PostBackOptions PostBackOptions { get; private set; }
 
@@ -87,10 +124,23 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
         #region Methods
 
+        /// <summary>
+        /// Set the LookUpView contents items.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="searchOptions">If applyng search, otherwise null.</param>
         public void PopulateView(ApplicationService app, CoreDbContext ctx, SearchOptions searchOptions = null)
         {
             GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(PopulateView) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, searchOptions });
         }
+        /// <summary>
+        /// Set the LookUpView contents items.
+        /// </summary>
+        /// <typeparam name="T">The type of the LookUpView.</typeparam>
+        /// <param name="app">The application service.</param>
+        /// <param name="ctx">The CoreDbContext service.</param>
+        /// <param name="searchOptions">If applyng search, otherwise null.</param>
         public void PopulateView<T>(ApplicationService app, CoreDbContext ctx, SearchOptions searchOptions = null) where T : class
         {
             //Todo: Validate if still needed. GC.Collect();
@@ -119,6 +169,12 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             ItemsCollection = list;
         }
 
+        /// <summary>
+        /// Get the value of a property.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="propertyName">The property name.</param>
+        /// <returns>Returns the property value.</returns>
         public object GetCellValue(ApplicationService app, string propertyName)
         {
             if (!string.IsNullOrWhiteSpace(propertyName) && (Columns?.Length ?? 0) > 0)
@@ -129,10 +185,24 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             }
             return null;
         }
+        /// <summary>
+        /// Get the value of a column.
+        /// </summary>
+        /// <param name="app">The application service.</param>
+        /// <param name="column">The column to get the value.</param>
+        /// <returns>Returns the column value.</returns>
         public object GetCellValue(ApplicationService app, Column column)
         {
             return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column, null });
         }
+        /// <summary>
+        /// Get the value of a column.
+        /// </summary>
+        /// <typeparam name="T">The type of the LookUpView.</typeparam>
+        /// <param name="app">The application service.</param>
+        /// <param name="column">The column to get the value.</param>
+        /// <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
+        /// <returns>Returns the column value.</returns>
         public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
         {
             object value = (new[] { (T)CurrentObject }).AsQueryable().Select(customProperty ?? column.PropertyName).FirstOrDefault();
@@ -176,6 +246,10 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             return list;
         }
 
+        /// <summary>
+        /// Set the value of the PostBackOptions property.
+        /// </summary>
+        /// <param name="postBackOptions">The PostBackOptions object.</param>
         public void SetPostBackOptions(PostBackOptions postBackOptions)
         {
             PostBackOptions = postBackOptions;

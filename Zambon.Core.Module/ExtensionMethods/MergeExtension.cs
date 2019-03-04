@@ -4,9 +4,19 @@ using Zambon.Core.Module.Xml;
 
 namespace Zambon.Core.Module.ExtensionMethods
 {
+    /// <summary>
+    /// Extension method used merging the XML files of the Applicaton Model.
+    /// </summary>
     public static class MergeExtension
     {
-
+        
+        /// <summary>
+        /// Merges two objects that implements the interface IMergeable.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the objects.</typeparam>
+        /// <param name="target">The original value, that should have the properties overwriten.</param>
+        /// <param name="source">The source value, containing only the changed values.</param>
+        /// <returns>Returns the target value plus all changes made in source value.</returns>
         public static TObject MergeObject<TObject>(this TObject target, TObject source) where TObject : class, IMergeable
         {
             var properties = target.GetType().GetProperties();
@@ -40,6 +50,13 @@ namespace Zambon.Core.Module.ExtensionMethods
             return target;
         }
 
+        /// <summary>
+        /// Merges two arrays of objects that implements the interface IMergeable.
+        /// </summary>
+        /// <typeparam name="T">The element type of the array.</typeparam>
+        /// <param name="target">The target array, that should have the items overwriten.</param>
+        /// <param name="source">The source array, containing only the changed items.</param>
+        /// <returns>Returns the target array plus all changes made in source array.</returns>
         public static T[] MergeArray<T>(this T[] target, T[] source) where T : class, IMergeable
         {
             if ((source?.Length ?? 0) > 0)

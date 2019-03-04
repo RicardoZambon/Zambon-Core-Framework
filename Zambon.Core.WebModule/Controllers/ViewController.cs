@@ -31,7 +31,7 @@ namespace Zambon.Core.WebModule.Controllers
         {
             if (!string.IsNullOrWhiteSpace(ListViewId))
                 if (_app.GetListView(ListViewId) is ListView listView)
-                    return listView.GetItemsCount(_ctx, _app);
+                    return listView.GetItemsCount(_app, _ctx);
             return 0;
         }
 
