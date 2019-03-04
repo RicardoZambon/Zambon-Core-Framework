@@ -7,22 +7,39 @@ using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Xml.Views
 {
-    public class View : BaseView
+    /// <summary>
+    /// Represents base properties for nodes of <DetailView></DetailView> or <ListView></ListView> from XML Application Model.
+    /// </summary>
+    public abstract class View : BaseView
     {
 
+        /// <summary>
+        /// The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+        /// </summary>
         [XmlAttribute("ControllerName")]
         public string ControllerName { get; set; }
 
+        /// <summary>
+        /// The ActionName attribute from XML. Define the action name to be used for this view.
+        /// </summary>
         [XmlAttribute("ActionName")]
         public string ActionName { get; set; }
 
+        /// <summary>
+        /// List all buttons.
+        /// </summary>
         [XmlIgnore]
         public Button[] Buttons { get { return _Buttons?.Button; } }
 
+        /// <summary>
+        /// The SubViews element from XML.
+        /// </summary>
         [XmlElement("SubViews")]
         public SubViews.SubViews SubViews { get; set; }
 
-
+        /// <summary>
+        /// The Buttons element from XML.
+        /// </summary>
         [XmlElement("Buttons"), Browsable(false)]
         public Buttons.Buttons _Buttons { get; set; }
 
@@ -41,6 +58,11 @@ namespace Zambon.Core.Module.Xml.Views
 
         #region Methods
 
+        /// <summary>
+        /// Retrieves a SubView using the SubView Id.
+        /// </summary>
+        /// <param name="Id">The Id of the SubView.</param>
+        /// <returns>If found, return the SubView instance; Otherwise, return null.</returns>
         public BaseSubView GetSubView(string Id)
         {
             BaseSubView view = null;

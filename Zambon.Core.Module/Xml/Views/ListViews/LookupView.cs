@@ -156,8 +156,8 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                 var searchProperty = Array.Find(SearchProperties, x => x.PropertyName == searchOptions.SearchProperty);
                 if (searchProperty != null)
                 {
-                    searchOptions.SearchType = searchProperty.SearchType;
-                    searchOptions.ComparisonType = searchProperty.ComparisonType;
+                    searchOptions.SearchType = searchProperty.Type;
+                    searchOptions.ComparisonType = searchProperty.Comparison;
                     list = searchOptions.SearchList(list);
                 }
             }

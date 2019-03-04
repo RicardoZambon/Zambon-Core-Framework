@@ -167,10 +167,11 @@ namespace Zambon.Core.Module.Xml.Navigation
         /// <summary>
         /// Compares the Index with other menu object, to sort the menus array.
         /// </summary>
-        /// <param name="obj">The menu object to capare to.</param>
+        /// <param name="obj">The menu object to compare to.</param>
         /// <returns>A signed number indicating the relative values of this instance and value. Return
-        //     Value Description Less than zero: This instance is less than value. Zero: This
-        //     instance is equal to value. Greater than zero: This instance is greater than value.</returns>
+        ///     Value Description Less than zero: This instance is less than value. Zero: This
+        ///     instance is equal to value. Greater than zero: This instance is greater than value.
+        /// </returns>
         public int CompareTo(object obj)
         {
             if (obj is Menu objMenu)

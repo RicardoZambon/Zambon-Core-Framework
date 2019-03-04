@@ -76,10 +76,13 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Columns
         #region Methods
 
         /// <summary>
-        /// Compares the Index with other column, to sort the columns array.
+        /// Compares the Index with other column object, to sort the columns array.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
+        /// <param name="obj">The column object to compare to.</param>
+        /// <returns>A signed number indicating the relative values of this instance and value. Return
+        ///     Value Description Less than zero: This instance is less than value. Zero: This
+        ///     instance is equal to value. Greater than zero: This instance is greater than value.
+        /// </returns>
         public int CompareTo(object obj)
         {
             if (obj is Column objColumn)

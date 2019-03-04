@@ -6,6 +6,9 @@ using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Xml
 {
+    /// <summary>
+    /// Base class used for all Xml nodes from Application Model.
+    /// </summary>
     public abstract class XmlNode : IMergeable, ICloneable
     {
         [XmlIgnore]
@@ -59,6 +62,10 @@ namespace Zambon.Core.Module.Xml
             }
         }
 
+        /// <summary>
+        /// Returns a new instance of the same object.
+        /// </summary>
+        /// <returns>Returns a new instance of the same object with the same values.</returns>
         public object Clone()
         {
             using (var memoryStream = new MemoryStream())

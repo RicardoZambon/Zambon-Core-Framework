@@ -4,7 +4,7 @@ using Zambon.Core.Module.Interfaces;
 namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
 {
     /// <summary>
-    /// Represents a node <PaintOption></PaintOption> from XML Application Model.
+    /// Represents a node <PaintOption /> from XML Application Model.
     /// </summary>
     public class PaintOption : XmlNode, ICondition
     {

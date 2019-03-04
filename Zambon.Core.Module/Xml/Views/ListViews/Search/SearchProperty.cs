@@ -1,30 +1,58 @@
-﻿using Zambon.Core.Database;
-using Zambon.Core.Module.Xml;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
 
 namespace Zambon.Core.Module.Xml.Views.ListViews.Search
 {
+    /// <summary>
+    /// Represents a node <SearchProperty /> from XML Application Model.
+    /// </summary>
     public class SearchProperty : XmlNode, IComparable
     {
 
+        /// <summary>
+        /// The PropertyName attribute from XML. The property name to use when executing the search.
+        /// </summary>
         [XmlAttribute("PropertyName"), MergeKey]
         public string PropertyName { get; set; }
 
+        /// <summary>
+        /// The DisplayName attribute from XML. The display name in selection field, by default will use the display name from the property model.
+        /// </summary>
         [XmlAttribute("DisplayName")]
         public string DisplayName { get; set; }
 
-        [XmlAttribute("Index")]
-        public int Index { get; set; }
+        /// <summary>
+        /// The Index attribute from XML. The index value returned from Xml file.
+        /// </summary>
+        [XmlAttribute("Index"), Browsable(false)]
+        public string IntIndex
+        {
+            get { return Index.ToString(); }
+            set { int.TryParse(value, out int index); Index = index; }
+        }
+        /// <summary>
+        /// The Index attribute from XML. The column index order to display.
+        /// </summary>
+        [XmlIgnore]
+        public int? Index { get; set; }
 
+        /// <summary>
+        /// The Type attribute from XML. The type of search should be executed.
+        /// </summary>
         [XmlAttribute("Type")]
-        public string SearchType { get; set; }
+        public string Type { get; set; }
 
-        [XmlAttribute("SearchType")]
-        public string ComparisonType { get; set; }
+        /// <summary>
+        /// The Comparison attribute from XML. The comparison type of search should be executed.
+        /// </summary>
+        [XmlAttribute("Comparison")]
+        public string Comparison { get; set; }
 
+        /// <summary>
+        /// The DefaultValue attribute from XML. If should use a default value when selecting this search option.
+        /// </summary>
         [XmlAttribute("DefaultValue")]
         public string DefaultValue { get; set; }
 
@@ -34,24 +62,32 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
         {
             base.OnLoadingXml(app, ctx);
 
-            if (SearchType == null)
-                SearchType = "Text";
+            if (Type == null)
+                Type = "Text";
 
-            if (ComparisonType == null)
-                if (SearchType == "Text")
-                    ComparisonType = "Contains";
+            if (Comparison == null)
+                if (Type == "Text")
+                    Comparison = "Contains";
                 else
-                    ComparisonType = "Equal";
+                    Comparison = "Equal";
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Compares the Index with other SearchProperty object, to sort the SearchProperties array.
+        /// </summary>
+        /// <param name="obj">The SearchProperty object to compare to.</param>
+        /// <returns>A signed number indicating the relative values of this instance and value. Return
+        ///     Value Description Less than zero: This instance is less than value. Zero: This
+        ///     instance is equal to value. Greater than zero: This instance is greater than value.
+        /// </returns>
         public int CompareTo(object obj)
         {
-            if (obj is SearchProperty)
-                return Index.CompareTo(((SearchProperty)obj).Index);
+            if (obj is SearchProperty objSearchProperty)
+                return (Index ?? 0).CompareTo(objSearchProperty.Index ?? 0);
             throw new ArgumentException("Object is not a search property.");
         }
 

@@ -3,27 +3,22 @@ using System.ComponentModel;
 
 namespace Zambon.Core.Module.ExtensionMethods
 {
+    /// <summary>
+    /// Extension types used for Type.
+    /// </summary>
     public static class TypeExtension
     {
 
-        public static string GetDefaultProperty(this Type _type)
+        /// <summary>
+        /// Retrieve the default property name from DefaultPropertyAttribute.
+        /// </summary>
+        /// <param name="type">The type to search for.</param>
+        /// <returns>If found, will return the default property name; otherwise, return null.</returns>
+        public static string GetDefaultProperty(this Type type)
         {
-            var defaultProperties = _type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true);
+            var defaultProperties = type.GetCustomAttributes(typeof(DefaultPropertyAttribute), true);
             return defaultProperties.Length > 0 ? ((DefaultPropertyAttribute)defaultProperties[0]).Name : null;
         }
-
-        //public static PropertyInfo GetPropertyRecursivelly(this Type _type, string _property)
-        //{
-        //    if (_property.IndexOf(".") >= 0)
-        //    {
-        //        var prop = _property.Substring(0, _property.IndexOf("."));
-        //        _property = _property.Substring(_property.IndexOf(".") + 1, _property.Length - _property.IndexOf(".") - 1);
-
-        //        return GetPropertyRecursivelly(_type.GetPropertyRecursivelly(prop).PropertyType, _property);
-        //    }
-
-        //    return _type.GetProperty(_property) ?? GetPropertyRecursivelly(_type.BaseType, _property);
-        //}
 
     }
 }
