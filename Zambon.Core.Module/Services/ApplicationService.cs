@@ -78,7 +78,7 @@ namespace Zambon.Core.Module.Services
         /// <summary>
         /// The user menu array, already filtered accordingly to the available options.
         /// </summary>
-        public Menu[] UserMenu { get { if ((_UserMenu?.Length ?? 0) == 0) _UserMenu = GetMenus(); return _UserMenu; } }
+        public Menu[] UserMenu { get { if ((_UserMenu?.Length ?? 0) == 0) _UserMenu = RefreshMenus(); return _UserMenu; } }
 
         /// <summary>
         /// Current active user object from UserService.
@@ -205,34 +205,43 @@ namespace Zambon.Core.Module.Services
         }
 
 
-        private Menu[] GetMenus(Menu[] subMenus = null)
+        private Menu[] RefreshMenus(Menu[] subMenus = null)
         {
-            var list = new List<Menu>();
             if (CurrentUser != null)
             {
-                subMenus = subMenus ?? Model.Navigation;
-                for (var i = 0; i < subMenus.Count(); i++)
+                var menus = (subMenus ?? Model.Navigation).ToList();
+                for (var m = 0; m < menus.Count(); m++)
                 {
-                    var menu = subMenus[i];
-                    if (subMenus[i].SubMenus?.Length > 0)
+                    var menu = menus[m];
+                    var removeItem = false;
+
+                    if (menu.Index >= 0)
                     {
-                        var childSubMenus = GetMenus(subMenus[i].SubMenus);
-                        if (childSubMenus?.Length > 0)
+                        if ((menu.SubMenus?.Length ?? 0) > 0)
                         {
-                            menu.SubMenus = childSubMenus;
-                            list.Add(menu);
+                            menu.SubMenus = RefreshMenus(menu.SubMenus);
+                            if (menu.SubMenus.Length == 0)
+                                removeItem = true;
                         }
+                        else if (menu.Type == "Separator")
+                        {
+                            if (m == 0 || menus[menus.Count - 1].Type == "Separator")
+                                removeItem = true;
+                        }
+                        else if (!menu.UserHasAccess(CurrentUser))
+                            removeItem = true;
                     }
-                    else if (menu.Type == "Separator")
+                    else
+                        removeItem = true;
+
+                    if (removeItem)
                     {
-                        if (list.Count() > 0 && list[list.Count - 1].Type != "Separator")
-                            list.Add(menu);
+                        menus.Remove(menu);
+                        m--;
                     }
-                    else if (menu.UserHasAccess(CurrentUser))
-                        list.Add(menu);
                 }
             }
-            return list.ToArray();
+            return new Menu[0];
         }
 
         #endregion
