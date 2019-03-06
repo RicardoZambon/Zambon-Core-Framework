@@ -378,6 +378,46 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             return view;
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public string GetApplicableBackColor(ExpressionsService service, object obj)
+        {
+            if (PaintOptions != null)
+                return string.Join(' ', service.GetApplicableItems(PaintOptions, obj).Select(x => x.BackColor));
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public string GetApplicableForeColor(ExpressionsService service, object obj)
+        {
+            if (PaintOptions != null)
+                return string.Join(' ', service.GetApplicableItems(PaintOptions, obj).Select(x => x.ForeColor));
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="service"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public string GetApplicableCssClass(ExpressionsService service, object obj)
+        {
+            if (PaintOptions != null)
+                return string.Join(' ', service.GetApplicableItems(PaintOptions, obj).Select(x => x.CssClass));
+            return string.Empty;
+        }
+
         #endregion
 
     }

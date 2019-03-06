@@ -411,6 +411,11 @@
             The user ID.
             </summary>
         </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IViewButtons">
+            <summary>
+            Interface used by Views that implement Buttons.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Interfaces.IViewButtons.Buttons">
             <summary>
             List all buttons.
@@ -421,6 +426,11 @@
             The Buttons element from XML.
             </summary>
         </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IViewControllerAction">
+            <summary>
+            Interface used by Views that implement Controller and Action.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Interfaces.IViewControllerAction.ControllerName">
             <summary>
             Define the default controller name to be used within this view, by default will use the same as set in EntityType.
@@ -429,6 +439,11 @@
         <member name="P:Zambon.Core.Module.Interfaces.IViewControllerAction.ActionName">
             <summary>
             Define the action name to be used for this view.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Interfaces.IViewSubViews">
+            <summary>
+            Interface used from Views that implement SubViews.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Interfaces.IViewSubViews.SubViews">
@@ -1870,6 +1885,30 @@
             <param name="Id">The Id of the SubView.</param>
             <returns>If found, return the SubView instance; Otherwise, return null.</returns>
         </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetApplicableBackColor(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetApplicableForeColor(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetApplicableCssClass(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="service"></param>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
         <member name="T:Zambon.Core.Module.Xml.Views.ListViews.LookupView">
             <summary>
             Represents a node <LookupView></LookupView> from XML Application Model.
@@ -2004,30 +2043,6 @@
             <summary>
             Represent elements <PaintOption /> from XML Application Model.
             </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.GetApplicableBackColor(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="service"></param>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.GetApplicableForeColor(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="service"></param>
-            <param name="obj"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOptionsArray.GetApplicableCssClass(Zambon.Core.Module.Services.ExpressionsService,System.Object)">
-            <summary>
-            
-            </summary>
-            <param name="service"></param>
-            <param name="obj"></param>
-            <returns></returns>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions">
             <summary>

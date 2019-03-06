@@ -18,40 +18,17 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
     [HtmlTargetElement("thead", Attributes = ForAttributeName)]
     public class TableHeaderTagHelper : TagHelper
     {
-        private const string ForAttributeName = "listview-header-for";
-
-        #region Properties
-
-        public override int Order => 0;
+        private const string ForAttributeName = "list-header-for";
 
         [HtmlAttributeName(ForAttributeName)]
         public Column[] For { get; set; }
 
-        [HtmlAttributeName("listview-header-class")]
-        public string CustomClass { get; set; }
-
-
         [HtmlAttributeNotBound, ViewContext]
         public ViewContext ViewContext { get; set; }
 
-        protected IHtmlGenerator Generator { get; }
-
-        #endregion
-
-        #region Constructors
-
-        public TableHeaderTagHelper(IHtmlGenerator generator)
-        {
-            Generator = generator;
-        }
-
-        #endregion
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (output == null) throw new ArgumentNullException(nameof(output));
-
             if ((For?.Length ?? 0) > 0)
             {
                 output.Content.AppendHtml("<tr><th scope=\"col\" class=\"col-0 pl-0 pr-0\">&nbsp;</th>");
@@ -68,11 +45,14 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
                 }
 
                 for (var c = 0; c < For.Length; c++)
+                {
+                    var column = For[c];
                     if (For[c].Index >= 0)
                     {
-                        var size = !string.IsNullOrWhiteSpace(For[c].Size) ? "-" + For[c].Size : string.Empty;
-                        output.Content.AppendHtml($"<th scope=\"col\" class=\"col{size} {CustomClass}\"><span class=\"text-truncate\">{For[c].DisplayName}</span></th>");
+                        var size = !string.IsNullOrWhiteSpace(column.Size) ? "-" + column.Size : string.Empty;
+                        output.Content.AppendHtml($"<th scope=\"col\" class=\"col{size}\"><span class=\"text-truncate\">{column.DisplayName}</span></th>");
                     }
+                }
                 output.Content.AppendHtml($"</tr>");
             }
         }

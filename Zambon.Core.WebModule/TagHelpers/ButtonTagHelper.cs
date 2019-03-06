@@ -59,8 +59,6 @@ namespace Zambon.Core.WebModule.TagHelpers
         [HtmlAttributeNotBound, ViewContext]
         public ViewContext ViewContext { get; set; }
 
-        protected IHtmlGenerator Generator { get; }
-
         protected IUrlHelperFactory UrlHelperFactory { get; }
 
         protected IUrlHelper UrlHelper { get { return UrlHelperFactory.GetUrlHelper(ViewContext); } }
@@ -73,9 +71,8 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #region Constructors
 
-        public ButtonTagHelper(IHtmlGenerator generator, IUrlHelperFactory urlHelperFactory, ApplicationService application, ExpressionsService expressions)
+        public ButtonTagHelper(IUrlHelperFactory urlHelperFactory, ApplicationService application, ExpressionsService expressions)
         {
-            Generator = generator;
             UrlHelperFactory = urlHelperFactory;
             Application = application;
             Expressions = expressions;
@@ -85,7 +82,7 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #region Overrides
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             if (output == null) throw new ArgumentNullException(nameof(output));
@@ -107,7 +104,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                     //    CustomLocationButtons(output);
                     //    break;
                     default:
-                        output.Content.AppendHtml(await output.GetChildContentAsync());
+                        output.Content.AppendHtml(output.GetChildContentAsync().Result);
                         CustomLocationButtons(output);
                         break;
                 }

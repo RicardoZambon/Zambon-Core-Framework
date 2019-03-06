@@ -240,6 +240,7 @@ namespace Zambon.Core.Module.Services
                         m--;
                     }
                 }
+                return menus.ToArray();
             }
             return new Menu[0];
         }

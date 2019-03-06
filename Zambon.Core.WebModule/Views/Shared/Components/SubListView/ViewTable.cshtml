@@ -1,59 +1,6 @@
-﻿@using System.Linq.Dynamic.Core;
-
-@model Zambon.Core.Module.Xml.Views.ListViews.ListView
-
-@inject Zambon.Core.Module.Services.ApplicationService ApplicationService
+﻿@model Zambon.Core.Module.Xml.Views.ListViews.ListView
 
 <table class="table table-striped table-hover table-sm mb-0">
-    <thead listview-header-for="@Model.Columns" class="bg-primary text-white"></thead>
-    <tbody>
-        @{
-            var itemsCollection = Model.ItemsCollection;
-            if (itemsCollection != null)
-            {
-                if (itemsCollection.Count() > 0)
-                {
-                    foreach (var currentObject in itemsCollection)
-                    {
-                        Model.SetCurrentObject(currentObject);
-
-                        var backColor = ""; var foreColor = ""; var customClass = "";
-                        if ((Model.PaintOptions?.Length ?? 0) > 0)
-                        {
-                            //Todo: Add these lines into TagHelpers.
-                            backColor = Model._PaintOptions?.GetApplicableBackColor(ApplicationService.GetExpressionsService(), currentObject);
-                            foreColor = Model._PaintOptions?.GetApplicableForeColor(ApplicationService.GetExpressionsService(), currentObject);
-                            customClass = Model._PaintOptions?.GetApplicableCssClass(ApplicationService.GetExpressionsService(), currentObject);
-                        }
-
-                        <tr class="@(backColor)">
-                            <th scope="row" class="col-0 pl-0 pr-0">&nbsp;</th>
-
-                            @if ((Model?.Buttons?.Length ?? 0) > 0 && Model.Buttons.Any(x => x.IsApplicable("Inline")))
-                            {
-                                <th scope="row" class="col-fit text-center">
-                                    <div button-for="@Model.Buttons" button-target="Inline" button-hide-text="true" button-current-object="@currentObject"></div>
-                                </th>
-                            }
-
-                            @if ((Model.Columns?.Length ?? 0) > 0)
-                            {
-                                @for (var c = 0; c < Model.Columns.Length; c++)
-                                {
-                                    <td listview-column-for="@Model.Columns[c]" listview-column-model="@Model" listview-column-item-forecolor="@(foreColor)" listview-column-item-class="@(customClass)" listview-column-is-sublistview="true"></td>
-                                }
-                            }
-                        </tr>
-                    }
-                    Model.ClearCurrentObject();
-                }
-                else if (!string.IsNullOrWhiteSpace(Model.MessageOnEmpty))
-                {
-                    <tr>
-                        <td class="col text-center" colspan="@(1 + ((Model?.Buttons?.Length ?? 0) > 0 && Model.Buttons.Any(x => x.IsApplicable("Inline")) ? 1 : 0) + (Model?.Columns?.Length ?? 0))">@Model.MessageOnEmpty</td>
-                    </tr>
-                }
-            }
-        }
-    </tbody>
+    <thead list-header-for="@Model.Columns" class="bg-primary text-white"></thead>
+    <tbody listview-body-for="@Model.Columns" listview-body-issublistview="true"></tbody>
 </table>
