@@ -8,7 +8,7 @@ namespace Zambon.Core.Module.Xml.Views
     /// <summary>
     /// Base view class used for all Views.
     /// </summary>
-    public class BaseView : XmlNode
+    public abstract class BaseView : XmlNode
     {
 
         /// <summary>

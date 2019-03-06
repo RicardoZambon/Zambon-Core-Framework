@@ -2,6 +2,7 @@
 using System;
 using System.Net;
 using Zambon.Core.Database;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.ListViews;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
@@ -110,13 +111,16 @@ namespace Zambon.Core.WebModule.Controllers
         {
             try
             {
-                var view = _app.GetView(viewInfo.ParentViewId);
-                var lookupModal = view.GetSubView(viewInfo.ModalId) as LookupModal;
+                if (_app.GetView(viewInfo.ParentViewId) is IViewSubViews viewSubViews)
+                {
+                    var lookupModal = viewSubViews.GetSubView(viewInfo.ModalId) as LookupModal;
 
-                ((LookupView)lookupModal.View).PopulateView(_app, _ctx, searchOptions);
-                ((LookupView)lookupModal.View).SetPostBackOptions(postBackOptions ?? new PostBackOptions() { PostbackActionName = "", PostbackFormId = "" });
+                    lookupModal.LookUpView.PopulateView(_app, _ctx, searchOptions);
+                    lookupModal.LookUpView.SetPostBackOptions(postBackOptions ?? new PostBackOptions() { PostbackActionName = "", PostbackFormId = "" });
 
-                return PartialView("~/Views/Shared/Components/ModalView/LookupModalView_Form.cshtml", lookupModal);
+                    return PartialView("~/Views/Shared/Components/ModalView/LookupModalView_Form.cshtml", lookupModal);
+                }
+                return null;
             }
             catch (Exception ex)
             {

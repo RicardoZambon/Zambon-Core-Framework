@@ -1,8 +1,7 @@
-﻿@model Zambon.Core.Module.Xml.Views.View
+﻿@model Zambon.Core.Module.Xml.Views.BaseView
 
-@if (Model is Zambon.Core.Module.Xml.Views.DetailViews.DetailView)
+@if (Model is Zambon.Core.Module.Xml.Views.DetailViews.DetailView detailView)
 {
-    var detailView = (Zambon.Core.Module.Xml.Views.DetailViews.DetailView)Model;
     if ((detailView?.Scripts?.Count() ?? 0) > 0)
     {
         for (var s = 0; s < detailView.Scripts.Count(); s++)
@@ -12,18 +11,21 @@
     }
 }
 
-@if ((Model.SubViews?.DetailViews?.Count() ?? 0) > 0)
+@if (Model is Zambon.Core.Module.Interfaces.IViewSubViews viewSubViews)
 {
-    for (var d = 0; d < Model.SubViews.DetailViews.Count(); d++)
+    @if ((viewSubViews.SubViews?.DetailViews?.Count() ?? 0) > 0)
     {
-        <partial name="./Scripts.cshtml" model="@Model.SubViews.DetailViews[d].DetailView" />
+        for (var d = 0; d < viewSubViews.SubViews.DetailViews.Count(); d++)
+        {
+            <partial name="./Scripts.cshtml" model="@viewSubViews.SubViews.DetailViews[d].DetailView" />
+        }
     }
-}
 
-@if ((Model.SubViews?.SubListViews?.Count() ?? 0) > 0)
-{
-    for (var l = 0; l < Model.SubViews.SubListViews.Count(); l++)
+    @if ((viewSubViews.SubViews?.SubListViews?.Count() ?? 0) > 0)
     {
-        <partial name="./Scripts.cshtml" model="@Model.SubViews.SubListViews[l].ListView" />
+        for (var l = 0; l < viewSubViews.SubViews.SubListViews.Count(); l++)
+        {
+            <partial name="./Scripts.cshtml" model="@viewSubViews.SubViews.SubListViews[l].ListView" />
+        }
     }
 }

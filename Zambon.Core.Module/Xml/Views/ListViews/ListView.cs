@@ -24,8 +24,20 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
     /// <summary>
     /// Represents a node <ListView></ListView> from XML Application Model.
     /// </summary>
-    public class ListView : View, ICriteria
+    public class ListView : BaseListView, IViewControllerAction, IViewButtons, IViewSubViews
     {
+
+        /// <summary>
+        /// The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+        /// </summary>
+        [XmlAttribute("ControllerName")]
+        public string ControllerName { get; set; }
+
+        /// <summary>
+        /// The ActionName attribute from XML. Define the action name to be used for this view.
+        /// </summary>
+        [XmlAttribute("ActionName")]
+        public string ActionName { get; set; }
 
         /// <summary>
         /// The CanEdit attribute from XML. Indicates if the list view should be editable or not.
@@ -47,31 +59,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// </summary>
         [XmlAttribute("EditModalId")]
         public string EditModalId { get; set; }
-
-
-        /// <summary>
-        /// The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
-        /// </summary>
-        [XmlAttribute("Criteria")]
-        public string Criteria { get; set; }
-
-        /// <summary>
-        /// The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
-        /// </summary>
-        [XmlAttribute("CriteriaArguments")]
-        public string CriteriaArguments { get; set; }
-
-        /// <summary>
-        /// The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
-        /// </summary>
-        [XmlAttribute("FromSql")]
-        public string FromSql { get; set; }
-
-        /// <summary>
-        /// The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
-        /// </summary>
-        [XmlAttribute("Sort")]
-        public string Sort { get; set; }
 
 
         /// <summary>
@@ -101,22 +88,22 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
 
         /// <summary>
-        /// List all search properties should be possible to search.
+        /// List all buttons.
         /// </summary>
         [XmlIgnore]
-        public SearchProperty[] SearchProperties { get { return _SearchProperties?.SearchProperty; } }
-
-        /// <summary>
-        /// List all columns.
-        /// </summary>
-        [XmlIgnore]
-        public Column[] Columns { get { return _Columns?.Column; } }
-
+        public Button[] Buttons { get { return _Buttons?.Button; } }
+        
         /// <summary>
         /// List all paint options and their conditions.
         /// </summary>
         [XmlIgnore]
         public PaintOption[] PaintOptions { get { return _PaintOptions?.PaintOption; } }
+
+        /// <summary>
+        /// The SubViews element from XML.
+        /// </summary>
+        [XmlElement("SubViews")]
+        public SubViews.SubViews SubViews { get; set; }
 
 
         /// <summary>
@@ -126,17 +113,11 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public PaginationOptions PaginationOptions { get; set; }
 
         /// <summary>
-        /// The PaginationOptions element from XML.
+        /// The Buttons element from XML.
         /// </summary>
-        [XmlElement("SearchProperties"), Browsable(false)]
-        public SearchPropertiesArray _SearchProperties { get; set; }
-
-        /// <summary>
-        /// The Columns element from XML.
-        /// </summary>
-        [XmlElement("Columns"), Browsable(false)]
-        public ColumnsArray _Columns { get; set; }
-
+        [XmlElement("Buttons"), Browsable(false)]
+        public Buttons.Buttons _Buttons { get; set; }
+        
         /// <summary>
         /// The PaintOptions element from XML.
         /// </summary>
@@ -148,35 +129,22 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// 
         /// </summary>
         [XmlIgnore]
-        public IDictionary<string, object> CustomParameters { get; private set; } = new Dictionary<string, object>();
+        public IDictionary<string, object> CustomParameters { get; protected set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// The EditModalID modal object.
         /// </summary>
         [XmlIgnore]
-        public DetailModal EditModal { get; private set; }
+        public DetailModal EditModal { get; protected set; }
 
-
-        /// <summary>
-        /// The active search options.
-        /// </summary>
-        [XmlIgnore]
-        public SearchOptions SearchOptions { get; private set; }
-
-        /// <summary>
-        /// The active list of items being displayed in this list view. Only availble when listing the items in page.
-        /// </summary>
-        [XmlIgnore]
-        public IQueryable ItemsCollection { get; private set; }
-
-
+        
         #region Overrides
 
         internal override void OnLoadingXml(Application app, CoreDbContext ctx)
         {
             base.OnLoadingXml(app, ctx);
 
-            if (string.IsNullOrWhiteSpace(ControllerName))
+            if (string.IsNullOrWhiteSpace(ControllerName) && !string.IsNullOrWhiteSpace(Entity.DefaultController))
                 ControllerName = Entity.DefaultController;
 
             if (string.IsNullOrWhiteSpace(ActionName))
@@ -184,10 +152,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
             if (string.IsNullOrWhiteSpace(EditModalParameters))
                 EditModalParameters = app.ModuleConfiguration.ListViewDefaults.DefaultEditModalParameter;
-
-            if (string.IsNullOrWhiteSpace(Sort))
-                Sort = Entity.GetDefaultProperty();
-
+            
             if ((SubViews?.DetailViews?.Length ?? 0) > 0)
             {
                 for (var d = 0; d < SubViews.DetailViews.Length; d++)
@@ -213,36 +178,13 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
             if (string.IsNullOrWhiteSpace(BoolShowPagination))
                 BoolShowPagination = app.ModuleConfiguration?.ListViewDefaults?.BoolShowPagination;
-
-            if ((SearchProperties?.Length ?? 0) > 0)
-            {
-                Array.Sort(SearchProperties);
-                for (var s = 0; s < SearchProperties.Length; s++)
-                {
-                    var property = Entity?.GetPropertyDisplayName(SearchProperties[s].PropertyName);
-                    if (string.IsNullOrWhiteSpace(SearchProperties[s].DisplayName))
-                        SearchProperties[s].DisplayName = property;
-                    SearchProperties[s].OnLoadingXml(app, ctx);
-                }
-            }
-
+            
             if ((Buttons?.Length ?? 0) > 0)
             {
                 for (var b = 0; b < Buttons.Length; b++)
                     OnLoadingSubButtons(Buttons[b]);
             }
-
-            if ((Columns?.Length ?? 0) > 0)
-            {
-                Array.Sort(Columns);
-                for (var s = 0; s < Columns.Length; s++)
-                {
-                    var property = Entity?.GetPropertyDisplayName(Columns[s].PropertyName);
-                    if (string.IsNullOrWhiteSpace(Columns[s].DisplayName))
-                        Columns[s].DisplayName = property;
-                }
-            }
-
+            
             if (PaginationOptions == null)
                 PaginationOptions = new PaginationOptions();
 
@@ -308,22 +250,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public void SetCurrentPage<T>(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null) where T : class
         {
             //Todo: Validate if still needed. GC.Collect();
-            SearchOptions = searchOptions;
-            var list = GetItemsList<T>(app, ctx);
-
-            if (searchOptions?.HasSearch() ?? false)
-            {
-                var searchProperty = Array.Find(SearchProperties, x => x.PropertyName == searchOptions.SearchProperty);
-                if (searchProperty != null)
-                {
-                    searchOptions.SearchType = searchProperty.Type;
-                    searchOptions.ComparisonType = searchProperty.Comparison;
-                    list = searchOptions.SearchList(list);
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(Sort))
-                list = list.OrderBy(Sort);
+            var list = GetPopulatedView<T>(app, ctx, searchOptions);
 
             if (ShowPagination && PaginationOptions != null)
             {
@@ -336,66 +263,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             ItemsCollection = list;
         }
 
-        /// <summary>
-        /// Get the value of a property.
-        /// </summary>
-        /// <param name="app">The application service.</param>
-        /// <param name="propertyName">The property name.</param>
-        /// <returns>Returns the property value.</returns>
-        public object GetCellValue(ApplicationService app, string propertyName)
-        {
-            if (!string.IsNullOrWhiteSpace(propertyName) && (Columns?.Length ?? 0) > 0)
-            {
-                var column = Array.Find(Columns, x => x.PropertyName == propertyName);
-                if (column != null)
-                    return GetCellValue(app, column);
-            }
-            return null;
-        }
-        /// <summary>
-        /// Get the value of a column.
-        /// </summary>
-        /// <param name="app">The application service.</param>
-        /// <param name="column">The column to get the value.</param>
-        /// <returns>Returns the column value.</returns>
-        public object GetCellValue(ApplicationService app, Column column)
-        {
-            return GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetCellValue) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, column, null });
-        }
-        /// <summary>
-        /// Get the value of a column.
-        /// </summary>
-        /// <typeparam name="T">The type of the ListView.</typeparam>
-        /// <param name="app">The application service.</param>
-        /// <param name="column">The column to get the value.</param>
-        /// <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
-        /// <returns>Returns the column value.</returns>
-        public object GetCellValue<T>(ApplicationService app, Column column, string customProperty = null) where T : class
-        {
-            object value = (new[] { (T)CurrentObject }).AsQueryable().Select(customProperty ?? column.PropertyName).FirstOrDefault();
-
-            if (value is Enum enumValue)
-                return enumValue.GetEnumDisplayName();
-            else
-            {
-                value = TryGetDefaultPropertyValue(app, value);
-
-                if (!string.IsNullOrWhiteSpace(column.IsNullValue) && value == null)
-                    value = column.IsNullValue;
-            }
-            return !string.IsNullOrWhiteSpace(column.FormatType) ? string.Format(column.FormatType, value ?? "") : value;
-        }
-
-        private object TryGetDefaultPropertyValue(ApplicationService app, object value)
-        {
-            if (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>())
-            {
-                var valueEntity = app.GetDefaultProperty(value.GetType().GetCorrectType().FullName);
-                if (!string.IsNullOrWhiteSpace(valueEntity))
-                    return TryGetDefaultPropertyValue(app, value.GetType().GetProperty(valueEntity).GetValue(value));
-            }
-            return value;
-        }
 
         /// <summary>
         /// Set the ListView contents to the value of an entity.
@@ -481,31 +348,34 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             return GetItemsList<T>(app, ctx).Count();
         }
 
-        private IQueryable<T> GetItemsList<T>(ApplicationService app, CoreDbContext ctx) where T : class
+
+        /// <summary>
+        /// Retrieves a SubView using the SubView Id.
+        /// </summary>
+        /// <param name="Id">The Id of the SubView.</param>
+        /// <returns>If found, return the SubView instance; Otherwise, return null.</returns>
+        public BaseSubView GetSubView(string Id)
         {
-            IQueryable<T> list;
+            BaseSubView view = null;
+            if ((SubViews?.DetailViews?.Length ?? 0) > 0)
+                view = Array.Find(SubViews.DetailViews, m => m.Id == Id);
 
-            if (typeof(T).ImplementsInterface<IEntity>())
+            if (view == null && (SubViews?.LookupViews?.Length ?? 0) > 0)
+                view = Array.Find(SubViews.LookupViews, m => m.Id == Id);
+
+            if (view == null && (SubViews?.SubListViews?.Length ?? 0) > 0)
             {
-                list = ctx.Set<T>().AsQueryable();
-
-                if (!string.IsNullOrEmpty(FromSql))
-                    list = list.FromSql(FromSql);
+                view = Array.Find(SubViews.SubListViews, m => m.Id == Id);
+                if (view == null)
+                    for (var s = 0; s < SubViews.SubListViews.Length; s++)
+                    {
+                        view = SubViews.SubListViews[s].ListView.GetSubView(Id);
+                        if (view != null)
+                            return view;
+                    }
             }
-            else if (typeof(T).ImplementsInterface<IQuery>())
-            {
-                if (!string.IsNullOrWhiteSpace(FromSql))
-                    list = ctx.Set<T>().FromSql(FromSql);
-                else
-                    throw new ApplicationException($"The ListView \"{ViewId}\" has an entity \"{Entity}\" that implements the IQuery interface and is mandatory inform the attribute FromSql in ListView or Entity definition.");
-            }
-            else
-                throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
 
-            if (!string.IsNullOrWhiteSpace(Criteria))
-                list = list.Where(app.GetExpressionsService(), this);
-
-            return list;
+            return view;
         }
 
         #endregion

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.WebModule.TagHelpers
 {
@@ -52,7 +53,7 @@ namespace Zambon.Core.WebModule.TagHelpers
         public string ButtonClass { get; set; }
 
 
-        public View CurrentView { get { return Application.GetView(ViewContext.TempData["CurrentViewID"]?.ToString() ?? string.Empty); } }
+        public BaseView CurrentView { get { return Application.GetView(ViewContext.TempData["CurrentViewID"]?.ToString() ?? string.Empty); } }
 
 
         [HtmlAttributeNotBound, ViewContext]
@@ -259,10 +260,10 @@ namespace Zambon.Core.WebModule.TagHelpers
                     output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
             }
             
-            if ((CurrentView?.Buttons?.Length ?? 0) > 0)
-                for (var i = 0; i < CurrentView.Buttons.Length; i++)
+            if (CurrentView is IViewButtons viewButtons && (viewButtons?.Buttons?.Length ?? 0) > 0)
+                for (var i = 0; i < viewButtons.Buttons.Length; i++)
                 {
-                    var button = CurrentView.Buttons[i];
+                    var button = viewButtons.Buttons[i];
                     if (button.IsApplicable(Expressions, Target, CurrentObject))
                         output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
                 }
@@ -299,16 +300,19 @@ namespace Zambon.Core.WebModule.TagHelpers
                     buttonMethod += $" data-ajax-mode=\"replace\" data-ajax-update=\"#{button.OpenModal}_container\" data-ajax-open-modal=\"#{button.OpenModal}\"";
 
 
-                var modal = CurrentView.GetSubView(button.OpenModal);
-                if (modal is DetailModal detailModal)
+                if (CurrentView is IViewSubViews viewSubViews)
                 {
-                    buttonMethod += $" onclick=\"return ajax_update_parent('{UrlHelper.Action("UpdateData", CurrentView.ControllerName)}',this);\"";
-                    action = UrlHelper.Action(button.ActionName, button.ControllerName, new { ParentObjectId = ViewContext.TempData["CurrentObjectID"].ToString(), ParentViewId = CurrentView.ViewId, ModalId = modal.Id, modal.ViewId });
+                    var modal = viewSubViews.GetSubView(button.OpenModal);
+                    if (modal is DetailModal detailModal && CurrentView is IViewControllerAction viewControllerAction)
+                    {
+                        buttonMethod += $" onclick=\"return ajax_update_parent('{UrlHelper.Action("UpdateData", viewControllerAction.ControllerName)}',this);\"";
+                        action = UrlHelper.Action(button.ActionName, button.ControllerName, new { ParentObjectId = ViewContext.TempData["CurrentObjectID"].ToString(), ParentViewId = CurrentView.ViewId, ModalId = detailModal.Id, detailModal.ViewId });
+                    }
+                    else if (modal is LookupModal lookupModal)
+                        action = UrlHelper.Action("LookupView", "View", new { ParentViewId = CurrentView.ViewId, ModalId = modal.Id, modal.ViewId, PostBackActionName = UrlHelper.Action(button.ActionName, button.ControllerName), PostbackFormId = ViewContext.TempData["CurrentModalID"].ToString() });
+                    else
+                        action = GetButtonAction(button);
                 }
-                else if (modal is LookupModal lookupModal)
-                    action = UrlHelper.Action("LookupView", "View", new { ParentViewId = CurrentView.ViewId, ModalId = modal.Id, modal.ViewId, PostBackActionName = UrlHelper.Action(button.ActionName, button.ControllerName), PostbackFormId = ViewContext.TempData["CurrentModalID"].ToString() });
-                else
-                    action = GetButtonAction(button);
             }
 
             var icon = string.Empty;
@@ -325,21 +329,24 @@ namespace Zambon.Core.WebModule.TagHelpers
         private void CustomLocationButtons(TagHelperOutput output)
         {
             var index = 0;
-            var buttons = For ?? CurrentView.Buttons;
-            for (var i = 0; i < buttons.Length; i++)
+            if (CurrentView is IViewButtons viewButtons)
             {
-                var button = buttons[i];
-                if (CurrentObject != null && button.IsApplicable(Expressions, Target, CurrentObject))
+                var buttons = For ?? viewButtons.Buttons;
+                for (var i = 0; i < buttons.Length; i++)
                 {
-                    output.Content.AppendHtml(CreateCustomLocationItems(button, index == 0 ? "ml-2" : string.Empty));
-                    index++;
+                    var button = buttons[i];
+                    if (CurrentObject != null && button.IsApplicable(Expressions, Target, CurrentObject))
+                    {
+                        output.Content.AppendHtml(CreateCustomLocationItems(button, index == 0 ? "ml-2" : string.Empty));
+                        index++;
+                    }
                 }
             }
         }
 
         private string CreateCustomLocationItems(Button button, string customClass = "")
         {
-            if (!string.IsNullOrEmpty(button.ActionName) && (CurrentView.ControllerName != button.ControllerName || CurrentView.ActionName != button.ActionName))
+            if (CurrentView is IViewControllerAction viewControllerAction && !string.IsNullOrEmpty(button.ActionName) && (viewControllerAction.ControllerName != button.ControllerName || viewControllerAction.ActionName != button.ActionName))
             {
                 var buttonMethod = string.Empty;
                 if (button.ActionMethod == "GET")
@@ -385,72 +392,6 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #endregion
 
-        //#region Custom location buttons
-
-        //private void CustomLocationButtons(TagHelperOutput output)
-        //{
-        //    var index = 0;
-        //    for (var i = 0; i < (CurrentView.Buttons?.Button?.Length ?? 0); i++)
-        //    {
-        //        var button = CurrentView.Buttons.Button[i];
-        //        if (CurrentObject != null && button.IsApplicable(Target, CurrentObject, Expressions))
-        //        {
-        //            output.Content.AppendHtml(CreateCustomLocationItems(button));
-        //            index++;
-        //        }
-        //    }
-        //}
-
-        //private string CreateCustomLocationItems(Button button)
-        //{
-        //    if (!string.IsNullOrEmpty(button.ActionName) && (CurrentView.ControllerName != button.ControllerName || CurrentView.ActionName != button.ActionName))
-        //    {
-        //        var ajax = string.Empty;
-        //        var action = string.Empty;
-
-        //        if (string.IsNullOrWhiteSpace(button.OpenModal))
-        //        {
-        //            ajax = "data-form-post=\"true\"";
-        //            action = GetButtonAction(button);
-
-        //            if (!string.IsNullOrWhiteSpace(button.ConfirmMessage))
-        //                ajax += $" data-ajax-confirm=\"{button.ConfirmMessage}\"";
-        //        }
-        //        else
-        //        {
-        //            ajax = "data-ajax=\"true\" data-ajax-method=\"POST\" data-ajax-begin=\"AjaxBegin\" data-ajax-failure=\"AjaxFailure\" data-ajax-complete=\"AjaxComplete\" data-ajax-success=\"AjaxSuccess\" data-ajax-mode=\"replace\" ";
-
-        //            if (!string.IsNullOrWhiteSpace(button.LoadingContainer))
-        //                ajax += $" data-ajax-update-loading=\"{button.LoadingContainer}\"";
-
-        //            if (!string.IsNullOrWhiteSpace(button.ConfirmMessage))
-        //                ajax += $" data-ajax-confirm=\"{button.ConfirmMessage}\"";
-
-        //            ajax += $" data-ajax-update=\"#{button.OpenModal}_container\" data-ajax-open-modal=\"#{button.OpenModal}\"";
-
-        //            ajax += $" onclick=\"return ajax_update_parent('{UrlHelper.Action("UpdateData", CurrentView.ControllerName)}',this);\"";
-
-        //            var modal = CurrentView.GetSubView(button.OpenModal);
-        //            action = UrlHelper.Action(button.ActionName, button.ControllerName, new { ParentObjectId = ViewContext.TempData["CurrentObjectID"].ToString(), ParentViewId = CurrentView.ViewId, ModalId = modal.Id, modal.ViewId });
-        //        }
-
-        //        var icon = string.Empty;
-        //        if (!string.IsNullOrWhiteSpace(button.IconName))
-        //            icon = $"<span class=\"oi mr-1 {button.IconName}\"></span>";
-
-        //        return $"<a id=\"{button.Id}\" href=\"{action}\" {ajax} class=\"btn {button.ClassName} {ButtonClass} {icon}\" title=\"{button.DisplayName}\">{(!HideText ? button.DisplayName : string.Empty)}</a>";
-        //    }
-        //    else
-        //    {
-        //        var icon = string.Empty;
-        //        if (!string.IsNullOrWhiteSpace(button.IconName))
-        //            icon = $"oi {button.IconName}";
-
-        //        return $"<input id=\"{button.Id}\" type=\"submit\" class=\"btn {button.ClassName} {ButtonClass} {icon}\" value=\"{(!HideText ? button.DisplayName : string.Empty)}\"></input>";
-        //    }
-        //}
-
-        //#endregion
 
         private string GetButtonAction(Button button)
         {
@@ -468,7 +409,9 @@ namespace Zambon.Core.WebModule.TagHelpers
             {
                 parameters.Add("ParentViewId", CurrentView.ViewId);
                 parameters.Add("ModalId", button.OpenModal);
-                parameters.Add("ViewId", CurrentView.GetSubView(button.OpenModal).ViewId);
+
+                if (CurrentView is IViewSubViews viewSubViews)
+                    parameters.Add("ViewId", viewSubViews.GetSubView(button.OpenModal).ViewId);
 
                 if (!string.IsNullOrWhiteSpace(button.ModalTitle))
                     parameters.Add("ModalTitle", button.ModalTitle);

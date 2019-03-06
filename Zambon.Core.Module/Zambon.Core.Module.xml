@@ -411,6 +411,38 @@
             The user ID.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IViewButtons.Buttons">
+            <summary>
+            List all buttons.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IViewButtons._Buttons">
+            <summary>
+            The Buttons element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IViewControllerAction.ControllerName">
+            <summary>
+            Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IViewControllerAction.ActionName">
+            <summary>
+            Define the action name to be used for this view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Interfaces.IViewSubViews.SubViews">
+            <summary>
+            The SubViews element from XML.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IViewSubViews.GetSubView(System.String)">
+            <summary>
+            Retrieves a SubView using the SubView Id.
+            </summary>
+            <param name="Id">The Id of the SubView.</param>
+            <returns>If found, return the SubView instance; Otherwise, return null.</returns>
+        </member>
         <member name="T:Zambon.Core.Module.Services.ApplicationService">
             <summary>
             The main service used in application, is registered under Scoped lifecycle.
@@ -499,19 +531,12 @@
             <param name="key">The static text key to search.</param>
             <returns>Return the Static Text value string, string.Empty if not found.</returns>
         </member>
-        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetBaseView(System.String)">
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetView(System.String)">
             <summary>
-            Search all Views using the Id property.
+            Search DetailViews, ListViews and LookUpViews using the Id property.
             </summary>
             <param name="viewId">The id of the view to search.</param>
             <returns>Return the BaseView object, null if not found.</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetView(System.String)">
-            <summary>
-            Search DetailViews and ListViews using the Id property.
-            </summary>
-            <param name="viewId">The id of the view to search.</param>
-            <returns>Return the View object, null if not found.</returns>
         </member>
         <member name="M:Zambon.Core.Module.Services.ApplicationService.GetDetailView(System.String)">
             <summary>
@@ -1511,6 +1536,16 @@
             Represents views showing detailed data.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ControllerName">
+            <summary>
+            The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ActionName">
+            <summary>
+            The ActionName attribute from XML. Define the action name to be used for this view.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.ViewType">
             <summary>
             The type of the view, if set to Single will only show the first element from the database. Default is empty.
@@ -1531,9 +1566,24 @@
             If Views folder is organized in three levels, should use this property. {ViewFolder}\ControllerName\ViewName.cshtml
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.Buttons">
+            <summary>
+            List all buttons.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.Scripts">
             <summary>
             List of all scripts in this detail view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.SubViews">
+            <summary>
+            The SubViews element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView._Buttons">
+            <summary>
+            The Buttons element from XML.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.DetailViews.DetailView._Scripts">
@@ -1563,6 +1613,13 @@
             Set the current view.
             </summary>
             <param name="currentView"></param>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.DetailViews.DetailView.GetSubView(System.String)">
+            <summary>
+            Retrieves a SubView using the SubView Id.
+            </summary>
+            <param name="Id">The Id of the SubView.</param>
+            <returns>If found, return the SubView instance; Otherwise, return null.</returns>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.DetailViews.Scripts.Script">
             <summary>
@@ -1659,6 +1716,16 @@
             Represents a node <ListView></ListView> from XML Application Model.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.ControllerName">
+            <summary>
+            The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.ActionName">
+            <summary>
+            The ActionName attribute from XML. Define the action name to be used for this view.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.BoolCanEdit">
             <summary>
             The CanEdit attribute from XML. Indicates if the list view should be editable or not.
@@ -1672,26 +1739,6 @@
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.EditModalId">
             <summary>
             The EditModalId attribute from XML. ID of the ModalView should be used when editting records. By default will search for DetailViews with the same Type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Criteria">
-            <summary>
-            The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.CriteriaArguments">
-            <summary>
-            The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.FromSql">
-            <summary>
-            The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Sort">
-            <summary>
-            The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.MessageOnEmpty">
@@ -1714,14 +1761,9 @@
             The EditModalParameters attribute from XML. Passes the modal parameters arguments when editing an object. By defualt will use object=[ID].
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.SearchProperties">
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Buttons">
             <summary>
-            List all search properties should be possible to search.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.Columns">
-            <summary>
-            List all columns.
+            List all buttons.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.PaintOptions">
@@ -1729,19 +1771,19 @@
             List all paint options and their conditions.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.SubViews">
+            <summary>
+            The SubViews element from XML.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.PaginationOptions">
             <summary>
             The PaginationOptions element from XML. Indicates how the pagination should behave.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._SearchProperties">
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._Buttons">
             <summary>
-            The PaginationOptions element from XML.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._Columns">
-            <summary>
-            The Columns element from XML.
+            The Buttons element from XML.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView._PaintOptions">
@@ -1757,16 +1799,6 @@
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.EditModal">
             <summary>
             The EditModalID modal object.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.SearchOptions">
-            <summary>
-            The active search options.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.ListView.ItemsCollection">
-            <summary>
-            The active list of items being displayed in this list view. Only availble when listing the items in page.
             </summary>
         </member>
         <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetCurrentPage(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Int32,Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions)">
@@ -1787,32 +1819,6 @@
             <param name="ctx">The CoreDbContext service.</param>
             <param name="currentPage">Current page should be displayed. By default is "1".</param>
             <param name="searchOptions">If applyng search, otherwise null.</param>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,System.String)">
-            <summary>
-            Get the value of a property.
-            </summary>
-            <param name="app">The application service.</param>
-            <param name="propertyName">The property name.</param>
-            <returns>Returns the property value.</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column)">
-            <summary>
-            Get the value of a column.
-            </summary>
-            <param name="app">The application service.</param>
-            <param name="column">The column to get the value.</param>
-            <returns>Returns the column value.</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetCellValue``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column,System.String)">
-            <summary>
-            Get the value of a column.
-            </summary>
-            <typeparam name="T">The type of the ListView.</typeparam>
-            <param name="app">The application service.</param>
-            <param name="column">The column to get the value.</param>
-            <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
-            <returns>Returns the column value.</returns>
         </member>
         <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.SetItemsCollection(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,System.Object,System.String)">
             <summary>
@@ -1857,59 +1863,16 @@
             <param name="ctx">The CoreDbContext service.</param>
             <returns>Returns the Count() of items as integer.</returns>
         </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.ListView.GetSubView(System.String)">
+            <summary>
+            Retrieves a SubView using the SubView Id.
+            </summary>
+            <param name="Id">The Id of the SubView.</param>
+            <returns>If found, return the SubView instance; Otherwise, return null.</returns>
+        </member>
         <member name="T:Zambon.Core.Module.Xml.Views.ListViews.LookupView">
             <summary>
             Represents a node <LookupView></LookupView> from XML Application Model.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.Criteria">
-            <summary>
-            The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.CriteriaArguments">
-            <summary>
-            The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.FromSql">
-            <summary>
-            The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.Sort">
-            <summary>
-            The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.SearchProperties">
-            <summary>
-            List all search properties should be possible to search.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.Columns">
-            <summary>
-            List all columns.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView._SearchProperties">
-            <summary>
-            The PaginationOptions element from XML.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView._Columns">
-            <summary>
-            The Columns element from XML.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.SearchOptions">
-            <summary>
-            The active search options.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.ItemsCollection">
-            <summary>
-            The active list of items being displayed in this list view. Only availble when listing the items in page.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.LookupView.PostBackOptions">
@@ -1933,32 +1896,6 @@
             <param name="app">The application service.</param>
             <param name="ctx">The CoreDbContext service.</param>
             <param name="searchOptions">If applyng search, otherwise null.</param>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,System.String)">
-            <summary>
-            Get the value of a property.
-            </summary>
-            <param name="app">The application service.</param>
-            <param name="propertyName">The property name.</param>
-            <returns>Returns the property value.</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column)">
-            <summary>
-            Get the value of a column.
-            </summary>
-            <param name="app">The application service.</param>
-            <param name="column">The column to get the value.</param>
-            <returns>Returns the column value.</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.GetCellValue``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column,System.String)">
-            <summary>
-            Get the value of a column.
-            </summary>
-            <typeparam name="T">The type of the LookUpView.</typeparam>
-            <param name="app">The application service.</param>
-            <param name="column">The column to get the value.</param>
-            <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
-            <returns>Returns the column value.</returns>
         </member>
         <member name="M:Zambon.Core.Module.Xml.Views.ListViews.LookupView.SetPostBackOptions(Zambon.Core.Module.Xml.Views.SubViews.PostBackOptions)">
             <summary>
@@ -2337,42 +2274,105 @@
             Represent elements <SubListView /> from XML Application Model.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.Views.View">
+        <member name="T:Zambon.Core.Module.Xml.Views.BaseListView">
             <summary>
             Represents base properties for nodes of <DetailView></DetailView> or <ListView></ListView> from XML Application Model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.View.ControllerName">
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.Criteria">
             <summary>
-            The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+            The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.View.ActionName">
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.CriteriaArguments">
             <summary>
-            The ActionName attribute from XML. Define the action name to be used for this view.
+            The CriteriaArguments attribute from XML. Criteria arguments to use when displaying the records, should be separated by ",".
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.View.Buttons">
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.FromSql">
             <summary>
-            List all buttons.
+            The FromSql attribute from XML. Custom SQL command to execute when returning the objects.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.View.SubViews">
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.Sort">
             <summary>
-            The SubViews element from XML.
+            The Sort attribute from XML. Sort condition to apply to object, separate properties by using ",". If needed to show descent add DESC. Ex: ID desc, Name desc.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Views.View._Buttons">
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.SearchProperties">
             <summary>
-            The Buttons element from XML.
+            List all search properties should be possible to search.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Xml.Views.View.GetSubView(System.String)">
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.Columns">
             <summary>
-            Retrieves a SubView using the SubView Id.
+            List all columns.
             </summary>
-            <param name="Id">The Id of the SubView.</param>
-            <returns>If found, return the SubView instance; Otherwise, return null.</returns>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView._SearchProperties">
+            <summary>
+            The PaginationOptions element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView._Columns">
+            <summary>
+            The Columns element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.SearchOptions">
+            <summary>
+            The active search options.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.BaseListView.ItemsCollection">
+            <summary>
+            The active list of items being displayed in this list view. Only availble when listing the items in page.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseListView.GetPopulatedView``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext,Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions)">
+            <summary>
+            Return the base list view contents.
+            </summary>
+            <typeparam name="T">The type of the ListView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <param name="searchOptions">If applyng search, otherwise null.</param>
+            <returns>Returns the IQueryable list.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseListView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,System.String)">
+            <summary>
+            Get the value of a property.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="propertyName">The property name.</param>
+            <returns>Returns the property value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseListView.GetCellValue(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column)">
+            <summary>
+            Get the value of a column.
+            </summary>
+            <param name="app">The application service.</param>
+            <param name="column">The column to get the value.</param>
+            <returns>Returns the column value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseListView.GetCellValue``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Module.Xml.Views.ListViews.Columns.Column,System.String)">
+            <summary>
+            Get the value of a column.
+            </summary>
+            <typeparam name="T">The type of the ListView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="column">The column to get the value.</param>
+            <param name="customProperty">If the column references a sub property should pass in this parameter the sub property name.</param>
+            <returns>Returns the column value.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.BaseListView.GetItemsList``1(Zambon.Core.Module.Services.ApplicationService,Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Return the base list view contents.
+            </summary>
+            <typeparam name="T">The type of the ListView.</typeparam>
+            <param name="app">The application service.</param>
+            <param name="ctx">The CoreDbContext service.</param>
+            <returns>Returns the IQueryable list.</returns>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.Views">
             <summary>

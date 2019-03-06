@@ -154,27 +154,11 @@ namespace Zambon.Core.Module.Services
 
 
         /// <summary>
-        /// Search all Views using the Id property.
+        /// Search DetailViews, ListViews and LookUpViews using the Id property.
         /// </summary>
         /// <param name="viewId">The id of the view to search.</param>
         /// <returns>Return the BaseView object, null if not found.</returns>
-        public BaseView GetBaseView(string viewId)
-        {
-            if (GetView(viewId) is View view)
-                return view;
-
-            if (GetLookupView(viewId) is LookupView lookupView)
-                return lookupView;
-
-            return null;
-        }
-
-        /// <summary>
-        /// Search DetailViews and ListViews using the Id property.
-        /// </summary>
-        /// <param name="viewId">The id of the view to search.</param>
-        /// <returns>Return the View object, null if not found.</returns>
-        public View GetView(string viewId)
+        public BaseView GetView(string viewId)
         {
             if (!string.IsNullOrWhiteSpace(viewId))
             {
@@ -183,10 +167,12 @@ namespace Zambon.Core.Module.Services
 
                 if (GetListView(viewId) is ListView listView)
                     return listView;
+
+                if (GetLookupView(viewId) is LookupView lookupView)
+                    return lookupView;
             }
             return null;
         }
-
 
         /// <summary>
         /// Search all DetailViews using the Id property.

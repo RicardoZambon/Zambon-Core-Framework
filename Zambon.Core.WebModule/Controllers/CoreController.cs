@@ -7,6 +7,7 @@ using Zambon.Core.Database;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.ExtensionMethods;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml.Views.DetailViews;
@@ -261,8 +262,8 @@ namespace Zambon.Core.WebModule.Controllers
                     {
                         TempData["CurrentTabId"] = string.Empty;
 
-                        if (parentView is DetailView)
-                            return Ok(GetJsonResult(closeModalId: new[] { viewInfo.ModalId }, submitViewId: new[] { viewInfo.ParentViewId }, submitViewAction: Url.Action("Refresh", parentView.ControllerName)));
+                        if (parentView is DetailView && parentView is IViewControllerAction viewControllerAction)
+                            return Ok(GetJsonResult(closeModalId: new[] { viewInfo.ModalId }, submitViewId: new[] { viewInfo.ParentViewId }, submitViewAction: Url.Action("Refresh", viewControllerAction.ControllerName)));
                         else
                             return Ok(GetJsonResult(GetMessageText("{0}_Saved", view, entity), "alert-success", closeModalId: new[] { viewInfo.ModalId }, submitViewId: new[] { viewInfo.ParentViewId }));
                     }
@@ -322,17 +323,19 @@ namespace Zambon.Core.WebModule.Controllers
             }
             else
             {
-                var parentView = _app.GetView(viewInfo.ParentViewId);
-
-                var modalView = parentView.GetSubView(viewInfo.ModalId) as BaseModal;
-                if (modalView.ParentViewId != viewInfo.ParentViewId)
-                    modalView.ParentViewId = viewInfo.ParentViewId;
+                if (_app.GetView(viewInfo.ParentViewId) is IViewSubViews viewSubViews)
+                {
+                    var modalView = viewSubViews.GetSubView(viewInfo.ModalId) as BaseModal;
+                    if (modalView.ParentViewId != viewInfo.ParentViewId)
+                        modalView.ParentViewId = viewInfo.ParentViewId;
 
                     TempData["CurrentModalTitle"] = !string.IsNullOrWhiteSpace(viewInfo.ModalTitle) ? viewInfo.ModalTitle
                                                         : !string.IsNullOrWhiteSpace(modalView.Title) ? modalView.Title
                                                         : modalView.View.Title;
 
-                return PartialView("./Views/Shared/Components/ModalView/DetailModalView_Body.cshtml", modalView);
+                    return PartialView("./Views/Shared/Components/ModalView/DetailModalView_Body.cshtml", modalView);
+                }
+                return null;
             }
         }
 
