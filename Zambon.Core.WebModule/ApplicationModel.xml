@@ -177,7 +177,7 @@
     </DetailView>
     <ListView ViewId="ListView_Users" Type="Users" Sort="FullName">
       <SearchProperties>
-        <SearchProperty PropertyName="FullName" Index="0" />
+        <SearchProperty PropertyName="FullName" />
         <SearchProperty PropertyName="Username" Index="1" />
       </SearchProperties>
       <Buttons>
@@ -192,7 +192,7 @@
         <Column PropertyName="LastActivityOn" Index="4" Size="fit" FormatType="{0:g}" CssClass="text-center" />
       </Columns>
       <PaintOptions>
-        <PaintOption Id="DisabledUsers" BackColor="table-danger" ForeColor="text-danger" ConditionExpression="NOT LogonAllowed" />
+        <PaintOption Id="DisabledUsers" BackColor="table-danger" ForeColor="text-danger" Condition="NOT LogonAllowed" />
       </PaintOptions>
       <SubViews>
         <DetailView Id="ModalView_Users" ViewId="DetailView_Users" Title="User Information" />

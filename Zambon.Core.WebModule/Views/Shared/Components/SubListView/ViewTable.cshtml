@@ -21,9 +21,9 @@
                         if ((Model.PaintOptions?.Length ?? 0) > 0)
                         {
                             //Todo: Add these lines into TagHelpers.
-                            backColor = Model._PaintOptions?.GetApplicableBackColor(ApplicationService.ExpressionsService, currentObject);
-                            foreColor = Model._PaintOptions?.GetApplicableForeColor(ApplicationService.ExpressionsService, currentObject);
-                            customClass = Model._PaintOptions?.GetApplicableCssClass(ApplicationService.ExpressionsService, currentObject);
+                            backColor = Model._PaintOptions?.GetApplicableBackColor(ApplicationService.GetExpressionsService(), currentObject);
+                            foreColor = Model._PaintOptions?.GetApplicableForeColor(ApplicationService.GetExpressionsService(), currentObject);
+                            customClass = Model._PaintOptions?.GetApplicableCssClass(ApplicationService.GetExpressionsService(), currentObject);
                         }
 
                         <tr class="@(backColor)">

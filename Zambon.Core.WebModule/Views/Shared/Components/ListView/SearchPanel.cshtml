@@ -12,7 +12,7 @@
                 @for (var i = 0; i < Model.SearchProperties.Length; i++)
                 {
                     <option value="@Model.SearchProperties[i].PropertyName"
-                            data-search-type="@Model.SearchProperties[i].SearchType"
+                            data-search-type="@Model.SearchProperties[i].Type"
                             data-search-default-value="@Model.SearchProperties[i].DefaultValue">
                         @Model.SearchProperties[i].DisplayName
                     </option>
@@ -20,13 +20,13 @@
             </select>
         </div>
 
-        <input type="text" class="form-control rounded-right search-text" id="@(Model.ViewId)_Search_SearchText" name="SearchText" asp-for="@searchOptions.SearchText" style="@(Model.SearchProperties[0].SearchType == "Text" ? "" : "display:none;")" />
+        <input type="text" class="form-control rounded-right search-text" id="@(Model.ViewId)_Search_SearchText" name="SearchText" asp-for="@searchOptions.SearchText" style="@(Model.SearchProperties[0].Type == "Text" ? "" : "display:none;")" />
 
-        <input type="number" class="form-control @(Model.SearchProperties[0].SearchType == "Number" ? "rounded-right" : "") search-number1" id="@(Model.ViewId)_Search_SearchNumber1" name="SearchNumber1" asp-for="@searchOptions.SearchNumber1" style="@(Model.SearchProperties[0].SearchType == "Number" || Model.SearchProperties[0].SearchType == "NumberRange" ? "" : "display:none;")" />
-        <input type="number" class="form-control rounded-right search-number2" id="@(Model.ViewId)_Search_SearchNumber2" name="SearchNumber2" asp-for="@searchOptions.SearchNumber2" style="@(Model.SearchProperties[0].SearchType == "NumberRange" ? "" : "display:none;")" />
+        <input type="number" class="form-control @(Model.SearchProperties[0].Type == "Number" ? "rounded-right" : "") search-number1" id="@(Model.ViewId)_Search_SearchNumber1" name="SearchNumber1" asp-for="@searchOptions.SearchNumber1" style="@(Model.SearchProperties[0].Type == "Number" || Model.SearchProperties[0].Type == "NumberRange" ? "" : "display:none;")" />
+        <input type="number" class="form-control rounded-right search-number2" id="@(Model.ViewId)_Search_SearchNumber2" name="SearchNumber2" asp-for="@searchOptions.SearchNumber2" style="@(Model.SearchProperties[0].Type == "NumberRange" ? "" : "display:none;")" />
 
-        <input type="text" class="form-control datepicker @(Model.SearchProperties[0].SearchType == "DateTime" ? "rounded-right" : "") search-datepicker1" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime1" data-alt-format="yy-mm-dd" value="" style="@(Model.SearchProperties[0].SearchType == "DateTime" || Model.SearchProperties[0].SearchType == "DateTimeRange" ? "" : "display:none;")" />
-        <input type="text" class="form-control datepicker rounded-right search-datepicker2" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime2" data-alt-format="yy-mm-dd" value="" style="@(Model.SearchProperties[0].SearchType == "DateTimeRange" ? "" : "display:none;")" />
+        <input type="text" class="form-control datepicker @(Model.SearchProperties[0].Type == "DateTime" ? "rounded-right" : "") search-datepicker1" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime1" data-alt-format="yy-mm-dd" value="" style="@(Model.SearchProperties[0].Type == "DateTime" || Model.SearchProperties[0].Type == "DateTimeRange" ? "" : "display:none;")" />
+        <input type="text" class="form-control datepicker rounded-right search-datepicker2" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime2" data-alt-format="yy-mm-dd" value="" style="@(Model.SearchProperties[0].Type == "DateTimeRange" ? "" : "display:none;")" />
 
         <input type="hidden" class="search-date1" id="@(Model.ViewId)_Search_SearchDateTime1" name="SearchDateTime1" asp-for="@searchOptions.SearchDateTime1" />
         <input type="hidden" class="search-date2" id="@(Model.ViewId)_Search_SearchDateTime2" name="SearchDateTime2" asp-for="@searchOptions.SearchDateTime2" />

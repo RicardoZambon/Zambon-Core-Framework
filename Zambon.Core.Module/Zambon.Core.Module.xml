@@ -128,6 +128,18 @@
             <param name="source">The source array, containing only the changed items.</param>
             <returns>Returns the target array plus all changes made in source array.</returns>
         </member>
+        <member name="T:Zambon.Core.Module.ExtensionMethods.TypeExtension">
+            <summary>
+            Extension types used for Type.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.ExtensionMethods.TypeExtension.GetDefaultProperty(System.Type)">
+            <summary>
+            Retrieve the default property name from DefaultPropertyAttribute.
+            </summary>
+            <param name="type">The type to search for.</param>
+            <returns>If found, will return the default property name; otherwise, return null.</returns>
+        </member>
         <member name="T:Zambon.Core.Module.Interfaces.ICondition">
             <summary>
             Interfaced used by objects that can apply conditions.
@@ -1231,7 +1243,16 @@
             The view object from ViewID, when available.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Zambon.Core.Module.Xml.Navigation.Menu.CompareTo(System.Object)" -->
+        <member name="M:Zambon.Core.Module.Xml.Navigation.Menu.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other menu object, to sort the menus array.
+            </summary>
+            <param name="obj">The menu object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
+        </member>
         <member name="M:Zambon.Core.Module.Xml.Navigation.Menu.UserHasAccess(Zambon.Core.Module.Interfaces.IUsers)">
             <summary>
             Checks if the informed user has access to this menu item.
@@ -1247,6 +1268,31 @@
         <member name="P:Zambon.Core.Module.Xml.Navigation.NavigationArray.Menus">
             <summary>
             Represents elements <Menu></Menu> from XML Application Model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticText">
+            <summary>
+            Represents a node <StaticText /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticText.Key">
+            <summary>
+            The Key attribute from XML. The static text key should be used when displaying across the application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticText.Value">
+            <summary>
+            The Value attribute from XML. The static text value.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticTextsArray">
+            <summary>
+            Represents a node <StaticTexts></StaticTexts> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticTextsArray.Texts">
+            <summary>
+            Represent elements <StaticText /> from XML Application Model.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.BaseView">
@@ -1590,10 +1636,13 @@
         </member>
         <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Columns.Column.CompareTo(System.Object)">
             <summary>
-            Compares the Index with other column, to sort the columns array.
+            Compares the Index with other column object, to sort the columns array.
             </summary>
-            <param name="obj"></param>
-            <returns></returns>
+            <param name="obj">The column object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Columns.ColumnsArray">
             <summary>
@@ -1976,7 +2025,7 @@
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption">
             <summary>
-            Represents a node <PaintOption></PaintOption> from XML Application Model.
+            Represents a node <PaintOption /> from XML Application Model.
             </summary>
         </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Paint.PaintOption.Id">
@@ -2043,6 +2092,16 @@
             <param name="obj"></param>
             <returns></returns>
         </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions">
+            <summary>
+            Represents a search instance used by ListViews/LookUpViews.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchProperty">
+            <summary>
+            The property to search for.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchType">
             <summary>
             Text (Default)
@@ -2063,6 +2122,105 @@
             StartsWith
             EndsWith
             </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchText">
+            <summary>
+            When the property is a string, the text to search for.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchNumber1">
+            <summary>
+            When the property is an integer, the number to search for, when ranged search the beginning number.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchNumber2">
+            <summary>
+            When the property is an integer, the number to search for, when ranged search the ending number
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchDateTime1">
+            <summary>
+            When the property is a date/time, the date to search for, when ranged search the beginning date.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchDateTime2">
+            <summary>
+            When the property is a date/time, the date to search for, when ranged search the ending date.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.HasSearch">
+            <summary>
+            Checks if were informed in any search type.
+            </summary>
+            <returns>Returns true when should execute the search.</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchOptions.SearchList``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Executes the search in a IQueryable list.
+            </summary>
+            <typeparam name="T">The list element type.</typeparam>
+            <param name="list">The IQueryable list.</param>
+            <returns>Returns the IQueryable list already searched.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchPropertiesArray">
+            <summary>
+            Represents a node <SearchProperties></SearchProperties> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchPropertiesArray.SearchProperty">
+            <summary>
+            Represent elements <SearchProperty /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty">
+            <summary>
+            Represents a node <SearchProperty /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.PropertyName">
+            <summary>
+            The PropertyName attribute from XML. The property name to use when executing the search.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.DisplayName">
+            <summary>
+            The DisplayName attribute from XML. The display name in selection field, by default will use the display name from the property model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.IntIndex">
+            <summary>
+            The Index attribute from XML. The index value returned from Xml file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.Index">
+            <summary>
+            The Index attribute from XML. The column index order to display.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.Type">
+            <summary>
+            The Type attribute from XML. The type of search should be executed.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.Comparison">
+            <summary>
+            The Comparison attribute from XML. The comparison type of search should be executed.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.DefaultValue">
+            <summary>
+            The DefaultValue attribute from XML. If should use a default value when selecting this search option.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.ListViews.Search.SearchProperty.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other SearchProperty object, to sort the SearchProperties array.
+            </summary>
+            <param name="obj">The SearchProperty object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Views.SubViews.BaseModal">
             <summary>
@@ -2138,6 +2296,114 @@
             <summary>
             The Id of the form where should be posted the information.
             </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.SubListView">
+            <summary>
+            Represents a node <SubListView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.SubListView.ScrollSize">
+            <summary>
+            The ScrollSize attribute from XML. Defines the size of the SubListView (sm - small, md - medium, lg - large).
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.SubListView.ListView">
+            <summary>
+            The ListView view object.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.SubViews.SubViews">
+            <summary>
+            Represents a node <SubViews></SubViews> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.SubViews.CurrentLevel">
+            <summary>
+            Internal property used to set the current level of modal views.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.SubViews.DetailViews">
+            <summary>
+            Represent elements <DetailView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.SubViews.LookupViews">
+            <summary>
+            Represent elements <LookupView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.SubViews.SubViews.SubListViews">
+            <summary>
+            Represent elements <SubListView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.View">
+            <summary>
+            Represents base properties for nodes of <DetailView></DetailView> or <ListView></ListView> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.View.ControllerName">
+            <summary>
+            The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.View.ActionName">
+            <summary>
+            The ActionName attribute from XML. Define the action name to be used for this view.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.View.Buttons">
+            <summary>
+            List all buttons.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.View.SubViews">
+            <summary>
+            The SubViews element from XML.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.View._Buttons">
+            <summary>
+            The Buttons element from XML.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.Views.View.GetSubView(System.String)">
+            <summary>
+            Retrieves a SubView using the SubView Id.
+            </summary>
+            <param name="Id">The Id of the SubView.</param>
+            <returns>If found, return the SubView instance; Otherwise, return null.</returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Views.Views">
+            <summary>
+            Represents a node <Views></Views> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Views.ListViews">
+            <summary>
+            Represent elements <ListView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Views.DetailViews">
+            <summary>
+            Represent elements <DetailView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Views.Views.LookupViews">
+            <summary>
+            Represent elements <LookupView /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.XmlNode">
+            <summary>
+            Base class used for all Xml nodes from Application Model.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Xml.XmlNode.Clone">
+            <summary>
+            Returns a new instance of the same object.
+            </summary>
+            <returns>Returns a new instance of the same object with the same values.</returns>
         </member>
     </members>
 </doc>
