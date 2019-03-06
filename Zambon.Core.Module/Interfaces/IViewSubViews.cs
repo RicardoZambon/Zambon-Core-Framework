@@ -5,6 +5,9 @@ using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.Module.Interfaces
 {
+    /// <summary>
+    /// Interface used from Views that implement SubViews.
+    /// </summary>
     public interface IViewSubViews
     {
 

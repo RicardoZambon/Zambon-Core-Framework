@@ -5,6 +5,9 @@ using Zambon.Core.Module.Xml.Views.Buttons;
 
 namespace Zambon.Core.Module.Interfaces
 {
+    /// <summary>
+    /// Interface used by Views that implement Buttons.
+    /// </summary>
     public interface IViewButtons : IViewControllerAction
     {
 

@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Zambon.Core.Module.Interfaces
 {
+    /// <summary>
+    /// Interface used by Views that implement Controller and Action.
+    /// </summary>
     public interface IViewControllerAction
     {
 
