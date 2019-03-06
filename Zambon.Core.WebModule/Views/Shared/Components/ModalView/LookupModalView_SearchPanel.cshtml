@@ -16,11 +16,14 @@
                     <select id="@(Model.Id)_Search_SearchProperty" name="SearchProperty" asp-for="@searchOptions.SearchProperty" class="btn btn-outline-secondary combo rounded-left" onchange="ChangeSearchProperty(this)">
                         @for (var i = 0; i < view.SearchProperties.Length; i++)
                         {
-                            <option value="@view.SearchProperties[i].PropertyName"
+                            if (view.SearchProperties[i].Index >= 0)
+                            {
+                                <option value="@view.SearchProperties[i].PropertyName"
                                     data-search-type="@view.SearchProperties[i].Type"
                                     data-search-default-value="@view.SearchProperties[i].DefaultValue">
                                 @view.SearchProperties[i].DisplayName
-                            </option>
+                                </option>
+                            }
                         }
                     </select>
                 </div>

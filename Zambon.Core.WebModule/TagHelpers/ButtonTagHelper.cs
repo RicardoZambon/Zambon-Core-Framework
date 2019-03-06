@@ -30,8 +30,6 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #region Properties
 
-        public override int Order => -5001;
-
         [HtmlAttributeName(ForAttributeName)]
         public Button[] For { get; set; }
 
@@ -120,7 +118,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable("Toolbar"))
+                if (button.Index >= 0  && button.IsApplicable("Toolbar"))
                 {
                     var tag = string.Empty;
                     if ((button.SubButtons?.Length ?? 0) == 0)
@@ -188,7 +186,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable(Expressions, "Inline", CurrentObject))
+                if (button.Index >= 0 && button.IsApplicable(Expressions, "Inline", CurrentObject))
                 {
                     output.Content.AppendHtml(CreateInlineItems(button, For.Length > 1));
                     index++;
@@ -253,7 +251,7 @@ namespace Zambon.Core.WebModule.TagHelpers
             for (var i = 0; i < For.Length; i++)
             {
                 var button = For[i];
-                if (button.IsApplicable(Expressions, "Toolbar", CurrentView.CurrentObject))
+                if (button.Index >= 0 && button.IsApplicable(Expressions, "Toolbar", CurrentView.CurrentObject))
                     output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
             }
             
@@ -261,7 +259,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                 for (var i = 0; i < viewButtons.Buttons.Length; i++)
                 {
                     var button = viewButtons.Buttons[i];
-                    if (button.IsApplicable(Expressions, Target, CurrentObject))
+                    if (button.Index >= 0 && button.IsApplicable(Expressions, Target, CurrentObject))
                         output.Content.AppendHtml(CreateSubListViewToolbarItems(button));
                 }
         }
@@ -332,7 +330,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                 for (var i = 0; i < buttons.Length; i++)
                 {
                     var button = buttons[i];
-                    if (CurrentObject != null && button.IsApplicable(Expressions, Target, CurrentObject))
+                    if (CurrentObject != null && button.Index >= 0 && button.IsApplicable(Expressions, Target, CurrentObject))
                     {
                         output.Content.AppendHtml(CreateCustomLocationItems(button, index == 0 ? "ml-2" : string.Empty));
                         index++;
