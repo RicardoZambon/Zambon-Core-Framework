@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Text.Encodings.Web;
 using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Views.ListViews;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;
 using Zambon.Core.Module.Xml.Views.SubViews;
 

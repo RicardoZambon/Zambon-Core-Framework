@@ -1,16 +1,9 @@
-﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Linq;
 using Zambon.Core.Module.Xml.Views.ListViews;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Linq;
 using Zambon.Core.Module.Xml.Views.SubViews;
 
 namespace Zambon.Core.WebModule.TagHelpers.ListViews

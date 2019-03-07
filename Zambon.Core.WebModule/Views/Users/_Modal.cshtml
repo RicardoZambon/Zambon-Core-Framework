@@ -4,8 +4,8 @@
 
 <ul class="nav nav-tabs">
     <li class="nav-item"><a data-toggle="tab" class="nav-link text-body @(currentTab.Equals("data") ? "active" : "")" href="#data"><span class="oi oi-person mr-1"></span>@*@_model.Model.GetText("Modal_User_TabData_Title")*@</a></li>
-    <li class="nav-item"><a data-toggle="tab" class="nav-link text-body @(currentTab.Equals("managers") ? "active" : "")" href="#managers"><span class="oi oi-grid-two-up mr-1"></span><label asp-for="@Model.Managers"></label><span sublistview-count-for="ListView_UserManagers" sublistview-count-model="@Model" sublistview-count-collection="Managers" class="badge badge-primary ml-1"></span></a></li>
-    <li class="nav-item"><a data-toggle="tab" class="nav-link text-body @(currentTab.Equals("subordinates") ? "active" : "")" href="#subordinates"><span class="oi oi-grid-three-up mr-1"></span><label asp-for="@Model.Subordinates"></label><span sublistview-count-for="ListView_UserSubordinates" sublistview-count-model="@Model" sublistview-count-collection="Subordinates" class="badge badge-primary ml-1"></span></a></li>
+    <li class="nav-item"><a data-toggle="tab" class="nav-link text-body @(currentTab.Equals("managers") ? "active" : "")" href="#managers"><span class="oi oi-grid-two-up mr-1"></span><label asp-for="@Model.Managers"></label><span listview-count-for="ListView_UserManagers" listview-collection="Managers" class="badge badge-primary ml-1"></span></a></li>
+    <li class="nav-item"><a data-toggle="tab" class="nav-link text-body @(currentTab.Equals("subordinates") ? "active" : "")" href="#subordinates"><span class="oi oi-grid-three-up mr-1"></span><label asp-for="@Model.Subordinates"></label><span listview-count-for="ListView_UserSubordinates" listview-collection="Subordinates" class="badge badge-primary ml-1"></span></a></li>
 </ul>
 
 <div class="tab-content">

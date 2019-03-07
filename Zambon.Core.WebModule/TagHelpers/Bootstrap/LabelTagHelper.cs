@@ -1,49 +1,16 @@
 ﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Encodings.Web;
 
 namespace Zambon.Core.WebModule.TagHelpers.Bootstrap
 {
-    [HtmlTargetElement("label", Attributes = ForAttributeName)]
+    [HtmlTargetElement("label", Attributes = "asp-for")]
     public class LabelTagHelper : TagHelper
     {
-        private const string ForAttributeName = "asp-for";
-
-        #region Properties
-
-        public override int Order => 0;
-
-        [HtmlAttributeName(ForAttributeName)]
-        public ModelExpression For { get; set; }
-
-        [HtmlAttributeNotBound, ViewContext]
-        public ViewContext ViewContext { get; set; }
-
-        protected IHtmlGenerator Generator { get; }
-
-        #endregion
-
-        #region Constructors
-
-        public LabelTagHelper(IHtmlGenerator generator)
-        {
-            Generator = generator;
-        }
-
-        #endregion
-
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (output == null) throw new ArgumentNullException(nameof(output));
-
             string extractedClassValue;
             switch (output.Attributes["class"]?.Value ?? string.Empty)
             {
@@ -71,6 +38,5 @@ namespace Zambon.Core.WebModule.TagHelpers.Bootstrap
                 output.AddClass("mb-0", HtmlEncoder.Default);
             }
         }
-
     }
 }

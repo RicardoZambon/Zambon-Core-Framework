@@ -4,19 +4,8 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Options;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Navigation;
-using Zambon.Core.Module.Xml.Views.Buttons;
-using Zambon.Core.Module.Xml.Views.DetailViews;
-using Zambon.Core.Module.Xml.Views.ListViews;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+using Zambon.Core.Module.Xml.Views.DetailViews;
 
 namespace Zambon.Core.WebModule.TagHelpers
 {
@@ -27,19 +16,15 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #region Properties
 
-        public override int Order => -1001;
-
         [HtmlAttributeName(ForAttributeName)]
         public DetailView For { get; set; }
 
         [HtmlAttributeName("form-modalid")]
         public string ModalViewId { get; set; }
 
+
         [HtmlAttributeNotBound, ViewContext]
         public ViewContext ViewContext { get; set; }
-
-
-        protected IHtmlGenerator Generator { get; }
 
         protected IUrlHelperFactory UrlHelperFactory { get; }
 
@@ -49,9 +34,8 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #region Constructors
 
-        public FormModalTagHelper(IHtmlGenerator generator, IUrlHelperFactory urlHelperFactory)
+        public FormModalTagHelper(IUrlHelperFactory urlHelperFactory)
         {
-            Generator = generator;
             UrlHelperFactory = urlHelperFactory;
         }
 
@@ -59,9 +43,6 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-            if (output == null) throw new ArgumentNullException(nameof(output));
-
             if (string.IsNullOrWhiteSpace(For.ActionName))
             {
                 output.TagMode = TagMode.SelfClosing;
@@ -69,7 +50,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                 return;
             }
 
-            output.Attributes.Add("id", For.ViewId);// ModalViewId);
+            output.Attributes.Add("id", For.ViewId);
 
             output.AddClass("form-horizontal", HtmlEncoder.Default);
             output.Attributes.Add("method", "POST");
