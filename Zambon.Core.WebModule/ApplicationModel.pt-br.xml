@@ -71,9 +71,7 @@
     <StaticText Key="Modal_Button_Accept" Value="Aceitar" />
 
     <StaticText Key="DatePicker_PrevText" Value="&amp;#x3c; Anterior" />
-    <StaticText Key="DatePicker_PrevJumpText" Value="&amp;#x3c;&amp;#x3c;" />
     <StaticText Key="DatePicker_NextText" Value="Próximo &amp;#x3e;" />
-    <StaticText Key="DatePicker_NextJumpText" Value="&amp;#x3e;&amp;#x3e;" />
     <StaticText Key="DatePicker_CurrentText" Value="hoje" />
     <StaticText Key="DatePicker_TodayText" Value="hoje" />
     <StaticText Key="DatePicker_CloseText" Value="Fechar" />

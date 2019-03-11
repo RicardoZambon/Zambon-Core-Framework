@@ -1,8 +1,12 @@
 <Application Name="Zambon Demo Application" MenuName="Zambon Demo" Fullname="Demo application for Zambon .NET Core Framework">
   <EntityTypes>
-    <Entity Id="Departments" DisplayName="Departments" Icon="oi-spreadsheet" TypeClr="Zambon.DemoApplication.BusinessObjects.Departments" />-->
+    <Entity Id="Departments" DisplayName="Departments" Icon="oi-spreadsheet" TypeClr="Zambon.DemoApplication.BusinessObjects.Departments" />
   </EntityTypes>
 
+  <Languages>
+    <Language Code="es-es" FlagIcon="es" DisplayName="Spanish" />
+  </Languages>
+  
   <StaticTexts>
     
   </StaticTexts>
@@ -12,7 +16,7 @@
   </ModuleConfiguration>
   
   <Navigation>
-    <Menu Id="Configuration" DisplayName="Configuration" Icon="oi-cog">
+    <Menu Id="Configuration">
       <Menu Id="Departments" Type="ListView" ViewID="ListView_Departments"></Menu>
     </Menu>
   </Navigation>

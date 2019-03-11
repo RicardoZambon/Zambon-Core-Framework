@@ -16,9 +16,9 @@
   <StaticTexts>
     <StaticText Key="Menu_SignIn" Value="Sign In" />
     <StaticText Key="Menu_LogOff" Value="Sign Out" />
-    <StaticText Key="Menu_Help" Value="Help" />
-    <StaticText Key="Menu_TechnicalSpec" Value="Technical Guide" />
-    <StaticText Key="Menu_UserGuide" Value="User Guide" />
+    <StaticText Key="Menu_Help" Value="Ayuda" />
+    <StaticText Key="Menu_TechnicalSpec" Value="Technical guide" />
+    <StaticText Key="Menu_UserGuide" Value="User guide" />
 
     <StaticText Key="Login_Title" Value="Login" />
     <StaticText Key="Login_Languages" Value="Languages" />
@@ -53,11 +53,11 @@
     <StaticText Key="Home_Panel3_IconColor" Value="warning" />
     <StaticText Key="Home_Panel3_IconStyle" Value="width: 29px; height: 29px; font-size: 1.2rem; padding-left: 4px; padding-top: 4px;" />
 
-    <StaticText Key="ListView_Pagination_FirstPage" Value="First Page" />
-    <StaticText Key="ListView_Pagination_PrevPage" Value="Previous Page" />
+    <StaticText Key="ListView_Pagination_FirstPage" Value="First page" />
+    <StaticText Key="ListView_Pagination_PrevPage" Value="Previous page" />
     <StaticText Key="ListView_Pagination_Page" Value="Page {0}" />
-    <StaticText Key="ListView_Pagination_NextPage" Value="Next Page" />
-    <StaticText Key="ListView_Pagination_LastPage" Value="Last Page" />
+    <StaticText Key="ListView_Pagination_NextPage" Value="Next page" />
+    <StaticText Key="ListView_Pagination_LastPage" Value="Last page" />
     <StaticText Key="ListView_CurrentVisibleRecords" Value="Showing {0} to {1}." />
     <StaticText Key="ListView_TotalRecords" Value="Total: {0} records." />
 

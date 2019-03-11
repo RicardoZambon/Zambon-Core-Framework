@@ -1,0 +1,77 @@
+<Application Name="Zambon Demo Application" MenuName="Zambon Demo" Fullname="Sistema de demostración Zambon .NET Core Framework">
+  <StaticTexts>
+    <StaticText Key="Menu_SignIn" Value="Registrarse" />
+    <StaticText Key="Menu_LogOff" Value="Desconectar" />
+    <StaticText Key="Menu_Help" Value="Ajuda" />
+    <StaticText Key="Menu_TechnicalSpec" Value="Guia tecnica" />
+    <StaticText Key="Menu_UserGuide" Value="Guía del usuario" />
+    
+    <StaticText Key="Login_Title" Value="Iniciar sesión" />
+    <StaticText Key="Login_Languages" Value="Idiomas" />
+    <StaticText Key="Login_Username" Value="Usuario" />
+    <StaticText Key="Login_TypeUsername" Value="Escriba su nombre de usuario" />
+    <StaticText Key="Login_Password" Value="Contraseña" />
+    <StaticText Key="Login_TypePassword" Value="Escribe tu contraseña" />
+    <StaticText Key="Login_RememberMe" Value="¿Recuérdame?" />
+    <StaticText Key="Login_SignInButton" Value="Registrarse" />
+    <StaticText Key="Login_SignInButtonLoading" Value="Iniciando sesión..." />
+    <StaticText Key="Login_SignInError" Value="Los datos informados no son válidos o no se le permite iniciar sesión." />
+
+    <StaticText Key="Home_Title" Value="Bienvenido a {0}" />
+    <StaticText Key="Home_SuperTitle" Value="Hola {0}" />
+
+    <StaticText Key="ListView_Pagination_FirstPage" Value="Primera página" />
+    <StaticText Key="ListView_Pagination_PrevPage" Value="Pagina anterior" />
+    <StaticText Key="ListView_Pagination_Page" Value="Página {0}" />
+    <StaticText Key="ListView_Pagination_NextPage" Value="Siguiente página" />
+    <StaticText Key="ListView_Pagination_LastPage" Value="Última página" />
+    <StaticText Key="ListView_CurrentVisibleRecords" Value="Mostrando {0} a {1}." />
+    <StaticText Key="ListView_TotalRecords" Value="Total: {0} registros." />
+
+    <StaticText Key="Error_Message" Value="Ocurrió un error: {0}" />
+    <StaticText Key="Modal_Button_Close" Value="Cerrar" />
+    <StaticText Key="Modal_Button_Accept" Value="Aceptar" />
+
+    <StaticText Key="DatePicker_PrevText" Value="&amp;#x3c; Anterior" />
+    <StaticText Key="DatePicker_NextText" Value="Siguiente &amp;#x3e;" />
+    <StaticText Key="DatePicker_CurrentText" Value="hoy" />
+    <StaticText Key="DatePicker_TodayText" Value="hoy" />
+    <StaticText Key="DatePicker_CloseText" Value="Cerrar" />
+    <StaticText Key="DatePicker_MonthNames" Value="'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'" />
+    <StaticText Key="DatePicker_MonthNamesShort" Value="'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'" />
+    <StaticText Key="DatePicker_DayNames" Value="'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'" />
+    <StaticText Key="DatePicker_DayNamesShort" Value="'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'" />
+    <StaticText Key="DatePicker_DayNamesMin" Value="'D', 'L', 'M', 'M', 'J', 'V', 'S'" />
+    <StaticText Key="DatePicker_DateFormat" Value="dd/MM/yy" />
+
+    <StaticText Key="ValidationMessageDefault_RuleRequired" Value="La propiedad '{0}' es obligatoria." />
+    <StaticText Key="ValidationMessageDefault_RuleUniqueValue" Value="El valor de la propiedad '{0}' ya está registrado." />
+
+    <StaticText Key="Users_Deleted" Value="Usuario {0} eliminado con éxito!" />
+    <StaticText Key="Users_Saved" Value="Usuario {0} guardado correctamente!" />
+    <StaticText Key="Users_NotFound" Value="No se pudo encontrar al usuario, por favor, actualice la página e intente nuevamente." />
+
+    <StaticText Key="Role_Deleted" Value="Grupo de acceso {0} eliminado con éxito!" />
+    <StaticText Key="Role_Saved" Value="Grupo de acceso {0} guardado con éxito!" />
+    <StaticText Key="Role_NotFound" Value="No se pudo encontrar el grupo de acceso, por favor, actualice la página e intente nuevamente." />
+  </StaticTexts>
+
+  <Languages>
+    <Language Code="en-us" DisplayName="Inglés" />
+    <Language Code="es-es" DisplayName="Español" />
+    <Language Code="pt-br" DisplayName="Portugués" />
+  </Languages>
+
+  <Navigation>
+    <Menu Id="Reports" DisplayName="Informes">
+    </Menu>
+    <Menu Id="Security" DisplayName="Seguridad">
+    </Menu>
+    <Menu Id="Configuration" DisplayName="Configuración">
+    </Menu>
+  </Navigation>
+  
+  <Views>
+    
+  </Views>
+</Application>
