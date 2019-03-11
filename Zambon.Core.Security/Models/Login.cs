@@ -1,13 +1,12 @@
-﻿using Zambon.Core.Module.Validations;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Zambon.Core.Database;
+using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module.Validations;
 
 namespace Zambon.Core.Security.Models
 {
-    public class Login
+    public class Login : ICustomValidated
     {
         [RuleRequired]
         public string Username { get; set; }
@@ -20,6 +19,11 @@ namespace Zambon.Core.Security.Models
         public bool RememberMe { get; set; } = true;
 
         public string ReturnUrl { get; set; }
+    
 
+        public List<KeyValuePair<string, string>> ValidateData(CoreDbContext ctx)
+        {
+            return new List<KeyValuePair<string, string>>();
+        }
     }
 }

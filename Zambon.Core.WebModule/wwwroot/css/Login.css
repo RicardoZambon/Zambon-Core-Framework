@@ -3,7 +3,7 @@
     min-height: 100%;
 }
 
-body, .login-background::before, .login-form-container::before {
+body, .login-background::before, .login-form-container-background::before {
     background-image: url('../images/BackgroundLogin.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -37,7 +37,7 @@ body, .login-background::before, .login-form-container::before {
     }
 
 .login-logo-container {
-    border-top-left-radius:25px;
+    border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
@@ -45,16 +45,24 @@ body, .login-background::before, .login-form-container::before {
     margin: 0 auto;
 }
 
-.login-logo-container img {
-    max-height: 120px;
+.login-footer-container {
+    position: relative;
 }
-
-.login-form-container {
+.login-form-container-background {
     border-radius: 0.5rem;
     overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
 }
 
-    .login-form-container::before {
+    .login-form-container-background::before {
         content: '';
         position: absolute;
         top: -10%;
@@ -66,8 +74,30 @@ body, .login-background::before, .login-form-container::before {
         filter: blur(50px);
     }
 
-.login-title {
-    text-align: center;
+.language-selection {
+    padding-top: .125rem!important;
+    padding-bottom: .125rem!important;
+}
+    .language-selection::after {
+        vertical-align: 0;
+    }
+
+.dropdown-menu {
+    min-width: initial!important;
+}
+
+.dropdown-danger .dropdown-item:focus, .dropdown-danger .dropdown-item:hover {
+        background-color: rgba(255, 0, 0, 0.10);
+    }
+.dropdown-danger .dropdown-item.active, .dropdown-danger .dropdown-item:active {
+    background-color: #ff0000;
+}
+
+.dropdown-primary .dropdown-item:focus, .dropdown-primary .dropdown-item:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+.dropdown-primary .dropdown-item.active, .dropdown-primary .dropdown-item:active {
+    background-color: #007bff;
 }
 
 .login-footer-container {

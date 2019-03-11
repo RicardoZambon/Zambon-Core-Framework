@@ -1,0 +1,171 @@
+<Application>
+  <EntityTypes>
+    <Entity Id="Users" DisplayName="Funcionários">
+      <Properties>
+        <Property Name="FullName" DisplayName="Nome completo" />
+        <Property Name="SendEmail" DisplayName="Enviar e-mail?" />
+        <Property Name="Email" DisplayName="E-mail" />
+        <Property Name="Username" DisplayName="Usuário" />
+        <Property Name="Password" DisplayName="Senha" />
+        <Property Name="LogonAllowed" DisplayName="Pode logar?" />
+        <Property Name="Roles" DisplayName="Grupos de acesso" />
+        <Property Name="Managers" DisplayName="Gerentes" />
+        <Property Name="Subordinates" DisplayName="Subordinados" />
+      </Properties>
+    </Entity>
+    <Entity Id="Roles" DisplayName="Grupos de acesso">
+      <Properties>
+        <Property Name="Name" DisplayName="Nome" />
+        <Property Name="IsAdministrative" DisplayName="Admin.?" />
+        <Property Name="Users" DisplayName="Usuários" />
+        <Property Name="Permissions" DisplayName="Permissões" />
+        <Property Name="MenuAccess" DisplayName="Acesso a menus" />
+      </Properties>
+    </Entity>
+    <Entity Id="RolesUsers" DisplayName="Grupos de acessos - Usuários">
+      <Properties>
+        <Property Name="Role" DisplayName="Grupo de acesso" />
+        <Property Name="User" DisplayName="Usuário" />
+      </Properties>
+    </Entity>
+    <Entity Id="RolesMenuAccesses" DisplayName="Acesso a menus" />
+    <Entity Id="RolesPermissions" DisplayName="Permissões de acesso" />
+  </EntityTypes>
+
+  <Languages>
+    <Language Code="en-us" DisplayName="Inglês" />
+    <Language Code="pt-br" DisplayName="Português" />
+  </Languages>
+  
+  <StaticTexts>
+    <StaticText Key="Menu_SignIn" Value="Entrar" />
+    <StaticText Key="Menu_LogOff" Value="Sair" />
+    <StaticText Key="Menu_Help" Value="Ajuda" />
+    <StaticText Key="Menu_TechnicalSpec" Value="Guia técnico" />
+    <StaticText Key="Menu_UserGuide" Value="Guia do usuário" />
+
+    <StaticText Key="Login_Title" Value="Login" />
+    <StaticText Key="Login_Languages" Value="Idiomas" />
+    <StaticText Key="Login_Username" Value="Usuário" />
+    <StaticText Key="Login_TypeUsername" Value="Digite o seu usuário" />
+    <StaticText Key="Login_Password" Value="Senha" />
+    <StaticText Key="Login_TypePassword" Value="Digite a sua senha" />
+    <StaticText Key="Login_RememberMe" Value="Lembrar de mim?" />
+    <StaticText Key="Login_SignInButton" Value="Entrar" />
+    <StaticText Key="Login_SignInButtonLoading" Value="Entrando..." />
+    <StaticText Key="Login_SignInError" Value="Os dados informados são inválidos ou seu usuário não possui acesso." />
+
+    <StaticText Key="Home_Title" Value="Bem-vindo ao {0}" />
+    <StaticText Key="Home_SuperTitle" Value="Olá, {0}" />
+
+    <StaticText Key="ListView_Pagination_FirstPage" Value="Primeira página" />
+    <StaticText Key="ListView_Pagination_PrevPage" Value="Página anterior" />
+    <StaticText Key="ListView_Pagination_Page" Value="Página {0}" />
+    <StaticText Key="ListView_Pagination_NextPage" Value="Próxima página" />
+    <StaticText Key="ListView_Pagination_LastPage" Value="Última página" />
+    <StaticText Key="ListView_CurrentVisibleRecords" Value="Mostrando de {0} a {1}." />
+    <StaticText Key="ListView_TotalRecords" Value="Total: {0} registros." />
+
+    <StaticText Key="Error_Message" Value="Ocorreu um erro: {0}" />
+    <StaticText Key="Modal_Button_Close" Value="Fechar" />
+    <StaticText Key="Modal_Button_Accept" Value="Aceitar" />
+
+    <StaticText Key="DatePicker_PrevText" Value="&amp;#x3c; Anterior" />
+    <StaticText Key="DatePicker_PrevJumpText" Value="&amp;#x3c;&amp;#x3c;" />
+    <StaticText Key="DatePicker_NextText" Value="Próximo &amp;#x3e;" />
+    <StaticText Key="DatePicker_NextJumpText" Value="&amp;#x3e;&amp;#x3e;" />
+    <StaticText Key="DatePicker_CurrentText" Value="hoje" />
+    <StaticText Key="DatePicker_TodayText" Value="hoje" />
+    <StaticText Key="DatePicker_CloseText" Value="Fechar" />
+    <StaticText Key="DatePicker_MonthNames" Value="'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'" />
+    <StaticText Key="DatePicker_MonthNamesShort" Value="'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'" />
+    <StaticText Key="DatePicker_DayNames" Value="'Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'" />
+    <StaticText Key="DatePicker_DayNamesShort" Value="'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'" />
+    <StaticText Key="DatePicker_DayNamesMin" Value="'D', 'S', 'T', 'Q', 'Q', 'S', 'S'" />
+    <StaticText Key="DatePicker_DateFormat" Value="dd/mm/yy" />
+
+    <StaticText Key="ValidationMessageDefault_RuleRequired" Value="É obrigatório informar o campo '{0}'." />
+    <StaticText Key="ValidationMessageDefault_RuleUniqueValue" Value="O valor do campo '{0}' já está cadastrado." />
+
+    <StaticText Key="User_Deleted" Value="Funcionário {0} excluído com sucesso!" />
+    <StaticText Key="User_Saved" Value="Funcionário {0} gravado com sucesso!" />
+    <StaticText Key="User_NotFound" Value="Funcionário não pôde ser encontrado, por favor, atualize a página e tente novamente." />
+
+    <StaticText Key="Role_Deleted" Value="Grupo de acesso {0} excluído com sucesso!" />
+    <StaticText Key="Role_Saved" Value="Grupo de acesso {0} gravado com sucesso!" />
+    <StaticText Key="Role_NotFound" Value="Grupo de acesso não pôde ser encontrado, por favor, atualize a página e tente novamente." />
+  </StaticTexts>
+
+  <Navigation>
+    <Menu Id="Reports" DisplayName="Relatórios">
+    </Menu>
+    <Menu Id="Security" DisplayName="Segurança">
+    </Menu>
+    <Menu Id="Configuration" DisplayName="Configurações">
+    </Menu>
+  </Navigation>
+  
+  <Views>
+    <!--Roles-->
+    <DetailView ViewId="DetailView_Roles">
+      <Buttons>
+        <Button Id="SaveChanges" DisplayName="Salvar Alterações" />
+      </Buttons>
+    </DetailView>
+    <ListView ViewId="ListView_Roles">
+      <Buttons>
+        <Button Id="New" DisplayName="Novo grupo" />
+        <Button Id="Delete" DisplayName="Excluir grupo" ConfirmMessage="Confirma a exclusão deste grupo de acesso?" />
+      </Buttons>
+      <ModalViews>
+        <DetailView ModalId="ModalView_Roles" Title="Dados do grupo de acesso" />
+      </ModalViews>
+    </ListView>
+
+    <!--Roles X Users-->
+    <ListView ViewId="ListView_RolesUsers" MessageOnEmpty="** NENHUM GRUPO DE ACESSO ENCONTRAO **">
+      <Buttons>
+        <Button Id="Delete" DisplayName="Remover grupo de acesso" ConfirmMessage="Deseja realmente remover este grupo de acesso?" />
+      </Buttons>
+    </ListView>
+
+    <!--Users-->
+    <DetailView ViewId="DetailView_Users">
+      <Buttons>
+        <Button Id="NewRole" DisplayName="Vincular novo grupo" />
+        <Button Id="NewManager" DisplayName="Vincular novo gerente" />
+        <Button Id="NewSubordinate" DisplayName="Vincular novo subordinado" />
+
+        <Button Id="SaveChanges" DisplayName="Salvar Alterações" />
+      </Buttons>
+      <SubViews>
+        <LookupView ModalId="ModalView_Roles" Title="Selecione os grupos para adicionar ao usuário" />
+        <LookupView ModalId="ModalView_Managers" Title="Selecione os gerentes para adicionar ao usuário" />
+        <LookupView ModalId="ModalView_Subordinates" Title="Selecione os subordinados para adicionar ao usuário" />
+      </SubViews>
+    </DetailView>
+    <ListView ViewId="ListView_Users" Type="Users" Sort="FullName">
+      <Buttons>
+        <Button Id="New" DisplayName="Novo usuário" />
+        <Button Id="Delete" DisplayName="Excluir usuário" ConfirmMessage="Confirma a exclusão deste usuário?" />
+      </Buttons>
+      <ModalViews>
+        <DetailView ModalId="ModalView_User" Title="Dados do usuário" />
+      </ModalViews>
+    </ListView>
+
+    <!--Users X Managers-->
+    <ListView ViewId="ListView_UsersManagers" CanEdit="False" Type="UsersManagers" Sort="Manager.FullName" Criteria="Manager != null" MessageOnEmpty="** NENHUM GERENTE ENCONTRADO **">
+      <Buttons>
+        <Button Id="Delete" DisplayName="Remover gerente" ConfirmMessage="Deseja realmente remover este gerente?" />
+      </Buttons>
+    </ListView>
+
+    <!--Users X Subordinates-->
+    <ListView ViewId="ListView_UsersSubordinates" CanEdit="False" Type="UsersManagers" Sort="Subordinate.FullName" Criteria="Subordinate != null" MessageOnEmpty="** NENHUM SUBORDINADO ENCONTRADO **">
+      <Buttons>
+        <Button Id="Delete" DisplayName="Remover subordinado" ConfirmMessage="Deseja realmente remover este subordinado?" />
+      </Buttons>
+    </ListView>
+  </Views>
+</Application>

@@ -2,9 +2,15 @@
     <div class="bg with-bg-dark"></div>
 
     <div class="container">
-        <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-            <img src="~/images/LogoMain.png" alt="Application Logo" border="0" class="mr-2" />
-            <span class="align-middle" app-env-badge></span>
+        <a class="navbar-brand mr-2" asp-controller="Home" asp-action="Index">
+            <img src="~/images/LogoMain.png" alt="Application Logo" border="0" />
+        </a>
+        
+        <div class="mr-2" app-env-badge>
+
+        </div>
+
+        <a class="navbar-brand mr-2" asp-controller="Home" asp-action="Index">
             <span static-text-for="AppMenuName"></span>
         </a>
 
@@ -43,6 +49,9 @@
                             <span class="display-name" static-text-for="Menu_TechnicalSpec"></span>
                         </a>
                     </div>
+                </li>
+                <li class="nav-item dropdown" languages-container button-class="nav-link">
+
                 </li>
             </ul>
         </div>

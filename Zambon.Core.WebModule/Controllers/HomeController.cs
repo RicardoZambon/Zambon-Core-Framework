@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Zambon.Core.Module.Services;
 using Zambon.Core.WebModule.ActionFilters;
 using Zambon.Core.WebModule.Models;
@@ -8,10 +9,12 @@ namespace Zambon.Core.WebModule.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationService ApplicationService;
-
-        public HomeController(ApplicationService applicationService)
+        private readonly ILanguageService LanguageService;
+        
+        public HomeController(ApplicationService applicationService, ILanguageService languageService)
         {
             ApplicationService = applicationService;
+            LanguageService = languageService;
         }
 
         [GenerateInstanceKey]
@@ -40,6 +43,13 @@ namespace Zambon.Core.WebModule.Controllers
             };
 
             return View("Index", model);
+        }
+
+        [HttpGet, HttpPost, AllowAnonymous]
+        public IActionResult ChangeLanguage(string newLanguage, string controllerName = "Home", string returnUrl = "")
+        {
+            LanguageService.ChangeLanguage(newLanguage);
+            return RedirectToAction("Index", controllerName, new { returnUrl });
         }
 
         public IActionResult Error()

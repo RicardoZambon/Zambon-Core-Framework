@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -110,7 +111,8 @@ namespace Zambon.Core.Module.Services
                 for (var l = 0; l < AppConfigs.Value.Languages.Length; l++)
                 {
                     var language = l == 0 ? "" : AppConfigs.Value.Languages[l];
-                    Model.Add(language, LoadModelFile(ctx, language));
+                    if (LoadModelFile(ctx, language) is Application model)
+                        Model.Add(language, model);
                 }
 
             foreach (var applicationModel in Model.Values)
@@ -119,30 +121,30 @@ namespace Zambon.Core.Module.Services
 
         private Application LoadModelFile(CoreDbContext ctx, string language = "")
         {
-            var fileName = string.Format("ApplicationModel{0}.xml", !string.IsNullOrWhiteSpace(language) ? "." + language : "");
+            Application model = Model.Count > 0 ? (Application)Model.First().Value.Clone() : null;
             var serializer = new XmlSerializer(typeof(Application));
 
-            Application model = null;
-
             //Search in WebModule if exists the ApplicationModel XML base file.
-            using (var webModuleStream = Assembly.Load("Zambon.Core.WebModule").GetManifestResourceStream(string.Format("Zambon.Core.WebModule.{0}", fileName)))
-                if(webModuleStream != null)
-                    model = (Application)serializer.Deserialize(webModuleStream);
+            var assembly = Assembly.Load("Zambon.Core.WebModule");
+            try
+            {
+                if (language != string.Empty)
+                    assembly = assembly.GetSatelliteAssembly(CultureInfo.CreateSpecificCulture(language));
 
+                using (var webModuleStream = assembly.GetManifestResourceStream("Zambon.Core.WebModule.ApplicationModel.xml"))
+                    if (webModuleStream != null && serializer.Deserialize(webModuleStream) is Application webApplicationModel)
+                        model = model != null ? model.MergeObject(webApplicationModel) : webApplicationModel;
+            }
+            catch (FileNotFoundException)
+            {
+                model = (Application)Model.First().Value.Clone();
+            }
+
+            var fileName = string.Format("ApplicationModel{0}.xml", !string.IsNullOrWhiteSpace(language) ? "." + language : "");
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
             using (var applicationStream = File.Exists(path) ? File.Open(path, FileMode.Open, FileAccess.Read) : Assembly.GetEntryAssembly().GetManifestResourceStream($"{Assembly.GetEntryAssembly().GetName().Name}.{fileName}"))
-                if (applicationStream != null)
-                {
-                    var applicationModel = (Application)serializer.Deserialize(applicationStream);
-                    model = model != null ? model.MergeObject(applicationModel) : applicationModel; 
-                }
-
-            if(!string.IsNullOrWhiteSpace(language) && Model.Count() > 0)
-            {
-                //If is inserting any language and has already inserted at least one in _Model, this means this in an alternative language.
-                //Must then merge with the default (First) language.
-                model = ((Application)Model.FirstOrDefault().Value.Clone()).MergeObject(model);
-            }
+                if (applicationStream != null && serializer.Deserialize(applicationStream) is Application applicationModel)
+                     model = model != null ? model.MergeObject(applicationModel) : applicationModel; 
 
             return model;
         }

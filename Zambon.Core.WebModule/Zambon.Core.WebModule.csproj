@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ApplicationModel.pt-br.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,7 +66,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Views/**/*.cshtml" />
     <EmbeddedResource Include="wwwroot/**/*" />
-    <EmbeddedResource Include="ApplicationModel.xml" />
+    <EmbeddedResource Include="ApplicationModel*.xml" />
     <EmbeddedResource Remove="Views\_ViewImports.cshtml" />
     <Content Include="Views\_ViewImports.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

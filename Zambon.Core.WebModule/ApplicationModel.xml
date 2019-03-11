@@ -9,7 +9,8 @@
   </EntityTypes>
 
   <Languages>
-    <Language Code="en-us" FlagIcon="en" DisplayName="English" />
+    <Language Code="en-us" FlagIcon="us" DisplayName="English" />
+    <Language Code="pt-br" FlagIcon="br" DisplayName="Portuguese" />
   </Languages>
   
   <StaticTexts>
@@ -20,6 +21,7 @@
     <StaticText Key="Menu_UserGuide" Value="User Guide" />
 
     <StaticText Key="Login_Title" Value="Login" />
+    <StaticText Key="Login_Languages" Value="Languages" />
     <StaticText Key="Login_Username" Value="Username" />
     <StaticText Key="Login_TypeUsername" Value="Type your username" />
     <StaticText Key="Login_Password" Value="Password" />
@@ -75,7 +77,7 @@
     <StaticText Key="DatePicker_DayNames" Value="'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'" />
     <StaticText Key="DatePicker_DayNamesShort" Value="'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'" />
     <StaticText Key="DatePicker_DayNamesMin" Value="'S', 'M', 'T', 'W', 'T', 'F', 'S'" />
-    <StaticText Key="DatePicker_DateFormat" Value="dd/mm/yy" />
+    <StaticText Key="DatePicker_DateFormat" Value="mm/dd/yy" />
 
     <StaticText Key="ValidationMessageDefault_RuleRequired" Value="The property '{0}' is mandatory." />
     <StaticText Key="ValidationMessageDefault_RuleUniqueValue" Value="The property '{0}' value is already registered." />
@@ -138,7 +140,7 @@
     </LookupView>
 
     <!--Roles X Users-->
-    <ListView ViewId="ListView_RolesUsers" CanEdit="False" Type="RolesUsers" Sort="Role.Name" MessageOnEmpty="** NO ROLES FOUND **">
+    <ListView ViewId="ListView_RolesUsers" Type="RolesUsers" Sort="Role.Name" MessageOnEmpty="** NO ROLES FOUND **">
       <Buttons>
         <Button Id="Delete" DisplayName="Remove role" CssClass="text-danger" Icon="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveRole" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this role?" />
       </Buttons>
@@ -208,7 +210,7 @@
     </LookupView>
 
     <!--Users X Managers-->
-    <ListView ViewId="ListView_UsersManagers" CanEdit="False" Type="UsersManagers" Sort="Manager.FullName" Criteria="Manager != null" MessageOnEmpty="** NO MANAGERS FOUND **">
+    <ListView ViewId="ListView_UsersManagers" Type="UsersManagers" Sort="Manager.FullName" Criteria="Manager != null" MessageOnEmpty="** NO MANAGERS FOUND **">
       <Buttons>
         <Button Id="Delete" DisplayName="Remove manager" CssClass="text-danger" Icon="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveManager" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this manager?" />
       </Buttons>
@@ -219,7 +221,7 @@
     </ListView>
 
     <!--Users X Subordinates-->
-    <ListView ViewId="ListView_UsersSubordinates" CanEdit="False" Type="UsersManagers" Sort="Subordinate.FullName" Criteria="Subordinate != null" MessageOnEmpty="** NO SUBORDINATES FOUND **">
+    <ListView ViewId="ListView_UsersSubordinates" Type="UsersManagers" Sort="Subordinate.FullName" Criteria="Subordinate != null" MessageOnEmpty="** NO SUBORDINATES FOUND **">
       <Buttons>
         <Button Id="Delete" DisplayName="Remove subordinate" CssClass="text-danger" Icon="oi-x" Target="Inline" ControllerName="User" ActionName="RemoveSubordinate" ActionParameters="deleteId=[ID]" ConfirmMessage="Do you confirm the exclusion of this subordinate?" />
       </Buttons>

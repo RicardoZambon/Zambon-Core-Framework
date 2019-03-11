@@ -1,32 +1,38 @@
 ﻿@model Zambon.Core.Security.Models.Login
 
-@inject Zambon.Core.Module.Services.ApplicationService _app;
-
 <div class="login-validation-error pt-4">
-    @if (!Html.ViewData.ModelState.IsValid)
-    {
-        <div asp-validation-summary="All"></div>
-    }
+    <div asp-validation-summary="All"></div>
 </div>
 
-<form asp-controller="Account" asp-action="Login" data-ajax="true" data-ajax-method="POST" class="form-horizontal" data-ajax-mode="replace" data-ajax-update="#loginForm" data-ajax-begin="BeginPost" data-ajax-complete="CompletePost">
+<form asp-controller="Account" asp-action="Login" asp-parameters-returnUrl="" data-ajax="true" data-ajax-method="POST" class="form-horizontal" data-ajax-mode="replace" data-ajax-update="#loginForm" data-ajax-begin="BeginPost" data-ajax-complete="CompletePost">
     <div class="login-form-wrapper">
         <div class="login-form-container position-relative px-3 pt-3 pb-2 mb-3">
-            <div class="login-title pb-3">
-                <h4>
-                    <span app-env-badge></span><span static-text-for="AppName"></span>&nbsp;-&nbsp;<span static-text-for="Login_Title"></span>
-                </h4>
+            <div class="login-form-container-background">
+
+            </div>
+
+            <div class="form-row mb-3">
+                <div class="col col-auto pr-2 pl-0" app-env-badge>
+
+                </div>
+                <div class="col text-center h4 mb-0">
+                    <span class="align-middle" static-text-for="AppName"></span><span class="align-middle">&nbsp;-&nbsp;</span><span class="align-middle" static-text-for="Login_Title"></span>
+                </div>
+                <div class="col col-auto pl-2 pr-0">
+                    <div class="dropdown" env-class-production="dropdown-primary" env-class-all="dropdown-danger" languages-container languages-use-button-style="true" button-class="pt-1 pl-1 pb-1 pr-2">
+                    </div>
+                </div>
             </div>
 
             <div class="input-group mb-3">
-                <div class="input-group-prepend">
+                <div class="input-group-prepend" static-text-title="Login_Username">
                     <div class="input-group-text border-secondary"><span class="oi oi-person" style="width:16px;"></span></div>
                 </div>
                 <input type="text" class="form-control border-secondary" asp-for="@Model.Username" static-text-placeholder="Login_TypeUsername">
             </div>
 
             <div class="input-group mb-2">
-                <div class="input-group-prepend">
+                <div class="input-group-prepend" static-text-title="Login_Password">
                     <div class="input-group-text border-secondary"><span class="oi oi-lock-locked" style="width:16px;"></span></div>
                 </div>
                 <input type="password" class="form-control border-secondary" asp-for="@Model.Password" static-text-placeholder="Login_TypePassword">
@@ -34,14 +40,14 @@
 
             <div class="custom-control custom-checkbox" style="margin-left: 1px">
                 <input type="checkbox" class="custom-control-input" asp-for="@Model.RememberMe">
-                <label class="custom-control-label @(!string.IsNullOrWhiteSpace(_app.GetAppSettings().EnvironmentTitle) ? "custom-control-label-danger" : "")" asp-for="@Model.RememberMe" static-text-for="Login_RememberMe"></label>
+                <label class="custom-control-label" env-class-production="" env-class-all="custom-control-label-danger" asp-for="@Model.RememberMe" static-text-for="Login_RememberMe"></label>
             </div>
         </div>
 
         <div class="container login-commands-container">
             <div class="row justify-content-around">
                 <div class="col-auto">
-                    <button id="btnLogin" type="submit" class="btn btn-@(!string.IsNullOrWhiteSpace(_app.GetAppSettings().EnvironmentTitle) ? "danger" : "primary")" static-text-data-loading-text="Login_SignInButtonLoading">
+                    <button id="btnLogin" type="submit" class="btn" env-class-production="btn-primary" env-class-all="btn-danger" static-text-data-loading-text="Login_SignInButtonLoading">
                         <span class="mr-1 oi oi-account-login"></span>&nbsp;<span static-text-for="Login_SignInButton"></span>
                     </button>
                 </div>

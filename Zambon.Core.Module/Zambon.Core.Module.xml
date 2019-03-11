@@ -545,6 +545,13 @@
             <param name="propertyName">The name of the property.</param>
             <returns>Return the System.ComponentModel.DataAnnotations.DisplayAttribute value, string.Empty if not found the display attribute.</returns>
         </member>
+        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetLanguage(System.String)">
+            <summary>
+            Search for the informed language.
+            </summary>
+            <param name="languageCode">The language code, same pattern as informed in AppSettings.json.</param>
+            <returns>Returns the language node from XML Application Model.</returns>
+        </member>
         <member name="M:Zambon.Core.Module.Services.ApplicationService.GetStaticText(System.String)">
             <summary>
             Search all Static Texts using the Key property.

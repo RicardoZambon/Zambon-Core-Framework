@@ -8,6 +8,7 @@ td.col-0, td.col-lg-0, td.col-md-0, td.col-sm-0, td.col-xl-0 {
     width: 1px !important;
 }
 
+.col-fit, .col-lg-fit, .col-md-fit, .col-sm.col-fit, .col-xl.fit,
 th.col-fit, th.col-lg-fit, th.col-md-fit, th.col-sm-fit, th.col-xl-fit,
 td.col-fit, td.col-lg-fit, td.col-md-fit, td.col-sm-fit, td.col-xl-fit {
     width: 1% !important;

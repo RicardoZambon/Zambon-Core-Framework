@@ -3,6 +3,7 @@ using System.Linq;
 using Zambon.Core.Database;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Xml;
+using Zambon.Core.Module.Xml.Languages;
 using Zambon.Core.Module.Xml.Navigation;
 using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml.Views.DetailViews;
@@ -139,6 +140,17 @@ namespace Zambon.Core.Module.Services
         public string GetPropertyDisplayName(string clrType, string propertyName)
         {
             return Model.FindEntityByClrType(clrType)?.GetPropertyDisplayName(propertyName) ?? string.Empty;
+        }
+
+
+        /// <summary>
+        /// Search for the informed language.
+        /// </summary>
+        /// <param name="languageCode">The language code, same pattern as informed in AppSettings.json.</param>
+        /// <returns>Returns the language node from XML Application Model.</returns>
+        public Language GetLanguage(string languageCode)
+        {
+            return Model.FindLanguage(languageCode);
         }
 
 

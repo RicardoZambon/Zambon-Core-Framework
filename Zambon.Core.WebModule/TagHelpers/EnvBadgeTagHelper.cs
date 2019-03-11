@@ -21,10 +21,10 @@ namespace Zambon.Core.WebModule.TagHelpers
             if (!ApplicationService.AppConfigs.HasEnvironmentTitle)
             {
                 output.TagMode = TagMode.SelfClosing;
-                output.TagName = "";
+                output.TagName = string.Empty;
             }
             else
-                output.Content.AppendHtml($"<div class=\"border border-danger rounded bg-danger p-1 text-white h4 mb-0\">{ApplicationService.AppConfigs.EnvironmentTitle}</div>");
+                output.Content.AppendHtml($"<div class=\"border border-danger rounded bg-danger p-1 text-white h4 mb-0\">{ApplicationService.AppConfigs.EnvironmentTitle.ToUpper().Trim()}</div>");
         }
 
     }
