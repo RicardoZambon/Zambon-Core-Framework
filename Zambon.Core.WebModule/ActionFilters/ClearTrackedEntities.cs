@@ -14,12 +14,12 @@ namespace Zambon.Core.WebModule.ActionFilters
             if (context.HttpContext.RequestServices.GetService(typeof(CoreDbContext)) is CoreDbContext ctx)
             {
                 if (context.ActionArguments.ContainsKey("viewInfo") && context.ActionArguments["viewInfo"] is ViewInfo viewInfo && !string.IsNullOrWhiteSpace(viewInfo.ParentViewId)
-                    && context.HttpContext.RequestServices.GetService(typeof(ApplicationService)) is ApplicationService app)
+                    && context.HttpContext.RequestServices.GetService(typeof(ApplicationService)) is ApplicationService applicationService)
                 {
-                    var parentView = app.GetView(viewInfo.ParentViewId);
+                    var parentView = applicationService.GetView(viewInfo.ParentViewId);
                     if (parentView is DetailView detailView)
                     {
-                        var view = app.GetView(viewInfo.ViewId);
+                        var view = applicationService.GetView(viewInfo.ViewId);
                         ctx.ClearTrackedEntities(clearStored: false, tempModelType: view?.GetEntityType()?.Name ?? string.Empty);
                         return;
                     }

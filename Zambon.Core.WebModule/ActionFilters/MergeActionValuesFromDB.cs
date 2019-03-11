@@ -1,16 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Zambon.Core.Database;
-using Zambon.Core.Database.Entity;
 using System.Linq;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using Zambon.Core.WebModule.Helper;
-using Microsoft.AspNetCore.Mvc;
-using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Database;
 using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.WebModule.ActionFilters
 {

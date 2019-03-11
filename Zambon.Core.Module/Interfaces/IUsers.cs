@@ -1,4 +1,5 @@
 ﻿using System;
+using Zambon.Core.Database;
 using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Module.Interfaces
@@ -82,6 +83,12 @@ namespace Zambon.Core.Module.Interfaces
         /// <param name="_menuType">The menu type.</param>
         /// <returns>If the user has access will return true.</returns>
         bool UserHasAccessToMenuID(string _menuID, string _menuType);
+
+        /// <summary>
+        /// Loads current user related data.
+        /// </summary>
+        /// <param name="ctx">The EF DBContext instance.</param>
+        void RefreshCurrentUserData(CoreDbContext ctx);
 
         #endregion
 

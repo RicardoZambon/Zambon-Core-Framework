@@ -20,7 +20,7 @@ namespace Zambon.Core.WebModule
 
             var configuration = builder.Build();
 
-            return base.CreateDbContext(new[] { configuration.GetConnectionString("DefaultConnection"), args [0] });
+            return base.CreateDbContext(new[] { configuration.GetConnectionString("DefaultConnection"), args[0] });
         }
     }
 }

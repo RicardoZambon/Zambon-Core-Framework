@@ -17,11 +17,6 @@ namespace Zambon.Core.Module.Services
         /// The object of the curent logged user.
         /// </summary>
         IUsers CurrentUser { get; }
-
-        /// <summary>
-        /// Checks if the current user has changed.
-        /// </summary>
-        void CheckUserChanged();
         
     }
 }

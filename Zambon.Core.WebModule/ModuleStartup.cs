@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -36,6 +37,8 @@ namespace Zambon.Core.WebModule
         public IConfigurationRoot Configuration { get; protected set; }
 
         protected IHostingEnvironment Env { get; set; }
+
+        protected string AssemblyName { get; }
 
 
         protected bool UseDataProtectionInFileSystem { get; set; } = true;

@@ -396,6 +396,12 @@
             <param name="_menuType">The menu type.</param>
             <returns>If the user has access will return true.</returns>
         </member>
+        <member name="M:Zambon.Core.Module.Interfaces.IUsers.RefreshCurrentUserData(Zambon.Core.Database.CoreDbContext)">
+            <summary>
+            Loads current user related data.
+            </summary>
+            <param name="ctx">The EF DBContext instance.</param>
+        </member>
         <member name="T:Zambon.Core.Module.Interfaces.IUsersManagers">
             <summary>
             Interface used to map user with managers and subordinates.
@@ -714,11 +720,6 @@
         <member name="P:Zambon.Core.Module.Services.IUserService.CurrentUser">
             <summary>
             The object of the curent logged user.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.IUserService.CheckUserChanged">
-            <summary>
-            Checks if the current user has changed.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Services.ModelService">

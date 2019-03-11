@@ -37,7 +37,7 @@ namespace Zambon.Core.WebModule.Services
             get
             {
                 if (_currentUser == null && CurrentIdentityName != null)
-                    CheckUserChanged();
+                    RefreshCurrentUser();
                 return _currentUser;
             }
         }
@@ -56,21 +56,18 @@ namespace Zambon.Core.WebModule.Services
 
         #region Methods
 
-        public virtual void CheckUserChanged()
+        private void RefreshCurrentUser()
         {
             if (!string.IsNullOrWhiteSpace(CurrentIdentityName))
             {
                 var user = Ctx.Set<TUser>().FirstOrDefault(x => string.Equals(x.Username, CurrentIdentityName, StringComparison.InvariantCultureIgnoreCase));
                 _currentUser = user;
+                _currentUser.RefreshCurrentUserData(Ctx);
 
-                RefreshCurrentUserData();
+                //Update the CurrentUser LastActivity date/time.
+                user.LastActivityOn = DateTime.Now;
+                Ctx.SaveChanges(user);
             }
-        }
-
-        private void RefreshCurrentUserData()
-        {
-            //if (_currentUser != null)
-            //    _currentUser.FillSubordinatesArray(_ctx);
         }
 
         #endregion

@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using Zambon.Core.Database;
 using Zambon.Core.Database.Entity;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Validations;
@@ -113,6 +114,10 @@ namespace Zambon.Core.Security.BusinessObjects
             return true;
         }
 
+        public virtual void RefreshCurrentUserData(CoreDbContext ctx)
+        {
+
+        }
 
         //[DbFunction(Schema = "dbo", FunctionName = "fn_IsEmployeeSubordinateOf")]
         //public static bool IsEmployeeSubordinateOf(int EmployeeID, int ManagerID)

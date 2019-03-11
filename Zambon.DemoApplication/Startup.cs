@@ -15,6 +15,7 @@ namespace Zambon.DemoApplication
 {
     public class Startup : ModuleStartup
     {
+
         public Startup(IHostingEnvironment env)
         {
             Env = env;
