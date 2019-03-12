@@ -33,8 +33,8 @@
                 <input type="number" class="form-control search-number1" id="@(Model.Id)_Search_SearchNumber1" name="SearchNumber1" asp-for="@searchOptions.SearchNumber1" style="@(view.SearchProperties[0].Type == "Number" || view.SearchProperties[0].Type == "NumberRange" ? "" : "display:none;")" />
                 <input type="number" class="form-control rounded-right search-number2" id="@(Model.Id)_Search_SearchNumber2" name="SearchNumber2" asp-for="@searchOptions.SearchNumber2" style="@(view.SearchProperties[0].Type == "NumberRange" ? "" : "display:none;")" />
 
-                <input type="text" class="form-control datepicker search-datepicker1" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime1" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties[0].Type == "DateTime" || view.SearchProperties[0].Type == "DateTimeRange" ? "" : "display:none;")" />
-                <input type="text" class="form-control datepicker rounded-right search-datepicker2" data-date-format="dd/mm/yy" data-alt-field="#Search_SearchDateTime2" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties[0].Type == "DateTimeRange" ? "" : "display:none;")" />
+                <input type="text" class="form-control datepicker search-datepicker1" data-date-format="dd/mm/yy" data-alt-field="#@(Model.Id)_Search_SearchDateTime1" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties[0].Type == "DateTime" || view.SearchProperties[0].Type == "DateTimeRange" ? "" : "display:none;")" />
+                <input type="text" class="form-control datepicker rounded-right search-datepicker2" data-date-format="dd/mm/yy" data-alt-field="#@(Model.Id)_Search_SearchDateTime2" data-alt-format="yy-mm-dd" value="" style="@(view.SearchProperties[0].Type == "DateTimeRange" ? "" : "display:none;")" />
 
                 <input type="hidden" class="search-date1" id="@(Model.Id)_Search_SearchDateTime1" name="SearchDateTime1" asp-for="@searchOptions.SearchDateTime1" />
                 <input type="hidden" class="search-date2" id="@(Model.Id)_Search_SearchDateTime2" name="SearchDateTime2" asp-for="@searchOptions.SearchDateTime2" />

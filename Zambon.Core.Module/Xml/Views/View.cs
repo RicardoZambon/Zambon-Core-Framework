@@ -205,7 +205,7 @@ namespace Zambon.Core.Module.Xml.Views
 
         private object TryGetDefaultPropertyValue(ApplicationService app, object value)
         {
-            if (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>())
+            if (value != null && (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>()))
             {
                 var valueEntity = app.GetDefaultProperty(value.GetType().GetCorrectType().FullName);
                 if (!string.IsNullOrWhiteSpace(valueEntity))

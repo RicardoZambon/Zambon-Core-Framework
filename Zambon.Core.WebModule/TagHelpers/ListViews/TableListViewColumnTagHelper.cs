@@ -104,7 +104,7 @@ namespace Zambon.Core.WebModule.TagHelpers.ListViews
                             if (alignment == null)
                                 alignment = "center";
 
-                            content = $"<input type=\"checkbox\" {((bool)cellValue ? "checked=checked " : "")} disabled />";
+                            content = $"<input type=\"checkbox\" {((bool)cellValue ? "checked=checked " : "")} class=\"align-middle\" disabled />";
                         }
                         else
                             content = cellValue.ToString();
