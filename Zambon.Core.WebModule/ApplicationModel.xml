@@ -191,7 +191,7 @@
         <Column PropertyName="FullName" Index="1" />
         <Column PropertyName="Username" Index="2" Size="5" />
         <Column PropertyName="LogonAllowed" Index="3" Size="fit" />
-        <Column PropertyName="LastActivityOn" Index="4" Size="fit" FormatType="{0:g}" CssClass="text-center" />
+        <Column PropertyName="LastActivityOn" Index="4" Size="fit" FormatType="{0:g}" Alignment="Center" />
       </Columns>
       <PaintOptions>
         <PaintOption Id="DisabledUsers" BackColor="table-danger" ForeColor="text-danger" Condition="NOT LogonAllowed" />
