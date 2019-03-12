@@ -137,30 +137,30 @@
         <Button Id="SaveChanges" DisplayName="Salvar Alterações" />
       </Buttons>
       <SubViews>
-        <LookupView ModalId="ModalView_Roles" Title="Selecione os grupos para adicionar ao usuário" />
-        <LookupView ModalId="ModalView_Managers" Title="Selecione os gerentes para adicionar ao usuário" />
-        <LookupView ModalId="ModalView_Subordinates" Title="Selecione os subordinados para adicionar ao usuário" />
+        <LookupView Id="ModalView_Roles" Title="Selecione os grupos para adicionar ao usuário" />
+        <LookupView Id="ModalView_Managers" Title="Selecione os gerentes para adicionar ao usuário" />
+        <LookupView Id="ModalView_Subordinates" Title="Selecione os subordinados para adicionar ao usuário" />
       </SubViews>
     </DetailView>
-    <ListView ViewId="ListView_Users" Type="Users" Sort="FullName">
+    <ListView ViewId="ListView_Users">
       <Buttons>
         <Button Id="New" DisplayName="Novo usuário" />
         <Button Id="Delete" DisplayName="Excluir usuário" ConfirmMessage="Confirma a exclusão deste usuário?" />
       </Buttons>
       <ModalViews>
-        <DetailView ModalId="ModalView_User" Title="Dados do usuário" />
+        <DetailView Id="ModalView_User" Title="Dados do usuário" />
       </ModalViews>
     </ListView>
 
     <!--Users X Managers-->
-    <ListView ViewId="ListView_UsersManagers" CanEdit="False" Type="UsersManagers" Sort="Manager.FullName" Criteria="Manager != null" MessageOnEmpty="** NENHUM GERENTE ENCONTRADO **">
+    <ListView ViewId="ListView_UsersManagers" MessageOnEmpty="** NENHUM GERENTE ENCONTRADO **">
       <Buttons>
         <Button Id="Delete" DisplayName="Remover gerente" ConfirmMessage="Deseja realmente remover este gerente?" />
       </Buttons>
     </ListView>
 
     <!--Users X Subordinates-->
-    <ListView ViewId="ListView_UsersSubordinates" CanEdit="False" Type="UsersManagers" Sort="Subordinate.FullName" Criteria="Subordinate != null" MessageOnEmpty="** NENHUM SUBORDINADO ENCONTRADO **">
+    <ListView ViewId="ListView_UsersSubordinates" MessageOnEmpty="** NENHUM SUBORDINADO ENCONTRADO **">
       <Buttons>
         <Button Id="Delete" DisplayName="Remover subordinado" ConfirmMessage="Deseja realmente remover este subordinado?" />
       </Buttons>

@@ -1,7 +1,7 @@
 ﻿@model Zambon.Core.Module.Xml.Views.SubViews.LookupModal
 
 @{ var view = (Zambon.Core.Module.Xml.Views.ListViews.LookupView)Model.View; }
-@if ((view.SearchProperties?.Length ?? 0) > 0)
+@if ((view?.SearchProperties?.Length ?? 0) > 0)
 {
     <div class="card mb-2">
         <div class="card-body p-1">

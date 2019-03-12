@@ -16,7 +16,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public string IntPageSize
         {
             get { return PageSize.ToString(); }
-            set { int.TryParse(value, out int pageSize); PageSize = pageSize; }
+            set { if (value != null) { int.TryParse(value, out int pageSize); PageSize = pageSize; } }
         }
         /// <summary>
         /// The PageSize attribute from XML. The maximum number of records to display in a same page.
@@ -31,7 +31,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public string IntPagesToShow
         {
             get { return PagesToShow?.ToString(); }
-            set { int.TryParse(value, out int pagesToShow); PagesToShow = pagesToShow; }
+            set { if (value != null) { int.TryParse(value, out int pagesToShow); PagesToShow = pagesToShow; } }
         }
         /// <summary>
         /// The PagesToShow attribute from XML. The maximum number of pages to show in footer.

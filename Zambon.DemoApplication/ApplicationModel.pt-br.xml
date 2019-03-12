@@ -21,6 +21,6 @@
         <Button Id="Delete" DisplayName="Excluir departamento" ConfirmMessage="Confirma a exclusão deste departamento?" />
       </Buttons>
     </ListView>
-    
+
   </Views>
 </Application>

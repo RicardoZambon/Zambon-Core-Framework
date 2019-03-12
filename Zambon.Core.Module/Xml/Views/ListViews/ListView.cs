@@ -46,7 +46,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public string BoolCanEdit
         {
             get { return CanEdit?.ToString(); }
-            set { bool.TryParse(value, out bool canEdit); CanEdit = canEdit; }
+            set { if (value != null) { bool.TryParse(value, out bool canEdit); CanEdit = canEdit; } }
         }
         /// <summary>
         /// The CanEdit attribute from XML. Indicates if the list view should be editable or not.

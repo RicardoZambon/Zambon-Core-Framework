@@ -16,7 +16,7 @@ namespace Zambon.Core.Module.Xml.Configuration
         public string BoolCanEdit
         {
             get { return CanEdit?.ToString(); }
-            set { bool.TryParse(value, out bool canEdit); CanEdit = canEdit; }
+            set { if (value != null) { bool.TryParse(value, out bool canEdit); CanEdit = canEdit; } }
         }
         /// <summary>
         /// The CanEdit attribute from XML. Indicates if the list views should be editable or not.
@@ -44,7 +44,7 @@ namespace Zambon.Core.Module.Xml.Configuration
         public string BoolShowPagination
         {
             get { return ShowPagination?.ToString(); }
-            set { bool.TryParse(value, out bool showPagination); ShowPagination = showPagination; }
+            set { if (value != null) { bool.TryParse(value, out bool showPagination); ShowPagination = showPagination; } }
         }
         /// <summary>
         /// The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
@@ -59,7 +59,7 @@ namespace Zambon.Core.Module.Xml.Configuration
         public string IntPageSize
         {
             get { return PageSize.ToString(); }
-            set { int.TryParse(value, out int pageSize); PageSize = pageSize; }
+            set { if (value != null) { int.TryParse(value, out int pageSize); PageSize = pageSize; } }
         }
         /// <summary>
         /// The PageSize attribute from XML. The maximum number of records to display in a same page.
@@ -74,7 +74,7 @@ namespace Zambon.Core.Module.Xml.Configuration
         public string IntPagesToShow
         {
             get { return PagesToShow?.ToString(); }
-            set { int.TryParse(value, out int pagesToShow); PagesToShow = pagesToShow; }
+            set { if (value != null) { int.TryParse(value, out int pagesToShow); PagesToShow = pagesToShow; } }
         }
         /// <summary>
         /// The PagesToShow attribute from XML. The maximum number of pages to show in footer.

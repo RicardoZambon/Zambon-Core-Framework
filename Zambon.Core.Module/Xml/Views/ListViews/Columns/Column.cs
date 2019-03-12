@@ -34,7 +34,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Columns
         public string IntIndex
         {
             get { return Index.ToString(); }
-            set { int.TryParse(value, out int index); Index = index; }
+            set { if (value != null) { int.TryParse(value, out int index); Index = index; } }
         }
         /// <summary>
         /// The column index order to display.

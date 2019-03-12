@@ -45,7 +45,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
         public string IntIndex
         {
             get { return Index.ToString(); }
-            set { int.TryParse(value, out int index); Index = index; }
+            set { if (value != null) { int.TryParse(value, out int index); Index = index; }  }
         }
         /// <summary>
         /// The button index order to display.
@@ -91,7 +91,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
         public string BoolUseFormPost
         {
             get { return UseFormPost?.ToString(); }
-            set { bool.TryParse(value, out bool useFormPost); UseFormPost = useFormPost; }
+            set { if (value != null) { bool.TryParse(value, out bool useFormPost); UseFormPost = useFormPost; } }
         }
         /// <summary>
         /// If the button should use the form post from DetailView, passing the entire object to the server. Defaut false.

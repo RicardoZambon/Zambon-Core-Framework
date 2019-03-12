@@ -30,7 +30,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
         public string IntIndex
         {
             get { return Index.ToString(); }
-            set { int.TryParse(value, out int index); Index = index; }
+            set { if (value != null) { int.TryParse(value, out int index); Index = index; } }
         }
         /// <summary>
         /// The Index attribute from XML. The column index order to display.

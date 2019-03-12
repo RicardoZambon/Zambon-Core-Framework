@@ -39,7 +39,7 @@ namespace Zambon.Core.Module.Xml.Navigation
         public string IntIndex
         {
             get { return Index.ToString(); }
-            set { int.TryParse(value, out int index); Index = index; }
+            set { if (value != null) { int.TryParse(value, out int index); Index = index; } }
         }
         /// <summary>
         /// The Index attribute from XML. The index order of the menu item.
@@ -90,7 +90,7 @@ namespace Zambon.Core.Module.Xml.Navigation
         public string BoolShowBadge
         {
             get { return ShowBadge?.ToString(); }
-            set { bool.TryParse(value, out bool showBadge); ShowBadge = showBadge; }
+            set { if (value != null) { bool.TryParse(value, out bool showBadge); ShowBadge = showBadge; } }
         }
         /// <summary>
         /// The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with submenus or ListViews, indicating the number of records (count) are available.
