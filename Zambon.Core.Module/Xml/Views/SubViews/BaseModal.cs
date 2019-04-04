@@ -7,7 +7,6 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
     /// </summary>
     public abstract class BaseModal : BaseSubView
     {
-
         /// <summary>
         /// Text to show in the modal title.
         /// </summary>
@@ -19,6 +18,5 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
         /// </summary>
         [XmlIgnore]
         public int Level { get; set; }
-
     }
 }

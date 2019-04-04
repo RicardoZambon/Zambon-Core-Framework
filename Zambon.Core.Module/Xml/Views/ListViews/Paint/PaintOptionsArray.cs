@@ -9,12 +9,10 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
     /// </summary>
     public class PaintOptionsArray : XmlNode
     {
-
         /// <summary>
         /// Represent elements <PaintOption /> from XML Application Model.
         /// </summary>
         [XmlElement("PaintOption")]
         public PaintOption[] PaintOption { get; set; }
-
     }
 }

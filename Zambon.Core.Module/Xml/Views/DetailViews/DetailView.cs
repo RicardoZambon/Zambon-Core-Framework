@@ -6,8 +6,6 @@ using System.Xml.Serialization;
 using Zambon.Core.Database;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Database.Domain.Interfaces;
-using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Xml.Views.Buttons;
 using Zambon.Core.Module.Xml.Views.DetailViews.Scripts;
@@ -40,7 +38,7 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews
         public string ViewType { get; set; }
 
         /// <summary>
-        /// Enctype should be used from the <form></form> html element. Default is empty.
+        /// Enctype should be used from the <form></form> HTML element. Default is empty.
         /// </summary>
         [XmlAttribute("FormEnctype")]
         public string FormEnctype { get; set; }

@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
     /// </summary>
     public class SearchPropertiesArray : XmlNode
     {
-
         /// <summary>
         /// Represent elements <SearchProperty /> from XML Application Model.
         /// </summary>
         [XmlElement("SearchProperty")]
         public SearchProperty[] SearchProperty { get; set; }
-
     }
 }

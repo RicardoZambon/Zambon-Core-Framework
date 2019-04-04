@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews.Scripts
     /// </summary>
     public class ScriptsArray : XmlNode
     {
-
         /// <summary>
         /// Represent elements <Script /> from XML Application Model.
         /// </summary>
         [XmlElement("Script")]
         public Script[] Script { get; set; }
-
     }
 }

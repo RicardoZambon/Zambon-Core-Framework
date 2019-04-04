@@ -1,22 +1,18 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Xml.Serialization;
+﻿using Microsoft.EntityFrameworkCore;
 using Zambon.Core.Database;
+using Zambon.Core.Database.ChangeTracker.Extensions;
+using Zambon.Core.Database.Extensions;
+using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.ExtensionMethods;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Views.Buttons;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
-using Zambon.Core.Module.Xml.Views.SubViews;
+using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Linq.Dynamic.Core;
-using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Database.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Zambon.Core.Database.Domain.Extensions;
-using Zambon.Core.Database.Domain.Interfaces;
-using Zambon.Core.Database.ChangeTracker.Extensions;
+using System.Xml.Serialization;
 
 namespace Zambon.Core.Module.Xml.Views
 {
@@ -25,7 +21,6 @@ namespace Zambon.Core.Module.Xml.Views
     /// </summary>
     public abstract class BaseListView : BaseView, ICriteria
     {
-
         /// <summary>
         /// The Criteria attribute from XML. Criteria to use when displaying the records, can reference arguments by @0, @1, etc.
         /// </summary>
@@ -84,7 +79,7 @@ namespace Zambon.Core.Module.Xml.Views
         public SearchOptions SearchOptions { get; protected set; }
 
         /// <summary>
-        /// The active list of items being displayed in this list view. Only availble when listing the items in page.
+        /// The active list of items being displayed in this list view. Only available when listing the items in page.
         /// </summary>
         [XmlIgnore]
         public IQueryable ItemsCollection { get; protected set; }
@@ -210,7 +205,7 @@ namespace Zambon.Core.Module.Xml.Views
         {
             if (value != null && (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>()))
             {
-                var valueEntity = app.GetDefaultProperty(value.GetType().GetUnproxiedType().FullName);
+                var valueEntity = app.GetDefaultProperty(value.GetUnproxiedType().FullName);
                 if (!string.IsNullOrWhiteSpace(valueEntity))
                     return TryGetDefaultPropertyValue(app, value.GetType().GetProperty(valueEntity).GetValue(value));
             }
@@ -249,10 +244,12 @@ namespace Zambon.Core.Module.Xml.Views
             if (!string.IsNullOrWhiteSpace(Criteria))
                 list = list.Where(app.GetExpressionsService(), this);
 
+            if (!string.IsNullOrWhiteSpace(Sort))
+                list = list.OrderBy(Sort);
+
             return list;
         }
 
         #endregion
-
     }
 }

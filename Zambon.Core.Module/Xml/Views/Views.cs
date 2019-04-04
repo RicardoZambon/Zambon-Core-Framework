@@ -9,7 +9,6 @@ namespace Zambon.Core.Module.Xml.Views
     /// </summary>
     public class Views : XmlNode
     {
-
         /// <summary>
         /// Represent elements <ListView /> from XML Application Model.
         /// </summary>
@@ -27,6 +26,5 @@ namespace Zambon.Core.Module.Xml.Views
         /// </summary>
         [XmlElement("LookupView")]
         public LookupView[] LookupViews { get; set; }
-
     }
 }

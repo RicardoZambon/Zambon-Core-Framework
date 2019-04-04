@@ -10,18 +10,15 @@ using System.Xml.Serialization;
 using Zambon.Core.Database;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Database.Domain.Interfaces;
-using Zambon.Core.Database.Entity;
-using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Xml.EntityTypes
 {
     /// <summary>
     /// Represents entities used in CoreDbContext. IEntity or IQuery.
     /// </summary>
-    public class Entity : XmlNode
+    public class Entity : XmlNode, IIcon
     {
-
         /// <summary>
         /// The Id of the entity type, used to merge same elements across ApplicationModels.
         /// </summary>
@@ -33,6 +30,12 @@ namespace Zambon.Core.Module.Xml.EntityTypes
         /// </summary>
         [XmlAttribute("DisplayName")]
         public string DisplayName { get; set; }
+
+        /// <summary>
+        /// Singular name of each entity type.
+        /// </summary>
+        [XmlAttribute("SingularName")]
+        public string SingularName { get; set; }
 
         /// <summary>
         /// Icon of the entity type.
@@ -91,6 +94,9 @@ namespace Zambon.Core.Module.Xml.EntityTypes
             EntityType = ctx.Model.FindEntityType(TypeClr);
             if (EntityType != null)
             {
+                if (string.IsNullOrWhiteSpace(SingularName))
+                    SingularName = DisplayName;
+
                 var props = EntityType.GetProperties();
                 var navs = EntityType.GetNavigations();
 
@@ -100,7 +106,7 @@ namespace Zambon.Core.Module.Xml.EntityTypes
                 var pos = 0;
                 foreach (var prop in props)
                 {
-                    properties[pos] = new Property() { Name = prop.Name, DisplayName = prop.PropertyInfo.GetCustomAttribute<DisplayAttribute>()?.Name ?? prop.Name };
+                    properties[pos] = new Property() { Name = prop.Name, DisplayName = prop.PropertyInfo?.GetCustomAttribute<DisplayAttribute>()?.Name ?? prop.Name };
 
                     if (Properties != null && Properties.Length > 0)
                     {
@@ -210,6 +216,5 @@ namespace Zambon.Core.Module.Xml.EntityTypes
         }
 
         #endregion
-
     }
 }

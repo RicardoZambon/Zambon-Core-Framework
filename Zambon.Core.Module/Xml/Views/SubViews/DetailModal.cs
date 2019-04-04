@@ -7,11 +7,9 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
     /// </summary>
     public class DetailModal : BaseModal
     {
-
         /// <summary>
         /// The DetailView object from the ViewId property.
         /// </summary>
         public DetailView DetailView { get { return View as DetailView; } }
-        
     }
 }

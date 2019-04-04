@@ -7,7 +7,6 @@ namespace Zambon.Core.Module.Xml.EntityTypes
     /// </summary>
     public class Property : XmlNode
     {
-
         /// <summary>
         /// The Name attribute from XML. The name of the property.
         /// </summary>
@@ -19,6 +18,5 @@ namespace Zambon.Core.Module.Xml.EntityTypes
         /// </summary>
         [XmlAttribute("DisplayName")]
         public string DisplayName { get; set; }
-
     }
 }

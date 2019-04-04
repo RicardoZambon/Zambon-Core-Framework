@@ -7,7 +7,6 @@ namespace Zambon.Core.Module.Xml.Configuration
     /// </summary>
     public class DetailViewDefaults : XmlNode
     {
-
         /// <summary>
         /// The DefaultAction attribute from XML. The default action name the DetailView should post when submitting the form.
         /// </summary>
@@ -19,6 +18,5 @@ namespace Zambon.Core.Module.Xml.Configuration
         /// </summary>
         [XmlAttribute("DefaultView")]
         public string DefaultView { get; set; }        
-
     }
 }

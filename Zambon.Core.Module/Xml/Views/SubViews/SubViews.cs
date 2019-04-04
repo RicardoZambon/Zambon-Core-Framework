@@ -30,6 +30,5 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
         /// </summary>
         [XmlElement("SubListView")]
         public SubListView[] SubListViews { get; set; }
-
     }
 }

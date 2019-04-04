@@ -11,7 +11,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
     /// <summary>
     /// Represents buttons used in DetailViews or ListViews.
     /// </summary>
-    public class Button : XmlNode, IComparable, ICondition
+    public class Button : XmlNode, IComparable, ICondition, IIcon
     {
 
         /// <summary>
@@ -39,13 +39,13 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
         public string CssClass { get; set; }
 
         /// <summary>
-        /// The index value returned from Xml file.
+        /// The index value returned from XML file.
         /// </summary>
         [XmlAttribute("Index"), Browsable(false)]
         public string IntIndex
         {
             get { return Index.ToString(); }
-            set { if (value != null) { int.TryParse(value, out int index); Index = index; }  }
+            set { if (value != null) { int.TryParse(value, out int index); Index = index; } }
         }
         /// <summary>
         /// The button index order to display.
@@ -85,7 +85,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
         public string ActionMethod { get; set; }
 
         /// <summary>
-        /// If the button should use the form post from DetailView, passing the entire object to the server. Defaut false.
+        /// If the button should use the form post from DetailView, passing the entire object to the server. Default false.
         /// </summary>
         [XmlAttribute("UseFormPost"), Browsable(false)]
         public string BoolUseFormPost
@@ -94,7 +94,7 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
             set { if (value != null) { bool.TryParse(value, out bool useFormPost); UseFormPost = useFormPost; } }
         }
         /// <summary>
-        /// If the button should use the form post from DetailView, passing the entire object to the server. Defaut false.
+        /// If the button should use the form post from DetailView, passing the entire object to the server. Default false.
         /// </summary>
         [XmlIgnore]
         public bool? UseFormPost { get; set; }

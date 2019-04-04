@@ -7,7 +7,6 @@ namespace Zambon.Core.Module.Xml.Languages
     /// </summary>
     public class Language : XmlNode
     {
-
         /// <summary>
         /// The code of the language, the same from AppSettings.json file.
         /// </summary>
@@ -25,6 +24,5 @@ namespace Zambon.Core.Module.Xml.Languages
         /// </summary>
         [XmlAttribute("DisplayName")]
         public string DisplayName { get; set; }
-
     }
 }

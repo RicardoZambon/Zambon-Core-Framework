@@ -7,11 +7,9 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
     /// </summary>
     public class LookupModal : BaseModal
     {
-
         /// <summary>
         /// The LookUpView view object.
         /// </summary>
         public LookupView LookUpView { get { return View as LookupView; } }
-
     }
 }

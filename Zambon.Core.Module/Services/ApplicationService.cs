@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Zambon.Core.Database;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Xml;
@@ -12,7 +11,7 @@ using Zambon.Core.Module.Xml.Views.ListViews;
 namespace Zambon.Core.Module.Services
 {
     /// <summary>
-    /// The main service used in application, is registered under Scoped lifecycle.
+    /// The main service used in application, is registered under Scoped life cycle.
     /// </summary>
     public class ApplicationService
     {

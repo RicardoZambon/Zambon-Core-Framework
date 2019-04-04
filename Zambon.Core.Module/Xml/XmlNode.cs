@@ -7,7 +7,7 @@ using Zambon.Core.Module.Interfaces;
 namespace Zambon.Core.Module.Xml
 {
     /// <summary>
-    /// Base class used for all Xml nodes from Application Model.
+    /// Base class used for all XML nodes from Application Model.
     /// </summary>
     public abstract class XmlNode : IMergeable, ICloneable
     {
@@ -76,6 +76,5 @@ namespace Zambon.Core.Module.Xml
                 return xmlSerializer.Deserialize(memoryStream);
             }
         }
-
     }
 }

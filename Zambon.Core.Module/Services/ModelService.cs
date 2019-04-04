@@ -16,7 +16,7 @@ namespace Zambon.Core.Module.Services
     /// </summary>
     public class ModelService
     {
-        
+
         #region Variables
 
         private readonly IOptions<ApplicationConfigs> AppConfigs;
@@ -31,8 +31,10 @@ namespace Zambon.Core.Module.Services
         /// <summary>
         /// The current version of the application, from the startup project Package > Package version.
         /// </summary>
-        public string AppVersion {
-            get {
+        public string AppVersion
+        {
+            get
+            {
                 if (string.IsNullOrWhiteSpace(_AppVersion))
                 {
                     var assembly = Assembly.GetEntryAssembly();
@@ -47,8 +49,10 @@ namespace Zambon.Core.Module.Services
         /// <summary>
         /// The copyright of the application, from the startup project Package > Copyright.
         /// </summary>
-        public string AppCopyright {
-            get {
+        public string AppCopyright
+        {
+            get
+            {
                 if (string.IsNullOrWhiteSpace(_AppCopyright))
                 {
                     var assembly = Assembly.GetEntryAssembly();
@@ -144,7 +148,7 @@ namespace Zambon.Core.Module.Services
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), fileName);
             using (var applicationStream = File.Exists(path) ? File.Open(path, FileMode.Open, FileAccess.Read) : Assembly.GetEntryAssembly().GetManifestResourceStream($"{Assembly.GetEntryAssembly().GetName().Name}.{fileName}"))
                 if (applicationStream != null && serializer.Deserialize(applicationStream) is Application applicationModel)
-                     model = model != null ? model.MergeObject(applicationModel) : applicationModel; 
+                    model = model != null ? model.MergeObject(applicationModel) : applicationModel;
 
             return model;
         }
@@ -154,7 +158,7 @@ namespace Zambon.Core.Module.Services
         {
             return AppConfigs.Value;
         }
-        
+
         #endregion
 
     }

@@ -125,6 +125,5 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         }
 
         #endregion
-
     }
 }

@@ -10,7 +10,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
     /// </summary>
     public class SearchProperty : XmlNode, IComparable
     {
-
         /// <summary>
         /// The PropertyName attribute from XML. The property name to use when executing the search.
         /// </summary>
@@ -24,7 +23,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
         public string DisplayName { get; set; }
 
         /// <summary>
-        /// The Index attribute from XML. The index value returned from Xml file.
+        /// The Index attribute from XML. The index value returned from XML file.
         /// </summary>
         [XmlAttribute("Index"), Browsable(false)]
         public string IntIndex
@@ -92,6 +91,5 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
         }
 
         #endregion
-
     }
 }

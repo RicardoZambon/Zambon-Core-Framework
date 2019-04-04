@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.StaticTexts
     /// </summary>
     public class StaticTextsArray : XmlNode
     {
-
         /// <summary>
         /// Represent elements <StaticText /> from XML Application Model.
         /// </summary>
         [XmlElement("StaticText")]
         public StaticText[] Texts { get; set; }
-
     }
 }

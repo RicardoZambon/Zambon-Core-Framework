@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
+using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Xml.EntityTypes;
 
 namespace Zambon.Core.Module.Xml.Views
@@ -8,9 +9,8 @@ namespace Zambon.Core.Module.Xml.Views
     /// <summary>
     /// Base view class used for all Views.
     /// </summary>
-    public abstract class BaseView : XmlNode
+    public abstract class BaseView : XmlNode, IIcon
     {
-
         /// <summary>
         /// The ViewId, used to merge same elements across ApplicationModels.
         /// </summary>
@@ -40,7 +40,7 @@ namespace Zambon.Core.Module.Xml.Views
         /// The Entity object from the Type property.
         /// </summary>
         [XmlIgnore]
-        protected Entity Entity { get; set; }
+        public Entity Entity { get; protected set; }
 
         /// <summary>
         /// The current active object being shown.
@@ -113,6 +113,5 @@ namespace Zambon.Core.Module.Xml.Views
         }
 
         #endregion
-
     }
 }

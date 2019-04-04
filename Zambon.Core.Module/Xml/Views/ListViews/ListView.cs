@@ -28,7 +28,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
     /// </summary>
     public class ListView : BaseListView, IViewControllerAction, IViewButtons, IViewSubViews
     {
-
         /// <summary>
         /// The ControllerName attribute from XML. Define the default controller name to be used within this view, by default will use the same as set in EntityType.
         /// </summary>
@@ -57,7 +56,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         public bool? CanEdit { get; set; }
 
         /// <summary>
-        /// The EditModalId attribute from XML. ID of the ModalView should be used when editting records. By default will search for DetailViews with the same Type.
+        /// The EditModalId attribute from XML. ID of the ModalView should be used when editing records. By default will search for DetailViews with the same Type.
         /// </summary>
         [XmlAttribute("EditModalId")]
         public string EditModalId { get; set; }
@@ -71,19 +70,19 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
 
         /// <summary>
-        /// The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+        /// The ShowPagination attribute from XML. Indicates if should display or not a pagination.
         /// </summary>
         [XmlAttribute("ShowPagination")]
         public string BoolShowPagination { get; set; }
         /// <summary>
-        /// The ShowPagination attribute from XML. Indicates if should display or not a pagiation.
+        /// The ShowPagination attribute from XML. Indicates if should display or not a pagination.
         /// </summary>
         [XmlIgnore]
         public bool ShowPagination { get { return bool.Parse(BoolShowPagination?.ToLower() ?? "false"); } }
 
 
         /// <summary>
-        /// The EditModalParameters attribute from XML. Passes the modal parameters arguments when editing an object. By defualt will use object=[ID].
+        /// The EditModalParameters attribute from XML. Passes the modal parameters arguments when editing an object. By default will use object=[ID].
         /// </summary>
         [XmlAttribute("EditModalParameters")]
         public string EditModalParameters { get; set; }
@@ -94,7 +93,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// </summary>
         [XmlIgnore]
         public Button[] Buttons { get { return _Buttons?.Button; } }
-        
+
         /// <summary>
         /// List all paint options and their conditions.
         /// </summary>
@@ -119,7 +118,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// </summary>
         [XmlElement("Buttons"), Browsable(false)]
         public Buttons.Buttons _Buttons { get; set; }
-        
+
         /// <summary>
         /// The PaintOptions element from XML.
         /// </summary>
@@ -139,7 +138,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         [XmlIgnore]
         public DetailModal EditModal { get; protected set; }
 
-        
+
         #region Overrides
 
         internal override void OnLoadingXml(Application app, CoreDbContext ctx)
@@ -154,12 +153,12 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
 
             if (string.IsNullOrWhiteSpace(EditModalParameters))
                 EditModalParameters = app.ModuleConfiguration.ListViewDefaults.DefaultEditModalParameter;
-            
+
             if ((SubViews?.DetailViews?.Length ?? 0) > 0)
             {
                 for (var d = 0; d < SubViews.DetailViews.Length; d++)
                     SubViews.DetailViews[d].ParentViewId = ViewId;
-                    
+
                 if (string.IsNullOrWhiteSpace(EditModalId))
                     EditModalId = Array.Find(SubViews.DetailViews, x => x.View.Type == Type)?.Id;
 
@@ -169,24 +168,24 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
             if ((SubViews?.LookupViews?.Length ?? 0) > 0)
                 for (var l = 0; l < SubViews.LookupViews.Length; l++)
                     SubViews.LookupViews[l].ParentViewId = ViewId;
-                 
+
             if ((SubViews?.SubListViews?.Length ?? 0) > 0)
                 for (var s = 0; s < SubViews.SubListViews.Length; s++)
                     SubViews.SubListViews[s].ParentViewId = ViewId;
-            
+
 
             if (string.IsNullOrWhiteSpace(BoolCanEdit))
                 BoolCanEdit = app.ModuleConfiguration?.ListViewDefaults?.BoolCanEdit;
 
             if (string.IsNullOrWhiteSpace(BoolShowPagination))
                 BoolShowPagination = app.ModuleConfiguration?.ListViewDefaults?.BoolShowPagination;
-            
+
             if ((Buttons?.Length ?? 0) > 0)
             {
                 for (var b = 0; b < Buttons.Length; b++)
                     OnLoadingSubButtons(Buttons[b]);
             }
-            
+
             if (PaginationOptions == null)
                 PaginationOptions = new PaginationOptions();
 
@@ -236,11 +235,8 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// <param name="app">The application service.</param>
         /// <param name="ctx">The CoreDbContext service.</param>
         /// <param name="currentPage">Current page should be displayed. By default is "1".</param>
-        /// <param name="searchOptions">If applyng search, otherwise null.</param>
-        public void SetCurrentPage(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null)
-        {
-            GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetCurrentPage) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, currentPage, searchOptions });
-        }
+        /// <param name="searchOptions">If applying search, otherwise null.</param>
+        public void SetCurrentPage(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null) => GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(SetCurrentPage) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, currentPage, searchOptions });
         /// <summary>
         /// Set the ListView contents to the current page.
         /// </summary>
@@ -248,7 +244,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// <param name="app">The application service.</param>
         /// <param name="ctx">The CoreDbContext service.</param>
         /// <param name="currentPage">Current page should be displayed. By default is "1".</param>
-        /// <param name="searchOptions">If applyng search, otherwise null.</param>
+        /// <param name="searchOptions">If applying search, otherwise null.</param>
         public void SetCurrentPage<T>(ApplicationService app, CoreDbContext ctx, int currentPage = 1, SearchOptions searchOptions = null) where T : class
         {
             //Todo: Validate if still needed. GC.Collect();
@@ -319,6 +315,9 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
                 }
                 else
                     throw new ApplicationException($"The ListView \"{ViewId}\" entity \"{Entity}\" does not have implemented the interface IEntity not IQuery.");
+
+                if (!string.IsNullOrWhiteSpace(Criteria))
+                    list = list.Where(app.GetExpressionsService(), this);
 
                 if (!string.IsNullOrWhiteSpace(Sort))
                     list = list.OrderBy(Sort);
@@ -421,6 +420,5 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         }
 
         #endregion
-
     }
 }

@@ -6,8 +6,6 @@ using Zambon.Core.Database;
 using Zambon.Core.Database.ChangeTracker.Extensions;
 using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.Entity;
-using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.Module.Validations
@@ -18,7 +16,6 @@ namespace Zambon.Core.Module.Validations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class RuleUniqueValueAttribute : ValidationAttribute
     {
-
         /// <summary>
         /// The condition when the validation should occurs.
         /// </summary>
@@ -35,7 +32,7 @@ namespace Zambon.Core.Module.Validations
         /// </summary>
         public RuleUniqueValueAttribute()
         {
-            
+
         }
 
         /// <summary>
@@ -97,7 +94,7 @@ namespace Zambon.Core.Module.Validations
                             break;
                     }
 
-                    if (ctx.Set(validationContext.ObjectType.GetUnproxiedType()).Count(string.Format(query, validationContext.MemberName), dbInstance.ID, value) > 0)
+                    if (ctx.Set(validationContext.ObjectInstance.GetUnproxiedType()).Count(string.Format(query, validationContext.MemberName), dbInstance.ID, value) > 0)
                     {
                         var defaultMessage = "The property '{0}' value is already registered.";
                         var displayName = validationContext.DisplayName;
@@ -105,7 +102,7 @@ namespace Zambon.Core.Module.Validations
                         if (validationContext.GetService(typeof(ApplicationService)) is ApplicationService app)
                         {
                             defaultMessage = app.GetStaticText("ValidationMessageDefault_RuleUniqueValue");
-                            var displayText = app.GetPropertyDisplayName(validationContext.ObjectType.GetUnproxiedType().FullName, validationContext.MemberName);
+                            var displayText = app.GetPropertyDisplayName(validationContext.ObjectInstance.GetUnproxiedType().FullName, validationContext.MemberName);
                             if (!string.IsNullOrWhiteSpace(displayText))
                                 displayName = displayText;
                         }
@@ -118,7 +115,5 @@ namespace Zambon.Core.Module.Validations
             }
             return ValidationResult.Success;
         }
-
     }
-
 }

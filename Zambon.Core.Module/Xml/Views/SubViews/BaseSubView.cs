@@ -8,7 +8,6 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
     /// </summary>
     public abstract class BaseSubView : XmlNode
     {
-
         /// <summary>
         /// The SubView Id, used to merge same elements across ApplicationModels.
         /// </summary>
@@ -61,6 +60,5 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
         }
 
         #endregion
-
     }
 }

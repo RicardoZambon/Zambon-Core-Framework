@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Zambon.Core.Database.ChangeTracker.Extensions;
-using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.Module.Validations
@@ -12,7 +11,6 @@ namespace Zambon.Core.Module.Validations
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class RuleRequiredAttribute : ValidationAttribute
     {
-
         /// <summary>
         /// The condition when the validation should occurs.
         /// </summary>
@@ -71,20 +69,18 @@ namespace Zambon.Core.Module.Validations
                     if (validationContext.GetService(typeof(ApplicationService)) is ApplicationService appService)
                     {
                         defaultMessage = appService.GetStaticText("ValidationMessageDefault_RuleRequired");
-                        var displayText = appService.GetPropertyDisplayName(validationContext.ObjectType.GetUnproxiedType().FullName, validationContext.MemberName);
+                        var displayText = appService.GetPropertyDisplayName(validationContext.ObjectInstance.GetUnproxiedType().FullName, validationContext.MemberName);
                         if (!string.IsNullOrWhiteSpace(displayText))
                             displayName = displayText;
                     }
 
                     return new ValidationResult(
                         !string.IsNullOrWhiteSpace(ErrorMessage) ? ErrorMessage : string.Format(defaultMessage, displayName),
-                        string.IsNullOrWhiteSpace(ElementId) ? new[] { validationContext.MemberName }  : ElementId.Split(","));
+                        string.IsNullOrWhiteSpace(ElementId) ? new[] { validationContext.MemberName } : ElementId.Split(","));
                 }
             }
-
             return ValidationResult.Success;
         }
 
     }
-
 }

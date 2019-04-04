@@ -8,7 +8,6 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
     /// </summary>
     public class SubListView : BaseSubView
     {
-
         /// <summary>
         /// The ScrollSize attribute from XML. Defines the size of the SubListView (sm - small, md - medium, lg - large).
         /// </summary>
@@ -19,6 +18,5 @@ namespace Zambon.Core.Module.Xml.Views.SubViews
         /// The ListView view object.
         /// </summary>
         public ListView ListView { get { return View as ListView; } }
-
     }
 }

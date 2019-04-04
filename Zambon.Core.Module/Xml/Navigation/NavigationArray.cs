@@ -9,7 +9,6 @@ namespace Zambon.Core.Module.Xml.Navigation
     /// </summary>
     public class NavigationArray : XmlNode
     {
-
         /// <summary>
         /// Represents elements <Menu></Menu> from XML Application Model.
         /// </summary>
@@ -28,6 +27,5 @@ namespace Zambon.Core.Module.Xml.Navigation
         }
 
         #endregion
-        
     }
 }

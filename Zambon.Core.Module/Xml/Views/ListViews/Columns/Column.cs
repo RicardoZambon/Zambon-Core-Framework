@@ -14,7 +14,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Columns
     /// </summary>
     public class Column : XmlNode, IComparable
     {
-
         /// <summary>
         /// The property name this column should show, ex: "Name" or "Role.Name".
         /// </summary>
@@ -28,7 +27,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Columns
         public string DisplayName { get; set; }
 
         /// <summary>
-        /// The index value returned from Xml file.
+        /// The index value returned from XML file.
         /// </summary>
         [XmlAttribute("Index"), Browsable(false)]
         public string IntIndex
@@ -91,6 +90,5 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Columns
         }
 
         #endregion
-
     }
 }

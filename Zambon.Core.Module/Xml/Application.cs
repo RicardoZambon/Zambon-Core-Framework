@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
@@ -20,7 +19,6 @@ namespace Zambon.Core.Module.Xml
     [XmlRoot]
     public class Application : XmlNode
     {
-
         /// <summary>
         /// Application name.
         /// </summary>
@@ -30,7 +28,7 @@ namespace Zambon.Core.Module.Xml
         /// <summary>
         /// Long name for application
         /// </summary>
-        [XmlAttribute("Fullname")]
+        [XmlAttribute("FullName")]
         public string FullName { get; set; }
 
         /// <summary>
@@ -78,25 +76,25 @@ namespace Zambon.Core.Module.Xml
 
 
         /// <summary>
-        /// Element representation of the Xml <EntityTipes></EntityTipes> node.
+        /// Element representation of the XML <EntityTipes></EntityTipes> node.
         /// </summary>
         [XmlElement("EntityTypes"), Browsable(false)]
         public EntityTypesArray _EntityTypes { get; set; }
 
         /// <summary>
-        /// Element representation of the Xml <Languages></Languages> node.
+        /// Element representation of the XML <Languages></Languages> node.
         /// </summary>
         [XmlElement("Languages"), Browsable(false)]
         public LanguagesArray _Languages { get; set; }
 
         /// <summary>
-        /// Element representation of the Xml <StaticTexts></StaticTexts> node.
+        /// Element representation of the XML <StaticTexts></StaticTexts> node.
         /// </summary>
         [XmlElement("StaticTexts"), Browsable(false)]
         public StaticTextsArray _StaticTexts { get; set; }
 
         /// <summary>
-        /// Element representation of the Xml <Navigation></Navigation> node.
+        /// Element representation of the XML <Navigation></Navigation> node.
         /// </summary>
         [XmlElement("Navigation"), Browsable(false)]
         public NavigationArray _Navigation { get; set; }
@@ -203,6 +201,5 @@ namespace Zambon.Core.Module.Xml
         }
 
         #endregion
-
     }
 }

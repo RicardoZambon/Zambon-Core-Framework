@@ -1,16 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
-using Zambon.Core.Database.ExtensionMethods;
-using Zambon.Core.Database.Interfaces;
-using Zambon.Core.Module.ExtensionMethods;
-using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
-using Zambon.Core.Module.Xml.Views.ListViews.Columns;
 using Zambon.Core.Module.Xml.Views.ListViews.Search;
 using Zambon.Core.Module.Xml.Views.SubViews;
 
@@ -21,9 +13,8 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
     /// </summary>
     public class LookupView : BaseListView
     {
-
         /// <summary>
-        /// The postback options the LookUpView should use when submitting back to the parent view.
+        /// The post back options the LookUpView should use when submitting back to the parent view.
         /// </summary>
         [XmlIgnore]
         public PostBackOptions PostBackOptions { get; protected set; }
@@ -36,7 +27,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// </summary>
         /// <param name="app">The application service.</param>
         /// <param name="ctx">The CoreDbContext service.</param>
-        /// <param name="searchOptions">If applyng search, otherwise null.</param>
+        /// <param name="searchOptions">If applying search, otherwise null.</param>
         public void PopulateView(ApplicationService app, CoreDbContext ctx, SearchOptions searchOptions = null)
         {
             GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(PopulateView) && x.IsGenericMethod).MakeGenericMethod(Entity.GetEntityType()).Invoke(this, new object[] { app, ctx, searchOptions });
@@ -47,7 +38,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         /// <typeparam name="T">The type of the LookUpView.</typeparam>
         /// <param name="app">The application service.</param>
         /// <param name="ctx">The CoreDbContext service.</param>
-        /// <param name="searchOptions">If applyng search, otherwise null.</param>
+        /// <param name="searchOptions">If applying search, otherwise null.</param>
         public void PopulateView<T>(ApplicationService app, CoreDbContext ctx, SearchOptions searchOptions = null) where T : class
         {
             //Todo: Validate if still needed. GC.Collect();
@@ -67,6 +58,5 @@ namespace Zambon.Core.Module.Xml.Views.ListViews
         }
 
         #endregion
-
     }
 }

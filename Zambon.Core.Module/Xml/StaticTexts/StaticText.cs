@@ -7,7 +7,6 @@ namespace Zambon.Core.Module.Xml.StaticTexts
     /// </summary>
     public class StaticText : XmlNode
     {
-
         /// <summary>
         /// The Key attribute from XML. The static text key should be used when displaying across the application.
         /// </summary>
@@ -19,6 +18,5 @@ namespace Zambon.Core.Module.Xml.StaticTexts
         /// </summary>
         [XmlAttribute("Value")]
         public string Value { get; set; }
-
     }
 }

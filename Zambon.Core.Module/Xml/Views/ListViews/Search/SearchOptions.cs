@@ -9,7 +9,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Search
     /// </summary>
     public class SearchOptions
     {
-
         /// <summary>
         /// The property to search for.
         /// </summary>

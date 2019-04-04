@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.Views.DetailViews.Scripts
     /// </summary>
     public class Script : XmlNode
     {
-
         /// <summary>
         /// The Src attribute from XML. The source path to the .js script file.
         /// </summary>
         [XmlAttribute("Src")]
         public string Src { get; set; }
-
     }
 }

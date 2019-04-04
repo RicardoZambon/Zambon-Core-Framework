@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.EntityTypes
     /// </summary>
     public class Properties : XmlNode
     {
-
         /// <summary>
         /// Represent elements <Property /> from XML Application Model.
         /// </summary>
         [XmlElement("Property")]
         public Property[] Property { get; set; }
-
     }
 }

@@ -4,13 +4,12 @@ using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Zambon.Core.Database.ChangeTracker.Extensions;
-using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Services
 {
     /// <summary>
-    /// Expression service used in custom criterias.
+    /// Expression service used in custom criteria.
     /// </summary>
     public class ExpressionsService
     {
@@ -70,7 +69,7 @@ namespace Zambon.Core.Module.Services
         }
 
         /// <summary>
-        /// Searchs all criteria arguments for [] and will try to replace them for the IUserService.
+        /// Search all criteria arguments for [] and will try to replace them for the IUserService.
         /// </summary>
         /// <param name="criteriaArguments">The criteria arguments.</param>
         /// <returns>Return an array of arguments.</returns>
@@ -89,7 +88,7 @@ namespace Zambon.Core.Module.Services
             return new object[0];
         }
         /// <summary>
-        /// earchs all criteria arguments for [] and will try to replace them for the IUserService or the object property.
+        /// Search all criteria arguments for [] and will try to replace them for the IUserService or the object property.
         /// </summary>
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="criteriaArguments">The criteria arguments.</param>
@@ -184,9 +183,9 @@ namespace Zambon.Core.Module.Services
         /// <summary>
         /// Format action parameters, replacing [] for the global value or the current object value.
         /// </summary>
-        /// <param name="actionParameters">A string with all action paratemers.</param>
+        /// <param name="actionParameters">A string with all action parameters.</param>
         /// <param name="obj">The object to search the properties from.</param>
-        /// <returns>Return a dictionaty of parameters and respective values.</returns>
+        /// <returns>Return a dictionary of parameters and respective values.</returns>
         public IDictionary<string, string> FormatActionParameters(string actionParameters, object obj = null)
         {
             MethodInfo method = null;
@@ -230,7 +229,7 @@ namespace Zambon.Core.Module.Services
         {
             return expressions.Where(x => IsConditionApplicable(x, obj));
         }
-        
+
         #endregion
 
     }

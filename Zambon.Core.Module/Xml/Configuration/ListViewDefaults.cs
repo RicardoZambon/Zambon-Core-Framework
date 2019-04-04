@@ -8,7 +8,6 @@ namespace Zambon.Core.Module.Xml.Configuration
     /// </summary>
     public class ListViewDefaults : XmlNode
     {
-
         /// <summary>
         /// The CanEdit attribute from XML. Indicates if the list views should be editable or not.
         /// </summary>
@@ -81,6 +80,5 @@ namespace Zambon.Core.Module.Xml.Configuration
         /// </summary>
         [XmlIgnore]
         public int? PagesToShow { get; set; }
-
     }
 }

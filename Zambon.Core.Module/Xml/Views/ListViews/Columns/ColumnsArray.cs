@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Columns
     /// </summary>
     public class ColumnsArray : XmlNode
     {
-
         /// <summary>
         /// List of all columns.
         /// </summary>
         [XmlElement("Column")]
         public Column[] Column { get; set; }
-
     }
 }

@@ -12,8 +12,14 @@ namespace Zambon.Core.Module
         /// </summary>
         public enum AuthenticationType
         {
+            /// <summary>
+            /// 
+            /// </summary>
             [Display(Name = "User & Password")]
             UserPassword = 0,
+            /// <summary>
+            /// 
+            /// </summary>
             LDAP = 1
         }
 
@@ -22,15 +28,38 @@ namespace Zambon.Core.Module
         /// </summary>
         public enum PermissionTypes
         {
+            /// <summary>
+            /// 
+            /// </summary>
             FullAccess = 0,
+            /// <summary>
+            /// 
+            /// </summary>
             ReadWrite = 1, //Navigate, Read, Create, Write
+            /// <summary>
+            /// 
+            /// </summary>
             ReadOnly = 2, //Navigate, Read
+            /// <summary>
+            /// 
+            /// </summary>
             Navigate = 3,
+            /// <summary>
+            /// 
+            /// </summary>
             Read = 4,
+            /// <summary>
+            /// 
+            /// </summary>
             Create = 5,
+            /// <summary>
+            /// 
+            /// </summary>
             Write = 6,
+            /// <summary>
+            /// 
+            /// </summary>
             Delete = 7
         }
-
     }
 }

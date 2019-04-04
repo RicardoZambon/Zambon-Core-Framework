@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.Languages
     /// </summary>
     public class LanguagesArray : XmlNode
     {
-
         /// <summary>
         /// List of <Language /> elements.
         /// </summary>
         [XmlElement("Language")]
         public Language[] Languages { get; set; }
-
     }
 }

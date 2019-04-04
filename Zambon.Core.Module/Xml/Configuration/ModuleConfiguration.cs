@@ -7,7 +7,6 @@ namespace Zambon.Core.Module.Xml.Configuration
     /// </summary>
     public class ModuleConfiguration : XmlNode
     {
-
         /// <summary>
         /// Represents an element <LoginDefaults /> from XML Application Model. Define default values for login page.
         /// </summary>
@@ -25,6 +24,5 @@ namespace Zambon.Core.Module.Xml.Configuration
         /// </summary>
         [XmlElement("ListViewDefaults")]
         public ListViewDefaults ListViewDefaults { get; set; }
-
     }
 }

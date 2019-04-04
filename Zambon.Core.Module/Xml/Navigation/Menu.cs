@@ -11,9 +11,8 @@ namespace Zambon.Core.Module.Xml.Navigation
     /// <summary>
     /// Represents a node <Menu></Menu> from XML Application Model.
     /// </summary>
-    public class Menu : XmlNode, IComparable
+    public class Menu : XmlNode, IComparable, IIcon
     {
-
         /// <summary>
         /// The Id attribute from XML. The ID of the menu item.
         /// </summary>
@@ -84,7 +83,7 @@ namespace Zambon.Core.Module.Xml.Navigation
         public string URL { get; set; }
 
         /// <summary>
-        /// The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with submenus or ListViews, indicating the number of records (count) are available.
+        /// The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with sub menus or ListViews, indicating the number of records (count) are available.
         /// </summary>
         [XmlAttribute("ShowBadge"), Browsable(false)]
         public string BoolShowBadge
@@ -93,13 +92,13 @@ namespace Zambon.Core.Module.Xml.Navigation
             set { if (value != null) { bool.TryParse(value, out bool showBadge); ShowBadge = showBadge; } }
         }
         /// <summary>
-        /// The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with submenus or ListViews, indicating the number of records (count) are available.
+        /// The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with sub menus or ListViews, indicating the number of records (count) are available.
         /// </summary>
         [XmlIgnore]
         public bool? ShowBadge { get; set; }
 
         /// <summary>
-        /// The submenus included in this menu. If the menu has submenus the menu Type is ignored.
+        /// The sub menus included in this menu. If the menu has sub menus the menu Type is ignored.
         /// </summary>
         [XmlElement("Menu")]
         public Menu[] SubMenus { get; set; }
@@ -200,6 +199,5 @@ namespace Zambon.Core.Module.Xml.Navigation
         }
 
         #endregion
-
     }
 }

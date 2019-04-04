@@ -8,7 +8,6 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
     /// </summary>
     public class PaintOption : XmlNode, ICondition
     {
-
         /// <summary>
         /// The Id attribute from XML. The identification of this rule used when merging.
         /// </summary>
@@ -28,7 +27,7 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
         public string ForeColor { get; set; }
 
         /// <summary>
-        /// The CssClass attribute from XML. The css class name to use in row when the Condition is true.
+        /// The CssClass attribute from XML. The CSS class name to use in row when the Condition is true.
         /// </summary>
         [XmlAttribute("CssClass")]
         public string CssClass { get; set; }
@@ -45,6 +44,5 @@ namespace Zambon.Core.Module.Xml.Views.ListViews.Paint
         /// </summary>
         [XmlAttribute("ConditionArguments")]
         public string ConditionArguments { get; set; }
-
     }
 }

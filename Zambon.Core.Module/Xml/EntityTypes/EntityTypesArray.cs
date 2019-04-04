@@ -7,12 +7,10 @@ namespace Zambon.Core.Module.Xml.EntityTypes
     /// </summary>
     public class EntityTypesArray : XmlNode
     {
-
         /// <summary>
         /// List of all entity types.
         /// </summary>
         [XmlElement("Entity")]
         public Entity[] Entities { get; set; }
-
     }
 }

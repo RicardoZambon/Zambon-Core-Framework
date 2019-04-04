@@ -9,7 +9,6 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
     /// </summary>
     public class Buttons : XmlNode
     {
-
         /// <summary>
         /// List of all buttons.
         /// </summary>
@@ -27,6 +26,5 @@ namespace Zambon.Core.Module.Xml.Views.Buttons
         }
 
         #endregion
-
     }
 }
