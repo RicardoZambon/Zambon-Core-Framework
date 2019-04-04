@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using Zambon.Core.Database;
 using Zambon.Core.Database.ChangeTracker;
+using Zambon.Core.Database.ChangeTracker.DI;
 using Zambon.Core.Database.ChangeTracker.Services;
 using Zambon.Core.Module;
 using Zambon.Core.Module.Interfaces;
@@ -29,6 +30,7 @@ using Zambon.Core.Security.Identity;
 using Zambon.Core.WebModule.ActionFilters;
 using Zambon.Core.WebModule.CustomProviders;
 using Zambon.Core.WebModule.Services;
+using Zambon.Core.Database.DI;
 
 namespace Zambon.Core.WebModule
 {
@@ -166,26 +168,32 @@ namespace Zambon.Core.WebModule
 
         private void ConfigureDatabase(IServiceCollection services, IConfigurationRoot Configuration)
         {
-            services.AddSingleton<IInstanceKeyService, ChangeTrackerService>();
-            services.AddSingleton<CoreChangeTracker>();
-
-            services.AddDistributedSqlServerCache(options =>
+            services.AddChangeTrackerServices<ChangeTrackerService>();
+            services.AddChangeTrackerDbCache(options =>
             {
                 options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.SchemaName = "Cache";
                 options.TableName = "CachedData";
             });
+            //services.AddSingleton<IInstanceKeyService, ChangeTrackerService>();
+            //services.AddSingleton<CoreChangeTracker>();
+            //services.AddDistributedSqlServerCache(options =>
+            //{
+            //    options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
+            //    options.SchemaName = "Cache";
+            //    options.TableName = "CachedData";
+            //});
 
-            services.AddEntityFrameworkSqlServer();
-            services.AddEntityFrameworkProxies();
-
-            services.AddDbContextPool<CoreDbContext>((serviceProvider, optionsBuilder) =>
-            {
-                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(this.GetType().Assembly.GetName().Name).MigrationsHistoryTable("MigrationsHistory", "EF")
-                );
-                optionsBuilder.UseInternalServiceProvider(serviceProvider);
-            });
+            services.AddDatabase(Configuration.GetConnectionString("DefaultConnection"), this.GetType().Assembly.GetName().Name);
+            //services.AddEntityFrameworkSqlServer();
+            //services.AddEntityFrameworkProxies();
+            //services.AddDbContextPool<CoreDbContext>((serviceProvider, optionsBuilder) =>
+            //{
+            //    optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
+            //        b => b.MigrationsAssembly(this.GetType().Assembly.GetName().Name).MigrationsHistoryTable("MigrationsHistory", "EF")
+            //    );
+            //    optionsBuilder.UseInternalServiceProvider(serviceProvider);
+            //});
         }
 
         #endregion

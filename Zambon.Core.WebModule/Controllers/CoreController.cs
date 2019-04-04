@@ -4,6 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Zambon.Core.Database;
+using Zambon.Core.Database.ChangeTracker.Extensions;
+using Zambon.Core.Database.ChangeTracker.Interfaces;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.ExtensionMethods;
@@ -18,7 +21,7 @@ using Zambon.Core.WebModule.Helper;
 
 namespace Zambon.Core.WebModule.Controllers
 {
-    public abstract class CoreController<T> : Controller where T : class, IEntity, ITrackableEntity, new()
+    public abstract class CoreController<T> : Controller where T : class, IEntity, IKeyed, ITrackableEntity, new()
     {
 
         protected readonly CoreDbContext _ctx;
@@ -133,7 +136,7 @@ namespace Zambon.Core.WebModule.Controllers
                     if (view is DetailView)
                     {
                         var dbParentModel = _ctx.Model.FindEntityType(view.GetEntityType());
-                        var navigation = dbParentModel.GetNavigations().FirstOrDefault(x => x.ForeignKey.DeclaringEntityType.Name == entry.Metadata.ClrType.GetCorrectType().FullName).FindInverse();
+                        var navigation = dbParentModel.GetNavigations().FirstOrDefault(x => x.ForeignKey.DeclaringEntityType.Name == entry.Entity.GetUnproxiedType().FullName).FindInverse();
                         if (navigation != null)
                         {
                             var parentKeys = new Dictionary<string, object> { { navigation.ForeignKey.Properties[0].Name, ParentObjectId } };
@@ -280,7 +283,7 @@ namespace Zambon.Core.WebModule.Controllers
 
         #region Object methods
 
-        protected virtual string GetObjectView(T currentObject)
+        protected virtual string GetViewName(T currentObject)
         {
             return string.Empty;
         }
@@ -302,7 +305,7 @@ namespace Zambon.Core.WebModule.Controllers
 
             var viewCshtml = string.Empty;
             if (currentObject is T)
-                viewCshtml = GetObjectView((T)currentObject);
+                viewCshtml = GetViewName((T)currentObject);
             if (string.IsNullOrWhiteSpace(viewCshtml))
                 viewCshtml = view.DefaultView;
 

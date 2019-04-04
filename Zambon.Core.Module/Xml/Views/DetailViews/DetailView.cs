@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
+using Zambon.Core.Database.Domain.Extensions;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Interfaces;

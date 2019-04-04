@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <Authors>Ricardo Zambon</Authors>
     <Company>ZambonSoft</Company>
     <Product>Database - .NET Core Zambon Framework</Product>
@@ -41,12 +41,17 @@
 
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.3.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.1.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.8" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="2.1.2" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="2.2.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Zambon.Core.Database.ChangeTracker\Zambon.Core.Database.ChangeTracker.csproj" />
+    <ProjectReference Include="..\Zambon.Core.Database.Domain\Zambon.Core.Database.Domain.csproj" />
   </ItemGroup>
 
 </Project>

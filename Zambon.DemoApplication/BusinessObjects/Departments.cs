@@ -19,9 +19,9 @@ namespace Zambon.DemoApplication.BusinessObjects
 
         #endregion
 
-        public override void ConfigureEntity(EntityTypeBuilder entity)
+        public override void Configure(EntityTypeBuilder entity)
         {
-            base.ConfigureEntity(entity);
+            base.Configure(entity);
         }
 
     }

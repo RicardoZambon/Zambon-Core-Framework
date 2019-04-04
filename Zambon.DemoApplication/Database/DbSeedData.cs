@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Zambon.Core.Database;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module;
 using Zambon.Core.Security.BusinessObjects;
@@ -32,9 +33,9 @@ namespace Zambon.DemoApplication.Database
 
     }
 
-    public class DbSeedData : ICoreDbSeedData
+    public class DbSeedData : IDbInitializer
     {
-        public void SeedData(ModelBuilder modelBuilder)
+        public void Seed(ModelBuilder modelBuilder)
         {
             var passwordHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Users>();
 

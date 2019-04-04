@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Authors>Ricardo Zambon</Authors>
+    <Company>ZambonSoft</Company>
+    <Product>Database - .NET Core Zambon Framework</Product>
+    <Copyright>ZambonSoft</Copyright>
+    <Description>Provides database objects caching to Entity Framework.</Description>
+    <PackageIconUrl></PackageIconUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <NeutralLanguage>en</NeutralLanguage>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Projects\RicardoZambon\ZambonCoreFramework\Zambon.Core.Database.ChangeTracker\Zambon.Core.Database.ChangeTracker.xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="Zambon.Core.Database.ChangeTracker.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.3.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="2.2.0" />
+  </ItemGroup>
+
+</Project>

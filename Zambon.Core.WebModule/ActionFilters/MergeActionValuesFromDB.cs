@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 using Zambon.Core.Database;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 

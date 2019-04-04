@@ -69,9 +69,9 @@ namespace Zambon.Core.Security.BusinessObjects
 
         #region Overrides
 
-        public override void ConfigureEntity(EntityTypeBuilder entity)
+        public override void Configure(EntityTypeBuilder entity)
         {
-            base.ConfigureEntity(entity);
+            base.Configure(entity);
 
             entity.Property("SendEmail").HasDefaultValueSql("0");
             entity.Property("LogonAllowed").HasDefaultValueSql("0");

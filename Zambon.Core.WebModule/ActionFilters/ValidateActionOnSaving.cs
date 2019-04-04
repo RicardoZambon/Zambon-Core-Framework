@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.WebModule.ActionFilters

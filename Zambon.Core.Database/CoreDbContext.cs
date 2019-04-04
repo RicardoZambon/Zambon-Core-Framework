@@ -2,13 +2,18 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 using Zambon.Core.Database.ChangeTracker;
-using Zambon.Core.Database.Entity;
+using Zambon.Core.Database.ChangeTracker.Extensions;
+using Zambon.Core.Database.ChangeTracker.Interfaces;
+using Zambon.Core.Database.Domain.Extensions;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
+using Zambon.Core.Database.Services;
 
 namespace Zambon.Core.Database
 {
@@ -19,15 +24,13 @@ namespace Zambon.Core.Database
     {
 
         #region Constructors
-
+        
         /// <summary>
         /// Initializes a new instance of the Microsoft.EntityFrameworkCore.DbContext class using the specified options. The Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder) method will still be called to allow further configuration of the options.
         /// </summary>
         /// <param name="options">The options for this context.</param>
         public CoreDbContext(DbContextOptions options) : base(options)
         {
-            //Database.Migrate();
-
             try
             {
                 TrackedEntities = this.GetService<CoreChangeTracker>();
@@ -49,26 +52,26 @@ namespace Zambon.Core.Database
             var migrationsAssemblyName = RelationalOptionsExtension.Extract(options).MigrationsAssembly;
             var assembly = Assembly.Load(migrationsAssemblyName);
 
-            foreach (var entity in assembly.GetReferencedClasses<IEntity>())
-            {
-                var modelBuilderEntity = modelBuilder.Entity(entity.GetType());
-                entity.ConfigureEntity(modelBuilderEntity);
-            }
+            //var configurationOptions = this.GetService<DbConfigurationOptions>();
+            //foreach(var assemblyName in configurationOptions.ReferencedAssemblies)
+            //{
+            //    var assembly = Assembly.Load(assemblyName);
 
-            foreach (var query in assembly.GetReferencedClasses<IQuery>())
-                modelBuilder.Query(query.GetType());
+            modelBuilder.EntitiesFromAssembly(assembly);
+            modelBuilder.QueriesFromAssembly(assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
 
-            var seedDatas = assembly.GetTypesByInterface<ICoreDbSeedData>();
+            var seedDatas = assembly.GetTypesByInterface<IDbInitializer>();
             if (seedDatas.Count() > 0)
             {
                 foreach (var type in seedDatas)
-                    if (!type.GetTypeInfo().IsAbstract && assembly.CreateInstance(type.FullName) is ICoreDbSeedData seedData)
-                        seedData.SeedData(modelBuilder);
+                    if (!type.GetTypeInfo().IsAbstract && assembly.CreateInstance(type.FullName) is IDbInitializer dbInitializer)
+                        dbInitializer.Seed(modelBuilder);
             }
-
+            //}
             base.OnModelCreating(modelBuilder);
         }
 
@@ -123,10 +126,10 @@ namespace Zambon.Core.Database
             if (entry.Entity is IKeyed baseDBEntity && baseDBEntity.ID == 0)
                 Add(entry.Entity);
 
-            TrackedEntities.Add( entry, SaveIntoTemp);
+            TrackedEntities.Add(entry, SaveIntoTemp);
 
             if (!SaveIntoTemp)
-                TrackedEntities.Clear(clearStored: false, tempModelType: entry.Entity.GetType().GetCorrectTypeName());
+                TrackedEntities.Clear(clearStored: false, tempModelType: entry.Entity.GetUnproxiedType().Name);
         }
 
 
@@ -135,19 +138,19 @@ namespace Zambon.Core.Database
         /// </summary>
         /// <typeparam name="T">Type of the entity.</typeparam>
         /// <param name="entity">The entity instance.</param>
-        public void RemoveTrackedEntity<T>(T entity) where T: class, ITrackableEntity
+        public void RemoveTrackedEntity<T>(T entity) where T : class
         {
-            TrackedEntities.Remove(typeof(T).GetCorrectTypeName(), entity.ID);
+            TrackedEntities.Remove(Entry(entity));
         }
 
         /// <summary>
-        /// Retrives the entity using the ID and remove it from the already tracked entities.
+        /// Retrieves the entity using the ID and remove it from the already tracked entities.
         /// </summary>
-        /// <param name="modelType">Type of the entity.</param>
-        /// <param name="entityId">The entity id.</param>
-        public void RemoveTrackedEntity(Type modelType, int entityId) 
+        /// <param name="entityType">The type of the entity.</param>
+        /// <param name="keys">The entity keys to remove.</param>
+        public void RemoveTrackedEntity(Type entityType, params object[] keys)
         {
-            TrackedEntities.Remove(modelType.GetCorrectTypeName(), entityId);
+            TrackedEntities.Remove(new StoreKey(entityType.Name, keys));
         }
 
 
@@ -168,8 +171,8 @@ namespace Zambon.Core.Database
                 var dbEntries = base.ChangeTracker.Entries().Where(x => x.State == EntityState.Added || x.State == EntityState.Deleted || x.State == EntityState.Modified).ToArray();
                 foreach (var entry in dbEntries)
                     entry.State = EntityState.Detached;
-                
-                TrackedEntities.SaveObjects(this, entity);
+
+                SaveObject(entity);
 
                 var records = base.SaveChanges();
 
@@ -189,18 +192,44 @@ namespace Zambon.Core.Database
             }
         }
 
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Creates a Microsoft.EntityFrameworkCore.DbSet`1 that can be used to query and save instances of TEntity.
-        /// </summary>
-        /// <param name="_type">The type of entity for which a set should be returned.</param>
-        /// <returns>A set for the given entity type.</returns>
-        public IQueryable Set(Type _type)
+        private void SaveObject<T>(T entity) where T : class
         {
-            return (IQueryable)typeof(DbContext).GetMethod("Set").MakeGenericMethod(_type).Invoke(this, null);
+            if (this.IsNewEntry(entity))
+            {
+                var entry = Add(entity);
+                entry.State = EntityState.Added;
+            }
+            else
+            {
+                var entry = Attach(entity);
+
+                var modifiedCount = 0;
+                var dbValues = entry.GetDatabaseValues();
+                foreach (var property in dbValues.Properties)
+                {
+                    var dataTypes = property.PropertyInfo?.GetCustomAttributes(typeof(DataTypeAttribute), true);
+                    if (dataTypes != null)
+                    {
+                        var isPassword = dataTypes.Count() > 0 && dataTypes.FirstOrDefault() is DataTypeAttribute dataType && dataType.DataType == DataType.Password;
+                        if (property.Name != "Discriminator"
+                            && ((isPassword && !string.IsNullOrWhiteSpace(entry.CurrentValues[property]?.ToString() ?? string.Empty)) || !isPassword)
+                            && ((entry.CurrentValues[property] == null && dbValues[property] != null) || (entry.CurrentValues[property] != null && !entry.CurrentValues[property].Equals(dbValues[property]))))
+                        {
+                            entry.Property(property.Name).IsModified = true;
+                            modifiedCount++;
+                        }
+                    }
+                }
+
+                if (modifiedCount == 0)
+                    entry.State = EntityState.Unchanged;
+
+                foreach (var nav in entry.Navigations)
+                    if (nav.CurrentValue is System.Collections.IEnumerable records)
+                        foreach (var record in records)
+                            if (record is ITrackableEntity trackableRecord && TrackedEntities.IsTracking(this, trackableRecord))
+                                SaveObject(trackableRecord);
+            }
         }
 
         #endregion

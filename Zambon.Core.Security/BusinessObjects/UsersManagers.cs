@@ -25,9 +25,9 @@ namespace Zambon.Core.Security.BusinessObjects
         
         #region Overrides
 
-        public override void ConfigureEntity(EntityTypeBuilder entity)
+        public override void Configure(EntityTypeBuilder entity)
         {
-            base.ConfigureEntity(entity);
+            base.Configure(entity);
 
             entity.HasOne(typeof(Users), "Manager").WithMany("Subordinates").HasForeignKey("ManagerID");
             entity.HasOne(typeof(Users), "Subordinate").WithMany("Managers").HasForeignKey("SubordinateID");

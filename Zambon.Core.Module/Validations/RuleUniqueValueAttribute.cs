@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using Zambon.Core.Database;
+using Zambon.Core.Database.ChangeTracker.Extensions;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.Entity;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
@@ -95,7 +97,7 @@ namespace Zambon.Core.Module.Validations
                             break;
                     }
 
-                    if (ctx.Set(validationContext.ObjectType.GetCorrectType()).Count(string.Format(query, validationContext.MemberName), dbInstance.ID, value) > 0)
+                    if (ctx.Set(validationContext.ObjectType.GetUnproxiedType()).Count(string.Format(query, validationContext.MemberName), dbInstance.ID, value) > 0)
                     {
                         var defaultMessage = "The property '{0}' value is already registered.";
                         var displayName = validationContext.DisplayName;
@@ -103,7 +105,7 @@ namespace Zambon.Core.Module.Validations
                         if (validationContext.GetService(typeof(ApplicationService)) is ApplicationService app)
                         {
                             defaultMessage = app.GetStaticText("ValidationMessageDefault_RuleUniqueValue");
-                            var displayText = app.GetPropertyDisplayName(validationContext.ObjectType.GetCorrectType().FullName, validationContext.MemberName);
+                            var displayText = app.GetPropertyDisplayName(validationContext.ObjectType.GetUnproxiedType().FullName, validationContext.MemberName);
                             if (!string.IsNullOrWhiteSpace(displayText))
                                 displayName = displayText;
                         }

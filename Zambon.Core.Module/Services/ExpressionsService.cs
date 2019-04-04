@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Zambon.Core.Database.ChangeTracker.Extensions;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Interfaces;
 
@@ -169,7 +170,7 @@ namespace Zambon.Core.Module.Services
         {
             MethodInfo method = null;
             if (obj != null)
-                method = GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetReplacementValue) && x.IsGenericMethod).MakeGenericMethod(obj.GetType().GetCorrectType());
+                method = GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetReplacementValue) && x.IsGenericMethod).MakeGenericMethod(obj.GetUnproxiedType());
 
             if (!string.IsNullOrWhiteSpace(expression))
                 return Regex.Replace(
@@ -190,7 +191,7 @@ namespace Zambon.Core.Module.Services
         {
             MethodInfo method = null;
             if (obj != null)
-                method = GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetReplacementValue) && x.IsGenericMethod).MakeGenericMethod(obj.GetType().GetCorrectType());
+                method = GetType().GetMethods().FirstOrDefault(x => x.Name == nameof(GetReplacementValue) && x.IsGenericMethod).MakeGenericMethod(obj.GetUnproxiedType());
 
             if (!string.IsNullOrWhiteSpace(actionParameters))
             {

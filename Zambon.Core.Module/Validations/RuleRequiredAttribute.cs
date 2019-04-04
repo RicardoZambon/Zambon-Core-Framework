@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Zambon.Core.Database.ChangeTracker.Extensions;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Module.Services;
 
@@ -70,7 +71,7 @@ namespace Zambon.Core.Module.Validations
                     if (validationContext.GetService(typeof(ApplicationService)) is ApplicationService appService)
                     {
                         defaultMessage = appService.GetStaticText("ValidationMessageDefault_RuleRequired");
-                        var displayText = appService.GetPropertyDisplayName(validationContext.ObjectType.GetCorrectType().FullName, validationContext.MemberName);
+                        var displayText = appService.GetPropertyDisplayName(validationContext.ObjectType.GetUnproxiedType().FullName, validationContext.MemberName);
                         if (!string.IsNullOrWhiteSpace(displayText))
                             displayName = displayText;
                     }

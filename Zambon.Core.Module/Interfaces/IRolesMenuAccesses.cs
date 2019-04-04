@@ -1,4 +1,5 @@
-﻿using Zambon.Core.Database.Interfaces;
+﻿using Zambon.Core.Database.Domain.Interfaces;
+using Zambon.Core.Database.Interfaces;
 
 namespace Zambon.Core.Module.Interfaces
 {

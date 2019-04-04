@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using Zambon.Core.Database;
+using Zambon.Core.Module.ExtensionMethods;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views;
 using Zambon.Core.Module.Xml.Views.SubViews;
@@ -60,6 +61,12 @@ namespace Zambon.Core.WebModule.Controllers
             return RemoveSubListViewItems(viewInfo, entity, entity.Subordinates, deleteId);
         }
 
+
+        protected override void OnGetCurrentObject(U currentObject)
+        {
+            base.OnGetCurrentObject(currentObject);
+            ViewBag.AuthenticationMethods = typeof(Module.Enums.AuthenticationType).GetEnumListItems();
+        }
 
         protected override async void ActionSave(BaseView view, U entity)
         {

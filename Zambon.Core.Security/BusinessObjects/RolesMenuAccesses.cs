@@ -27,9 +27,9 @@ namespace Zambon.Core.Security.BusinessObjects
 
         #region Overrides
 
-        public override void ConfigureEntity(EntityTypeBuilder entity)
+        public override void Configure(EntityTypeBuilder entity)
         {
-            base.ConfigureEntity(entity);
+            base.Configure(entity);
 
             entity.Property("AllowAccess").HasDefaultValueSql("0");
         }

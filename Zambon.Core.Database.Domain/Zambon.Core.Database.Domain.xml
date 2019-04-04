@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Zambon.Core.Database.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Zambon.Core.Database.Domain.Entities.BaseDBObject">
+            <summary>
+            Represents base database classes with primary key.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Entities.BaseDBObject.ID">
+            <summary>
+            Primary key of the entity.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Entities.BaseDBObject.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Entities.BaseDBObject.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Default validation method, gets called every time when submitting the object to the server. Determines whether the specified object is valid.
+            </summary>
+            <param name="validationContext">The validation context.</param>
+            <returns>Returns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Entities.BaseDBObject.ValidateData(System.Object[])">
+            <summary>
+            Called when validating the object using the custom validation methods.
+            </summary>
+            <param name="args">Arguments.</param>
+            <returns>Returns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Entities.BaseDBObject.OnDeleting(System.Object[])">
+            <summary>
+            Executed whether the object is being deleted.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Entities.BaseDBObject.OnSaving(System.Object[])">
+            <summary>
+            Executed whether the object is being saved into database.
+            </summary>
+            <param name="ctx">The current database context instance.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Entities.DBObject">
+            <summary>
+            Represents database tables with primary key and soft delete column.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Entities.DBObject.IsDeleted">
+            <summary>
+            Determines when the object is deleted and should be hidden in application.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Extensions.AssemblyExtension">
+            <summary>
+            Extension methods to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.AssemblyExtension.GetTypesByInterface``1(System.Reflection.Assembly)">
+            <summary>
+            Search for the specified type implementation within the assembly.
+            </summary>
+            <typeparam name="I">The type that should search.</typeparam>
+            <param name="assembly">The assembly to search.</param>
+            <returns>Returns a list of TypeInfo, if no implementation were found, will return a blank list.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.AssemblyExtension.GetReferencedConstructibleTypes``1(System.Reflection.Assembly)">
+            <summary>
+            Search in the assembly and referenced assemblies for a specific type.
+            </summary>
+            <typeparam name="I">Type to search.</typeparam>
+            <param name="rootAssembly">Parent assembly to search.</param>
+            <returns>Returns a list of instanced objects.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.AssemblyExtension.GetConstructibleTypes``1(System.Reflection.Assembly)">
+            <summary>
+            Get all types from the assembly that are not abstract and have no generic type definition.
+            </summary>
+            <typeparam name="T">The type searched.</typeparam>
+            <param name="assembly">The assembly to search.</param>
+            <returns>Returns an IEnumerable of TypeInfo.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.AssemblyExtension.GetLoadableDefinedTypes(System.Reflection.Assembly)">
+            <summary>
+            Get all defined types from the assembly.
+            </summary>
+            <param name="assembly">The assembly to search.</param>
+            <returns>Returns an IEnumerable of TypeInfo.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Extensions.TypeExtension">
+            <summary>
+            Helper methods to use when having Castle.Proxies entities.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.ImplementsInterface``1(System.Type)">
+            <summary>
+            Check if a type implements any interface
+            </summary>
+            <typeparam name="I">The interface type that should search.</typeparam>
+            <param name="type">The type to search for the interface.</param>
+            <returns>If the type implements the interface, returns true.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.ICustomValidated">
+            <summary>
+            Represents database classes with custom validation method.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Interfaces.ICustomValidated.ValidateData(System.Object[])">
+            <summary>
+            Called when validating the object using the custom validation methods.
+            </summary>
+            <param name="args">Arguments list.</param>
+            <returns>Returns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IDBObject">
+            <summary>
+            Represents base database classes.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Interfaces.IDBObject.OnDeleting(System.Object[])">
+            <summary>
+            Executed whether the object is being deleted.
+            </summary>
+            <param name="args">Arguments list.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Interfaces.IDBObject.OnSaving(System.Object[])">
+            <summary>
+            Executed whether the object is being saved into database.
+            </summary>
+            <param name="args">Arguments list.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IEntity">
+            <summary>
+            Represents an entity type in database model, will automatically map into a table with the same name from OnConfiguring.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IKeyed">
+            <summary>
+            Represents database classes with int primary key.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Interfaces.IKeyed.ID">
+            <summary>
+            Primary key of the entity
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IQuery">
+            <summary>
+            Represents an object that can be used to configure a given query type in the model.
+            </summary>
+        </member>
+    </members>
+</doc>

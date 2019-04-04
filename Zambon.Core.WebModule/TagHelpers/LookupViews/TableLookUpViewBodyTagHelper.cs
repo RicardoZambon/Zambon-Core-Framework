@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Zambon.Core.Database.Domain.Interfaces;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.Module.Xml.Views.ListViews.Columns;

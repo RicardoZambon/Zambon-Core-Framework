@@ -14,6 +14,9 @@ using System.Linq.Dynamic.Core;
 using Zambon.Core.Database.ExtensionMethods;
 using Zambon.Core.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Zambon.Core.Database.Domain.Extensions;
+using Zambon.Core.Database.Domain.Interfaces;
+using Zambon.Core.Database.ChangeTracker.Extensions;
 
 namespace Zambon.Core.Module.Xml.Views
 {
@@ -207,7 +210,7 @@ namespace Zambon.Core.Module.Xml.Views
         {
             if (value != null && (value.GetType().ImplementsInterface<IEntity>() || value.GetType().ImplementsInterface<IQuery>()))
             {
-                var valueEntity = app.GetDefaultProperty(value.GetType().GetCorrectType().FullName);
+                var valueEntity = app.GetDefaultProperty(value.GetType().GetUnproxiedType().FullName);
                 if (!string.IsNullOrWhiteSpace(valueEntity))
                     return TryGetDefaultPropertyValue(app, value.GetType().GetProperty(valueEntity).GetValue(value));
             }
