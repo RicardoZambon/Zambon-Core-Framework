@@ -7,21 +7,13 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <title></title>
 
-    <environment names="Development,Test,Production">
-        <link rel="stylesheet" href="~/js/jquery_ui/themes/base/jquery-ui.css">
+    @*<link rel="stylesheet" href="~/js/jquery_ui/themes/base/jquery-ui.css">*@
 
-        <link rel="stylesheet" href="~/css/bootstrap-4.1.3.min.css" />
-        <link rel="stylesheet" href="~/css/bootstrap-4.1.3-grid.min.css" />
-        <link rel="stylesheet" href="~/css/bootstrap-4.1.3-reboot.min.css" />
-        <link rel="stylesheet" href="~/css/open-iconic-1.1.0-bootstrap.min.css">
-        <link rel="stylesheet" href="~/css/flags.min.css?version=1.0.0" />
-
-        <link rel="stylesheet" href="~/css/Layout.css?version=2.0.1" />
-        <link rel="stylesheet" href="~/css/Loading.css?version=1.0.0" />
-        <!--[if IE]><link rel="stylesheet" href="~/css/Layout_IE.css?version=1.0.0" /><![endif]-->
-        <link rel="stylesheet" href="~/css/ListView.css?version=1.0.2" />
-        <link rel="stylesheet" href="~/css/Modal.css?version=1.0.0" />
-    </environment>
+    <link rel="stylesheet" href="~/css/bootstrap-4.3.1.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-4.3.1-grid.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-4.3.1-reboot.min.css" />
+    <link rel="stylesheet" href="~/css/fontawesome-5.9.0.min.css" />
+    <link rel="stylesheet" href="~/css/flags.min.css?version=2.2.0" />
 
     <script>
         var urlPath = "@Url.Content("~/")";
@@ -31,40 +23,23 @@
 
 <body>
 
-    <div class="bg fixed"></div>
+    @* Main content here *@
+    @RenderBody()
 
-    <div id="MainContent">
-        <partial name="./_Header.cshtml" />
 
-        <div class="position-relative content-wrapper mt-3">
-            <div class="position-absolute mt-1 mr-5 w-50 alert-container"></div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    @*<script src="~/js/jquery_ui/jquery-ui.js"></script>*@
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
 
-            <div class="container content-container">
-                <div class="row no-gutters justify-content-center">
-                    <div id="bodyContent" class="content col-lg-12">
-                        @RenderBody()
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script src="~/js/popper-1.15.0.min.js"></script>
+    <script src="~/js/bootstrap-4.3.1.min.js"></script>
+    <script src="~/js/cleave-1.5.3.min.js"></script>
 
-    <environment names="Development,Test,Production">
-        <script src="~/js/jquery-3.2.1.min.js"></script>
-        <script src="~/js/jquery_ui/jquery-ui.js"></script>
-        <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
-
-        <script src="~/js/popper-1.14.6.min.js"></script>
-        <script src="~/js/bootstrap-4.1.3.min.js"></script>
-        <script src="~/js/Ajax.js?version=1.0.0"></script>
-
-        <script src="~/js/Layout.js?version=2.0.0"></script>
-        <script src="~/js/ListView.js?version=1.0.1"></script>
-        <script src="~/js/DetailView.js?version=1.0.0"></script>
-        <script src="~/js/Modal.js?version=1.0.0"></script>
-
-        <script src="~/js/AutoOpen.js?version=1.0.1"></script>
-    </environment>
+    <script>
+        var numeralDecimalMark = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator)';
+        var numeralGroupDelimiter = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.CurrencyGroupSeparator)';
+    </script>
+    @*<script src="~/js/Formatters.js?version=2.2.0"></script>*@
 
     @RenderSection("scripts", required: false)
 </body>

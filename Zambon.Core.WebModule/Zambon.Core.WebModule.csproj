@@ -32,7 +32,15 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="ApplicationModel.pt-br.xml" />
+    <None Remove="Views\Home\Index.cshtml" />
+    <EmbeddedResource Include="Views/**/*.cshtml" />
+    <EmbeddedResource Include="wwwroot/**/*" />
+    <EmbeddedResource Include="ApplicationModel*.xml" />
+    <EmbeddedResource Remove="Views\_ViewImports.cshtml" />
+    <Content Include="Views\_ViewImports.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,16 +70,5 @@
     <ProjectReference Include="..\Zambon.Core.Module\Zambon.Core.Module.csproj" />
     <ProjectReference Include="..\Zambon.Core.Security\Zambon.Core.Security.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Views/**/*.cshtml" />
-    <EmbeddedResource Include="wwwroot/**/*" />
-    <EmbeddedResource Include="ApplicationModel*.xml" />
-    <EmbeddedResource Remove="Views\_ViewImports.cshtml" />
-    <Content Include="Views\_ViewImports.cshtml">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <Pack>$(IncludeRazorContentInPack)</Pack>
-    </Content>
-  </ItemGroup>
-
+  
 </Project>
