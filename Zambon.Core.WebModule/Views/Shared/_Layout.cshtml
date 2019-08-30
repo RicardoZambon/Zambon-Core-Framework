@@ -7,13 +7,12 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <title></title>
 
-    @*<link rel="stylesheet" href="~/js/jquery_ui/themes/base/jquery-ui.css">*@
-
-    <link rel="stylesheet" href="~/css/bootstrap-4.3.1.min.css" />
-    <link rel="stylesheet" href="~/css/bootstrap-4.3.1-grid.min.css" />
-    <link rel="stylesheet" href="~/css/bootstrap-4.3.1-reboot.min.css" />
-    <link rel="stylesheet" href="~/css/fontawesome-5.9.0.min.css" />
-    <link rel="stylesheet" href="~/css/flags.min.css?version=2.2.0" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-grid.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-reboot.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/jquery_ui_dist/jquery-ui.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/fontawesome_free/css/all.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/flagpack/css/flagpack.css" asp-append-version="true" />
 
     <script>
         var urlPath = "@Url.Content("~/")";
@@ -27,13 +26,12 @@
     @RenderBody()
 
 
-    <script src="~/js/jquery-3.2.1.min.js"></script>
-    @*<script src="~/js/jquery_ui/jquery-ui.js"></script>*@
-    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
-
-    <script src="~/js/popper-1.15.0.min.js"></script>
-    <script src="~/js/bootstrap-4.3.1.min.js"></script>
-    <script src="~/js/cleave-1.5.3.min.js"></script>
+    <script src="~/lib/jquery/jquery.slim.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery_validation_unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
+    <script src="~/lib/popper.js/popper.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery_ui_dist/jquery-ui.min.js" asp-append-version="true"></script>
+    <script src="~/lib/cleave.js/cleave.min.js" asp-append-version="true"></script>
 
     <script>
         var numeralDecimalMark = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator)';

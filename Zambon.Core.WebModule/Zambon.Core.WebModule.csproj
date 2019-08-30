@@ -33,9 +33,13 @@
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="Views\Home\Index.cshtml" />
+    <None Remove="wwwroot\css\package.json" />
     <EmbeddedResource Include="Views/**/*.cshtml" />
     <EmbeddedResource Include="wwwroot/**/*" />
     <EmbeddedResource Include="ApplicationModel*.xml" />
+    <Compile Remove="node_modules\**" />
+    <EmbeddedResource Remove="node_modules\**" />
+    <None Remove="node_modules\**" />
     <EmbeddedResource Remove="Views\_ViewImports.cshtml" />
     <Content Include="Views\_ViewImports.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
