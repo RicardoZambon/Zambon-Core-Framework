@@ -7,37 +7,82 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <title></title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-grid.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-reboot.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/jquery_ui_dist/jquery-ui.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/fontawesome_free/css/all.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/flagpack/css/flagpack.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" core-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-grid.min.css" core-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-reboot.min.css" core-append-version="true" />
+    <link rel="stylesheet" href="~/lib/material-design-lite/css/material.css" core-append-version="true" />
+    <link rel="stylesheet" href="~/lib/jquery_ui_dist/jquery-ui.min.css" core-append-version="true" />
+    <link rel="stylesheet" href="~/lib/fontawesome_free/css/all.min.css" core-append-version="true" />
+    <link rel="stylesheet" href="~/lib/flagpack/css/flagpack.css" core-append-version="true" />
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/css/Drawer.css" />
+    </environment>
+
+    <environment exclude="Development">
+
+    </environment>
 
     <script>
-        var urlPath = "@Url.Content("~/")";
-        if (urlPath == "/") urlPath = "";
+        var urlPath = "@(Url.Content("~/") == "/" ? "" : Url.Content("~/"))";
+        var numeralDecimalMark = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator)';
+        var numeralGroupDelimiter = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.CurrencyGroupSeparator)';
     </script>
 </head>
 
 <body>
 
-    @* Main content here *@
-    @RenderBody()
+    <div class="container-fluid p-0 h-100">
+        <div id="drawer" class="row min-vh-100 no-gutters d-flex h-100 position-relative drawer drawer-expanded">
+            <partial name="./Components/Drawer/Sidebar.cshtml" />
+
+            <div class="col background-main">
+                <div class="row no-gutters">
+                    <div class="navbar-top container-fluid bg-white">
+                        <div class="row no-gutters d-flex h-100 position-relative">
+                            <div class="col p-3 px-md-0">
+                                <div class="d-flex">
+                                    <a href="#" role="button" id="drawerCollapse" class="btn collapse-button rounded py-1 px-2 text-white">
+                                        <i class="fas fa-bars"></i>
+                                    </a>
 
 
-    <script src="~/lib/jquery/jquery.slim.min.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery_validation_unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
-    <script src="~/lib/popper.js/popper.min.js" asp-append-version="true"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.min.js" asp-append-version="true"></script>
-    <script src="~/lib/jquery_ui_dist/jquery-ui.min.js" asp-append-version="true"></script>
-    <script src="~/lib/cleave.js/cleave.min.js" asp-append-version="true"></script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row no-gutters">
+                    <div class="container-fluid">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/jquery.slim.min.js" core-append-version="true"></script>
+    <script src="~/lib/jquery_validation_unobtrusive/jquery.validate.unobtrusive.min.js" core-append-version="true"></script>
+    <script src="~/lib/popper.js/popper.min.js" core-append-version="true"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js" core-append-version="true"></script>
+    <script src="~/lib/material-design-lite/js/material.min.js" core-append-version="true"></script>
+    <script src="~/lib/jquery_ui_dist/jquery-ui.min.js" core-append-version="true"></script>
+    <script src="~/lib/cleave.js/cleave.min.js" core-append-version="true"></script>
+
+    @*<script src="~/js/Formatters.js?version=2.2.0"></script>*@
+
+    <environment include="Development">
+        <script src="~/js/Drawer.js"></script>
+    </environment>
+
+    <environment exclude="Development">
+
+    </environment>
 
     <script>
-        var numeralDecimalMark = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator)';
-        var numeralGroupDelimiter = '@(System.Globalization.CultureInfo.CurrentUICulture.NumberFormat.CurrencyGroupSeparator)';
+        new Drawer('drawerCollapse', 'drawer');
     </script>
-    @*<script src="~/js/Formatters.js?version=2.2.0"></script>*@
 
     @RenderSection("scripts", required: false)
 </body>

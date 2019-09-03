@@ -12,8 +12,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Zambon.Core.Module;
+using Zambon.Core.Module.DI;
 using Zambon.Core.WebModule;
 using Zambon.Core.WebModule.DI;
+using Zambon.Core.WebModule.Services;
 
 namespace Zambon.DemoApplication
 {
@@ -39,7 +42,7 @@ namespace Zambon.DemoApplication
 
             #region Database
 
-            //services.AddAutoMapperToModels(GetType().Assembly.GetName().Name, "Test App", "Smart.Core.WebModule");
+            //services.AddAutoMapperToModels(GetType().Assembly.GetName().Name, "Test App", "Zambon.Core.WebModule");
 
             //services.AddChangeTrackerServices<ChangeTrackerService>();
             //services.AddChangeTrackerDbCache(options =>
@@ -53,17 +56,19 @@ namespace Zambon.DemoApplication
 
             #endregion
 
+            services.AddHttpContextAccessor();
+
             #region Module
 
-            //services.AddApplicationConfigs(Configuration);
+            services.AddCoreConfigs<CoreConfigs>(Configuration);
 
             //if (!Env.IsDevelopment())
             //{
             //    services.AddDataProtection(Configuration, Env.ApplicationName);
             //}
 
-            //services.AddMultiLanguage();
-            //services.AddApplicationModel();
+            services.AddApplicationModel();
+            LocalizationInjection.AddLocalization(services);
 
             #endregion
 

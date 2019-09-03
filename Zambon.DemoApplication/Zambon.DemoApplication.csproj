@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ApplicationModel.xml" />
     <EmbeddedResource Include="ApplicationModel*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

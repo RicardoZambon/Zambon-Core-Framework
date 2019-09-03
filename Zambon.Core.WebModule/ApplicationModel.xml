@@ -1,0 +1,6 @@
+<Application Name="[Your application name]" Description="[Your application description]">
+
+  <ModuleConfiguration>
+    <TitleDefaults ShowEnvironment="True" ShowVersion="True" />
+  </ModuleConfiguration>
+</Application>

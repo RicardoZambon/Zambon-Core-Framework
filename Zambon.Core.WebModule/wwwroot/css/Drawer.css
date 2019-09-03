@@ -1,0 +1,209 @@
+﻿body {
+    height: 100vh;
+    overflow-x: hidden;
+
+}
+
+.navbar-top {
+    border-bottom: 1px solid #e7eaec;
+}
+
+.collapse-button {
+    background-color: #1ab394;
+    border-color: #1ab394;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+    .collapse-button:active {
+        background-color: #1ab394 !important;
+        border-color: #1ab394 !important;
+        background-image: none;
+        outline: 0;
+        -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.175) !important;
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.175) !important;
+    }
+    .collapse-button:focus {
+        box-shadow: 0 0 0 0.2rem rgba(43, 171, 145, 0.5);
+    }
+    .collapse-button:hover {
+        background-color: #18a689;
+        border-color: #18a689;
+    }
+
+.background-main {
+    background-color: #f3f3f4 !important;
+}
+
+
+/* Side bar */
+.sidebar {
+    background-color: #2f4050;
+    color: #676a6c;
+    font-size: 0.9rem;
+    z-index: 10;
+}
+
+    .sidebar nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        z-index: 10;
+    }
+
+    .sidebar .replace-content {
+        position: relative;
+    }
+
+.drawer.drawer-collapsed .when-expanded {
+    display: none;
+}
+
+
+/* Animations */
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.drawer {
+    margin-left: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+    .drawer .sidebar, .drawer .sidebar nav {
+        width: 220px;
+        max-width: 220px;
+        top: 0;
+    }
+
+    /* Fade out */
+    .drawer.drawer-fade-out-text nav .when-expanded {
+        opacity: 0;
+        animation: fadeout 0.25s forwards;
+        max-height: 50px;
+    }
+
+    .drawer.drawer-fade-out-text nav .when-collapsed {
+        display: none;
+    }
+
+    .drawer.drawer-fade-out-text nav .row > *:not(.when-expanded) {
+        left: 0px;
+    }
+
+    /* Fade in */
+    .drawer.drawer-fade-in-text nav .when-expanded {
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: relative !important;
+        animation: fadein 0.25s forwards;
+    }
+
+    .drawer.drawer-fade-in-text nav .when-collapsed {
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        display: block;
+        max-height: 0;
+        position: absolute;
+        transition: all 0.25s ease-in-out;
+    }
+
+    /* Collapse */
+    .drawer.drawer-collapse-items nav .when-expanded {
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        display: block;
+        max-height: 0;
+        position: absolute;
+        transition: all 0.25s ease-in-out;
+    }
+
+    .drawer.drawer-collapse-items nav .when-collapsed {
+        opacity: 1;
+        animation: fadein 0.25s forwards;
+        display: block;
+        max-height: 50px;
+        transition: all 0.25s ease-in-out;
+    }
+
+    /* Expand */
+    .drawer.drawer-expanding nav .when-collapsed {
+        opacity: 0;
+        animation: fadeout 0.25s forwards;
+        max-height: 50px;
+    }
+
+    .drawer.drawer-expanding nav .when-expanded {
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        display: block;
+        position: absolute;
+        transition: all 0.25s ease-in-out;
+    }
+
+    /* Collapse Drawer */
+    .drawer.drawer-collapsed {
+        margin-left: -150px;
+        transition: all 0.25s ease-in-out;
+    }
+
+        .drawer.drawer-collapsed .sidebar {
+            margin-left: 150px;
+        }
+
+        .drawer.drawer-collapsed .sidebar, .drawer.drawer-collapsed .sidebar nav {
+            width: 70px;
+            max-width: 70px;
+            transition: all 0.25s ease-in-out;
+        }
+
+        .drawer.drawer-collapsed nav .row > *:not(.when-expanded) {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            left: 50%;
+            transform: translate(-50%, 0);
+            transition: all 0.25s ease-in-out;
+        }
+
+    /* Expand Drawer */
+    .drawer.drawer-expanded {
+        margin-left: 0px;
+        transition: all 0.25s ease-in-out;
+    }
+
+        .drawer.drawer-expanded .sidebar {
+            margin-left: 0px;
+        }
+
+        .drawer.drawer-expanded .sidebar, .drawer.drawer-expanded .sidebar nav {
+            width: 220px;
+            max-width: 220px;
+            transition: all 0.25s ease-in-out;
+        }
+
+    .drawer.drawer-expanding nav .row > *:not(.when-expanded) {
+        left: 0%;
+        transform: translate(0%, 0);
+        transition: all 0.25s ease-in-out;
+    }
+
+    .drawer.drawer-expanded:not(.drawer-expanding) .when-collapsed {
+        display: none;
+    }

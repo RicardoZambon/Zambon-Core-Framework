@@ -4,5 +4,131 @@
         <name>Zambon.Core.Database.Domain</name>
     </assembly>
     <members>
+        <member name="T:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute">
+            <summary>
+            Attribute to inform the database that a specific property should be queried in server.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.Query">
+            <summary>
+            The database query.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.Args">
+            <summary>
+            Arguments to pass to the query.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.#ctor(System.String)">
+            <summary>
+            Attribute to inform the database that a specific property should be queried in server.
+            </summary>
+            <param name="Query">The database query.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.#ctor(System.String,System.String[])">
+            <summary>
+            Attribute to inform the database that a specific property should be queried in server.
+            </summary>
+            <param name="Query">The database query.</param>
+            <param name="Args">Arguments to pass to the query.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Extensions.TypeExtension">
+            <summary>
+            Helper methods to use when having Castle.Proxies entities.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.ImplementsInterface(System.Type,System.Type)">
+            <summary>
+            Check if a type implements any interface
+            </summary>
+            <param name="type">The type to search for the interface.</param>
+            <param name="interfaceType">The interface type that should search.</param>
+            <returns>If the type implements the interface, returns true.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.ImplementsInterface``1(System.Type)">
+            <summary>
+            Check if a type implements any interface
+            </summary>
+            <typeparam name="I">The interface type that should search.</typeparam>
+            <param name="type">The type to search for the interface.</param>
+            <returns>If the type implements the interface, returns true.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.GetModelEntityType(System.Type)">
+            <summary>
+            Get the entity type the model is related to.
+            </summary>
+            <param name="type">The model type.</param>
+            <returns>Returns the entity type.</returns>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.GetEntityDbQuery(System.Type,System.String,System.String[]@)">
+            <summary>
+            Returns the entity database query defined in property attribute.
+            </summary>
+            <param name="type">The entity type.</param>
+            <param name="property">The property name</param>
+            <param name="args">Arguments for the query.</param>
+            <returns>Returns the database query as string.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IBaseObject">
+            <summary>
+            Represents base application data classes.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.ICustomValidatableObject">
+            <summary>
+            Represents database classes with custom validation method.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Interfaces.ICustomValidatableObject.ValidateData(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Called when validating the object using the custom validation methods.
+            </summary>
+            <param name="validationContext">The validation context instance.</param>
+            <returns>Returns a list of invalid properties names and their respective errors descriptions.</returns>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IKeyed">
+            <summary>
+            Represents database classes with a int primary key.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Interfaces.IKeyed.ID">
+            <summary>
+            Primary key of the database entity.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IModel`1">
+            <summary>
+            Interface used to identify model objects.
+            </summary>
+            <typeparam name="TEntity">Object database entity type.</typeparam>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Interfaces.IModel`1.MapFromEntity(`0)">
+            <summary>
+            Maps custom properties from database entity with the model.
+            </summary>
+            <param name="entity">The database object instance.</param>
+        </member>
+        <member name="M:Zambon.Core.Database.Domain.Interfaces.IModel`1.MapToEntity(System.IServiceProvider,`0)">
+            <summary>
+            Maps custom properties from model to the database entity.
+            </summary>
+            <param name="serviceProvider">The service provider.</param>
+            <param name="entity">The database object instance.</param>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.IModel">
+            <summary>
+            Interface used to identify model objects.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Database.Domain.Interfaces.ISoftDelete">
+            <summary>
+            Interface for objects that should have a property to set when deleting and not actually deleted from database.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Database.Domain.Interfaces.ISoftDelete.IsDeleted">
+            <summary>
+            Determines when the object is deleted and should be ignored from the application queries.
+            </summary>
+        </member>
     </members>
 </doc>
