@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" core-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-grid.min.css" core-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-reboot.min.css" core-append-version="true" />
-    <link rel="stylesheet" href="~/lib/material-design-lite/css/material.css" core-append-version="true" />
     <link rel="stylesheet" href="~/lib/jquery_ui_dist/jquery-ui.min.css" core-append-version="true" />
     <link rel="stylesheet" href="~/lib/fontawesome_free/css/all.min.css" core-append-version="true" />
     <link rel="stylesheet" href="~/lib/flagpack/css/flagpack.css" core-append-version="true" />
@@ -33,22 +32,14 @@
 <body>
 
     <div class="container-fluid p-0 h-100">
-        <div id="drawer" class="row min-vh-100 no-gutters d-flex h-100 position-relative drawer drawer-expanded">
+        <div id="drawerContainer" class="row min-vh-100 no-gutters d-flex h-100 position-relative drawer drawer-expanded">
             <partial name="./Components/Drawer/Sidebar.cshtml" />
 
             <div class="col background-main">
                 <div class="row no-gutters">
                     <div class="navbar-top container-fluid bg-white">
                         <div class="row no-gutters d-flex h-100 position-relative">
-                            <div class="col p-3 px-md-0">
-                                <div class="d-flex">
-                                    <a href="#" role="button" id="drawerCollapse" class="btn collapse-button rounded py-1 px-2 text-white">
-                                        <i class="fas fa-bars"></i>
-                                    </a>
-
-
-                                </div>
-                            </div>
+                            <partial name="./_Topbar.cshtml" />
                         </div>
                     </div>
                 </div>
@@ -64,9 +55,7 @@
 
     <script src="~/lib/jquery/jquery.slim.min.js" core-append-version="true"></script>
     <script src="~/lib/jquery_validation_unobtrusive/jquery.validate.unobtrusive.min.js" core-append-version="true"></script>
-    <script src="~/lib/popper.js/popper.min.js" core-append-version="true"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.min.js" core-append-version="true"></script>
-    <script src="~/lib/material-design-lite/js/material.min.js" core-append-version="true"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js" core-append-version="true"></script>
     <script src="~/lib/jquery_ui_dist/jquery-ui.min.js" core-append-version="true"></script>
     <script src="~/lib/cleave.js/cleave.min.js" core-append-version="true"></script>
 
@@ -81,7 +70,7 @@
     </environment>
 
     <script>
-        new Drawer('drawerCollapse', 'drawer');
+        new Drawer('drawerCollapse', 'drawerContainer', 'drawer');
     </script>
 
     @RenderSection("scripts", required: false)

@@ -1,13 +1,18 @@
 ﻿class Drawer {
-    constructor(buttonId, sidebarId) {
+    constructor(buttonId, sidebarContainerId, sidebarId) {
         var button = document.getElementById(buttonId);
+
+        this.sidebarContainerId = sidebarContainerId;
         this.sidebarId = sidebarId;
+
         button.addEventListener('click', this.drawerCollapse.bind(this));
 
         var sidebar = document.getElementById(sidebarId);
         var items = sidebar.getElementsByClassName('nav-item');
-        this.activeItems = [items[0]];
-        this.activeItems[0].classList.add('active');
+        if (items.length > 0) {
+            this.activeItems = [items[0]];
+            this.activeItems[0].classList.add('active');
+        }
 
         for (var i = 0; i < items.length; i++) {
             items[i].getElementsByClassName('nav-link')[0].addEventListener('click', this.itemNavigate.bind(this));
@@ -20,19 +25,19 @@
     }
 
     drawerCollapse(event) {
-        var sidebar = document.getElementById(this.sidebarId);
-        if (sidebar.classList.contains('drawer-expanded')) {
-            sidebar.classList.remove('drawer-expanded');
-            sidebar.classList.add('drawer-fade-out-text');
-            sidebar.classList.add('drawer-collapsing');
+        var container = document.getElementById(this.sidebarContainerId);
+        if (container.classList.contains('drawer-expanded')) {
+            container.classList.remove('drawer-expanded');
+            container.classList.add('drawer-fade-out-text');
+            container.classList.add('drawer-collapsing');
             setTimeout(function () {
-                sidebar.classList.add('drawer-collapse-items');
-                sidebar.classList.remove('drawer-fade-out-text');
+                container.classList.add('drawer-collapse-items');
+                container.classList.remove('drawer-fade-out-text');
                 setTimeout(function () {
-                    sidebar.classList.remove('drawer-collapse-items');
-                    sidebar.classList.remove('drawer-collapsing');
+                    container.classList.remove('drawer-collapse-items');
+                    container.classList.remove('drawer-collapsing');
                 }, 250);
-                sidebar.classList.add('drawer-collapsed');
+                container.classList.add('drawer-collapsed');
             }, 125);
         }
         else {
@@ -46,15 +51,15 @@
             }
 
             setTimeout(function () {
-                sidebar.classList.add('drawer-expanding');
-                sidebar.classList.remove('drawer-collapsed');
+                container.classList.add('drawer-expanding');
+                container.classList.remove('drawer-collapsed');
                 setTimeout(function () {
-                    sidebar.classList.add('drawer-fade-in-text');
-                    sidebar.classList.remove('drawer-expanding');
+                    container.classList.add('drawer-fade-in-text');
+                    container.classList.remove('drawer-expanding');
                     setTimeout(function () {
-                        sidebar.classList.remove('drawer-fade-in-text');
+                        container.classList.remove('drawer-fade-in-text');
                     }, 125);
-                    sidebar.classList.add('drawer-expanded');
+                    container.classList.add('drawer-expanded');
                 }, 125);
             }, hideFloatingMenusTimeOut);
         }
@@ -99,8 +104,8 @@
         //Set current item active
         currentTargetItem.classList.add('active');
         if (currentTargetItem.getElementsByTagName('ul').length > 0) {
-            var sidebar = document.getElementById(this.sidebarId);
-            if (currentLevel == 0 && sidebar.classList.contains('drawer-collapsed')) {
+            var container = document.getElementById(this.sidebarContainerId);
+            if (currentLevel == 0 && container.classList.contains('drawer-collapsed')) {
                 if (currentTargetItem.classList.contains('opened') && !currentTargetItem.getElementsByTagName('ul')[0].classList.contains('float-menu')) {
                     this.showFloatingSubMenu(currentTargetItem);
                 } else {
@@ -143,9 +148,10 @@
     }
 
     showFloatingSubMenu(menuItem) {
-        var sidebar = document.getElementById(this.sidebarId);
-        if (sidebar.classList.contains('drawer-collapsed')) {
+        var container = document.getElementById(this.sidebarContainerId);
+        if (container.classList.contains('drawer-collapsed')) {
             var ul = menuItem.getElementsByTagName('ul')[0];
+            var sidebar = document.getElementById(this.sidebarId);
 
             ul.style.maxHeight = "auto !important";
             ul.style.top = (menuItem.getBoundingClientRect().top - document.body.getBoundingClientRect().top) + 'px';
@@ -155,13 +161,16 @@
     }
 
     hideFloatingSubMenu(event) {
-        if (!event.currentTarget.classList.contains('collapse-button')) {
-            var openMenus = document.getElementsByClassName('float-menu');
-            if (openMenus.length > 0) {
-                var menu = openMenus[0];
-                menu.classList.remove('float-menu');
+        try {
+            if (!event.currentTarget.classList.contains('collapse-button')) {
+                var openMenus = document.getElementsByClassName('float-menu');
+                if (openMenus.length > 0) {
+                    var menu = openMenus[0];
+                    menu.classList.remove('float-menu');
+                }
             }
         }
+        catch { }
     }
 
 }

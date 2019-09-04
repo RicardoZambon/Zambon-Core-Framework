@@ -36,15 +36,12 @@ var deps = {
     },
     'bootstrap': {
         'dist/**/*.min.css': '',
-        'dist/**/bootstrap.min.js': ''
+        'dist/**/bootstrap.bundle.min.js': ''
     },
     'jquery-ui-dist': {
         'jquery-ui.min.css': '',
         'jquery-ui.min.js': '',
         'images/**': 'images'
-    },
-    'popper.js': {
-        'dist/popper.min.js': ''
     },
     '@fortawesome/fontawesome-free': {
         '**/all.min.css': '',

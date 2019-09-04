@@ -8,8 +8,7 @@
     "jquery-ui-dist": "1.12.1",
     "@fortawesome/fontawesome-free": "5.10.2",
     "cleave.js": "1.5.3",
-    "flagpack": "1.0.4",
-    "popper.js": "1.15.0"
+    "flagpack": "1.0.4"
   },
   "devDependencies": {
     "gulp": "4.0.2",
