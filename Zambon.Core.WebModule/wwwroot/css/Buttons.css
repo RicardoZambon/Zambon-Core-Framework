@@ -1,0 +1,32 @@
+﻿.btn:active {
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.175) !important;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.175) !important;
+}
+
+.btn-badge-notification {
+    position: absolute;
+    background: rgba(255,0,0,.85) !important;
+    font-size: 11px;
+    right: -5px;
+    top: -7px;
+    padding: 1px 4px;
+    line-height: 14px;
+    border-radius: 0.3rem;
+}
+
+
+.btn-flag {
+    border-style: none !important;
+    width: 2.7em !important;
+    padding: .25rem !important;
+    margin-top: 1px !important;
+}
+
+.btn-notification {
+    position: relative;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+    .btn-notification:focus {
+        box-shadow: 0 0 0 0.2rem rgba(84,91,98,.25);
+    }

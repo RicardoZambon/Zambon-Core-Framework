@@ -7,6 +7,9 @@
 .navbar-top {
     border-bottom: 1px solid #e7eaec;
 }
+    .navbar-top li > a {
+        color: #999c9e;
+    }
 
 .collapse-button {
     background-color: #1ab394;
@@ -16,13 +19,9 @@
     .collapse-button:active {
         background-color: #1ab394 !important;
         border-color: #1ab394 !important;
-        background-image: none;
-        outline: 0;
-        -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.175) !important;
-        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.175) !important;
     }
     .collapse-button:focus {
-        box-shadow: 0 0 0 0.2rem rgba(43, 171, 145, 0.5);
+        box-shadow: 0 0 0 0.2rem rgba(89, 199, 177, 0.5);
     }
     .collapse-button:hover {
         background-color: #18a689;

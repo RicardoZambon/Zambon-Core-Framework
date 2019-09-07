@@ -37,7 +37,9 @@
     <None Remove="Views\Home\Index.cshtml" />
     <None Remove="Views\Shared\Components\Drawer\Sidebar.cshtml" />
     <None Remove="Views\Shared\_Topbar.cshtml" />
+    <None Remove="wwwroot\css\Buttons.css" />
     <None Remove="wwwroot\css\Drawer.css" />
+    <None Remove="wwwroot\css\Icons.css" />
     <None Remove="wwwroot\css\package.json" />
     <None Remove="wwwroot\js\Drawer.js" />
     <EmbeddedResource Include="Views/**/*.cshtml" />
