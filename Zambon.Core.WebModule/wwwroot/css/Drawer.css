@@ -5,7 +5,8 @@
 }
 
 .navbar-top {
-    border-bottom: 1px solid #e7eaec;
+    border-bottom: 1px solid rgba(0,0,0,.15);
+    z-index: 10;
 }
     .navbar-top li > a {
         color: #999c9e;
@@ -54,6 +55,42 @@
 
 .drawer.drawer-collapsed .when-expanded {
     display: none;
+}
+
+
+/* Header */
+.navbar-header {
+    background-image: url('http://webapplayers.com/inspinia_admin-v2.9.2/css/patterns/header-profile.png');
+    background-size: 100% 100%;
+    background-repeat: none;
+    color: #FFF;
+}
+
+.navbar-container-brand .navbar-brand {
+    text-align: center;
+    width: 100%;
+}
+
+.user-profile-picture {
+    background-image: url('http://webapplayers.com/inspinia_admin-v2.9.2/img/profile_small.jpg');
+    background-color: #FFF;
+    border-radius: 24px;
+    width: 48px;
+    height: 48px;
+}
+
+.navbar-user-name, .navbar-user-department {
+    display: block;
+    font-size: 0.9rem;
+}
+
+.navbar-user-name {
+    font-weight: bold;
+    color: #DFE4ED !important;
+}
+
+.navbar-user-department {
+    color: #8095a8;
 }
 
 

@@ -29,9 +29,19 @@
             Display name to use in menu header, if empty will then use the [Name] attribute.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Xml.Application._StaticTexts">
+            <summary>
+            Element representation of the XML <StaticTexts></StaticTexts> node.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Application.ModuleConfiguration">
             <summary>
             Module default configuration.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.StaticTexts">
+            <summary>
+            Static texts used across the application.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration">
@@ -67,6 +77,31 @@
         <member name="P:Zambon.Core.Module.Xml.Configuration.TitleDefaults.ShowVersion">
             <summary>
             The ShowPagination attribute from XML. Indicates if should display or not a pagination.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticText">
+            <summary>
+            Represents a node <StaticText /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticText.Key">
+            <summary>
+            The Key attribute from XML. The static text key should be used when displaying across the application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticText.Value">
+            <summary>
+            The Value attribute from XML. The static text value.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticTextsArray">
+            <summary>
+            Represents a node <StaticTexts></StaticTexts> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticTextsArray.Texts">
+            <summary>
+            Represent elements <StaticText /> from XML Application Model.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.XmlNode">
@@ -286,6 +321,13 @@
             </summary>
             <param name="language">The current language of the model, if null will return the default language.</param>
             <returns>Return a cloned instance of the Application Model</returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ModelService.GetStaticText(System.String)">
+            <summary>
+            Search all Static Texts using the Key property.
+            </summary>
+            <param name="key">The static text key to search.</param>
+            <returns>Return the Static Text value string, string.Empty if not found.</returns>
         </member>
         <member name="M:Zambon.Core.Module.Services.ModelService.GetConfiguration">
             <summary>

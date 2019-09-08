@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Xml.Configuration;
+using System.Text.RegularExpressions;
 
 namespace Zambon.Core.Module.Services
 {
@@ -200,6 +201,24 @@ namespace Zambon.Core.Module.Services
         #endregion
 
         #region Get model values methods
+
+        /// <summary>
+        /// Search all Static Texts using the Key property.
+        /// </summary>
+        /// <param name="key">The static text key to search.</param>
+        /// <returns>Return the Static Text value string, string.Empty if not found.</returns>
+        public string GetStaticText(string key)
+        {
+            if ((CurrentModel.StaticTexts?.Length ?? 0) > 0)
+            {
+                var returnStr = Array.Find(CurrentModel.StaticTexts, x => x.Key == key);
+                if (!string.IsNullOrWhiteSpace(returnStr?.Value ?? string.Empty))
+                {
+                    return Regex.Replace(returnStr.Value, @"\[(.*?)\]", match => { return match.ToString().Replace("[", "<").Replace("]", ">"); });
+                }
+            }
+            return string.Empty;
+        }
 
         /// <summary>
         /// Return the <ApplicationModel /> node values.

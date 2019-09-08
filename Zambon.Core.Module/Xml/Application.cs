@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Xml.Configuration;
+using Zambon.Core.Module.Xml.StaticTexts;
 
 namespace Zambon.Core.Module.Xml
 {
@@ -54,11 +55,11 @@ namespace Zambon.Core.Module.Xml
         //[XmlElement("Enums"), Browsable(false)]
         //public EnumsArray _Enums { get; set; }
 
-        ///// <summary>
-        ///// Element representation of the XML <StaticTexts></StaticTexts> node.
-        ///// </summary>
-        //[XmlElement("StaticTexts"), Browsable(false)]
-        //public StaticTextsArray _StaticTexts { get; set; }
+        /// <summary>
+        /// Element representation of the XML <StaticTexts></StaticTexts> node.
+        /// </summary>
+        [XmlElement("StaticTexts"), Browsable(false)]
+        public StaticTextsArray _StaticTexts { get; set; }
 
 
         ///// <summary>
@@ -105,15 +106,15 @@ namespace Zambon.Core.Module.Xml
 
         ///// <summary>
         ///// List all entities, later used to construct the menus and views.
-        ///// </summary>
+        ///// </summary>s
         //[XmlIgnore]
         //public Xml.Enums.Enum[] Enums { get { return _Enums?.Enums; } }
 
-        ///// <summary>
-        ///// Static texts used across the application.
-        ///// </summary>
-        //[XmlIgnore]
-        //public StaticText[] StaticTexts { get { return _StaticTexts?.Texts; } }
+        /// <summary>
+        /// Static texts used across the application.
+        /// </summary>
+        [XmlIgnore]
+        public StaticText[] StaticTexts { get { return _StaticTexts?.Texts; } }
 
 
         ///// <summary>

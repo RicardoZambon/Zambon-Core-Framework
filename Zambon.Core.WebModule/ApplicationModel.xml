@@ -1,5 +1,14 @@
 <Application Name="[Your application name]" Description="[Your application description]">
 
+  <StaticTexts>
+    <StaticText Key="CollapseMenuButtonTitle" Value="Collapse" />
+    <StaticText Key="ExpandMenuButtonTitle" Value="Expand" />
+    <StaticText Key="LanguageButtonTitle" Value="Select the language" />
+    <StaticText Key="NotificationButtonTitle" Value="Notifications" />
+    <StaticText Key="UserLogOutButtonTitle" Value="Log out" />
+    
+  </StaticTexts>
+  
   <ModuleConfiguration>
     <TitleDefaults ShowEnvironment="True" ShowVersion="True" />
   </ModuleConfiguration>

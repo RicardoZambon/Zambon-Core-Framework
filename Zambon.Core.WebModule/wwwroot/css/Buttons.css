@@ -8,13 +8,12 @@
     position: absolute;
     background: rgba(255,0,0,.85) !important;
     font-size: 11px;
-    right: -5px;
-    top: -7px;
+    right: -6px;
+    top: -5px;
     padding: 1px 4px;
     line-height: 14px;
     border-radius: 0.3rem;
 }
-
 
 .btn-flag {
     border-style: none !important;
@@ -30,3 +29,9 @@
     .btn-notification:focus {
         box-shadow: 0 0 0 0.2rem rgba(84,91,98,.25);
     }
+    .btn-notification.has-notification {
+        box-shadow: 0 0 0 0.2rem rgba(255, 51, 51, 0.25);
+    }
+        .btn-notification.has-notification:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 51, 51, 0.25);
+        }
