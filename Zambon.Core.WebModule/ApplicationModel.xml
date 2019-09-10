@@ -6,8 +6,12 @@
     <StaticText Key="LanguageButtonTitle" Value="Select the language" />
     <StaticText Key="NotificationButtonTitle" Value="Notifications" />
     <StaticText Key="UserLogOutButtonTitle" Value="Log out" />
-    
   </StaticTexts>
+
+  <Languages>
+    <Language Code="en-US" FlagIcon="us" DisplayName="English" />
+    <Language Code="pt-BR" FlagIcon="br" DisplayName="Portuguese" />
+  </Languages>
   
   <ModuleConfiguration>
     <TitleDefaults ShowEnvironment="True" ShowVersion="True" />

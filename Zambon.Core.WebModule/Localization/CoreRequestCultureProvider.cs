@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.WebModule.Localization
 {
-    public class CoreRequestCultureProvider : RequestCultureProvider
+    public class CoreRequestCultureProvider : RouteDataRequestCultureProvider
     {
         public override Task<ProviderCultureResult> DetermineProviderCultureResult(HttpContext httpContext)
         {

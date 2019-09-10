@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Xml.Configuration;
 using System.Text.RegularExpressions;
+using Zambon.Core.Module.Xml.Languages;
 
 namespace Zambon.Core.Module.Services
 {
@@ -219,6 +220,32 @@ namespace Zambon.Core.Module.Services
             }
             return string.Empty;
         }
+
+
+        public Language[] GetLanguages()
+            => CurrentModel.Languages;
+
+        public bool HasLanguage(string language)
+        {
+            if ((CurrentModel.Languages?.Length ?? 0) > 0)
+            {
+                return Array.Exists(CurrentModel.Languages, l => l.Code.ToLower() == language?.Trim()?.ToLower());
+            }
+            return false;
+        }
+
+        public Language GetCurrentLanguage()
+        {
+            if ((CurrentModel.Languages?.Length ?? 0) > 0)
+            {
+                return Array.Find(CurrentModel.Languages, l => l.Code.ToLower() == LanguageProvider.GetCurrentLanguage().ToLower());
+            }
+            return null;
+        }
+
+        public CultureInfo GetCurrentCulture()
+            => new CultureInfo(LanguageProvider.GetCurrentLanguage());
+
 
         /// <summary>
         /// Return the <ApplicationModel /> node values.

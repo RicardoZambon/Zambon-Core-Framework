@@ -34,6 +34,11 @@
             Element representation of the XML <StaticTexts></StaticTexts> node.
             </summary>
         </member>
+        <member name="P:Zambon.Core.Module.Xml.Application._Languages">
+            <summary>
+            Element representation of the XML <Languages></Languages> node.
+            </summary>
+        </member>
         <member name="P:Zambon.Core.Module.Xml.Application.ModuleConfiguration">
             <summary>
             Module default configuration.
@@ -42,6 +47,11 @@
         <member name="P:Zambon.Core.Module.Xml.Application.StaticTexts">
             <summary>
             Static texts used across the application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Application.Languages">
+            <summary>
+            List all available languages, will use the languages listed to show the language selection box.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration">
@@ -77,6 +87,36 @@
         <member name="P:Zambon.Core.Module.Xml.Configuration.TitleDefaults.ShowVersion">
             <summary>
             The ShowPagination attribute from XML. Indicates if should display or not a pagination.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Languages.Language">
+            <summary>
+            Represents a node <Language /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.Language.Code">
+            <summary>
+            The code of the language, the same from AppSettings.json file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.Language.FlagIcon">
+            <summary>
+            The icon should be used to display the language flag in languages list.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.Language.DisplayName">
+            <summary>
+            The language display name should be displayed in languages list.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Xml.Languages.LanguagesArray">
+            <summary>
+            Represents a node <Languages></Languages> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Xml.Languages.LanguagesArray.Languages">
+            <summary>
+            List of <Language /> elements.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticText">

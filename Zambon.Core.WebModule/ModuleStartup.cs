@@ -1,12 +1,18 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
+using Zambon.Core.Module;
+using Zambon.Core.Module.DI;
 
 namespace Zambon.Core.WebModule
 {
@@ -75,8 +81,12 @@ namespace Zambon.Core.WebModule
                 FileProvider = new EmbeddedFileProvider(typeof(ModuleStartup).GetTypeInfo().Assembly, "Zambon.Core.WebModule.wwwroot")
             });
 
+            app.ConfigureLocalization();
+
             app.UseMvc(routes =>
             {
+                routes.ConfigureMvcLocalizationRoute(app);
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

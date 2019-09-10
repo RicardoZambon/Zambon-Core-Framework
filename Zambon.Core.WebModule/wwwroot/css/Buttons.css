@@ -17,10 +17,16 @@
 
 .btn-flag {
     border-style: none !important;
-    width: 2.7em !important;
-    padding: .25rem !important;
+    padding: 0 !important;
     margin-top: 1px !important;
 }
+
+.btn-flag + .dropdown-menu {
+    min-width: 0 !important;
+}
+    .btn-flag + .dropdown-menu .dropdown-item {
+        padding: .25rem .75rem;
+    }
 
 .btn-notification {
     position: relative;

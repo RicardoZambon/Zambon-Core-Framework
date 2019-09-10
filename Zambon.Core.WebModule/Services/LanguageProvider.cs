@@ -7,6 +7,8 @@ namespace Zambon.Core.WebModule.Services
     {
         private readonly IHttpContextAccessor HttpContextAcessor;
 
+        protected string CurrentLanguage { get; private set; }
+
         public LanguageProvider(IHttpContextAccessor httpContextAccessor)
         {
             HttpContextAcessor = httpContextAccessor;
@@ -15,11 +17,17 @@ namespace Zambon.Core.WebModule.Services
 
         public void ChangeLanguage(string newLanguage)
         {
+            CurrentLanguage = newLanguage;
             HttpContextAcessor.HttpContext.Response.Cookies.Append("CurrentLanguage", newLanguage);
         }
 
         public string GetCurrentLanguage()
         {
+            if (!string.IsNullOrEmpty(CurrentLanguage))
+            {
+                return CurrentLanguage;
+            }
+
             if (HttpContextAcessor.HttpContext.Request.Cookies.ContainsKey("CurrentLanguage"))
             {
                 return HttpContextAcessor.HttpContext.Request.Cookies["CurrentLanguage"].ToString();

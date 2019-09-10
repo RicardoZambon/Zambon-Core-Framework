@@ -1,15 +1,26 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.Core.WebModule.Controllers
 {
     public class HomeController : Controller
     {
 
-        public HomeController()
-        {
+        #region Services 
 
+        protected readonly ILanguageProvider LanguageProvider;
+
+        protected readonly ModelService ModelService;
+
+        #endregion
+
+        public HomeController(ILanguageProvider languageProvider, ModelService modelService)
+        {
+            LanguageProvider = languageProvider;
+            ModelService = modelService;
         }
+
 
         public IActionResult Index()
         {
@@ -20,7 +31,6 @@ namespace Zambon.Core.WebModule.Controllers
         {
             return View();
         }
-
 
 
         [Route("/lib/flagpack/flags/4x3/{*path}")]

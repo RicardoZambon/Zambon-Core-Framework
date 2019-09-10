@@ -27,15 +27,6 @@ namespace Zambon.DemoApplication
         {
         }
 
-
-        public override void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            app.UseRequestLocalization();
-
-            base.Configure(app, env, loggerFactory);
-        }
-
-
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
@@ -90,6 +81,8 @@ namespace Zambon.DemoApplication
             services.AddMvc(config =>
                 {
                     config.ModelMetadataDetailsProviders.Add(new CoreMetaDataProvider());
+
+                    config.ConfigureLocalizationFilter(services);
 
                     //var policy = new AuthorizationPolicyBuilder()
                     //     .RequireAuthenticatedUser()

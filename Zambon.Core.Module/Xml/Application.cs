@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Xml.Configuration;
+using Zambon.Core.Module.Xml.Languages;
 using Zambon.Core.Module.Xml.StaticTexts;
 
 namespace Zambon.Core.Module.Xml
@@ -62,11 +63,11 @@ namespace Zambon.Core.Module.Xml
         public StaticTextsArray _StaticTexts { get; set; }
 
 
-        ///// <summary>
-        ///// Element representation of the XML <Languages></Languages> node.
-        ///// </summary>
-        //[XmlElement("Languages"), Browsable(false)]
-        //public LanguagesArray _Languages { get; set; }
+        /// <summary>
+        /// Element representation of the XML <Languages></Languages> node.
+        /// </summary>
+        [XmlElement("Languages"), Browsable(false)]
+        public LanguagesArray _Languages { get; set; }
 
 
         /// <summary>
@@ -117,11 +118,11 @@ namespace Zambon.Core.Module.Xml
         public StaticText[] StaticTexts { get { return _StaticTexts?.Texts; } }
 
 
-        ///// <summary>
-        ///// List all available languages, will use the languages listed to show the language selection box.
-        ///// </summary>
-        //[XmlIgnore]
-        //public Language[] Languages { get { return _Languages?.Languages; } }
+        /// <summary>
+        /// List all available languages, will use the languages listed to show the language selection box.
+        /// </summary>
+        [XmlIgnore]
+        public Language[] Languages { get { return _Languages?.Languages; } }
 
         ///// <summary>
         ///// List all menu items.
