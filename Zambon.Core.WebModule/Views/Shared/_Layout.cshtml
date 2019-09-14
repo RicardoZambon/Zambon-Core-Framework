@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="~/css/Drawer.css" />
     </environment>
 
-    <environment exclude="Development">
+    <environment exclude="Test,Production">
 
     </environment>
 
@@ -65,10 +65,11 @@
     @*<script src="~/js/Formatters.js?version=2.2.0"></script>*@
 
     <environment include="Development">
+        <script src="~/js/Cookies.js"></script>
         <script src="~/js/Drawer.js"></script>
     </environment>
 
-    <environment exclude="Development">
+    <environment exclude="Test,Production">
 
     </environment>
 

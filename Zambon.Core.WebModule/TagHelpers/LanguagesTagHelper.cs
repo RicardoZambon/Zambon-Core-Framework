@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Encodings.Web;
+using Zambon.Core.Database.Domain.ExtensionMethods;
 using Zambon.Core.Module;
 using Zambon.Core.Module.Services;
 
@@ -16,7 +20,7 @@ namespace Zambon.Core.WebModule.TagHelpers
     {
         #region Services
 
-        protected readonly IUrlHelperFactory UrlHelperFactory;
+        protected readonly LinkGenerator LinkGenerator;
 
         protected readonly CoreConfigs CoreConfigs;
 
@@ -35,9 +39,9 @@ namespace Zambon.Core.WebModule.TagHelpers
 
         #region Constructors
 
-        public LanguagesTagHelper(IUrlHelperFactory urlHelperFactory, IOptions<CoreConfigs> coreConfigs, ModelService modelService, ILanguageProvider languageProvider)
+        public LanguagesTagHelper(LinkGenerator linkGenerator, IOptions<CoreConfigs> coreConfigs, ModelService modelService, ILanguageProvider languageProvider)
         {
-            UrlHelperFactory = urlHelperFactory;
+            LinkGenerator = linkGenerator;
             CoreConfigs = coreConfigs.Value;
             ModelService = modelService;
             LanguageService = languageProvider;
@@ -66,10 +70,7 @@ namespace Zambon.Core.WebModule.TagHelpers
                 output.AddClass("dropdown", HtmlEncoder.Default);
                 output.AddClass("x-2", HtmlEncoder.Default);
 
-                var urlHelper = UrlHelperFactory.GetUrlHelper(ViewContext);
-
-                //string returnUrl = HttpUtility.ParseQueryString(ViewContext.HttpContext.Request.QueryString.Value).Get("returnUrl");
-                //var controllerName = ((ControllerActionDescriptor)ViewContext.ActionDescriptor).ControllerName;
+                var routeData = ViewContext.HttpContext.GetRouteData().Values;
 
                 for (var l = 0; l < languages.Length; l++)
                 {
@@ -78,15 +79,8 @@ namespace Zambon.Core.WebModule.TagHelpers
                     {
                         stringBuilder
                             .Append("<li class=\"dropdown-item\">")
-                            .Append($"<a href=\"#\" class=\"btn btn-flag fp fp-lg fp-rounded {language.FlagIcon}\" data-toggle=\"dropdown\" title=\"{language.DisplayName}\"></a>")
+                            .Append($"<a href=\"{LinkGenerator.GetPathByRouteValues(ViewContext.HttpContext, "Localized", routeData.AddOrUpdate("language", language.Code))}\" class=\"btn btn-flag fp fp-lg fp-rounded {language.FlagIcon}\" title=\"{language.DisplayName}\"></a>")
                             .Append("</li>");
-
-                        //stringBuilder
-                        //    .Append($"<a class=\"dropdown-item pl-2 pr-2\" onclick=\"return ShowLoader(this);\" ")
-                        //    .Append($"href=\"{urlHelper.Action("ChangeLanguage", "Home", new { newLanguage = language.Code, controllerName, returnUrl })}\" ")
-                        //    .Append($"title=\"{language.DisplayName}\">")
-                        //        .Append($"<span class=\"flag flag-{language.FlagIcon} ml-2 mr-2 align-middle\"></span>")
-                        //    .Append($"</a>");
                     }
                 }
                 stringBuilder.Append("</ul>");

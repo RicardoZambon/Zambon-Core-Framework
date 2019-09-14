@@ -41,6 +41,7 @@
     <None Remove="wwwroot\css\Drawer.css" />
     <None Remove="wwwroot\css\Icons.css" />
     <None Remove="wwwroot\css\package.json" />
+    <None Remove="wwwroot\js\Cookies.js" />
     <None Remove="wwwroot\js\Drawer.js" />
     <EmbeddedResource Include="Views/**/*.cshtml" />
     <EmbeddedResource Include="wwwroot/**/*" />
@@ -83,5 +84,4 @@
     <ProjectReference Include="..\Zambon.Core.Module\Zambon.Core.Module.csproj" />
     <ProjectReference Include="..\Zambon.Core.Security\Zambon.Core.Security.csproj" />
   </ItemGroup>
-  
 </Project>

@@ -27,6 +27,11 @@ namespace Zambon.Core.WebModule.Controllers
             return View("Index");
         }
 
+        public IActionResult Index2()
+        {
+            return View("Index");
+        }
+
         public IActionResult Error()
         {
             return View();

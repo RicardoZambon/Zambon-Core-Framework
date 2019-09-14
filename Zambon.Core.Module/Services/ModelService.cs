@@ -196,6 +196,11 @@ namespace Zambon.Core.Module.Services
                 }
             }
 
+            if (LoadedModels.Count > 0)
+            {
+                model.Merge(LoadedModels.First().Value);
+            }
+
             return model;
         }
 
