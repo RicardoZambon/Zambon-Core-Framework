@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Projects\RicardoZambon\ZambonCoreFramework\Zambon.Core.Database.Domain\Zambon.Core.Database.Domain.xml</DocumentationFile>
+    <DocumentationFile>Zambon.Core.Database.Domain.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

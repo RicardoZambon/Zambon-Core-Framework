@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Projects\RicardoZambon\ZambonCoreFramework\Zambon.Core.Database.ChangeTracker\Zambon.Core.Database.ChangeTracker.xml</DocumentationFile>
+    <DocumentationFile>Zambon.Core.Database.ChangeTracker.xml</DocumentationFile>
   </PropertyGroup>
   
   <ItemGroup>

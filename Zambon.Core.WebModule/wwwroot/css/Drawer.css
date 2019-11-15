@@ -121,8 +121,8 @@
 }
 
     .drawer .sidebar, .drawer .sidebar nav {
-        width: 220px;
-        max-width: 220px;
+        width: 240px;
+        max-width: 240px;
         top: 0;
     }
 
@@ -229,8 +229,8 @@
         }
 
         .drawer.drawer-expanded .sidebar, .drawer.drawer-expanded .sidebar nav {
-            width: 220px;
-            max-width: 220px;
+            width: 240px;
+            max-width: 240px;
             transition: all 0.25s ease-in-out;
         }
 
