@@ -4,34 +4,6 @@
         <name>Zambon.Core.Database.Domain</name>
     </assembly>
     <members>
-        <member name="T:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute">
-            <summary>
-            Attribute to inform the database that a specific property should be queried in server.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.Query">
-            <summary>
-            The database query.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.Args">
-            <summary>
-            Arguments to pass to the query.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.#ctor(System.String)">
-            <summary>
-            Attribute to inform the database that a specific property should be queried in server.
-            </summary>
-            <param name="Query">The database query.</param>
-        </member>
-        <member name="M:Zambon.Core.Database.Domain.Attributes.DbQueryAttribute.#ctor(System.String,System.String[])">
-            <summary>
-            Attribute to inform the database that a specific property should be queried in server.
-            </summary>
-            <param name="Query">The database query.</param>
-            <param name="Args">Arguments to pass to the query.</param>
-        </member>
         <member name="T:Zambon.Core.Database.Domain.Extensions.TypeExtension">
             <summary>
             Helper methods to use when having Castle.Proxies entities.
@@ -52,22 +24,6 @@
             <typeparam name="I">The interface type that should search.</typeparam>
             <param name="type">The type to search for the interface.</param>
             <returns>If the type implements the interface, returns true.</returns>
-        </member>
-        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.GetModelEntityType(System.Type)">
-            <summary>
-            Get the entity type the model is related to.
-            </summary>
-            <param name="type">The model type.</param>
-            <returns>Returns the entity type.</returns>
-        </member>
-        <member name="M:Zambon.Core.Database.Domain.Extensions.TypeExtension.GetEntityDbQuery(System.Type,System.String,System.String[]@)">
-            <summary>
-            Returns the entity database query defined in property attribute.
-            </summary>
-            <param name="type">The entity type.</param>
-            <param name="property">The property name</param>
-            <param name="args">Arguments for the query.</param>
-            <returns>Returns the database query as string.</returns>
         </member>
         <member name="T:Zambon.Core.Database.Domain.Interfaces.IBaseObject">
             <summary>

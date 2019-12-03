@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Zambon.Core.Database.Domain.Attributes
+namespace Zambon.Core.Database.Attributes
 {
     /// <summary>
     /// Attribute to inform the database that a specific property should be queried in server.
