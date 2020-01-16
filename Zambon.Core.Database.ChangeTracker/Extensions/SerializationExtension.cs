@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Zambon.Core.Database.ChangeTracker.Keys;
 
 namespace Zambon.Core.Database.ChangeTracker.Extensions
 {
@@ -15,18 +14,18 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// </summary>
         /// <param name="bytes">The bytes array to deserialize.</param>
         /// <returns>Returns an array of EntityInstanceKey.</returns>
-        internal static EntityInstanceKey[] DeserializeEntityInstanceKeys(this byte[] bytes)
+        internal static StoredInstanceKey[] DeserializeStoreKeys(this byte[] bytes)
         {
             if (bytes == null)
             {
-                return new EntityInstanceKey[0];
+                return new StoredInstanceKey[0];
             }
             using (var ms = new MemoryStream())
             {
                 var formatter = new BinaryFormatter();
                 ms.Write(bytes, 0, bytes.Length);
                 ms.Position = 0;
-                return formatter.Deserialize(ms) as EntityInstanceKey[];
+                return formatter.Deserialize(ms) as StoredInstanceKey[];
             }
         }
 
@@ -35,7 +34,7 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// </summary>
         /// <param name="keys">The EntityInstanceKey array to serialize.</param>
         /// <returns>Returns an array of bytes.</returns>
-        internal static byte[] SerializeEntityInstanceKeys(this EntityInstanceKey[] keys)
+        internal static byte[] SerializeStoreKeys(this StoredInstanceKey[] keys)
         {
             using (var ms = new MemoryStream())
             {
@@ -51,7 +50,7 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// </summary>
         /// <param name="bytes">The bytes array to deserialize.</param>
         /// <returns>Returns a dictionary of string (property name) and object (value).</returns>
-        internal static Dictionary<string, object> DeserializeEntityInstanceObject(this byte[] bytes)
+        internal static Dictionary<string, object> DeserializeStoredObject(this byte[] bytes)
         {
             if (bytes == null)
             {
@@ -71,7 +70,7 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// </summary>
         /// <param name="dictionary">The dictionary to serialize.</param>
         /// <returns>Returns an array of bytes.</returns>
-        internal static byte[] SerializeEntityInstanceObject(this Dictionary<string, object> dictionary)
+        internal static byte[] SerializeStoredObject(this Dictionary<string, object> dictionary)
         {
             using (var ms = new MemoryStream())
             {

@@ -3,9 +3,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
+using Zambon.Core.Database.Domain.Interfaces;
 
 namespace Zambon.Core.Database.ChangeTracker.Extensions
 {
@@ -14,33 +15,6 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
     /// </summary>
     public static class DbContextExtension
     {
-        private static MethodInfo _isNewEntryMethod;
-        private static MethodInfo IsNewEntryMethod
-        {
-            get
-            {
-                if (_isNewEntryMethod == null)
-                {
-                    _isNewEntryMethod = typeof(DbContextExtension).GetMethods().FirstOrDefault(x => x.Name == nameof(IsNewEntry) && x.IsGenericMethod);
-                }
-                return _isNewEntryMethod;
-            }
-        }
-
-        private static MethodInfo _loadPropertiesMethod;
-        private static MethodInfo LoadPropertiesMethod
-        {
-            get
-            {
-                if (_loadPropertiesMethod == null)
-                {
-                    _loadPropertiesMethod = typeof(DbContextExtension).GetMethods().FirstOrDefault(x => x.Name == nameof(LoadProperties) && x.IsGenericMethod);
-                }
-                return _loadPropertiesMethod;
-            }
-        }
-
-
         /// <summary>
         /// Returns all the keys properties for the entity.
         /// </summary>
@@ -64,24 +38,24 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// Get an array of the object key values.
         /// </summary>
         /// <param name="dbContext">The database context instance.</param>
-        /// <param name="erntity">The database object instance.</param>
+        /// <param name="model">The database object instance.</param>
         /// <returns>Returns an array of the object key values.</returns>
-        public static object[] GetKeyValues(this DbContext dbContext, object erntity)
+        public static object[] GetKeyValues(this DbContext dbContext, object model)
         {
-            var entityType = erntity.GetType();
-            return GetKeyProperties(dbContext, entityType).Select(x => erntity.GetUnproxiedType().GetProperty(x).GetValue(erntity)).ToArray();
+            var entityType = model.GetType().GetModelEntityType();
+            return GetKeyProperties(dbContext, entityType).Select(x => model.GetUnproxiedType().GetProperty(x).GetValue(model)).ToArray();
         }
 
         /// <summary>
         /// Get an array of the object key values.
         /// </summary>
         /// <param name="dbContext">The database context instance.</param>
-        /// <param name="entity">The database object instance.</param>
+        /// <param name="model">The database object instance.</param>
         /// <returns>Returns an array of the object key values.</returns>
-        public static object[] GetKeyValues<T>(this DbContext dbContext, T entity) where T : class
+        public static object[] GetKeyValues<T>(this DbContext dbContext, T model) where T : class
         {
-            var entityType = typeof(T);
-            return GetKeyProperties(dbContext, entityType).Select(x => typeof(T).GetProperty(x).GetValue(entity)).ToArray();
+            var entityType = typeof(T).GetModelEntityType();
+            return GetKeyProperties(dbContext, entityType).Select(x => typeof(T).GetProperty(x).GetValue(model)).ToArray();
         }
 
 
@@ -108,7 +82,52 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// <param name="entity">The object instance to check.</param>
         /// <returns>Returns true if the entry does not exists yet in database.</returns>
         public static bool IsNewEntry(this DbContext dbContext, object entity)
-            => (bool)IsNewEntryMethod.MakeGenericMethod(entity.GetUnproxiedType()).Invoke(null, new object[] { dbContext, entity });
+            => (bool)typeof(DbContextExtension).GetMethods().FirstOrDefault(x => x.Name == nameof(IsNewEntry) && x.IsGenericMethod).MakeGenericMethod(entity.GetUnproxiedType()).Invoke(null, new object[] { dbContext, entity });
+
+
+        /// <summary>
+        /// Maps a model with database values.
+        /// </summary>
+        /// <param name="dbContext">The database context instance.</param>
+        /// <param name="model">The model instance.</param>
+        /// <returns>Returns the entity instance with database values.</returns>
+        public static object MapFromDb(this DbContext dbContext, object model)
+        {
+            var entityType = model.GetType().GetModelEntityType();
+            if (entityType != null)
+            {
+                var properties = model.GetType().GetProperties().Where(x => ((ReadOnlyFromAttribute)TypeDescriptor.GetProperties(model.GetType())[x.Name].Attributes[typeof(ReadOnlyFromAttribute)])?.Source != ReadOnlySources.Entity).ToDictionary(k => k.Name, v => v.GetValue(model));
+                return dbContext.LoadProperties(dbContext.Model.FindEntityType(entityType).Name, dbContext.GetKeyValues(model), properties);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Maps a model with database values.
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type in database.</typeparam>
+        /// <param name="dbContext">The database context instance.</param>
+        /// <param name="model">The model instance.</param>
+        /// <returns>Returns the entity instance with database values.</returns>
+        public static TEntity MapFromDb<TEntity>(this DbContext dbContext, object model) where TEntity : class, IBaseObject
+        {
+            if (typeof(TEntity) is Type entityType)
+            {
+                var properties = model.GetType().GetProperties().Where(x => ((ReadOnlyFromAttribute)TypeDescriptor.GetProperties(model.GetType())[x.Name].Attributes[typeof(ReadOnlyFromAttribute)])?.Source != ReadOnlySources.Entity).ToDictionary(k => k.Name, v => v.GetValue(model));
+                return dbContext.LoadProperties<TEntity>(dbContext.GetKeyValues(model), properties);
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Creates a Microsoft.EntityFrameworkCore.DbSet`1 that can be used to query and save instances of TEntity.
+        /// </summary>
+        /// <param name="dbContext">The database context instance.</param>
+        /// <param name="type">The type of entity for which a set should be returned.</param>
+        /// <returns>A set for the given entity type.</returns>
+        public static IQueryable Set(this DbContext dbContext, Type type)
+            => (IQueryable)dbContext.GetType().GetMethod("Set").MakeGenericMethod(type).Invoke(dbContext, null);
 
 
         /// <summary>
@@ -122,7 +141,7 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         public static object LoadProperties(this DbContext dbContext, string modelType, object[] keys, Dictionary<string, object> propertyValues)
         {
             var entityType = dbContext.Model.FindEntityType(modelType);
-            return LoadPropertiesMethod.MakeGenericMethod(entityType.ClrType).Invoke(null, new object[] { dbContext, keys, propertyValues });
+            return typeof(DbContextExtension).GetMethods().FirstOrDefault(x => x.Name == nameof(LoadProperties) && x.IsGenericMethod).MakeGenericMethod(entityType.ClrType).Invoke(null, new object[] { dbContext, keys, propertyValues });
         }
 
         /// <summary>
