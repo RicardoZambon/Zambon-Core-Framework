@@ -21,9 +21,9 @@ namespace Zambon.Core.Database.Entities
         /// Called when executing OnConfiguring from CoreContext.
         /// </summary>
         /// <param name="entityBuilder">The object that can be used to configure a given entity type in the model.</param>
-        public override void ConfigureEntity(EntityTypeBuilder entityBuilder)
+        public override void OnConfiguringEntity(EntityTypeBuilder entityBuilder)
         {
-            base.ConfigureEntity(entityBuilder);
+            base.OnConfiguringEntity(entityBuilder);
             if (entityBuilder.Metadata.GetRootType().ClrType.FullName == entityBuilder.Metadata.ClrType.FullName)
             {
                 entityBuilder.HasQueryFilter(System.Linq.Dynamic.Core.DynamicExpressionParser.ParseLambda(GetType(), typeof(bool), "!IsDeleted", this));

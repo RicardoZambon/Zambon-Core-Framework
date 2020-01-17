@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -27,19 +26,6 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
             }
         }
 
-        private static MethodInfo _loadPropertiesMethod;
-        private static MethodInfo LoadPropertiesMethod
-        {
-            get
-            {
-                if (_loadPropertiesMethod == null)
-                {
-                    _loadPropertiesMethod = typeof(DbContextExtension).GetMethods().FirstOrDefault(x => x.Name == nameof(LoadProperties) && x.IsGenericMethod);
-                }
-                return _loadPropertiesMethod;
-            }
-        }
-
 
         /// <summary>
         /// Returns all the keys properties for the entity.
@@ -58,7 +44,6 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// <returns>Returns all the keys properties for the entity.</returns>
         public static IReadOnlyList<IProperty> GetKeys<T>(this DbContext dbContext) where T : class
             => dbContext.Model.FindEntityType(typeof(T).GetUnproxiedType()).FindPrimaryKey()?.Properties;
-
 
         /// <summary>
         /// Get an array of the object key values.
@@ -109,58 +94,6 @@ namespace Zambon.Core.Database.ChangeTracker.Extensions
         /// <returns>Returns true if the entry does not exists yet in database.</returns>
         public static bool IsNewEntry(this DbContext dbContext, object entity)
             => (bool)IsNewEntryMethod.MakeGenericMethod(entity.GetUnproxiedType()).Invoke(null, new object[] { dbContext, entity });
-
-
-        /// <summary>
-        /// Load the properties dictionary merging with the database values.
-        /// </summary>
-        /// <param name="dbContext">The database context instance.</param>
-        /// <param name="modelType">The model type of the database entity.</param>
-        /// <param name="keys">Array with the key properties values.</param>
-        /// <param name="propertyValues">A dictionary with the changed properties and their respective values.</param>
-        /// <returns>Return the database object instance with the updated values.</returns>
-        public static object LoadProperties(this DbContext dbContext, string modelType, object[] keys, Dictionary<string, object> propertyValues)
-        {
-            var entityType = dbContext.Model.FindEntityType(modelType);
-            return LoadPropertiesMethod.MakeGenericMethod(entityType.ClrType).Invoke(null, new object[] { dbContext, keys, propertyValues });
-        }
-
-        /// <summary>
-        /// Load the properties dictionary merging with the database values.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the database entity.</typeparam>
-        /// <param name="dbContext">The database context instance.</param>
-        /// <param name="keys">Array with the key properties values.</param>
-        /// <param name="propertyValues">A dictionary with the changed properties and their respective values.</param>
-        /// <returns>Return the database object instance with the updated values.</returns>
-        public static TEntity LoadProperties<TEntity>(this DbContext dbContext, object[] keys, Dictionary<string, object> propertyValues) where TEntity : class
-        {
-            var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
-
-            EntityEntry<TEntity> entry;
-            var entity = dbContext.Find<TEntity>(keys);
-            if (entity == null || dbContext.IsNewEntry(entity))
-            {
-                if (entity == null)
-                {
-                    entity = dbContext.CreateProxy<TEntity>();
-                    var key = entityType.FindPrimaryKey();
-                    for (var i = 0; i < key.Properties.Count; i++)
-                    {
-                        typeof(TEntity).GetProperty(key.Properties[i].Name).SetValue(entity, keys[i]);
-                    }
-                }
-                entry = dbContext.Add(entity);
-                entry.State = EntityState.Added;
-            }
-            else
-            {
-                entry = dbContext.Attach(entity);
-                entry.State = EntityState.Modified;
-            }
-            entry.CurrentValues.SetValues(propertyValues);
-            return entry.Entity;
-        }
 
 
         private static Expression<Func<TEntity, bool>> BuildLambda<TEntity>(IReadOnlyList<IProperty> keyProperties, object[] keyValues) where TEntity : class

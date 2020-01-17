@@ -11,6 +11,8 @@ namespace Zambon.Core.Database.ChangeTracker
     [Serializable]
     public class StoredInstanceKey
     {
+        #region Properties
+
         /// <summary>
         /// The root model type of the entity as string.
         /// </summary>
@@ -19,7 +21,7 @@ namespace Zambon.Core.Database.ChangeTracker
         /// <summary>
         /// The actual entity type as string.
         /// </summary>
-        public string EntityType { get; set; }
+        public string EntityType { get; private set; }
 
         /// <summary>
         /// The ID of the entity as integer.
@@ -28,25 +30,17 @@ namespace Zambon.Core.Database.ChangeTracker
 
         public ChangeTrackerActions Action { get; private set; }
 
+        #endregion
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <param name="dbContext">The database context instance.</param>
-        /// <param name="entityType">The type of the entity.</param>
-        /// <param name="entityKeys">The keys of the entity.</param>
-        public StoredInstanceKey(DbContext dbContext, Type entityType, params object[] entityKeys)
+        #region Constructors
+
+        public StoredInstanceKey(EntityEntry entry)
         {
-            var modelEntityType = dbContext.Model.FindEntityType(entityType.GetUnproxiedType());
-            ModelType = modelEntityType.RootType().Name;
-            EntityType = modelEntityType.Name;
-            EntityKeys = entityKeys;
+            ModelType = entry.Metadata.Model.FindEntityType(entry.Entity.GetUnproxiedType()).RootType().Name;
+            EntityType = entry.Metadata.Model.FindEntityType(entry.Entity.GetUnproxiedType()).Name;
+            EntityKeys = entry.GetKeyValues();
         }
 
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        /// <param name="entry">The object instance.</param>
         public StoredInstanceKey(EntityEntry entry, ChangeTrackerActions action)
         {
             ModelType = entry.Metadata.Model.FindEntityType(entry.Entity.GetUnproxiedType()).RootType().Name;
@@ -55,12 +49,9 @@ namespace Zambon.Core.Database.ChangeTracker
             Action = ChangeTrackerActions.Delete;
         }
 
+        #endregion
 
-        public string GetFullKey(CacheKey cacheKey)
-        {
-            return cacheKey.ToString() + "_" + this.ToString();
-        }
-
+        #region Overrides
 
         /// <summary>
         /// Returns the hash code for this string.
@@ -93,5 +84,16 @@ namespace Zambon.Core.Database.ChangeTracker
         /// <returns>The value of this System.Guid plus the current user ID, formatted by using the format specifier as follows: xxxx_####.</returns>
         public override string ToString()
             => $"{ModelType}_{string.Join("_", EntityKeys)}";
+
+        #endregion
+
+        #region Methods
+
+        public string GetFullKey(CacheKey cacheKey)
+        {
+            return cacheKey.ToString() + "_" + this.ToString();
+        }
+
+        #endregion
     }
 }

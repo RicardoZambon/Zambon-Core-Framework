@@ -6,7 +6,7 @@ using System.Reflection;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Database.Interfaces;
 
-namespace Zambon.Core.Database.ExtensionMethods
+namespace Zambon.Core.Database.Extensions
 {
     /// <summary>
     /// Provides additional methods to use when calling ModelBuilder.
@@ -23,7 +23,7 @@ namespace Zambon.Core.Database.ExtensionMethods
         public static ModelBuilder EntitiesFromAssembly(this ModelBuilder modelBuilder, Assembly assembly, Func<Type, bool> predicate = null)
         {
             var entityMethod = typeof(ModelBuilder).GetMethods().Single(e => e.Name == nameof(ModelBuilder.Entity) && e.ContainsGenericParameters && e.GetParameters().Length == 0);
-            var configureMethod = typeof(IConfigurableEntity).GetMethod(nameof(IConfigurableEntity.ConfigureEntity));
+            var configureMethod = typeof(IConfigurableEntity).GetMethod(nameof(IConfigurableEntity.OnConfiguringEntity));
             foreach (var type in assembly.GetReferencedConstructibleTypes<IEntity>())
             {
                 if (type.GetConstructor(Type.EmptyTypes) == null || (!predicate?.Invoke(type) ?? false))
@@ -34,38 +34,6 @@ namespace Zambon.Core.Database.ExtensionMethods
                 var typeBuilder = entityMethod.MakeGenericMethod(type).Invoke(modelBuilder, null);
                 if (type.ImplementsInterface<IConfigurableEntity>())
                 {
-                    var instance = Activator.CreateInstance(type);
-                    configureMethod.Invoke(instance, new[] { typeBuilder });
-                }
-
-                typeof(ModelBuilderExtension).GetMethod(nameof(InitializeEntity)).MakeGenericMethod(type).Invoke(null, new[] { assembly, typeBuilder });
-            }
-            return modelBuilder;
-        }
-
-        /// <summary>
-        /// Applies configuration from all <see cref="IEntity" /> and <see cref="IConfigurableEntity" /> instances that are defined in provided assembly.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="modelBuilder">The same <see cref="ModelBuilder" /> instance so that additional configuration calls can be chained.</param>
-        /// <param name="assembly">The assembly to scan.</param>
-        /// <param name="predicate">Optional predicate to filter types within the assembly.</param>
-        /// <param name="configureEntity">Optional true or false if should configure the entity or not.</param>
-        /// <returns>The same <see cref="ModelBuilder" /> instance so that additional configuration calls can be chained.</returns>
-        public static ModelBuilder EntitiesFromAssembly<TEntity>(this ModelBuilder modelBuilder, Assembly assembly, Func<Type, bool> predicate = null, bool configureEntity = false) where TEntity : class, IEntity
-        {
-            var entityMethod = typeof(ModelBuilder).GetMethods().Single(e => e.Name == "Entity" && e.ContainsGenericParameters && e.GetParameters().Length == 0);
-            var configureMethod = typeof(IConfigurableEntity).GetMethod("Configure");
-            foreach (var type in assembly.GetReferencedConstructibleTypes<TEntity>())
-            {
-                if (type.GetConstructor(Type.EmptyTypes) == null || (!predicate?.Invoke(type) ?? false))
-                {
-                    continue;
-                }
-
-                var typeBuilder = entityMethod.MakeGenericMethod(type).Invoke(modelBuilder, null);
-                if (configureEntity && type.ImplementsInterface<IConfigurableEntity>())
-                {
                     configureMethod.Invoke(Activator.CreateInstance(type), new[] { typeBuilder });
                 }
 
@@ -73,7 +41,6 @@ namespace Zambon.Core.Database.ExtensionMethods
             }
             return modelBuilder;
         }
-
 
         /// <summary>
         /// Applies configuration from all <see cref="IQuery" /> and <see cref="IConfigurableQuery" /> instances that are defined in provided assembly.

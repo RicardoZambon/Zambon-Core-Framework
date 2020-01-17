@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Caching.Distributed;
-using Zambon.Core.Database.ChangeTracker.Extensions;
-using Zambon.Core.Database.ChangeTracker.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Zambon.Core.Database.ChangeTracker.Extensions;
+using Zambon.Core.Database.ChangeTracker.Extensions.Internal;
+using Zambon.Core.Database.ChangeTracker.Interfaces;
 
 namespace Zambon.Core.Database.ChangeTracker.Services
 {
@@ -42,8 +43,15 @@ namespace Zambon.Core.Database.ChangeTracker.Services
             var storedTempKeys = ReadTempStoredKeys(cacheKey);
             for (var t = 0; t < storedTempKeys.Length; t++)
             {
-                var tempObject = cache.Get(TempTrackPrefix + storedTempKeys[t].GetFullKey(cacheKey)).DeserializeStoredObject();
-                dbContext.LoadProperties(storedTempKeys[t].EntityType, storedTempKeys[t].EntityKeys, tempObject);
+                if (storedTempKeys[t].Action == ChangeTrackerActions.Delete)
+                {
+                    dbContext.MarkAsDeleted(storedTempKeys[t].EntityType, storedTempKeys[t].EntityKeys);
+                }
+                else
+                {
+                    var tempObject = cache.Get(TempTrackPrefix + storedTempKeys[t].GetFullKey(cacheKey)).DeserializeStoredObject();
+                    dbContext.LoadProperties(storedTempKeys[t].EntityType, storedTempKeys[t].EntityKeys, tempObject);
+                }
             }
 
             var storedKeys = ReadStoredKeys(cacheKey);
@@ -51,8 +59,15 @@ namespace Zambon.Core.Database.ChangeTracker.Services
             {
                 if (!storedTempKeys.Contains(storedKeys[k]))
                 {
-                    var storedObject = cache.Get(storedKeys[k].ToString()).DeserializeStoredObject();
-                    dbContext.LoadProperties(storedKeys[k].EntityType, storedKeys[k].EntityKeys, storedObject);
+                    if (storedKeys[k].Action == ChangeTrackerActions.Delete)
+                    {
+                        dbContext.MarkAsDeleted(storedKeys[k].EntityType, storedKeys[k].EntityKeys);
+                    }
+                    else
+                    {
+                        var storedObject = cache.Get(storedKeys[k].ToString()).DeserializeStoredObject();
+                        dbContext.LoadProperties(storedKeys[k].EntityType, storedKeys[k].EntityKeys, storedObject);
+                    }
                 }
             }
         }
@@ -88,7 +103,7 @@ namespace Zambon.Core.Database.ChangeTracker.Services
             return loadedObjects;
         }
 
-
+        [Obsolete]
         public bool IsTracking(CacheKey cacheKey, StoredInstanceKey storedInstanceKey, bool checkTemp = false)
         {
             var exists = false;
@@ -196,7 +211,7 @@ namespace Zambon.Core.Database.ChangeTracker.Services
         }
 
 
-        public void Add<T>(CacheKey cacheKey, EntityEntry<T> entry, bool saveToTemp = false) where T : class, ITrackableEntity
+        public void AddOrUpdate<T>(CacheKey cacheKey, EntityEntry<T> entry, bool saveToTemp = false) where T : class, ITrackableEntity
         {
             if (saveToTemp)
             {

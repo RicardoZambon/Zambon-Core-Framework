@@ -52,30 +52,6 @@
             Primary key of the database entity.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Database.Domain.Interfaces.IModel`1">
-            <summary>
-            Interface used to identify model objects.
-            </summary>
-            <typeparam name="TEntity">Object database entity type.</typeparam>
-        </member>
-        <member name="M:Zambon.Core.Database.Domain.Interfaces.IModel`1.MapFromEntity(`0)">
-            <summary>
-            Maps custom properties from database entity with the model.
-            </summary>
-            <param name="entity">The database object instance.</param>
-        </member>
-        <member name="M:Zambon.Core.Database.Domain.Interfaces.IModel`1.MapToEntity(System.IServiceProvider,`0)">
-            <summary>
-            Maps custom properties from model to the database entity.
-            </summary>
-            <param name="serviceProvider">The service provider.</param>
-            <param name="entity">The database object instance.</param>
-        </member>
-        <member name="T:Zambon.Core.Database.Domain.Interfaces.IModel">
-            <summary>
-            Interface used to identify model objects.
-            </summary>
-        </member>
         <member name="T:Zambon.Core.Database.Domain.Interfaces.ISoftDelete">
             <summary>
             Interface for objects that should have a property to set when deleting and not actually deleted from database.

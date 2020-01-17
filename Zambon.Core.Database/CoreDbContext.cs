@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using Zambon.Core.Database.ChangeTracker;
+using System.Threading;
+using System.Threading.Tasks;
 using Zambon.Core.Database.ChangeTracker.Extensions;
 using Zambon.Core.Database.ChangeTracker.Interfaces;
+using Zambon.Core.Database.ChangeTracker.Services;
+using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Database.Domain.Interfaces;
-using Zambon.Core.Database.ExtensionMethods;
+using Zambon.Core.Database.Extensions;
 using Zambon.Core.Database.Interfaces;
 using Zambon.Core.Database.Services;
 
@@ -25,7 +28,7 @@ namespace Zambon.Core.Database
     {
         #region Services
 
-        private readonly CoreChangeTracker _trackedEntities;
+        private readonly CoreChangeTrackerInstance _changeTrackerInstance;
 
         #endregion
 
@@ -39,7 +42,7 @@ namespace Zambon.Core.Database
         {
             try
             {
-                _trackedEntities = this.GetService<CoreChangeTracker>();
+                _changeTrackerInstance = this.GetService<CoreChangeTrackerInstance>();
             }
             catch { }
         }
@@ -56,12 +59,12 @@ namespace Zambon.Core.Database
         {
             var options = this.GetService<IDbContextOptions>();
             var migrationsAssemblyName = RelationalOptionsExtension.Extract(options).MigrationsAssembly;
-
             var assemblies = new List<string>() { migrationsAssemblyName };
 
             if (GetAdditionalAssembliesService() is IDbAdditionalAssemblies additionalAssemblies)
             {
                 assemblies.AddRange(additionalAssemblies.ReferencedAssemblies);
+                assemblies = assemblies.Distinct().ToList();
             }
 
             foreach (var assemblyName in assemblies.Distinct())
@@ -92,6 +95,53 @@ namespace Zambon.Core.Database
 
         #endregion
 
+        #region Overrides - Change Tracker
+
+        public override object Find(Type entityType, params object[] keyValues)
+        {
+            LoadAllTrackedEntities();
+            return base.Find(entityType, keyValues);
+        }
+        public override TEntity Find<TEntity>(params object[] keyValues)
+        {
+            LoadAllTrackedEntities();
+            return base.Find<TEntity>(keyValues);
+        }
+
+        public override async ValueTask<object> FindAsync(Type entityType, object[] keyValues, CancellationToken cancellationToken)
+        {
+            LoadAllTrackedEntities();
+            return base.FindAsync(entityType, keyValues, cancellationToken);
+        }
+
+        public override async ValueTask<object> FindAsync(Type entityType, params object[] keyValues)
+        {
+            LoadAllTrackedEntities();
+            return base.FindAsync(entityType, keyValues);
+        }
+
+        public override async ValueTask<TEntity> FindAsync<TEntity>(object[] keyValues, CancellationToken cancellationToken)
+        {
+            LoadAllTrackedEntities();
+            return await base.FindAsync<TEntity>(keyValues, cancellationToken);
+        }
+
+        public override async ValueTask<TEntity> FindAsync<TEntity>(params object[] keyValues)
+        {
+            LoadAllTrackedEntities();
+            return await base.FindAsync<TEntity>(keyValues);
+        }
+
+
+        public override DbSet<TEntity> Set<TEntity>()
+        {
+            LoadAllTrackedEntities();
+            return base.Set<TEntity>();
+        }
+
+        #endregion
+
+
         #region Methods
 
         /// <summary>
@@ -99,13 +149,20 @@ namespace Zambon.Core.Database
         /// </summary>
         /// <returns>Return the service interface with the additional assemblies. Null if not found any service registered.</returns>
         protected virtual IDbAdditionalAssemblies GetAdditionalAssembliesService()
-        {
-            return this.GetService<DbAdditionalAssemblies<CoreDbContext>>();
-        }
+            => this.GetService<DbAdditionalAssemblies<CoreDbContext>>();
 
         #endregion
 
-        #region Change Tracker
+        #region Methods - Change Tracker - Read
+
+        private void LoadAllTrackedEntities()
+        {
+            if (_changeTrackerInstance != null)
+            {
+                _changeTrackerInstance.LoadAllTrackedInstances(this);
+            }
+        }
+
 
         /// <summary>
         /// Returns all tracked entities of a specific type.
@@ -113,36 +170,12 @@ namespace Zambon.Core.Database
         /// <typeparam name="T">The entity type to get the tracked entities.</typeparam>
         /// <param name="readTemp">If should consider the temp store when loading the entities.</param>
         /// <returns>Returns all tracked entities of a specific type.</returns>
-        public IQueryable<T> GetTrackedEntities<T>(bool readTemp) where T : class
-            => _trackedEntities.GetTrackedEntities<T>(this, readTemp);
+        public IEnumerable<T> GetTrackedEntities<T>(bool readTemp) where T : class, ITrackableEntity
+            => _changeTrackerInstance != null ? _changeTrackerInstance.GetTrackedInstances<T>(this, readTemp) : null;
 
-        ///// <summary>
-        ///// Load tracked entities already stored in distributed cache.
-        ///// </summary>
-        //public void LoadTrackedEntities<T>(Guid formKey) where T : class, ITrackableEntity
-        //    => _trackedEntities.LoadTrackedObjects<T>(this, formKey);
+        #endregion
 
-
-        ///// <summary>
-        ///// Clears the stored entities in distributed cache.
-        ///// </summary>
-        ///// <param name="clearStored">If should clear the stored entities with changes already applyed.</param>
-        ///// <param name="clearTemp">If should clear the temp stored entities.</param>
-        ///// <param name="tempModelType">Filters the temp model to clean only this same type.</param>
-        ///// <param name="forceClear">Force to clean all entities in temp.</param>
-        //public void ClearTrackedEntities(bool clearStored = true, bool clearTemp = true, string tempModelType = "", bool forceClear = false)
-        //    => TrackedEntities.Clear(clearStored, clearTemp, tempModelType, forceClear);
-
-
-        /// <summary>
-        /// Checks if the change tracker is already tracking the object instance.
-        /// </summary>
-        /// <typeparam name="T">The type of the entity.</typeparam>
-        /// <param name="keys">The object entity keys.</param>
-        /// <returns>If the object is already being tracked returns true.</returns>
-        public bool IsTracking<T>(object[] keys)
-            => _trackedEntities.IsTracking(this, typeof(T), keys, true);
-
+        #region Methods - Change Tracker - Write
 
         /// <summary>
         /// Applies the changed properties into distributed cache, without saving into database.
@@ -165,10 +198,13 @@ namespace Zambon.Core.Database
             {
                 Add(entry.Entity);
             }
-            _trackedEntities.AddOrUpdate(entry, SaveIntoTemp);
-            if (!SaveIntoTemp)
+            if (_changeTrackerInstance != null)
             {
-                _trackedEntities.Clear(clearStored: false, tempEntityNameFilter: entry.GetEntityType().Name);
+                _changeTrackerInstance.AddOrUpdate(entry, SaveIntoTemp);
+                if (!SaveIntoTemp)
+                {
+                    _changeTrackerInstance.Clear(clearStored: false, tempModelType: entry.Entity.GetUnproxiedType().Name);
+                }
             }
         }
 
@@ -180,17 +216,65 @@ namespace Zambon.Core.Database
         /// <param name="entity">The entity instance.</param>
         /// <param name="onlyFromTemp">Removes only from temp store or from both.</param>
         public void RemoveTrackedEntity<T>(T entity, bool onlyFromTemp = false) where T : class
-            => _trackedEntities.Remove(Entry(entity), onlyFromTemp);
+        {
+            if (_changeTrackerInstance != null)
+            {
+                _changeTrackerInstance.Remove(Entry(entity), onlyFromTemp);
+            }
+        }
 
-        ///// <summary>
-        ///// Retrieves the entity using the ID and remove it from the already tracked entities.
-        ///// </summary>
-        ///// <param name="formKey">The parent form key, used to separate same user and different opened pages/forms.</param>
-        ///// <param name="entityType">The type of the entity.</param>
-        ///// <param name="onlyFromTemp">Removes only from temp store or from both.</param>
-        ///// <param name="keys">The entity keys to remove.</param>
-        //public void RemoveTrackedEntity(Guid formKey, Type entityType, bool onlyFromTemp = false, params object[] keys)
-        //    => _trackedEntities.Remove(formKey, new StoreKey(this, entityType, keys), onlyFromTemp);
+
+        public T Delete<T>(int id, bool _commitChanges = true) where T : class
+        {
+            if (Find<T>(id) is T entity)
+            {
+                if (entity is IDbObject dbObject)
+                {
+                    dbObject.OnDeleting(this);
+                }
+
+                if (entity is ITrackableEntity entityTrackable)
+                {
+                    if (this.IsNewEntry(entity))
+                    {
+                        RemoveTrackedEntity(entity);
+                        return entity;
+                    }
+
+                    if (entity is ISoftDelete entityDBObject)
+                    {
+                        entityDBObject.IsDeleted = true;
+                        if (_commitChanges)
+                        {
+                            CommitChanges(entity);
+                        }
+                        else
+                        {
+                            ApplyChanges(entityTrackable);
+                        }
+                    }
+                    else
+                    {
+                        var entry = Remove(entityTrackable);
+                        if (_commitChanges)
+                        {
+                            SaveChanges();
+                        }
+                        else
+                        {
+                            _changeTrackerInstance.Delete(entry);
+                        }
+                    }
+                }
+                else
+                {
+                    Remove(entity);
+                    SaveChanges();
+                }
+                return entity;
+            }
+            throw new KeyNotFoundException();
+        }
 
 
         /// <summary>
@@ -287,22 +371,22 @@ namespace Zambon.Core.Database
 
                 foreach (var nav in entry.Navigations)
                 {
-                    if (nav.CurrentValue is IEnumerable records)
+                    if (nav.CurrentValue is IEnumerable records && records.GetType().GetGenericArguments()[0].ImplementsInterface<ITrackableEntity>())
                     {
                         typeof(CoreDbContext).GetMethod(nameof(SaveRelatedObjects)).MakeGenericMethod(records.GetType().GetGenericArguments()[0]).Invoke(this, null);
                     }
                 }
             }
-            _trackedEntities.Remove(entry);
+            _changeTrackerInstance.Remove(entry);
         }
 
         /// <summary>
         /// Save related objects with the current parent object.
         /// </summary>
         /// <typeparam name="T">he entity type to search in change tracker.</typeparam>
-        public void SaveRelatedObjects<T>() where T : class
+        public void SaveRelatedObjects<T>() where T : class, ITrackableEntity
         {
-            var trackedEntities = _trackedEntities.GetTrackedEntities<T>(this, false);
+            var trackedEntities = this.GetTrackedEntities<T>(false);
             foreach (var record in trackedEntities)
             {
                 SaveObject(record);

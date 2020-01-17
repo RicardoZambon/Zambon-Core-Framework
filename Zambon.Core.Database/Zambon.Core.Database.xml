@@ -63,14 +63,6 @@
             <param name="readTemp">If should consider the temp store when loading the entities.</param>
             <returns>Returns all tracked entities of a specific type.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.CoreDbContext.IsTracking``1(System.Object[])">
-            <summary>
-            Checks if the change tracker is already tracking the object instance.
-            </summary>
-            <typeparam name="T">The type of the entity.</typeparam>
-            <param name="keys">The object entity keys.</param>
-            <returns>If the object is already being tracked returns true.</returns>
-        </member>
         <member name="M:Zambon.Core.Database.CoreDbContext.ApplyChanges``1(``0,System.Boolean)">
             <summary>
             Applies the changed properties into distributed cache, without saving into database.
@@ -120,7 +112,7 @@
             Primary key of the entity.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Database.Entities.BaseDBObject.ConfigureEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
+        <member name="M:Zambon.Core.Database.Entities.BaseDBObject.OnConfiguringEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
             <summary>
             Called when executing OnConfiguring from CoreContext.
             </summary>
@@ -162,18 +154,18 @@
             Determines when the object is deleted and should be hidden in application.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Database.Entities.DbObject.ConfigureEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
+        <member name="M:Zambon.Core.Database.Entities.DbObject.OnConfiguringEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
             <summary>
             Called when executing OnConfiguring from CoreContext.
             </summary>
             <param name="entityBuilder">The object that can be used to configure a given entity type in the model.</param>
         </member>
-        <member name="T:Zambon.Core.Database.ExtensionMethods.AssemblyExtension">
+        <member name="T:Zambon.Core.Database.Extensions.AssembliesExtension">
             <summary>
             Extension methods to get and instantiate the objects when calling OnConfigureMethod in CoreDbContext.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetTypesByInterface``1(System.Reflection.Assembly)">
+        <member name="M:Zambon.Core.Database.Extensions.AssembliesExtension.GetTypesByInterface``1(System.Reflection.Assembly)">
             <summary>
             Search for the specified type implementation within the assembly.
             </summary>
@@ -181,7 +173,7 @@
             <param name="assembly">The assembly to search.</param>
             <returns>Returns a list of TypeInfo, if no implementation were found, will return a blank list.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetReferencedConstructibleTypes(System.Reflection.Assembly,System.Type)">
+        <member name="M:Zambon.Core.Database.Extensions.AssembliesExtension.GetReferencedConstructibleTypes(System.Reflection.Assembly,System.Type)">
             <summary>
             Search in the assembly and referenced assemblies for a specific type.
             </summary>
@@ -189,7 +181,7 @@
             <param name="searchedType">Type to search.</param>
             <returns>Returns a list of instanced objects.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetReferencedConstructibleTypes``1(System.Reflection.Assembly)">
+        <member name="M:Zambon.Core.Database.Extensions.AssembliesExtension.GetReferencedConstructibleTypes``1(System.Reflection.Assembly)">
             <summary>
             Search in the assembly and referenced assemblies for a specific type.
             </summary>
@@ -197,7 +189,7 @@
             <param name="rootAssembly">Parent assembly to search.</param>
             <returns>Returns a list of instanced objects.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetConstructibleTypes(System.Reflection.Assembly,System.Type)">
+        <member name="M:Zambon.Core.Database.Extensions.AssembliesExtension.GetConstructibleTypes(System.Reflection.Assembly,System.Type)">
             <summary>
             Get all types from the assembly that are not abstract and have no generic type definition.
             </summary>
@@ -205,7 +197,7 @@
             <param name="searchedType">The type searched.</param>
             <returns>Returns an IEnumerable of TypeInfo.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetConstructibleTypes``1(System.Reflection.Assembly)">
+        <member name="M:Zambon.Core.Database.Extensions.AssembliesExtension.GetConstructibleTypes``1(System.Reflection.Assembly)">
             <summary>
             Get all types from the assembly that are not abstract and have no generic type definition.
             </summary>
@@ -213,29 +205,19 @@
             <param name="assembly">The assembly to search.</param>
             <returns>Returns an IEnumerable of TypeInfo.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.AssemblyExtension.GetLoadableDefinedTypes(System.Reflection.Assembly)">
+        <member name="M:Zambon.Core.Database.Extensions.AssembliesExtension.GetLoadableDefinedTypes(System.Reflection.Assembly)">
             <summary>
             Get all defined types from the assembly.
             </summary>
             <param name="assembly">The assembly to search.</param>
             <returns>Returns an IEnumerable of TypeInfo.</returns>
         </member>
-        <member name="T:Zambon.Core.Database.ExtensionMethods.DbSetExtension">
+        <member name="T:Zambon.Core.Database.Extensions.DbSetExtension">
             <summary>
             Extension methods to manipulate database objects.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.DbSetExtension.Delete``1(Zambon.Core.Database.CoreDbContext,System.Int32,System.Boolean)">
-            <summary>
-            Deletes an object from database. If the object is of type DBObject, then will only set the IsDeleted property to true, otherwise will delete.
-            </summary>
-            <typeparam name="T">Type of the entity.</typeparam>
-            <param name="dbContext">Database context instance.</param>
-            <param name="id">ID of the object to be deleted.</param>
-            <param name="_commitChanges">If should or not use transaction when deleting.</param>
-            <returns>Returns an instance of the deleted object.</returns>
-        </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.DbSetExtension.IsValid``1(``0,System.IServiceProvider,System.Collections.Generic.IDictionary{System.Object,System.Object}@)">
+        <member name="M:Zambon.Core.Database.Extensions.DbSetExtension.IsValid``1(``0,System.IServiceProvider,System.Collections.Generic.IDictionary{System.Object,System.Object}@)">
             <summary>
             Validate the an entity.
             </summary>
@@ -245,12 +227,12 @@
             <param name="items">The error list.</param>
             <returns>Returns true if no errors were found.</returns>
         </member>
-        <member name="T:Zambon.Core.Database.ExtensionMethods.ModelBuilderExtension">
+        <member name="T:Zambon.Core.Database.Extensions.ModelBuilderExtension">
             <summary>
             Provides additional methods to use when calling ModelBuilder.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ModelBuilderExtension.EntitiesFromAssembly(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+        <member name="M:Zambon.Core.Database.Extensions.ModelBuilderExtension.EntitiesFromAssembly(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
             <summary>
             Applies configuration from all <see cref="T:Zambon.Core.Database.Interfaces.IEntity" /> and <see cref="T:Zambon.Core.Database.Interfaces.IConfigurableEntity" /> instances that are defined in provided assembly.
             </summary>
@@ -259,18 +241,7 @@
             <param name="predicate">Optional predicate to filter types within the assembly.</param>
             <returns>The same <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder" /> instance so that additional configuration calls can be chained.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ModelBuilderExtension.EntitiesFromAssembly``1(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean},System.Boolean)">
-            <summary>
-            Applies configuration from all <see cref="T:Zambon.Core.Database.Interfaces.IEntity" /> and <see cref="T:Zambon.Core.Database.Interfaces.IConfigurableEntity" /> instances that are defined in provided assembly.
-            </summary>
-            <typeparam name="TEntity">The type of the entity.</typeparam>
-            <param name="modelBuilder">The same <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder" /> instance so that additional configuration calls can be chained.</param>
-            <param name="assembly">The assembly to scan.</param>
-            <param name="predicate">Optional predicate to filter types within the assembly.</param>
-            <param name="configureEntity">Optional true or false if should configure the entity or not.</param>
-            <returns>The same <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder" /> instance so that additional configuration calls can be chained.</returns>
-        </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ModelBuilderExtension.QueriesFromAssembly(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+        <member name="M:Zambon.Core.Database.Extensions.ModelBuilderExtension.QueriesFromAssembly(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
             <summary>
             Applies configuration from all <see cref="T:Zambon.Core.Database.Interfaces.IQuery" /> and <see cref="!:IConfigurableQuery" /> instances that are defined in provided assembly.
             </summary>
@@ -279,7 +250,7 @@
             <param name="predicate">Optional predicate to filter types within the assembly.</param>
             <returns>The same <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder" /> instance so that additional configuration calls can be chained.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ModelBuilderExtension.InitializeFromAssembly(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
+        <member name="M:Zambon.Core.Database.Extensions.ModelBuilderExtension.InitializeFromAssembly(Microsoft.EntityFrameworkCore.ModelBuilder,System.Reflection.Assembly,System.Func{System.Type,System.Boolean})">
             <summary>
             Applies initialization from all <see cref="T:Zambon.Core.Database.Interfaces.IDbInitializer" /> instances that are defined in provided assembly.
             </summary>
@@ -288,7 +259,7 @@
             <param name="predicate">Optional predicate to filter types within the assembly.</param>
             <returns>The same <see cref="T:Microsoft.EntityFrameworkCore.ModelBuilder" /> instance so that additional configuration calls can be chained.</returns>
         </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ModelBuilderExtension.InitializeEntity``1(System.Reflection.Assembly,Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0})">
+        <member name="M:Zambon.Core.Database.Extensions.ModelBuilderExtension.InitializeEntity``1(System.Reflection.Assembly,Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{``0})">
             <summary>
             Initialize an entity using a generic initialize method.
             </summary>
@@ -296,35 +267,10 @@
             <param name="assembly">The assembly to scan.</param>
             <param name="entityBuilder">Optional predicate to filter types within the assembly.</param>
         </member>
-        <member name="T:Zambon.Core.Database.ExtensionMethods.ProxyExtension">
-            <summary>
-            Helper methods to use when having Castle.Proxies entities.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ProxyExtension.GetUnproxiedType(System.Object)">
-            <summary>
-            Get the object type without the proxy.
-            </summary>
-            <param name="entity">The entity instance.</param>
-            <returns>Returns the original type of the entity.</returns>
-        </member>
-        <member name="M:Zambon.Core.Database.ExtensionMethods.ProxyExtension.GetUnproxiedType(System.Type)">
-            <summary>
-            Get the object type without the proxy.
-            </summary>
-            <param name="type">The object type.</param>
-            <returns>Returns the original type.</returns>
-        </member>
         <member name="T:Zambon.Core.Database.Interfaces.IConfigurableEntity">
             <summary>
             Defines configuration methods to use inside the IEntity object.
             </summary>
-        </member>
-        <member name="M:Zambon.Core.Database.Interfaces.IConfigurableEntity.ConfigureEntity(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder)">
-            <summary>
-            Called when executing OnConfiguring from CoreContext.
-            </summary>
-            <param name="entityBuilder">The object that can be used to configure a given entity type in the model.</param>
         </member>
         <member name="T:Zambon.Core.Database.Interfaces.IDbInitializer">
             <summary>

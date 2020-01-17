@@ -25,7 +25,7 @@ namespace Zambon.Core.Database.Entities
         /// Called when executing OnConfiguring from CoreContext.
         /// </summary>
         /// <param name="entityBuilder">The object that can be used to configure a given entity type in the model.</param>
-        public virtual void ConfigureEntity(EntityTypeBuilder entityBuilder)
+        public virtual void OnConfiguringEntity(EntityTypeBuilder entityBuilder)
         {
             entityBuilder.Property<int>("ID").UseIdentityColumn();
             entityBuilder.Property<int>("ID").ValueGeneratedOnAdd();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Zambon.Core.Database.Domain.Interfaces
+namespace Zambon.Core.Database.WebModule.Interfaces
 {
     /// <summary>
     /// Interface used to identify model objects.
