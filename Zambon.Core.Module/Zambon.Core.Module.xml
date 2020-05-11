@@ -4,376 +4,144 @@
         <name>Zambon.Core.Module</name>
     </assembly>
     <members>
-        <member name="T:Zambon.Core.Module.Xml.MergeKeyAttribute">
+        <member name="T:Zambon.Core.Module.Application">
             <summary>
-            Indicates the attribute should be used when merging to detect same records in both files.
+            Represent the root XML node.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.Application">
+        <member name="T:Zambon.Core.Module.Atrributes.MergeAttribute">
             <summary>
-            Represents the root class from ApplicationModel XML.
+            Indicates the attribute should be used when merging models to detect same records in both files.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application.Name">
+        <member name="T:Zambon.Core.Module.Entities.Entity">
             <summary>
-            The application name.
+            Represents entities listed under EntityTypes in XML model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application.Description">
+        <member name="P:Zambon.Core.Module.Entities.Entity.Id">
             <summary>
-            Description of the application.
+            The Id of the entity type. This property is used to merge same entities across different models.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application.MenuName">
+        <member name="P:Zambon.Core.Module.Entities.Entity.DisplayName">
             <summary>
-            Display name to use in menu header, if empty will then use the [Name] attribute.
+            The name of the entity type.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application._StaticTexts">
+        <member name="P:Zambon.Core.Module.Entities.Entity.SingularName">
             <summary>
-            Element representation of the XML <StaticTexts></StaticTexts> node.
+            Singular name of each entity type.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application._Languages">
+        <member name="P:Zambon.Core.Module.Entities.Entity.Icon">
             <summary>
-            Element representation of the XML <Languages></Languages> node.
+            Icon for this entity display at specific places.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application.ModuleConfiguration">
+        <member name="P:Zambon.Core.Module.Entities.Entity.FromSql">
             <summary>
-            Module default configuration.
+            Optional property. Only use this is this entity should always be returned using a custom query from database.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application.StaticTexts">
+        <member name="P:Zambon.Core.Module.Entities.Entity.FromSqlParameters">
             <summary>
-            Static texts used across the application.
+            If the FromSql require parameters to pass to SQL execute when returning the objects.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Application.Languages">
+        <member name="P:Zambon.Core.Module.Entities.Entity.TypeClr">
             <summary>
-            List all available languages, will use the languages listed to show the language selection box.
+            The complete CLR type of the entity type.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration">
+        <member name="T:Zambon.Core.Module.Entities.EntityTypes">
             <summary>
-            Represents a node <ModuleConfiguration></ModuleConfiguration> from XML Application Model. Define default values for all application.
+            Represents a list of entity types in XML model file.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Configuration.ModuleConfiguration.TitleDefaults">
+        <member name="P:Zambon.Core.Module.Entities.EntityTypes.Entities">
             <summary>
-            Represents an element <TitleDefaults /> from XML Application Model. Define default values for the application title.
+            List of all entities available in XML model.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.Configuration.TitleDefaults">
+        <member name="M:Zambon.Core.Module.Entities.EntityTypes.#ctor">
             <summary>
-            Represents a node <TitleDefaults /> from XML Application Model. Define default values for the application title.
+            Default constructor.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Configuration.TitleDefaults.BoolShowEnvironment">
+        <member name="P:Zambon.Core.Module.Entities.Properties.Properties.Property">
             <summary>
-            The ShowEnvironment attribute from XML. Indicates if the environment title should appears at the beginning of the application title.
+            List of all properties.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Configuration.TitleDefaults.BoolShowVersion">
+        <member name="T:Zambon.Core.Module.Entities.Properties.Property">
             <summary>
-            The ShowVersion attribute from XML. Indicates if the version should appears at the ending of the application title.
+            Represents properties listed under Entity in XML model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Configuration.TitleDefaults.ShowEnvironment">
+        <member name="P:Zambon.Core.Module.Entities.Properties.Property.Name">
             <summary>
-            The CanEdit attribute from XML. Indicates if the list views should be editable or not.
+            The property name.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Configuration.TitleDefaults.ShowVersion">
+        <member name="P:Zambon.Core.Module.Entities.Properties.Property.DisplayName">
             <summary>
-            The ShowPagination attribute from XML. Indicates if should display or not a pagination.
+            The text when displaying this property, default value from the DisplayName attribute.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.Languages.Language">
+        <member name="P:Zambon.Core.Module.Entities.Properties.Property.Prompt">
             <summary>
-            Represents a node <Language /> from XML Application Model.
+            The text when displaying the input for this property, default value from the DisplayName attribute.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Languages.Language.Code">
+        <member name="P:Zambon.Core.Module.Entities.Properties.Property.Description">
             <summary>
-            The code of the language, the same from AppSettings.json file.
+            The text when displaying the description for this property, default value from the DisplayName attribute.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Languages.Language.FlagIcon">
+        <member name="T:Zambon.Core.Module.Interfaces.ISerializationChildNode`1">
             <summary>
-            The icon should be used to display the language flag in languages list.
+            Defines the contract for an object that has a parent object
             </summary>
+            <typeparam name="TParent">Type of the parent object</typeparam>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Languages.Language.DisplayName">
+        <member name="P:Zambon.Core.Module.Interfaces.ISerializationChildNode`1.Parent">
             <summary>
-            The language display name should be displayed in languages list.
+            The parent node instance.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.Languages.LanguagesArray">
+        <member name="T:Zambon.Core.Module.Interfaces.ISerializationNode">
             <summary>
-            Represents a node <Languages></Languages> from XML Application Model.
+            Interface to use with all serialization nodes from XML.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.Languages.LanguagesArray.Languages">
+        <member name="T:Zambon.Core.Module.Serialization.BaseChildNode`1">
             <summary>
-            List of <Language /> elements.
+            Base class that serialization will use when loading all child nodes.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticText">
+        <member name="P:Zambon.Core.Module.Serialization.BaseChildNode`1.Parent">
             <summary>
-            Represents a node <StaticText /> from XML Application Model.
+            The parent node instance.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticText.Key">
+        <member name="T:Zambon.Core.Module.Serialization.BaseNode">
             <summary>
-            The Key attribute from XML. The static text key should be used when displaying across the application.
+            Base class that serialization will use when loading models.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticText.Value">
+        <member name="T:Zambon.Core.Module.Serialization.ChildItemCollection`2">
             <summary>
-            The Value attribute from XML. The static text value.
+            Collection of child items. This collection automatically set the
+            Parent property of the child items when they are added or removed
             </summary>
+            <typeparam name="TParent">Type of the parent object</typeparam>
+            <typeparam name="TChild">Type of the child items</typeparam>
         </member>
-        <member name="T:Zambon.Core.Module.Xml.StaticTexts.StaticTextsArray">
+        <member name="T:Zambon.Core.Module.Serialization.ModelSerializator">
             <summary>
-            Represents a node <StaticTexts></StaticTexts> from XML Application Model.
+            Responsible for opening the XML file and serializing it.
             </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Xml.StaticTexts.StaticTextsArray.Texts">
-            <summary>
-            Represent elements <StaticText /> from XML Application Model.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Xml.XmlNode">
-            <summary>
-            Base class used in all XML nodes from ApplicationModel.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.CoreConfigs">
-            <summary>
-            Represents the AppSettings.json file
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.Configs">
-            <summary>
-            List of all configurations in "ApplicationConfigs" node with key and value.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.Languages">
-            <summary>
-            List of languages in "Languages" already separated by ";". If no languages were informed will return null.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.IsMultilanguageApplication">
-            <summary>
-            If the application has at least one language informed in Languages section will return true.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.EnvironmentTitle">
-            <summary>
-            The name of the current environment, if production, then leave blank.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.HasEnvironmentTitle">
-            <summary>
-            Will return true if the EnvironmentTitle section was informed and different than blank.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.FileStorePath">
-            <summary>
-            The physical path where application files should be stored.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.DefaultDomainName">
-            <summary>
-            The default domain name to validate the "LDAP" users.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.ReportsURLServer">
-            <summary>
-            The SSRS report server URL, will be used in menu options of the type "Report".
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.CoreConfigs.ReportsFolderBasePath">
-            <summary>
-            The SSRS folder base path of the reports, will be used in menu options of the type "Report".
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.CoreConfigs.Set(System.Collections.Generic.IDictionary{System.String,System.String})">
-            <summary>
-            Populate the configurations property with the AppSettings.json file. Should only get called when the application is starting.
-            </summary>
-            <param name="configs"></param>
-        </member>
-        <member name="T:Zambon.Core.Module.DI.ConfigsInjection">
-            <summary>
-            Dependency injection methods to configure the application configurations.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.DI.ConfigsInjection.AddCoreConfigs``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationRoot)">
-            <summary>
-            Extension method to configure the application configurations.
-            </summary>
-            <param name="services">The Microsoft.Extensions.DependencyInjection.IServiceCollection to add services to.</param>
-            <param name="Configuration">The configuration instance.</param>
-        </member>
-        <member name="T:Zambon.Core.Module.DI.ModuleInjection">
-            <summary>
-            Module injection methods to configure base model services.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.DI.ModuleInjection.AddApplicationModel(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Configure base model services.
-            </summary>
-            <param name="services">The Microsoft.Extensions.DependencyInjection.IServiceCollection to add services to.</param>
-        </member>
-        <member name="T:Zambon.Core.Module.DI.MultiLanguageInjection">
-            <summary>
-            Module injection methods to configure multi language services.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.DI.MultiLanguageInjection.AddMultiLanguage``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            Configure multi language services.
-            </summary>
-            <param name="services">The Microsoft.Extensions.DependencyInjection.IServiceCollection to add services to.</param>
-        </member>
-        <member name="T:Zambon.Core.Module.Extensions.MergeExtension">
-            <summary>
-            Extension method used to merge two ApplicationModel XML files.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Extensions.MergeExtension.Merge``1(``0,``0)">
-            <summary>
-            Merges two objects that implements the interface IMergeable.
-            </summary>
-            <typeparam name="TObject">The element type of both objects.</typeparam>
-            <param name="target">The target object, that will have the items with null values.</param>
-            <param name="source">The source object, containing the original items values.</param>
-        </member>
-        <member name="M:Zambon.Core.Module.Extensions.MergeExtension.MergeElements``1(``0[],``0[])">
-            <summary>
-            Merges two arrays of objects that implements the interface IMergeable.
-            </summary>
-            <typeparam name="TObject">The element type of the array.</typeparam>
-            <param name="target">The target array, that will have the items with null values.</param>
-            <param name="source">The source array, containing the original items values.</param>
-            <returns>Returns the target array plus all any new elements from the source array.</returns>
-        </member>
-        <member name="T:Zambon.Core.Module.Interfaces.IMergeable">
-            <summary>
-            Interface used by XML so that they can merge base and upper levels ApplicationModel's nodes.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Services.ApplicationService">
-            <summary>
-            The main service used in application, is registered under Scoped life-cycle.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ApplicationService.#ctor(Zambon.Core.Module.Services.CoreConfigsService,Zambon.Core.Module.Services.ModelService,Zambon.Core.Module.Services.ILanguageProvider)">
-            <summary>
-            Default constructor for the ApplicationService.
-            </summary>
-            <param name="coreConfigsService">Instance of the AppSettings.json file.</param>
-            <param name="languageProvider">Current language service.</param>
-            <param name="modelService">ApplicationModel.xml service.</param>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ApplicationService.GetApplicationTitle">
-            <summary>
-            Get the application title.
-            </summary>
-            <returns>Returns the application title.</returns>
-        </member>
-        <member name="T:Zambon.Core.Module.Services.CoreConfigsService">
-            <summary>
-            Service to get the core configuration used in application.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.CoreConfigsService.Configs">
-            <summary>
-            The current configuration used in application.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.CoreConfigsService.#ctor(Microsoft.Extensions.Options.IOptions{Zambon.Core.Module.CoreConfigs})">
-            <summary>
-            Service to get the core configuration used in application.
-            </summary>
-            <param name="coreConfigs">The core configuration IOptions instance.</param>
-        </member>
-        <member name="T:Zambon.Core.Module.Services.ILanguageProvider">
-            <summary>
-            Interface to implements in methods responsible to the current active language.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ILanguageProvider.ChangeLanguage(System.String)">
-            <summary>
-            Change the language by specifying a new language.
-            </summary>
-            <param name="newLanguage">The code of the new language to display.</param>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ILanguageProvider.GetCurrentLanguage">
-            <summary>
-            Get the current active language.
-            </summary>
-            <returns>Returns the current active language code.</returns>
-        </member>
-        <member name="T:Zambon.Core.Module.Services.ModelService">
-            <summary>
-            Service used to across the entire application to read from the Application Model XML file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.ModelService.AppName">
-            <summary>
-            The name of the application. From ApplicationModel.xml, <Application /> node and [Name] attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.ModelService.AppMenuName">
-            <summary>
-            The name of the application used in menu, if blank will use the Name property. From ApplicationModel.xml, <Application /> node and [MenuName] attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.ModelService.AppDescription">
-            <summary>
-            The description text for the application used in home page. From ApplicationModel.xml <Application /> node and [Description] attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.ModelService.Version">
-            <summary>
-            The current version of the application, from the startup project Package > Package version.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.ModelService.Copyright">
-            <summary>
-            The copyright of the application, from the startup project Package > Copyright.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ModelService.#ctor(Microsoft.Extensions.Options.IOptions{Zambon.Core.Module.CoreConfigs},Zambon.Core.Module.Services.ILanguageProvider)">
-            <summary>
-            Default constructor for the ApplicationService.
-            </summary>
-            <param name="coreConfigs">Instance of the AppSettings.json file.</param>
-            <param name="languageProvider">Instance of the LanguageProvider service.</param>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ModelService.GetModel(System.String)">
-            <summary>
-            Get a cloned instance of the Application Model.
-            </summary>
-            <param name="language">The current language of the model, if null will return the default language.</param>
-            <returns>Return a cloned instance of the Application Model</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ModelService.GetStaticText(System.String)">
-            <summary>
-            Search all Static Texts using the Key property.
-            </summary>
-            <param name="key">The static text key to search.</param>
-            <returns>Return the Static Text value string, string.Empty if not found.</returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Services.ModelService.GetConfiguration">
-            <summary>
-            Return the <ApplicationModel /> node values.
-            </summary>
-            <returns>Return the <ApplicationModel /> node values.</returns>
         </member>
     </members>
 </doc>
