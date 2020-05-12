@@ -5,9 +5,6 @@
     /// </summary>
     public interface ISerializationNode
     {
-        /// <summary>
-        /// The parent node instance.
-        /// </summary>
-        object Parent { get; set; }
+        void Merge<TObject>(TObject readObj) where TObject : class, ISerializationNode;
     }
 }

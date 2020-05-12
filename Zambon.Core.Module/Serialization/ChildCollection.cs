@@ -3,9 +3,9 @@ using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Serialization
 {
-    public abstract class BaseChildItemCollection
+    public class BaseChildItemCollection
     {
-        public static bool AllowEditParent { get; protected set; }
+        public static bool CollectionEditParent { get; protected set; }
     }
 
     /// <summary>
@@ -13,7 +13,7 @@ namespace Zambon.Core.Module.Serialization
     /// Parent property of the child items when they are added or removed
     /// </summary>
     /// <typeparam name="TChild">Type of the child items</typeparam>
-    public class ChildItemCollection<TChild> : BaseChildItemCollection, IList<TChild> where TChild : class, ISerializationNode
+    public class ChildItemCollection<TChild> : BaseChildItemCollection, IList<TChild> where TChild : class, ISerializationNode, IParent
     {
         private object _parent;
         private IList<TChild> _collection;
@@ -45,9 +45,9 @@ namespace Zambon.Core.Module.Serialization
         {
             if (item != null)
             {
-                _allowEditParent = true;
+                CollectionEditParent = true;
                 item.Parent = _parent;
-                _allowEditParent = false;
+                CollectionEditParent = false;
             }
             _collection.Insert(index, item);
         }
@@ -58,33 +58,30 @@ namespace Zambon.Core.Module.Serialization
             _collection.RemoveAt(index);
             if (oldItem != null)
             {
-                _allowEditParent = true;
+                CollectionEditParent = true;
                 oldItem.Parent = null;
-                _allowEditParent = false;
+                CollectionEditParent = false;
             }
         }
 
         public TChild this[int index]
         {
-            get
-            {
-                return _collection[index];
-            }
+            get => _collection[index];
             set
             {
                 TChild oldItem = _collection[index];
                 if (value != null)
                 {
-                    _allowEditParent = true;
+                    CollectionEditParent = true;
                     value.Parent = _parent;
-                    _allowEditParent = false;
+                    CollectionEditParent = false;
                 }
                 _collection[index] = value;
                 if (oldItem != null)
                 {
-                    _allowEditParent = true;
+                    CollectionEditParent = true;
                     oldItem.Parent = null;
-                    _allowEditParent = false;
+                    CollectionEditParent = false;
                 }
             }
         }
@@ -97,9 +94,9 @@ namespace Zambon.Core.Module.Serialization
         {
             if (item != null)
             {
-                _allowEditParent = true;
+                CollectionEditParent = true;
                 item.Parent = _parent;
-                _allowEditParent = false;
+                CollectionEditParent = false;
             }
             _collection.Add(item);
         }
@@ -110,9 +107,9 @@ namespace Zambon.Core.Module.Serialization
             {
                 if (item != null)
                 {
-                    _allowEditParent = true;
+                    CollectionEditParent = true;
                     item.Parent = null;
-                    _allowEditParent = false;
+                    CollectionEditParent = false;
                 }
             }
             _collection.Clear();
@@ -143,9 +140,9 @@ namespace Zambon.Core.Module.Serialization
             bool b = _collection.Remove(item);
             if (item != null)
             {
-                _allowEditParent = true;
+                CollectionEditParent = true;
                 item.Parent = null;
-                _allowEditParent = false;
+                CollectionEditParent = false;
             }
             return b;
         }

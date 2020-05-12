@@ -72,6 +72,7 @@ namespace Zambon.Core.Module.Entities
         /// <summary>
         /// List of all properties available in XML file.
         /// </summary>
+        [XmlIgnore]
         public ChildItemCollection<Property> Properties => _Properties?.PropertiesList ?? new ChildItemCollection<Property>(null);
 
 

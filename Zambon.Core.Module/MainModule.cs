@@ -1,18 +1,51 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Formatters.Xml;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using Zambon.Core.Database;
+using System.Reflection;
+using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module
 {
-    public partial class MainModule
+    public class MainModule : IModule
     {
-        private readonly CoreDbContext _ctx;
+        const string MODEL_NAME = "ApplicationModel";
 
-        public MainModule(CoreDbContext ctx)
+        public virtual string ApplicationModelName { get => MODEL_NAME; }
+
+
+        public MainModule()
         {
-            this._ctx = ctx;
+            
         }
 
+
+        public virtual List<Type> ReferencedModels(List<Type> models) => models;
+
+        public T CreateInstance<T>() where T : class, IModule, new() => new T();
+
+        public IList<IModule> LoadModules()
+        {
+            var loadedModels = new List<IModule>() { this };
+
+            if (ReferencedModels(new List<Type>()) is List<Type> modules && modules.Count > 0)
+            {
+                foreach (var model in modules)
+                {
+                    loadedModels.Add(
+                        (IModule)model.GetConstructor(new Type[] { }).Invoke(new object[] { })
+                    );
+                }
+            }
+
+            var currentModel = GetType();
+            while(currentModel.BaseType != null && currentModel.BaseType != typeof(System.Object))
+            {
+                loadedModels.Add((IModule)currentModel.BaseType.GetConstructor(new Type[] { }).Invoke(new object[] { }));
+                currentModel = currentModel.BaseType;
+            }
+
+            return loadedModels;
+        }
     }
 }

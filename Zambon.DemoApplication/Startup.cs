@@ -12,91 +12,45 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
-using Zambon.Core.Module;
-using Zambon.Core.Module.DI;
-using Zambon.Core.WebModule;
-using Zambon.Core.WebModule.DI;
-using Zambon.Core.WebModule.Services;
+using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Services;
 
 namespace Zambon.DemoApplication
 {
-    public class Startup : ModuleStartup
+    public class Startup// : ModuleStartup
     {
-        
-        public Startup(IHostingEnvironment env) : base(env)
+        public IConfigurationRoot Configuration { get; protected set; }
+
+        protected IHostingEnvironment Env { get; set; }
+
+
+        public Startup(IHostingEnvironment env)
         {
+            Env = env;
+            Configuration = DefaultConfigurationBuilder().Build();
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+
+        protected IConfigurationBuilder DefaultConfigurationBuilder() =>
+            new ConfigurationBuilder()
+                .SetBasePath(Env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
+            var mainModule = new WebAppModule();
 
-            #region Database
+            services.AddSingleton(typeof(IModelService), new ModelService<WebAppModule>(mainModule));
+        }
 
-            //services.AddAutoMapperToModels(GetType().Assembly.GetName().Name, "Test App", "Zambon.Core.WebModule");
+        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            var modelService = app.ApplicationServices.GetService<IModelService>();
 
-            //services.AddChangeTrackerServices<ChangeTrackerService>();
-            //services.AddChangeTrackerDbCache(options =>
-            //{
-            //    options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
-            //    options.SchemaName = "Cache";
-            //    options.TableName = "CachedData";
-            //    options.DefaultSlidingExpiration = new System.TimeSpan(14, 0, 0, 0);
-            //});
-            //services.AddDatabase(Configuration.GetConnectionString("DefaultConnection"), GetType().Assembly.GetName().Name, additionalAssemblies: new[] { "Test" });
-
-            #endregion
-
-            services.AddHttpContextAccessor();
-
-            #region Module
-
-            services.AddCoreConfigs<CoreConfigs>(Configuration);
-
-            //if (!Env.IsDevelopment())
-            //{
-            //    services.AddDataProtection(Configuration, Env.ApplicationName);
-            //}
-
-            services.AddApplicationModel();
-            LocalizationInjection.AddLocalization(services);
-
-            #endregion
-
-            #region Security
-
-            //services.AddIdentityAuthentication<Users, Roles>(Env.ApplicationName);
-            //services.AddUserService<LoggedUserService<Users, Roles>>();
-
-            #endregion
-
-            #region WebModule
-
-            services.AddSession();
-
-            //services.AddApplicationCookie(Env.ApplicationName);
-
-            services.AddCustomFileProviders();
-
-            services.AddMvc(config =>
-                {
-                    config.ModelMetadataDetailsProviders.Add(new CoreMetaDataProvider());
-
-                    config.ConfigureLocalizationFilter(services);
-
-                    //var policy = new AuthorizationPolicyBuilder()
-                    //     .RequireAuthenticatedUser()
-                    //     .Build();
-                    //config.Filters.Add(new AuthorizeFilter(policy));
-                })
-            .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2)
-            .AddSessionStateTempDataProvider();
-
-            //services.AddCustomValidators();
-
-            #endregion
-
-            //CustomConfigureServices(services, Configuration);
+            modelService.LoadModels();
         }
     }
 }
