@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application>
   <StaticTexts>
-    <StaticText Key="Test" Value="Module" />
+    <StaticText Key="Test" Value="AppModule" />
   </StaticTexts>
 </Application>

@@ -391,7 +391,7 @@
             <typeparam name="TObject">The element type of the objects.</typeparam>
             <param name="readObj">The source array, containing the original items values.</param>
         </member>
-        <member name="M:Zambon.Core.Module.Serialization.BaseNode.MergeElements``1(Zambon.Core.Module.Serialization.ChildItemCollection{``0},Zambon.Core.Module.Serialization.ChildItemCollection{``0})">
+        <member name="M:Zambon.Core.Module.Serialization.BaseNode.MergeElements``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``0})">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>

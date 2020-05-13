@@ -1,18 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
+using System.Linq.Dynamic.Core;
 using System.Xml.Serialization;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces;
-using System.Linq.Dynamic.Core;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Zambon.Core.Module.Serialization
 {
@@ -81,16 +75,17 @@ namespace Zambon.Core.Module.Serialization
                 {
                     var property = properties[i];
 
-                    if (property.SetMethod != null && property.Name != nameof(Parent))
+                    if (property.SetMethod != null && property.Name != nameof(Parent)
+                        && property.GetValue(readObj) is object readValue)
                     {
                         var writeValue = property.GetValue(this);
-                        var readValue = property.GetValue(readObj);
 
                         if (property.PropertyType.ImplementsInterface<ISerializationNode>())
                         {
                             if (writeValue == null)
                             {
                                 writeValue = Activator.CreateInstance(property.PropertyType);
+                                property.SetValue(this, writeValue);
 
                                 if (property.PropertyType.ImplementsInterface<IParent>())
                                 {
@@ -99,12 +94,13 @@ namespace Zambon.Core.Module.Serialization
                                     NodeEditParent = false;
                                 }
                             }
-                            ((ISerializationNode)writeValue).Merge(readValue as ISerializationNode);
+
+                            GetType().GetMethod(nameof(Merge)).MakeGenericMethod(property.PropertyType).Invoke(writeValue, new object[] { readValue });
                         }
-                        else if (properties[i].PropertyType.IsArray && properties[i].PropertyType.GetElementType() is Type elementType && elementType.ImplementsInterface<ISerializationNode>())
+                        else if (properties[i].PropertyType.ImplementsInterface<IEnumerable>() && properties[i].PropertyType.GenericTypeArguments.Count() > 0
+                            && properties[i].PropertyType.GenericTypeArguments[0] is Type elementType && elementType.ImplementsInterface<ISerializationNode>())
                         {
-                            GetType().GetMethod(nameof(MergeElements)).MakeGenericMethod(properties[i].PropertyType.GetElementType()).Invoke(this, new object[] { writeValue, readValue });
-                            //properties[i].SetValue(this, arrayValue);
+                            GetType().GetMethod(nameof(MergeElements)).MakeGenericMethod(elementType).Invoke(this, new object[] { writeValue, readValue });
                         }
                         else if (writeValue == null && readValue != null)
                         {
@@ -122,9 +118,9 @@ namespace Zambon.Core.Module.Serialization
         /// <param name="write">The target array, that will have the items with null values set.</param>
         /// <param name="read">The source array, containing the original items values.</param>
         /// <returns>Returns the target array plus all any new element from the source array.</returns>
-        public void MergeElements<TObject>(ChildItemCollection<TObject> write, ChildItemCollection<TObject> read) where TObject : class, ISerializationNode, IParent
+        public void MergeElements<TObject>(IList<TObject> write, IList<TObject> read) where TObject : class, ISerializationNode, IParent
         {
-            if ((read?.Count ?? 0) > 0)
+            if ((read?.Count() ?? 0) > 0)
             {
                 if (write == null)
                 {
@@ -139,29 +135,19 @@ namespace Zambon.Core.Module.Serialization
                     keyProperties = properties;
                 }
 
-                foreach(var readValue in read)
+                foreach (var readValue in read)
                 {
-                    object writeValue = write.AsQueryable().FirstOrDefault(w => keyProperties.Count(k => k.GetValue(w) == k.GetValue(readValue)) == keyProperties.Count());
+                    TObject writeValue = write.AsQueryable().FirstOrDefault(w => keyProperties.Count(k => k.GetValue(w) == k.GetValue(readValue)) == keyProperties.Count());
                     if (writeValue == null)
                     {
-                        writeValue = Activator.CreateInstance(typeof(TObject));
-
-                        if (typeof(TObject).ImplementsInterface<IParent>())
-                        {
-                            NodeEditParent = true;
-                            ((IParent)writeValue).Parent = this;
-                            NodeEditParent = false;
-                        }
+                        writeValue = Activator.CreateInstance<TObject>();
+                        write.Add(writeValue);
                     }
-
-                    ((ISerializationNode)writeValue).Merge(readValue as ISerializationNode);
+                    writeValue.Merge(readValue);
                 }
             }
         }
 
         #endregion
-
-
-
     }
 }

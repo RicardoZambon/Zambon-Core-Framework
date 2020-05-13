@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 
@@ -41,16 +42,19 @@ namespace Zambon.DemoApplication
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var mainModule = new WebAppModule();
+            services.AddSingleton(typeof(IModule), typeof(WebAppModule));
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
-            services.AddSingleton(typeof(IModelService), new ModelService<WebAppModule>(mainModule));
+            services.AddSingleton(typeof(ModelStore));
+            
+            services.AddSingleton(typeof(IModelService), typeof(ModelService<WebAppModule>));
         }
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var modelService = app.ApplicationServices.GetService<IModelService>();
 
-            modelService.LoadModels();
+            modelService.GetModel("en");
         }
     }
 }

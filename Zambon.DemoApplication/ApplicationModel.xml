@@ -1,3 +1,4 @@
-<Application Name="Zambon Framework" Description="This is a demostration app of the Zambon Framework." MenuName="Zambon">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application>
   
 </Application>

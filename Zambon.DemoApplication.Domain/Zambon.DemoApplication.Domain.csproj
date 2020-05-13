@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ApplicationModel.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ApplicationModel.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Zambon.Core.Database.ChangeTracker\Zambon.Core.Database.ChangeTracker.csproj" />
     <ProjectReference Include="..\Zambon.Core.Database.Domain\Zambon.Core.Database.Domain.csproj" />
     <ProjectReference Include="..\Zambon.Core.Database\Zambon.Core.Database.csproj" />

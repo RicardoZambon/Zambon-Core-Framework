@@ -36,7 +36,14 @@
 
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="ApplicationModel.pt-br.xml" />
+    <None Remove="ApplicationModel.xml" />
     <None Remove="Zambon.Core.Module.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="ApplicationModel.pt-br.xml" />
+    <EmbeddedResource Include="ApplicationModel.xml" />
   </ItemGroup>
 
   <ItemGroup>
