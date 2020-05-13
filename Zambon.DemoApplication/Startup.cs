@@ -15,10 +15,11 @@ using Microsoft.Extensions.Logging;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
+using Zambon.Core.WebModule.Configurations;
 
 namespace Zambon.DemoApplication
 {
-    public class Startup// : ModuleStartup
+    public class Startup
     {
         public IConfigurationRoot Configuration { get; protected set; }
 
@@ -44,6 +45,8 @@ namespace Zambon.DemoApplication
         {
             services.AddSingleton(typeof(IModule), typeof(WebAppModule));
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<WebAppSettings>(Configuration.GetSection("AppSettings"));
+
 
             services.AddSingleton(typeof(ModelStore));
             

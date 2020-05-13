@@ -22,8 +22,6 @@ namespace Zambon.Core.Module
 
         public virtual List<Type> ReferencedModels(List<Type> models) => models;
 
-        public T CreateInstance<T>() where T : class, IModule, new() => new T();
-
         public IList<IModule> LoadModules()
         {
             var loadedModels = new List<IModule>() { this };

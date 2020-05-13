@@ -106,6 +106,5 @@ namespace Zambon.Core.Module.Services
 
             return AvailableModels[language];
         }
-
     }
 }
