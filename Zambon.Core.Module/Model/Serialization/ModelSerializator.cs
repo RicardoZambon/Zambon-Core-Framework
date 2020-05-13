@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Zambon.Core.Module.Serialization
+namespace Zambon.Core.Module.Model.Serialization
 {
     /// <summary>
     /// Responsible for opening the XML file and serializing it.

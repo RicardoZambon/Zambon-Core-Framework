@@ -4,230 +4,21 @@
         <name>Zambon.Core.Module</name>
     </assembly>
     <members>
-        <member name="T:Zambon.Core.Module.Application">
-            <summary>
-            Represent the root XML node.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application._EntityTypes">
-            <summary>
-            Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application._Enums">
-            <summary>
-            Represents a list of enums in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application._Languages">
-            <summary>
-            Represents a list of languages in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application._StaticTexts">
-            <summary>
-            Represents a list of texts in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.ModuleConfigurations">
-            <summary>
-            Represents all configurations used by application in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.Navigation">
-            <summary>
-            Represents all navigation menus available in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.Entities">
-            <summary>
-            Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.Enums">
-            <summary>
-            Represents a list of enums in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.Languages">
-            <summary>
-            Represents a list of languages in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.StaticTexts">
-            <summary>
-            Represents a list of texts in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Application.Menus">
-            <summary>
-            Represents all navigation menus available in XML model file.
-            </summary>
-        </member>
         <member name="T:Zambon.Core.Module.Atrributes.MergeAttribute">
             <summary>
             Indicates the attribute should be used when merging models to detect same records in both files.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Configurations.ModuleConfigurations">
+        <member name="T:Zambon.Core.Module.Exceptions.ModelNotFoundException">
             <summary>
-            Represents all configurations used by application in XML model file.
+            Exception triggered when trying load a model language that does not exists.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Entities.Entity">
-            <summary>
-            Represents entities listed under EntityTypes in XML model.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.Id">
-            <summary>
-            The Id of the entity type. This property is used to merge same entities across different models.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.DisplayName">
-            <summary>
-            The name of the entity type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.SingularName">
-            <summary>
-            Singular name of each entity type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.Icon">
-            <summary>
-            Icon for this entity display at specific places.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.FromSql">
-            <summary>
-            Optional property. Only use this is this entity should always be returned using a custom query from database.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.FromSqlParameters">
-            <summary>
-            If the FromSql require parameters to pass to SQL execute when returning the objects.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.TypeClr">
-            <summary>
-            The complete CLR type of the entity type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity._Properties">
-            <summary>
-            List of all properties available in XML file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Entity.Properties">
-            <summary>
-            List of all properties available in XML file.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Entities.EntityTypes">
-            <summary>
-            Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.EntityTypes.EntitiesList">
-            <summary>
-            List of all entities available in XML model.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Entities.EntityTypes.#ctor">
+        <member name="M:Zambon.Core.Module.Exceptions.ModelNotFoundException.#ctor(System.String)">
             <summary>
             Default constructor.
             </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Entities.Properties.Properties">
-            <summary>
-            Represents a list of properties in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Properties.Properties.PropertiesList">
-            <summary>
-            List of all properties available in XML file.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Entities.Properties.Properties.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Entities.Properties.Property">
-            <summary>
-            Represents properties listed under Entity in XML model.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Properties.Property.Name">
-            <summary>
-            The property name.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Properties.Property.DisplayName">
-            <summary>
-            The text when displaying this property, default value from the DisplayName attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Properties.Property.Prompt">
-            <summary>
-            The text when displaying the input for this property, default value from the DisplayName attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Entities.Properties.Property.Description">
-            <summary>
-            The text when displaying the description for this property, default value from the DisplayName attribute.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Enums.Enum">
-            <summary>
-            Represents ENUM used in application.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Enums.Enum.Id">
-            <summary>
-            The same Id in ENUM structure.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Enums.Enum.Values">
-            <summary>
-            Values from the ENUM.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Enums.Enum.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Enums.Enums">
-            <summary>
-            Represents a list of enums used in application.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Enums.Enums.EnumsList">
-            <summary>
-            List of all enums.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Enums.Enums.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Enums.Value">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Enums.Value.Key">
-            <summary>
-            The Key attribute from XML. The int value from ENUM type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Enums.Value.DisplayName">
-            <summary>
-            The DisplayName attribute from XML. The display name should be used in application, by default will use the Display attribute.
-            </summary>
+            <param name="language">The searched language.</param>
         </member>
         <member name="T:Zambon.Core.Module.Extensions.MergeExtension">
             <summary>
@@ -249,107 +40,350 @@
             Interface to use with all serialization nodes from XML.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Languages.Language">
+        <member name="T:Zambon.Core.Module.MainModule">
             <summary>
-            Represents a node <Language /> from XML Application Model.
+            Module that makes the connection across Module, WebModule and Application.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Languages.Language.Code">
+        <member name="P:Zambon.Core.Module.MainModule.ApplicationModelName">
             <summary>
-            The code of the language, the same from AppSettings.json file.
+            The application model file name.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Languages.Language.FlagIcon">
+        <member name="M:Zambon.Core.Module.MainModule.ReferencedModules(System.Collections.Generic.List{System.Type})">
             <summary>
-            The icon should be used to display the language flag in languages list.
+            Gets all modules referenced externally the framework.
+            </summary>
+            <param name="modules">List of additional modules.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Zambon.Core.Module.MainModule.LoadModules">
+            <summary>
+            Load all modules.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Application">
+            <summary>
+            Represent the root XML node.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Languages.Language.DisplayName">
+        <member name="P:Zambon.Core.Module.Model.Application._EntityTypes">
             <summary>
-            The language display name should be displayed in languages list.
+            Represents a list of entity types in XML model file.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Languages.Languages">
+        <member name="P:Zambon.Core.Module.Model.Application._Enums">
             <summary>
-            Represents a node <Languages></Languages> from XML Application Model.
+            Represents a list of enums in XML model file.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Languages.Languages.LanguagesList">
+        <member name="P:Zambon.Core.Module.Model.Application._Languages">
             <summary>
-            List of <Language /> elements.
+            Represents a list of languages in XML model file.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Languages.Languages.#ctor">
+        <member name="P:Zambon.Core.Module.Model.Application._StaticTexts">
+            <summary>
+            Represents a list of texts in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.ModuleConfigurations">
+            <summary>
+            Represents all configurations used by application in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.Navigation">
+            <summary>
+            Represents all navigation menus available in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.Entities">
+            <summary>
+            Represents a list of entity types in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.Enums">
+            <summary>
+            Represents a list of enums in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.Languages">
+            <summary>
+            Represents a list of languages in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.StaticTexts">
+            <summary>
+            Represents a list of texts in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Application.Menus">
+            <summary>
+            Represents all navigation menus available in XML model file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Configurations.ModuleConfigurations">
+            <summary>
+            Represents all configurations used by application in XML model file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Entities.Entity">
+            <summary>
+            Represents entities listed under EntityTypes in XML model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.Id">
+            <summary>
+            The Id of the entity type. This property is used to merge same entities across different models.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.DisplayName">
+            <summary>
+            The name of the entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.SingularName">
+            <summary>
+            Singular name of each entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.Icon">
+            <summary>
+            Icon for this entity display at specific places.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.FromSql">
+            <summary>
+            Optional property. Only use this is this entity should always be returned using a custom query from database.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.FromSqlParameters">
+            <summary>
+            If the FromSql require parameters to pass to SQL execute when returning the objects.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.TypeClr">
+            <summary>
+            The complete CLR type of the entity type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity._Properties">
+            <summary>
+            List of all properties available in XML file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Entity.Properties">
+            <summary>
+            List of all properties available in XML file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Entities.EntityTypes">
+            <summary>
+            Represents a list of entity types in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.EntityTypes.EntitiesList">
+            <summary>
+            List of all entities available in XML model.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Entities.EntityTypes.#ctor">
             <summary>
             Default constructor.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Navigation.Menu">
+        <member name="T:Zambon.Core.Module.Model.Entities.Properties.Properties">
+            <summary>
+            Represents a list of properties in XML model file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Properties.PropertiesList">
+            <summary>
+            List of all properties available in XML file.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Entities.Properties.Properties.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Entities.Properties.Property">
+            <summary>
+            Represents properties listed under Entity in XML model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.Name">
+            <summary>
+            The property name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.DisplayName">
+            <summary>
+            The text when displaying this property, default value from the DisplayName attribute.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.Prompt">
+            <summary>
+            The text when displaying the input for this property, default value from the DisplayName attribute.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.Description">
+            <summary>
+            The text when displaying the description for this property, default value from the DisplayName attribute.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Enums.Enum">
+            <summary>
+            Represents ENUM used in application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Enums.Enum.Id">
+            <summary>
+            The same Id in ENUM structure.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Enums.Enum.Values">
+            <summary>
+            Values from the ENUM.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Enums.Enum.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Enums.Enums">
+            <summary>
+            Represents a list of enums used in application.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Enums.Enums.EnumsList">
+            <summary>
+            List of all enums.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Enums.Enums.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Enums.Value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Enums.Value.Key">
+            <summary>
+            The Key attribute from XML. The int value from ENUM type.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Enums.Value.DisplayName">
+            <summary>
+            The DisplayName attribute from XML. The display name should be used in application, by default will use the Display attribute.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Languages.Language">
+            <summary>
+            Represents a node <Language /> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Languages.Language.Code">
+            <summary>
+            The code of the language, the same from AppSettings.json file.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Languages.Language.FlagIcon">
+            <summary>
+            The icon should be used to display the language flag in languages list.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Languages.Language.DisplayName">
+            <summary>
+            The language display name should be displayed in languages list.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Languages.Languages">
+            <summary>
+            Represents a node <Languages></Languages> from XML Application Model.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Languages.Languages.LanguagesList">
+            <summary>
+            List of <Language /> elements.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Languages.Languages.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Navigation.Menu">
             <summary>
             Represents a node <Menu></Menu> from XML Application Model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.Id">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.Id">
             <summary>
             The Id attribute from XML. The ID of the menu item.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.DisplayName">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.DisplayName">
             <summary>
             The DisplayName attribute from XML. The display name of the menu item, if null and of type DetailView or ListView will use the title from the view.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.Icon">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.Icon">
             <summary>
             The Icon attribute from XML. The icon of the menu item, if null and of type DetailView or ListView will use the icon from the view.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.IntIndex">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.IntIndex">
             <summary>
             The Index attribute from XML. The index order of the menu item.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.Type">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.Type">
             <summary>
             The Type attribute from XML. The type defines what the action the menu should execute when accessed.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.ViewID">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.ViewID">
             <summary>
             The ViewID attribute from XML. The ViewID of the view the menu should show, when the type is DetailView or ListView.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.ReportPath">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.ReportPath">
             <summary>
             The ReportPath attribute from XML. The path of the report the menu should open, only used with Report type.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.URL">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.URL">
             <summary>
             The URL attribute from XML. The URL the menu should open, only used with External type.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.BoolShowBadge">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.BoolShowBadge">
             <summary>
             The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with sub menus or ListViews, indicating the number of records (count) are available.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.SubMenus">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.SubMenus">
             <summary>
             The sub menus included in this menu. If the menu has sub menus the menu Type is ignored.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.Index">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.Index">
             <summary>
             The Index attribute from XML. The index order of the menu item.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Menu.ShowBadge">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Menu.ShowBadge">
             <summary>
             The ShowBadge attribute from XML. Indicates if the menu should display the badge along with the name, only used with sub menus or ListViews, indicating the number of records (count) are available.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Navigation.Menu.CompareTo(System.Object)">
+        <member name="M:Zambon.Core.Module.Model.Navigation.Menu.CompareTo(System.Object)">
             <summary>
             Compares the Index with other menu object, to sort the menus array.
             </summary>
@@ -359,39 +393,39 @@
                 instance is equal to value. Greater than zero: This instance is greater than value.
             </returns>
         </member>
-        <member name="T:Zambon.Core.Module.Navigation.Navigation">
+        <member name="T:Zambon.Core.Module.Model.Navigation.Navigation">
             <summary>
             Represents a node <Navigation></Navigation> from XML Application Model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Navigation.Navigation.Menus">
+        <member name="P:Zambon.Core.Module.Model.Navigation.Navigation.Menus">
             <summary>
             Represents elements <Menu></Menu> from XML Application Model.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Navigation.Navigation.#ctor">
+        <member name="M:Zambon.Core.Module.Model.Navigation.Navigation.#ctor">
             <summary>
             Default constructor.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Serialization.BaseNode">
+        <member name="T:Zambon.Core.Module.Model.Serialization.BaseNode">
             <summary>
             Base class that serialization will use when loading models.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Serialization.BaseNode.Parent">
+        <member name="P:Zambon.Core.Module.Model.Serialization.BaseNode.Parent">
             <summary>
             The parent node instance.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Serialization.BaseNode.Merge``1(``0)">
+        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.Merge``1(``0)">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
             <typeparam name="TObject">The element type of the objects.</typeparam>
             <param name="readObj">The source array, containing the original items values.</param>
         </member>
-        <member name="M:Zambon.Core.Module.Serialization.BaseNode.MergeElements``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``0})">
+        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.MergeElements``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``0})">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
@@ -400,57 +434,65 @@
             <param name="read">The source array, containing the original items values.</param>
             <returns>Returns the target array plus all any new element from the source array.</returns>
         </member>
-        <member name="T:Zambon.Core.Module.Serialization.ChildItemCollection`1">
+        <member name="T:Zambon.Core.Module.Model.Serialization.ChildItemCollection`1">
             <summary>
             Collection of child items. This collection automatically set the
             Parent property of the child items when they are added or removed
             </summary>
             <typeparam name="TChild">Type of the child items</typeparam>
         </member>
-        <member name="T:Zambon.Core.Module.Serialization.ModelSerializator">
+        <member name="T:Zambon.Core.Module.Model.Serialization.ModelSerializator">
             <summary>
             Responsible for opening the XML file and serializing it.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.StaticTexts.StaticText">
+        <member name="T:Zambon.Core.Module.Model.StaticTexts.StaticText">
             <summary>
             Represents a node <StaticText /> from XML Application Model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.StaticTexts.StaticText.Key">
+        <member name="P:Zambon.Core.Module.Model.StaticTexts.StaticText.Key">
             <summary>
             The Key attribute from XML. The static text key should be used when displaying across the application.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.StaticTexts.StaticText.Value">
+        <member name="P:Zambon.Core.Module.Model.StaticTexts.StaticText.Value">
             <summary>
             The Value attribute from XML. The static text value.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.StaticTexts.StaticTexts">
+        <member name="T:Zambon.Core.Module.Model.StaticTexts.StaticTexts">
             <summary>
             Represents a node <StaticTexts></StaticTexts> from XML Application Model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.StaticTexts.StaticTexts.TextsList">
+        <member name="P:Zambon.Core.Module.Model.StaticTexts.StaticTexts.TextsList">
             <summary>
             Represent elements <StaticText /> from XML Application Model.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.StaticTexts.StaticTexts.#ctor">
+        <member name="M:Zambon.Core.Module.Model.StaticTexts.StaticTexts.#ctor">
             <summary>
             Default constructor.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Views.Views">
+        <member name="T:Zambon.Core.Module.Model.Views.Views">
             <summary>
             Represents a node <Views></Views> from XML Application Model.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Views.Views.#ctor">
+        <member name="M:Zambon.Core.Module.Model.Views.Views.#ctor">
             <summary>
             Default constructor.
             </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.ModelStore.GetModel(Zambon.Core.Module.Interfaces.IModule,System.String)">
+            <summary>
+            Search for the specific model language and return it.
+            </summary>
+            <param name="mainModule">The main application module.</param>
+            <param name="language">The language of the model.</param>
+            <returns>Return the application model.</returns>
         </member>
     </members>
 </doc>

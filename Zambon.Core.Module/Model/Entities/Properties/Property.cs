@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
-using Zambon.Core.Module.Serialization;
+using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Entities.Properties
+namespace Zambon.Core.Module.Model.Entities.Properties
 {
     /// <summary>
     /// Represents properties listed under Entity in XML model.

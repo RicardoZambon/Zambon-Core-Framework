@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
-using Zambon.Core.Module.Entities.Properties;
-using Zambon.Core.Module.Serialization;
+using Zambon.Core.Module.Model.Entities.Properties;
+using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Entities
+namespace Zambon.Core.Module.Model.Entities
 {
     /// <summary>
     /// Represents entities listed under EntityTypes in XML model.

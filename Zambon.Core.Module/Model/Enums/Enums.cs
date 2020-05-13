@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
-using Zambon.Core.Module.Serialization;
+using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Enums
+namespace Zambon.Core.Module.Model.Enums
 {
     /// <summary>
     /// Represents a list of enums used in application.

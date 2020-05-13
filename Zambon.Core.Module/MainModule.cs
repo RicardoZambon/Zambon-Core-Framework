@@ -1,49 +1,71 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters.Xml;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module
 {
+    /// <summary>
+    /// Module that makes the connection across Module, WebModule and Application.
+    /// </summary>
     public class MainModule : IModule
     {
+        #region Constants
+
         const string MODEL_NAME = "ApplicationModel";
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The application model file name.
+        /// </summary>
         public virtual string ApplicationModelName { get => MODEL_NAME; }
 
+        #endregion
 
-        public MainModule()
+        #region Methods
+
+        /// <summary>
+        /// Gets all modules referenced externally the framework.
+        /// </summary>
+        /// <param name="modules">List of additional modules.</param>
+        /// <returns></returns>
+        public virtual List<Type> ReferencedModules(List<Type> modules)
         {
-            
+            if (modules == null)
+            {
+                throw new ArgumentNullException(nameof(modules));
+            }
+            return modules;
         }
 
-
-        public virtual List<Type> ReferencedModels(List<Type> models) => models;
-
+        /// <summary>
+        /// Load all modules.
+        /// </summary>
+        /// <returns></returns>
         public IList<IModule> LoadModules()
         {
-            var loadedModels = new List<IModule>() { this };
+            var loadedModules = new List<IModule>() { this };
 
-            if (ReferencedModels(new List<Type>()) is List<Type> modules && modules.Count > 0)
+            if (ReferencedModules(new List<Type>()) is List<Type> modules && modules.Count > 0)
             {
-                foreach (var model in modules)
-                {
-                    loadedModels.Add(
-                        (IModule)model.GetConstructor(new Type[] { }).Invoke(new object[] { })
-                    );
-                }
+                loadedModules.AddRange(
+                    modules.Select(x => (IModule)x.GetConstructor(new Type[] { }).Invoke(new object[] { }))
+                );
             }
 
             var currentModel = GetType();
-            while(currentModel.BaseType != null && currentModel.BaseType != typeof(System.Object))
+            while (currentModel.BaseType != null && currentModel.BaseType != typeof(object))
             {
-                loadedModels.Add((IModule)currentModel.BaseType.GetConstructor(new Type[] { }).Invoke(new object[] { }));
                 currentModel = currentModel.BaseType;
+                loadedModules.Add((IModule)currentModel.GetConstructor(new Type[] { }).Invoke(new object[] { }));
             }
 
-            return loadedModels;
+            return loadedModules;
         }
+
+        #endregion
     }
 }

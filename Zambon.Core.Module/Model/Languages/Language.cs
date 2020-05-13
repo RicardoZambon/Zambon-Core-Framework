@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
-using Zambon.Core.Module.Serialization;
+using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Languages
+namespace Zambon.Core.Module.Model.Languages
 {
     /// <summary>
     /// Represents a node <Language /> from XML Application Model.

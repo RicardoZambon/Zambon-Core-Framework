@@ -1,8 +1,8 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
-using Zambon.Core.Module.Serialization;
+using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.StaticTexts
+namespace Zambon.Core.Module.Model.StaticTexts
 {
     /// <summary>
     /// Represents a node <StaticTexts></StaticTexts> from XML Application Model.

@@ -8,7 +8,7 @@ using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces;
 
-namespace Zambon.Core.Module.Serialization
+namespace Zambon.Core.Module.Model.Serialization
 {
     /// <summary>
     /// Base class that serialization will use when loading models.

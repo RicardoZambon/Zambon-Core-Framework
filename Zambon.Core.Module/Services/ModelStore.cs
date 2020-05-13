@@ -7,7 +7,9 @@ using System.Reflection;
 using System.Resources;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Configurations;
+using Zambon.Core.Module.Exceptions;
 using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Model;
 
 namespace Zambon.Core.Module.Services
 {
@@ -91,6 +93,12 @@ namespace Zambon.Core.Module.Services
         }
 
 
+        /// <summary>
+        /// Search for the specific model language and return it.
+        /// </summary>
+        /// <param name="mainModule">The main application module.</param>
+        /// <param name="language">The language of the model.</param>
+        /// <returns>Return the application model.</returns>
         public Application GetModel(IModule mainModule, string language)
         {
             if (!_modelsLoaded)
@@ -101,7 +109,7 @@ namespace Zambon.Core.Module.Services
             language = new CultureInfo(language).Name;
             if (!AvailableModels.ContainsKey(language))
             {
-                throw new Exception($"No exists any model loaded with the language \"{language}\"");
+                throw new ModelNotFoundException(language);
             }
 
             return AvailableModels[language];

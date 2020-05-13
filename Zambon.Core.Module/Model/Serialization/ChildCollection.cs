@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Zambon.Core.Module.Interfaces;
 
-namespace Zambon.Core.Module.Serialization
+namespace Zambon.Core.Module.Model.Serialization
 {
     public class BaseChildItemCollection
     {

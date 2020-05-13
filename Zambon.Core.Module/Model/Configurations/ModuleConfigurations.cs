@@ -1,6 +1,6 @@
-﻿using Zambon.Core.Module.Serialization;
+﻿using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Configurations
+namespace Zambon.Core.Module.Model.Configurations
 {
     /// <summary>
     /// Represents all configurations used by application in XML model file.

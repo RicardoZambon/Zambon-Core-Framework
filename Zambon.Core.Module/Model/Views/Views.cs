@@ -1,6 +1,6 @@
-﻿using Zambon.Core.Module.Serialization;
+﻿using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Views
+namespace Zambon.Core.Module.Model.Views
 {
     /// <summary>
     /// Represents a node <Views></Views> from XML Application Model.

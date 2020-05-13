@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
-using Zambon.Core.Module.Entities;
-using Zambon.Core.Module.Enums;
-using Zambon.Core.Module.Languages;
-using Zambon.Core.Module.Navigation;
-using Zambon.Core.Module.Serialization;
-using Zambon.Core.Module.StaticTexts;
+using Zambon.Core.Module.Model.Entities;
+using Zambon.Core.Module.Model.Enums;
+using Zambon.Core.Module.Model.Languages;
+using Zambon.Core.Module.Model.Navigation;
+using Zambon.Core.Module.Model.Serialization;
+using Zambon.Core.Module.Model.StaticTexts;
 
-namespace Zambon.Core.Module
+namespace Zambon.Core.Module.Model
 {
     /// <summary>
     /// Represent the root XML node.
@@ -36,7 +36,7 @@ namespace Zambon.Core.Module
         /// <summary>
         /// Represents a list of enums in XML model file.
         /// </summary>
-        [XmlElement(nameof(Module.Enums.Enums)), Browsable(false)]
+        [XmlElement(nameof(Model.Enums.Enums)), Browsable(false)]
         public Enums.Enums _Enums {
             get => _enums;
             set => SetParent(value, ref _enums);
@@ -46,7 +46,7 @@ namespace Zambon.Core.Module
         /// <summary>
         /// Represents a list of languages in XML model file.
         /// </summary>
-        [XmlElement(nameof(Module.Languages.Languages)), Browsable(false)]
+        [XmlElement(nameof(Model.Languages.Languages)), Browsable(false)]
         public Languages.Languages _Languages
         {
             get => _languages;
@@ -57,7 +57,7 @@ namespace Zambon.Core.Module
         /// <summary>
         /// Represents a list of texts in XML model file.
         /// </summary>
-        [XmlElement(nameof(Module.StaticTexts.StaticTexts)), Browsable(false)]
+        [XmlElement(nameof(Model.StaticTexts.StaticTexts)), Browsable(false)]
         public StaticTexts.StaticTexts _StaticTexts {
             get => _staticTexts;
             set => SetParent(value, ref _staticTexts);

@@ -1,7 +1,7 @@
 ﻿using System.Xml.Serialization;
-using Zambon.Core.Module.Serialization;
+using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Navigation
+namespace Zambon.Core.Module.Model.Navigation
 {
     /// <summary>
     /// Represents a node <Navigation></Navigation> from XML Application Model.
