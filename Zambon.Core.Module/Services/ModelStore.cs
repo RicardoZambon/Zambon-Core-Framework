@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -35,21 +36,37 @@ namespace Zambon.Core.Module.Services
         {
             var loadedModules = mainModule.LoadModules();
 
-            foreach (var language in _appSettings.Languages)
+            var serializer = new XmlSerializer(typeof(Application));
+
+            //First serialize the model for the default language
+            var defaultCulture = new CultureInfo(Assembly.GetExecutingAssembly().GetCustomAttribute<NeutralResourcesLanguageAttribute>().CultureName);
+            var defaultModel = SerializeModel(serializer, loadedModules, defaultCulture);
+
+            if (defaultModel == null)
             {
-                var serializer = new XmlSerializer(typeof(Application));
-
-                var culture = new CultureInfo(language);
-                var model = SerializeModel(serializer, loadedModules, culture);
-
-                if (model == null)
-                {
-                    throw new NullReferenceException($"Was not possible find any model for the language {language}.");
-                }
-
-                AvailableModels.Add(culture.Name, model);
+                throw new NullReferenceException($"Was not possible find any model for the language {defaultCulture.Name}.");
             }
 
+            AvailableModels.Add(defaultCulture.Name, defaultModel);
+
+
+            foreach (var language in _appSettings.Languages)
+            {
+                var culture = new CultureInfo(language);
+                if (culture.Name != defaultCulture.Name && !AvailableModels.ContainsKey(culture.Name))
+                {
+                    var model = SerializeModel(serializer, loadedModules, culture);
+
+                    if (model == null)
+                    {
+                        throw new NullReferenceException($"Was not possible find any model for the language {culture.Name}.");
+                    }
+
+                    model.Merge(AvailableModels[defaultCulture.Name]);
+
+                    AvailableModels.Add(culture.Name, model);
+                }
+            }
             _modelsLoaded = true;
         }
 
