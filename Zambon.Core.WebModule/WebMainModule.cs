@@ -6,7 +6,7 @@ namespace Zambon.Core.WebModule
 {
     public class WebMainModule : MainModule
     {
-        public override Type ApplicationModelType => typeof(Application);
+        public override Type ApplicationModelType => typeof(WebApplication);
 
         public WebMainModule() : base()
         {

@@ -73,61 +73,6 @@
             Represent the root XML node.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Model.Application._EntityTypes">
-            <summary>
-            Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application._Enums">
-            <summary>
-            Represents a list of enums in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application._Languages">
-            <summary>
-            Represents a list of languages in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application._StaticTexts">
-            <summary>
-            Represents a list of texts in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.ModuleConfigurations">
-            <summary>
-            Represents all configurations used by application in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.Navigation">
-            <summary>
-            Represents all navigation menus available in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.Entities">
-            <summary>
-            Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.Enums">
-            <summary>
-            Represents a list of enums in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.Languages">
-            <summary>
-            Represents a list of languages in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.StaticTexts">
-            <summary>
-            Represents a list of texts in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Application.Menus">
-            <summary>
-            Represents all navigation menus available in XML model file.
-            </summary>
-        </member>
         <member name="T:Zambon.Core.Module.Model.Configurations.ModuleConfigurations">
             <summary>
             Represents all configurations used by application in XML model file.
@@ -138,64 +83,9 @@
             Represents entities listed under EntityTypes in XML model.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.Id">
-            <summary>
-            The Id of the entity type. This property is used to merge same entities across different models.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.DisplayName">
-            <summary>
-            The name of the entity type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.SingularName">
-            <summary>
-            Singular name of each entity type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.Icon">
-            <summary>
-            Icon for this entity display at specific places.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.FromSql">
-            <summary>
-            Optional property. Only use this is this entity should always be returned using a custom query from database.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.FromSqlParameters">
-            <summary>
-            If the FromSql require parameters to pass to SQL execute when returning the objects.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.TypeClr">
-            <summary>
-            The complete CLR type of the entity type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity._Properties">
-            <summary>
-            List of all properties available in XML file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Entity.Properties">
-            <summary>
-            List of all properties available in XML file.
-            </summary>
-        </member>
         <member name="T:Zambon.Core.Module.Model.Entities.EntityTypes">
             <summary>
             Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.EntityTypes.EntitiesList">
-            <summary>
-            List of all entities available in XML model.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Entities.EntityTypes.#ctor">
-            <summary>
-            Default constructor.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Model.Entities.Properties.Properties">
@@ -500,7 +390,6 @@
             <summary>
             Search for the specific model language and return it.
             </summary>
-            <param name="mainModule">The main application module.</param>
             <param name="language">The language of the model.</param>
             <returns>Return the application model.</returns>
         </member>

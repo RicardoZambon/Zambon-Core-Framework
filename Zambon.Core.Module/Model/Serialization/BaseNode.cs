@@ -81,7 +81,7 @@ namespace Zambon.Core.Module.Model.Serialization
                     if (readProperty.SetMethod != null && readProperty.Name != nameof(Parent)
                         && readProperty.GetValue(readObj) is object readValue)
                     {
-                        var writeProperty = GetType().GetPropertyFromParents(readProperty.Name);
+                        var writeProperty = GetType().GetProperty(readProperty.Name);// .GetPropertyFromParents(readProperty.Name);
                         var writeValue = writeProperty.GetValue(this);
 
                         if (readProperty.PropertyType.ImplementsInterface<ISerializationNode>())

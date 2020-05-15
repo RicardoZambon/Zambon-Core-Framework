@@ -116,10 +116,10 @@ namespace Zambon.Core.Module.Services
 
                     using (var webModuleStream = assembly.GetManifestResourceStream($"{module.GetType().Assembly.GetName().Name}.{module.ApplicationModelName}.xml"))
                     {
-                        var overrides = new XmlAttributeOverrides();
-                        GetPropertyOverrides(module.ApplicationModelType, ref overrides);
+                        //var overrides = new XmlAttributeOverrides();
+                        //GetPropertyOverrides(module.ApplicationModelType, ref overrides);
 
-                        var serializer = new XmlSerializer(module.ApplicationModelType, overrides);
+                        var serializer = new XmlSerializer(module.ApplicationModelType);//, overrides);
 
                         if (webModuleStream != null)
                         {
@@ -149,34 +149,33 @@ namespace Zambon.Core.Module.Services
             return model;
         }
 
-        protected void GetPropertyOverrides(Type modelType, ref XmlAttributeOverrides xmlOverrides)
-        {
-            while (modelType.BaseType.Name != typeof(BaseNode).Name)
-            {
-                var properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(x => x.GetAttribute<XmlOverrideAttribute>() != null);
-                foreach (var property in properties)
-                {
-                    xmlOverrides.Add(modelType.BaseType, property.Name, new XmlAttributes() { XmlIgnore = true });
+        //protected void GetPropertyOverrides(Type modelType, ref XmlAttributeOverrides xmlOverrides)
+        //{
+        //    while (modelType.BaseType.Name != typeof(BaseNode).Name)
+        //    {
+        //        var properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(x => x.GetAttribute<XmlOverrideAttribute>() != null);
+        //        foreach (var property in properties)
+        //        {
+        //            xmlOverrides.Add(modelType.BaseType, property.Name, new XmlAttributes() { XmlIgnore = true });
 
-                    if (property.PropertyType.ImplementsInterface<ISerializationNode>())
-                    {
-                        GetPropertyOverrides(property.PropertyType, ref xmlOverrides);
-                    }
-                    else if (property.PropertyType.ImplementsInterface<IEnumerable>()
-                        && property.PropertyType.GenericTypeArguments.Count() > 0)
-                    {
-                        GetPropertyOverrides(property.PropertyType.GenericTypeArguments[0], ref xmlOverrides);
-                    }
-                }
-                modelType = modelType.BaseType;
-            }
-        }
+        //            if (property.PropertyType.ImplementsInterface<ISerializationNode>())
+        //            {
+        //                GetPropertyOverrides(property.PropertyType, ref xmlOverrides);
+        //            }
+        //            else if (property.PropertyType.ImplementsInterface<IEnumerable>()
+        //                && property.PropertyType.GenericTypeArguments.Count() > 0)
+        //            {
+        //                GetPropertyOverrides(property.PropertyType.GenericTypeArguments[0], ref xmlOverrides);
+        //            }
+        //        }
+        //        modelType = modelType.BaseType;
+        //    }
+        //}
 
 
         /// <summary>
         /// Search for the specific model language and return it.
         /// </summary>
-        /// <param name="mainModule">The main application module.</param>
         /// <param name="language">The language of the model.</param>
         /// <returns>Return the application model.</returns>
         public T GetModel(string language)

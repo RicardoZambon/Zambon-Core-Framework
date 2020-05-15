@@ -6,7 +6,7 @@ using Zambon.Core.WebModule.Model;
 
 namespace Zambon.Core.WebModule.Services
 {
-    public class WebModelProvider : BaseModelProvider<Application>
+    public class WebModelProvider : BaseModelProvider<WebApplication>
     {
         public WebModelProvider(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)
         {
