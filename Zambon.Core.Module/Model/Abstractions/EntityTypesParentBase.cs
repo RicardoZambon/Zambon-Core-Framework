@@ -4,27 +4,27 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class EntityTypesBase<TEntity, TProperties, TProperty> : BaseNode, IEntityTypes<TEntity, TProperties, TProperty>
-        where TEntity : IEntity<TProperties, TProperty>
-            where TProperties : IProperties<TProperty>
+    public abstract class EntityTypesParentBase<TEntity, TPropertiesParent, TProperty> : SerializeNodeBase, IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
+        where TEntity : IEntity<TPropertiesParent, TProperty>
+            where TPropertiesParent : IPropertiesParent<TProperty>
                 where TProperty : IProperty
     {
         #region Constants
 
-        private const string ENTITIES = "Entity";
+        private const string ENTITIES_NODE = "Entity";
 
         #endregion
 
         #region XML Attributes
 
-        [XmlElement(ENTITIES)]
+        [XmlElement(ENTITIES_NODE)]
         public ChildItemCollection<TEntity> EntitiesList { get; set; }
 
         #endregion
 
         #region Constructors
 
-        public EntityTypesBase()
+        public EntityTypesParentBase()
         {
             EntitiesList = new ChildItemCollection<TEntity>(this);
         }

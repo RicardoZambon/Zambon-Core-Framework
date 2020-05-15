@@ -2,8 +2,8 @@
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IEntity<TProperties, TProperty> : IParent
-        where TProperties : IProperties<TProperty>
+    public interface IEntity<TPropertiesParent, TProperty> : IParent
+        where TPropertiesParent : IPropertiesParent<TProperty>
             where TProperty : IProperty
     {
         string Id { get; set; }
@@ -20,7 +20,7 @@ namespace Zambon.Core.Module.Interfaces.Models
 
         string TypeClr { get; set; }
 
-        TProperties _Properties { get; set; }
+        TPropertiesParent _Properties { get; set; }
 
         ChildItemCollection<TProperty> Properties { get; }
     }

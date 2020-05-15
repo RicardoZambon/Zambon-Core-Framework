@@ -2,9 +2,6 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Entities.Properties
 {
-    /// <summary>
-    /// Represents properties listed under Entity in XML model.
-    /// </summary>
     public class Property : PropertyBase
     {
     }

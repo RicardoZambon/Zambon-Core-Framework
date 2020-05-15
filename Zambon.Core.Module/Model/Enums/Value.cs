@@ -7,7 +7,7 @@ namespace Zambon.Core.Module.Model.Enums
     /// <summary>
     /// 
     /// </summary>
-    public class Value : BaseNode
+    public class Value : SerializeNodeBase
     {
         #region XML Attributes
 

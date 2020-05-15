@@ -2,21 +2,33 @@
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IApplication<TEntityTypes, TEntity, TProperties, TProperty>
-        where TEntityTypes : IEntityTypes<TEntity, TProperties, TProperty>
-            where TEntity : IEntity<TProperties, TProperty>
-                where TProperties : IProperties<TProperty>
+    public interface IApplication<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu>
+        where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
+            where TEntity : IEntity<TPropertiesParent, TProperty>
+                where TPropertiesParent : IPropertiesParent<TProperty>
                     where TProperty : IProperty
+        where TStaticTextsParent : IStaticTextsParent<TStaticText>
+            where TStaticText : IStaticText
+        where TNavigationParent : INavigationParent<TMenu>
+            where TMenu : IMenu<TMenu>
     {
         #region XML Elements
 
-        TEntityTypes _EntityTypes { get; set; }
+        TEntityTypesParent _EntityTypes { get; set; }
+
+        TStaticTextsParent _StaticTexts { get; set; }
+
+        TNavigationParent _Navigation { get; set; }
 
         #endregion
 
         #region Properties
 
         ChildItemCollection<TEntity> Entities { get; }
+
+        ChildItemCollection<TStaticText> StaticTexts { get; }
+        
+        ChildItemCollection<TMenu> Menus { get; }
 
         #endregion
     }

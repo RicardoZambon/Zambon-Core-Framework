@@ -2,14 +2,13 @@
 using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.Module.Model.Nodes.Entities;
 using Zambon.Core.Module.Model.Nodes.Entities.Properties;
+using Zambon.Core.Module.Model.Nodes.Navigation;
+using Zambon.Core.Module.Model.Nodes.StaticTexts;
 
 namespace Zambon.Core.Module.Model.Nodes
 {
-    /// <summary>
-    /// Represent the root XML node.
-    /// </summary>
     [XmlRoot]
-    public class Application : ApplicationBase<EntityTypes, Entity, Properties, Property>
+    public class Application : ApplicationBase<EntityTypesParent, Entity, PropertiesParent, Property, StaticTextsParent, StaticText, NavigationParent, Menu>
     {
     }
 }

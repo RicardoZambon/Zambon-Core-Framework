@@ -7,7 +7,7 @@ namespace Zambon.Core.Module.Model.Languages
     /// <summary>
     /// Represents a node <Language /> from XML Application Model.
     /// </summary>
-    public class Language : BaseNode
+    public class Language : SerializeNodeBase
     {
         #region XML Attributes
 

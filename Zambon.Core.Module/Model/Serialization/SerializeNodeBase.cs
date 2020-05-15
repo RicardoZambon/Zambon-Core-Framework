@@ -1,14 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Reflection;
 using System.Xml.Serialization;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
-using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Model.Serialization
@@ -16,7 +13,7 @@ namespace Zambon.Core.Module.Model.Serialization
     /// <summary>
     /// Base class that serialization will use when loading models.
     /// </summary>
-    public abstract class BaseNode : ISerializationNode, IParent
+    public abstract class SerializeNodeBase : ISerializationNode, IParent
     {
         protected static bool NodeEditParent { get; private set; }
 
@@ -136,7 +133,7 @@ namespace Zambon.Core.Module.Model.Serialization
                 var keyRProperties = typeof(TRObject).GetProperties()
                     .Where(x => x.CustomAttributes.Any(a => a.AttributeType == typeof(MergeKeyAttribute)))
                     .ToDictionary(k => k.Name, v => v);
-                
+
                 if (keyRProperties.Count() == 0)
                 {
                     keyRProperties = typeof(TRObject).GetProperties()

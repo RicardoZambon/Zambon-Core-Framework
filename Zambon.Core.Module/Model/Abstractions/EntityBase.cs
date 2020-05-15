@@ -6,8 +6,8 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class EntityBase<TProperties, TProperty> : BaseNode, IEntity<TProperties, TProperty>
-        where TProperties : IProperties<TProperty>
+    public abstract class EntityBase<TPropertiesParent, TProperty> : SerializeNodeBase, IEntity<TPropertiesParent, TProperty>
+        where TPropertiesParent : IPropertiesParent<TProperty>
             where TProperty : IProperty
     {
         #region XML Attributes
@@ -38,7 +38,7 @@ namespace Zambon.Core.Module.Model.Abstractions
         #region XML Elements
 
         [XmlElement(nameof(Properties)), Browsable(false)]
-        public TProperties _Properties { get; set; }
+        public TPropertiesParent _Properties { get; set; }
 
         #endregion
 

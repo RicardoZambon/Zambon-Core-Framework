@@ -4,24 +4,24 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class PropertiesBase<TProperty> : BaseNode, IProperties<TProperty> where TProperty : IProperty
+    public abstract class PropertiesParentBase<TProperty> : SerializeNodeBase, IPropertiesParent<TProperty> where TProperty : IProperty
     {
         #region Constants
 
-        private const string PROPERTIES = "Property";
+        private const string PROPERTIES_NODE = "Property";
 
         #endregion
 
         #region XML Attributes
 
-        [XmlElement(PROPERTIES)]
+        [XmlElement(PROPERTIES_NODE)]
         public ChildItemCollection<TProperty> PropertiesList { get; set; }
 
         #endregion
 
         #region Constructors
 
-        public PropertiesBase()
+        public PropertiesParentBase()
         {
             PropertiesList = new ChildItemCollection<TProperty>(this);
         }

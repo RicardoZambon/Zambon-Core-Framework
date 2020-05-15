@@ -55,9 +55,9 @@ namespace Zambon.DemoApplication
         }
 
 
-        public void ReadEntityTypes<TEntity, TProperties, TProperty>(IEntityTypes<TEntity, TProperties, TProperty> entityTypes)
+        public void ReadEntityTypes<TEntity, TProperties, TProperty>(IEntityTypesParent<TEntity, TProperties, TProperty> entityTypes)
             where TEntity : IEntity<TProperties, TProperty>
-                where TProperties : IProperties<TProperty>
+                where TProperties : IPropertiesParent<TProperty>
                     where TProperty : IProperty
         {
             foreach (var entity in entityTypes.EntitiesList)
@@ -67,8 +67,6 @@ namespace Zambon.DemoApplication
 
                 Console.WriteLine($"ID: {id}. Display Name: {displayName}.");
             }
-
-
         }
     }
 }

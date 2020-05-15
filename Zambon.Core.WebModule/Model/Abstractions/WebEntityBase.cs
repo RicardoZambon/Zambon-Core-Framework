@@ -3,10 +3,10 @@ using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.WebModule.Interfaces.Models;
 
-namespace Zambon.Core.WebModule.ModelAbstractions
+namespace Zambon.Core.WebModule.Model.Abstractions
 {
-    public abstract class WebEntityBase<TProperties, TProperty> : EntityBase<TProperties, TProperty>, IWebEntity
-        where TProperties : IProperties<TProperty>
+    public abstract class WebEntityBase<TPropertiesParent, TProperty> : EntityBase<TPropertiesParent, TProperty>, IWebEntity
+        where TPropertiesParent : IPropertiesParent<TProperty>
             where TProperty : IProperty
     {
         #region XML Attributes

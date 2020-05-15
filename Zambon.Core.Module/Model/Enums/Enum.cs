@@ -7,7 +7,7 @@ namespace Zambon.Core.Module.Model.Enums
     /// <summary>
     /// Represents ENUM used in application.
     /// </summary>
-    public class Enum : BaseNode
+    public class Enum : SerializeNodeBase
     {
         #region XML Attributes
 

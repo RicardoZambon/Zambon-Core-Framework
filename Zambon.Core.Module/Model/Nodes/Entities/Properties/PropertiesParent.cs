@@ -4,10 +4,7 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Entities.Properties
 {
-    /// <summary>
-    /// Represents a list of properties in XML model file.
-    /// </summary>
-    public class Properties : PropertiesBase<Property>
+    public class PropertiesParent : PropertiesParentBase<Property>
     {
     }
 }

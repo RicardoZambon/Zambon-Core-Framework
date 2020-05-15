@@ -14,12 +14,16 @@ using Zambon.Core.Module.Model.Abstractions;
 
 namespace Zambon.Core.Module.Services
 {
-    public abstract class BaseModelProvider<TApplication, TEntityTypes, TEntity, TProperties, TProperty> : IModelProvider
-        where TApplication : ApplicationBase<TEntityTypes, TEntity, TProperties, TProperty>, new()
-            where TEntityTypes : EntityTypesBase<TEntity, TProperties, TProperty>
-                where TEntity : EntityBase<TProperties, TProperty>
-                    where TProperties : PropertiesBase<TProperty>
+    public abstract class BaseModelProvider<TApplication, TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu> : IModelProvider
+        where TApplication : ApplicationBase<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu>, new()
+            where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
+                where TEntity : EntityBase<TPropertiesParent, TProperty>
+                    where TPropertiesParent : PropertiesParentBase<TProperty>
                         where TProperty : PropertyBase
+            where TStaticTextsParent : StaticTextsParentBase<TStaticText>
+                where TStaticText : StaticTextBase
+            where TNavigationParent : NavigationParentBase<TMenu>
+                where TMenu : MenuBase<TMenu>
     {
         #region Variables
 

@@ -5,7 +5,7 @@ namespace Zambon.Core.Module.Model.Views
     /// <summary>
     /// Represents a node <Views></Views> from XML Application Model.
     /// </summary>
-    public class Views : BaseNode
+    public class Views : SerializeNodeBase
     {
         #region XML Elements
 
