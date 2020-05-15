@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Model;
 
 namespace Zambon.Core.Module
 {
@@ -22,6 +23,11 @@ namespace Zambon.Core.Module
         /// The application model file name.
         /// </summary>
         public virtual string ApplicationModelName { get => MODEL_NAME; }
+
+        /// <summary>
+        /// The type used in root node in application model.
+        /// </summary>
+        public virtual Type ApplicationModelType { get => typeof(Application); }
 
         #endregion
 

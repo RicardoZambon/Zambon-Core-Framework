@@ -4,7 +4,7 @@
         <name>Zambon.Core.Module</name>
     </assembly>
     <members>
-        <member name="T:Zambon.Core.Module.Atrributes.MergeAttribute">
+        <member name="T:Zambon.Core.Module.Atrributes.MergeKeyAttribute">
             <summary>
             Indicates the attribute should be used when merging models to detect same records in both files.
             </summary>
@@ -48,6 +48,11 @@
         <member name="P:Zambon.Core.Module.MainModule.ApplicationModelName">
             <summary>
             The application model file name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.MainModule.ApplicationModelType">
+            <summary>
+            The type used in root node in application model.
             </summary>
         </member>
         <member name="M:Zambon.Core.Module.MainModule.ReferencedModules(System.Collections.Generic.List{System.Type})">
@@ -418,18 +423,18 @@
             The parent node instance.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.Merge``1(``0)">
+        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.Merge(System.Object)">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
             <typeparam name="TObject">The element type of the objects.</typeparam>
             <param name="readObj">The source array, containing the original items values.</param>
         </member>
-        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.MergeElements``1(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``0})">
+        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.MergeElements``2(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``1})">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
-            <typeparam name="TObject">The element type of the array.</typeparam>
+            <typeparam name="TWObject">The element type of the array.</typeparam>
             <param name="write">The target array, that will have the items with null values set.</param>
             <param name="read">The source array, containing the original items values.</param>
             <returns>Returns the target array plus all any new element from the source array.</returns>
@@ -486,7 +491,12 @@
             Default constructor.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Services.ModelStore.GetModel(Zambon.Core.Module.Interfaces.IModule,System.String)">
+        <member name="P:Zambon.Core.Module.Services.BaseModelProvider`1.DefaultCulture">
+            <summary>
+            Default culture used by executing assembly.
+            </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Services.BaseModelProvider`1.GetModel(System.String)">
             <summary>
             Search for the specific model language and return it.
             </summary>

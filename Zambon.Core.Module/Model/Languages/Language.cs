@@ -14,7 +14,7 @@ namespace Zambon.Core.Module.Model.Languages
         /// <summary>
         /// The code of the language, the same from AppSettings.json file.
         /// </summary>
-        [XmlAttribute, Merge]
+        [XmlAttribute, MergeKey]
         public string Code { get; set; }
 
         /// <summary>

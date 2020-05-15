@@ -14,7 +14,7 @@ namespace Zambon.Core.Module.Model.StaticTexts
         /// <summary>
         /// The Key attribute from XML. The static text key should be used when displaying across the application.
         /// </summary>
-        [XmlAttribute, Merge]
+        [XmlAttribute, MergeKey]
         public string Key { get; set; }
 
         /// <summary>

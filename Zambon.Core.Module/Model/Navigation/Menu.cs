@@ -22,7 +22,7 @@ namespace Zambon.Core.Module.Model.Navigation
         /// <summary>
         /// The Id attribute from XML. The ID of the menu item.
         /// </summary>
-        [XmlAttribute, Merge]
+        [XmlAttribute, MergeKey]
         public string Id { get; set; }
 
         /// <summary>

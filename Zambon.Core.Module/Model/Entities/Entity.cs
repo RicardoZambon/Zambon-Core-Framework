@@ -9,6 +9,7 @@ namespace Zambon.Core.Module.Model.Entities
     /// <summary>
     /// Represents entities listed under EntityTypes in XML model.
     /// </summary>
+    [XmlType(AnonymousType = true)]
     public class Entity : BaseNode
     {
         #region XML Attributes
@@ -16,7 +17,7 @@ namespace Zambon.Core.Module.Model.Entities
         /// <summary>
         /// The Id of the entity type. This property is used to merge same entities across different models.
         /// </summary>
-        [XmlAttribute, Merge]
+        [XmlAttribute, MergeKey]
         public string Id { get; set; }
 
         /// <summary>
@@ -74,7 +75,6 @@ namespace Zambon.Core.Module.Model.Entities
         /// </summary>
         [XmlIgnore]
         public ChildItemCollection<Property> Properties => _Properties?.PropertiesList ?? new ChildItemCollection<Property>(null);
-
 
         #endregion
     }

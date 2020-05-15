@@ -12,7 +12,7 @@ namespace Zambon.Core.Module.Model
     /// <summary>
     /// Represent the root XML node.
     /// </summary>
-    [XmlRoot]
+    [XmlRoot, XmlType(AnonymousType = true)]
     public class Application : BaseNode
     {
         #region XML Attributes
@@ -37,7 +37,8 @@ namespace Zambon.Core.Module.Model
         /// Represents a list of enums in XML model file.
         /// </summary>
         [XmlElement(nameof(Model.Enums.Enums)), Browsable(false)]
-        public Enums.Enums _Enums {
+        public Enums.Enums _Enums
+        {
             get => _enums;
             set => SetParent(value, ref _enums);
         }
@@ -58,7 +59,8 @@ namespace Zambon.Core.Module.Model
         /// Represents a list of texts in XML model file.
         /// </summary>
         [XmlElement(nameof(Model.StaticTexts.StaticTexts)), Browsable(false)]
-        public StaticTexts.StaticTexts _StaticTexts {
+        public StaticTexts.StaticTexts _StaticTexts
+        {
             get => _staticTexts;
             set => SetParent(value, ref _staticTexts);
         }

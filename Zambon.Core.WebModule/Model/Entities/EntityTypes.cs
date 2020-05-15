@@ -1,22 +1,23 @@
-﻿using System.Xml;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
+using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Model.Entities
+namespace Zambon.Core.WebModule.Model.Entities
 {
-    /// <summary>
-    /// Represents a list of entity types in XML model file.
-    /// </summary>
-    [XmlType(AnonymousType = true)]
-    public class EntityTypes : BaseNode
+    public class EntityTypes : Module.Model.Entities.EntityTypes
     {
         #region XML Attributes
 
+        private ChildItemCollection<Entity> entitiesList;
         /// <summary>
         /// List of all entities available in XML model.
         /// </summary>
-        [XmlElement(nameof(Entity))]
-        public ChildItemCollection<Entity> EntitiesList { get; set; }
+        [XmlElement(nameof(Entity)), XmlOverride]
+        public new ChildItemCollection<Entity> EntitiesList
+        {
+            get => base.EntitiesList;
+            set => base.EntitiesList = value;
+        }
 
         #endregion
 
@@ -31,5 +32,6 @@ namespace Zambon.Core.Module.Model.Entities
         }
 
         #endregion
+
     }
 }

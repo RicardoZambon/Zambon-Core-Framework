@@ -6,7 +6,7 @@ namespace Zambon.Core.Module.Atrributes
     /// Indicates the attribute should be used when merging models to detect same records in both files.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class MergeAttribute : Attribute
+    public class MergeKeyAttribute : Attribute
     {
     }
 }

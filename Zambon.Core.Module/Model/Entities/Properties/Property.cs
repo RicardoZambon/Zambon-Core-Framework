@@ -14,7 +14,7 @@ namespace Zambon.Core.Module.Model.Entities.Properties
         /// <summary>
         /// The property name.
         /// </summary>
-        [XmlAttribute("Name"), Merge]
+        [XmlAttribute("Name"), MergeKey]
         public string Name { get; set; }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace Zambon.Core.Module.Model.Enums
         /// <summary>
         /// The same Id in ENUM structure.
         /// </summary>
-        [XmlAttribute, Merge]
+        [XmlAttribute, MergeKey]
         public string Id { get; set; }
 
         #endregion

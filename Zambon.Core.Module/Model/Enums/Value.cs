@@ -14,7 +14,7 @@ namespace Zambon.Core.Module.Model.Enums
         /// <summary>
         /// The Key attribute from XML. The int value from ENUM type.
         /// </summary>
-        [XmlAttribute, Merge]
+        [XmlAttribute, MergeKey]
         public string Key { get; set; }
 
         /// <summary>

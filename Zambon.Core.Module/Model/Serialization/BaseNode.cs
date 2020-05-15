@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Reflection;
 using System.Xml.Serialization;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
+using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces;
 
 namespace Zambon.Core.Module.Model.Serialization
@@ -66,28 +69,29 @@ namespace Zambon.Core.Module.Model.Serialization
         /// </summary>
         /// <typeparam name="TObject">The element type of the objects.</typeparam>
         /// <param name="readObj">The source array, containing the original items values.</param>
-        public void Merge<TObject>(TObject readObj) where TObject : class, ISerializationNode
+        public void Merge(object readObj) //where TObject : class, ISerializationNode
         {
             if (readObj != null)
             {
-                var properties = typeof(TObject).GetProperties();
-                for (var i = 0; i < properties.Length; i++)
+                var readProperties = readObj.GetType().GetProperties();
+                for (var i = 0; i < readProperties.Length; i++)
                 {
-                    var property = properties[i];
+                    var readProperty = readProperties[i];
 
-                    if (property.SetMethod != null && property.Name != nameof(Parent)
-                        && property.GetValue(readObj) is object readValue)
+                    if (readProperty.SetMethod != null && readProperty.Name != nameof(Parent)
+                        && readProperty.GetValue(readObj) is object readValue)
                     {
-                        var writeValue = property.GetValue(this);
+                        var writeProperty = GetType().GetPropertyFromParents(readProperty.Name);
+                        var writeValue = writeProperty.GetValue(this);
 
-                        if (property.PropertyType.ImplementsInterface<ISerializationNode>())
+                        if (readProperty.PropertyType.ImplementsInterface<ISerializationNode>())
                         {
                             if (writeValue == null)
                             {
-                                writeValue = Activator.CreateInstance(property.PropertyType);
-                                property.SetValue(this, writeValue);
+                                writeValue = Activator.CreateInstance(writeProperty.PropertyType);
+                                writeProperty.SetValue(this, writeValue);
 
-                                if (property.PropertyType.ImplementsInterface<IParent>())
+                                if (readProperty.PropertyType.ImplementsInterface<IParent>())
                                 {
                                     NodeEditParent = true;
                                     ((IParent)writeValue).Parent = this;
@@ -95,16 +99,16 @@ namespace Zambon.Core.Module.Model.Serialization
                                 }
                             }
 
-                            GetType().GetMethod(nameof(Merge)).MakeGenericMethod(property.PropertyType).Invoke(writeValue, new object[] { readValue });
+                            GetType().GetMethod(nameof(Merge))/*.MakeGenericMethod(property.PropertyType)*/.Invoke(writeValue, new object[] { readValue });
                         }
-                        else if (properties[i].PropertyType.ImplementsInterface<IEnumerable>() && properties[i].PropertyType.GenericTypeArguments.Count() > 0
-                            && properties[i].PropertyType.GenericTypeArguments[0] is Type elementType && elementType.ImplementsInterface<ISerializationNode>())
+                        else if (readProperties[i].PropertyType.ImplementsInterface<IEnumerable>() && readProperties[i].PropertyType.GenericTypeArguments.Count() > 0
+                            && readProperties[i].PropertyType.GenericTypeArguments[0] is Type elementType && elementType.ImplementsInterface<ISerializationNode>())
                         {
-                            GetType().GetMethod(nameof(MergeElements)).MakeGenericMethod(elementType).Invoke(this, new object[] { writeValue, readValue });
+                            GetType().GetMethod(nameof(MergeElements)).MakeGenericMethod(new Type[] { writeProperty.PropertyType.GenericTypeArguments[0], elementType }).Invoke(this, new object[] { writeValue, readValue });
                         }
                         else if (writeValue == null && readValue != null)
                         {
-                            property.SetValue(this, readValue);
+                            writeProperty.SetValue(this, readValue);
                         }
                     }
                 }
@@ -114,33 +118,40 @@ namespace Zambon.Core.Module.Model.Serialization
         /// <summary>
         /// Merges two arrays of objects that implements the interface IMergeable.
         /// </summary>
-        /// <typeparam name="TObject">The element type of the array.</typeparam>
+        /// <typeparam name="TWObject">The element type of the array.</typeparam>
         /// <param name="write">The target array, that will have the items with null values set.</param>
         /// <param name="read">The source array, containing the original items values.</param>
         /// <returns>Returns the target array plus all any new element from the source array.</returns>
-        public void MergeElements<TObject>(IList<TObject> write, IList<TObject> read) where TObject : class, ISerializationNode, IParent
+        public void MergeElements<TWObject, TRObject>(IList<TWObject> write, IList<TRObject> read)
+            where TWObject : class, ISerializationNode, IParent
+            where TRObject : class, ISerializationNode, IParent
         {
             if ((read?.Count() ?? 0) > 0)
             {
                 if (write == null)
                 {
-                    write = new ChildItemCollection<TObject>(this);
+                    write = new ChildItemCollection<TWObject>(this);
                 }
 
-                var properties = typeof(TObject).GetProperties();
-
-                var keyProperties = properties.Where(x => x.CustomAttributes.Any(a => a.AttributeType == typeof(MergeAttribute)));
-                if (keyProperties.Count() == 0)
+                var keyRProperties = typeof(TRObject).GetProperties()
+                    .Where(x => x.CustomAttributes.Any(a => a.AttributeType == typeof(MergeKeyAttribute)))
+                    .ToDictionary(k => k.Name, v => v);
+                
+                if (keyRProperties.Count() == 0)
                 {
-                    keyProperties = properties;
+                    keyRProperties = typeof(TRObject).GetProperties()
+                        .ToDictionary(k => k.Name, v => v);
                 }
+
+                var keyWProperties = keyRProperties.Select(x => typeof(TWObject).GetProperty(x.Key))
+                    .ToDictionary(k => k.Name, v => v);
 
                 foreach (var readValue in read)
                 {
-                    TObject writeValue = write.AsQueryable().FirstOrDefault(w => keyProperties.Count(k => k.GetValue(w) == k.GetValue(readValue)) == keyProperties.Count());
+                    TWObject writeValue = write.FirstOrDefault(w => keyWProperties.Select(x => x.Value.GetValue(w) == keyRProperties[x.Key].GetValue(readValue)).Count() == keyWProperties.Count());
                     if (writeValue == null)
                     {
-                        writeValue = Activator.CreateInstance<TObject>();
+                        writeValue = Activator.CreateInstance<TWObject>();
                         write.Add(writeValue);
                     }
                     writeValue.Merge(readValue);

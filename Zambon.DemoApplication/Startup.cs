@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Services;
 using Zambon.Core.WebModule.Configurations;
+using Zambon.Core.WebModule.Services;
 
 namespace Zambon.DemoApplication
 {
@@ -47,17 +39,18 @@ namespace Zambon.DemoApplication
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.Configure<WebAppSettings>(Configuration.GetSection("AppSettings"));
 
-
-            services.AddSingleton(typeof(ModelStore));
-            
-            services.AddSingleton(typeof(IModelService), typeof(ModelService<WebAppModule>));
+            services.AddSingleton(typeof(IModelProvider), typeof(WebModelProvider));
         }
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var modelService = app.ApplicationServices.GetService<IModelService>();
+            var modelProvider = app.ApplicationServices.GetService<IModelProvider>();
 
-            modelService.GetModel("en");
+            var model = ((WebModelProvider)modelProvider).GetModel("en");
+            if (model != null)
+            {
+
+            }
         }
     }
 }
