@@ -12,25 +12,25 @@ namespace Zambon.Core.Module.Model.Abstractions
         /// <summary>
         /// The property name.
         /// </summary>
-        [XmlAttribute("Name"), MergeKey]
+        [XmlAttribute, MergeKey]
         public string Name { get; set; }
 
         /// <summary>
         /// The text when displaying this property, default value from the DisplayName attribute.
         /// </summary>
-        [XmlAttribute("DisplayName")]
+        [XmlAttribute]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// The text when displaying the input for this property, default value from the DisplayName attribute.
         /// </summary>
-        [XmlAttribute("Prompt")]
+        [XmlAttribute]
         public string Prompt { get; set; }
 
         /// <summary>
         /// The text when displaying the description for this property, default value from the DisplayName attribute.
         /// </summary>
-        [XmlAttribute("Description")]
+        [XmlAttribute]
         public string Description { get; set; }
 
         #endregion

@@ -14,16 +14,31 @@ using Zambon.Core.Module.Model.Abstractions;
 
 namespace Zambon.Core.Module.Services
 {
-    public abstract class BaseModelProvider<TApplication, TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu> : IModelProvider
-        where TApplication : ApplicationBase<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu>, new()
-            where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
-                where TEntity : EntityBase<TPropertiesParent, TProperty>
-                    where TPropertiesParent : PropertiesParentBase<TProperty>
-                        where TProperty : PropertyBase
-            where TStaticTextsParent : StaticTextsParentBase<TStaticText>
-                where TStaticText : StaticTextBase
-            where TNavigationParent : NavigationParentBase<TMenu>
-                where TMenu : MenuBase<TMenu>
+    public abstract class BaseModelProvider<TApplication,
+        TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
+        TEnumsParent, TEnum, TValue,
+        TStaticTextsParent, TStaticText,
+        TLanguagesParent, TLanguage,
+        TNavigationParent, TMenu> : IModelProvider
+        where TApplication : ApplicationBase
+            <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
+            TEnumsParent, TEnum, TValue,
+            TStaticTextsParent, TStaticText,
+            TLanguagesParent, TLanguage,
+            TNavigationParent, TMenu>, new()
+        where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
+            where TEntity : EntityBase<TPropertiesParent, TProperty>
+                where TPropertiesParent : PropertiesParentBase<TProperty>
+                    where TProperty : PropertyBase
+        where TEnumsParent : EnumsParentBase<TEnum, TValue>
+            where TEnum : EnumBase<TValue>
+                where TValue : ValueBase
+        where TStaticTextsParent : StaticTextsParentBase<TStaticText>
+            where TStaticText : StaticTextBase
+        where TLanguagesParent : LanguagesParentBase<TLanguage>
+            where TLanguage : LanguageBase
+        where TNavigationParent : NavigationParentBase<TMenu>
+            where TMenu : MenuBase<TMenu>
     {
         #region Variables
 

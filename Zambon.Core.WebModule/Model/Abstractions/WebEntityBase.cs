@@ -6,8 +6,8 @@ using Zambon.Core.WebModule.Interfaces.Models;
 namespace Zambon.Core.WebModule.Model.Abstractions
 {
     public abstract class WebEntityBase<TPropertiesParent, TProperty> : EntityBase<TPropertiesParent, TProperty>, IWebEntity
-        where TPropertiesParent : IPropertiesParent<TProperty>
-            where TProperty : IProperty
+        where TPropertiesParent : PropertiesParentBase<TProperty>
+            where TProperty : PropertyBase
     {
         #region XML Attributes
 

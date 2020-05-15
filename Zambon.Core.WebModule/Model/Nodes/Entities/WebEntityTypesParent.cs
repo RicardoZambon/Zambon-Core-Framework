@@ -7,7 +7,6 @@ namespace Zambon.Core.WebModule.Model.Nodes.Entities
     {
         public WebEntityTypesParent() : base()
         {
-
         }
     }
 }

@@ -5,9 +5,9 @@ using Zambon.Core.Module.Model.Serialization;
 namespace Zambon.Core.Module.Model.Abstractions
 {
     public abstract class EntityTypesParentBase<TEntity, TPropertiesParent, TProperty> : SerializeNodeBase, IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
-        where TEntity : IEntity<TPropertiesParent, TProperty>
-            where TPropertiesParent : IPropertiesParent<TProperty>
-                where TProperty : IProperty
+        where TEntity : EntityBase<TPropertiesParent, TProperty>
+            where TPropertiesParent : PropertiesParentBase<TProperty>
+                where TProperty : PropertyBase
     {
         #region Constants
 

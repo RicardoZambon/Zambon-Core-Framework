@@ -5,15 +5,32 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class ApplicationBase<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu> : SerializeNodeBase, IApplication<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu>
-        where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
-            where TEntity : IEntity<TPropertiesParent, TProperty>
-                where TPropertiesParent : IPropertiesParent<TProperty>
-                    where TProperty : IProperty
-        where TStaticTextsParent : IStaticTextsParent<TStaticText>
-            where TStaticText : IStaticText
-        where TNavigationParent : INavigationParent<TMenu>
-            where TMenu : IMenu<TMenu>
+    public abstract class ApplicationBase
+        <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
+        TEnumsParent, TEnum, TValue,
+        TStaticTextsParent, TStaticText,
+        TLanguagesParent, TLanguage,
+        TNavigationParent, TMenu>
+        : SerializeNodeBase, IApplication
+            <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
+            TEnumsParent, TEnum, TValue,
+            TStaticTextsParent, TStaticText,
+            TLanguagesParent, TLanguage,
+            TNavigationParent, TMenu>
+
+        where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
+            where TEntity : EntityBase<TPropertiesParent, TProperty>
+                where TPropertiesParent : PropertiesParentBase<TProperty>
+                    where TProperty : PropertyBase
+        where TEnumsParent : EnumsParentBase<TEnum, TValue>
+            where TEnum : EnumBase<TValue>
+                where TValue : ValueBase
+        where TStaticTextsParent : StaticTextsParentBase<TStaticText>
+            where TStaticText : StaticTextBase
+        where TLanguagesParent : LanguagesParentBase<TLanguage>
+            where TLanguage : LanguageBase
+        where TNavigationParent : NavigationParentBase<TMenu>
+            where TMenu : MenuBase<TMenu>
     {
         #region Constants
 
@@ -35,12 +52,28 @@ namespace Zambon.Core.Module.Model.Abstractions
             set => SetParent(value, ref _entityTypes);
         }
 
+        private TEnumsParent _enums;
+        [XmlElement(nameof(Enums)), Browsable(false)]
+        public TEnumsParent _Enums
+        {
+            get => _enums;
+            set => SetParent(value, ref _enums);
+        }
+
         private TStaticTextsParent _staticTexts;
         [XmlElement(nameof(StaticTexts)), Browsable(false)]
         public TStaticTextsParent _StaticTexts
         {
             get => _staticTexts;
             set => SetParent(value, ref _staticTexts);
+        }
+
+        private TLanguagesParent _languages;
+        [XmlElement(nameof(Languages)), Browsable(false)]
+        public TLanguagesParent _Languages
+        {
+            get => _languages;
+            set => SetParent(value, ref _languages);
         }
 
         private TNavigationParent _navigation;
@@ -59,8 +92,13 @@ namespace Zambon.Core.Module.Model.Abstractions
         public ChildItemCollection<TEntity> Entities => _EntityTypes?.EntitiesList ?? new ChildItemCollection<TEntity>(null);
 
         [XmlIgnore]
+        public ChildItemCollection<TEnum> Enums => _Enums?.EnumsList ?? new ChildItemCollection<TEnum>(null);
+
+        [XmlIgnore]
         public ChildItemCollection<TStaticText> StaticTexts => _StaticTexts?.StaticTextsList ?? new ChildItemCollection<TStaticText>(null);
 
+        [XmlIgnore]
+        public ChildItemCollection<TLanguage> Languages => _Languages?.LanguagesList ?? new ChildItemCollection<TLanguage>(null);
 
         [XmlIgnore]
         public ChildItemCollection<TMenu> Menus => _Navigation?.MenusList ?? new ChildItemCollection<TMenu>(null);

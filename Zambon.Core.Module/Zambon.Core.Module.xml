@@ -68,6 +68,26 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Zambon.Core.Module.Model.Abstractions.ButtonBase.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other menu object, to sort the menus array.
+            </summary>
+            <param name="obj">The menu object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Abstractions.ColumnBase.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other menu object, to sort the menus array.
+            </summary>
+            <param name="obj">The menu object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
+        </member>
         <member name="M:Zambon.Core.Module.Model.Abstractions.MenuBase`1.CompareTo(System.Object)">
             <summary>
             Compares the Index with other menu object, to sort the menus array.
@@ -98,114 +118,31 @@
             The text when displaying the description for this property, default value from the DisplayName attribute.
             </summary>
         </member>
-        <member name="T:Zambon.Core.Module.Model.Configurations.ModuleConfigurations">
+        <member name="T:Zambon.Core.Module.Model.Serialization.ChildItemCollection`1">
             <summary>
-            Represents all configurations used by application in XML model file.
+            Collection of child items. This collection automatically set the
+            Parent property of the child items when they are added or removed
             </summary>
+            <typeparam name="TChild">Type of the child items</typeparam>
         </member>
-        <member name="T:Zambon.Core.Module.Model.Enums.Enum">
-            <summary>
-            Represents ENUM used in application.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Enums.Enum.Id">
-            <summary>
-            The same Id in ENUM structure.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Enums.Enum.Values">
-            <summary>
-            Values from the ENUM.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Enums.Enum.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Enums.Enums">
-            <summary>
-            Represents a list of enums used in application.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Enums.Enums.EnumsList">
-            <summary>
-            List of all enums.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Enums.Enums.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Enums.Value">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Enums.Value.Key">
-            <summary>
-            The Key attribute from XML. The int value from ENUM type.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Enums.Value.DisplayName">
-            <summary>
-            The DisplayName attribute from XML. The display name should be used in application, by default will use the Display attribute.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Languages.Language">
-            <summary>
-            Represents a node <Language /> from XML Application Model.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Languages.Language.Code">
-            <summary>
-            The code of the language, the same from AppSettings.json file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Languages.Language.FlagIcon">
-            <summary>
-            The icon should be used to display the language flag in languages list.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Languages.Language.DisplayName">
-            <summary>
-            The language display name should be displayed in languages list.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Languages.Languages">
-            <summary>
-            Represents a node <Languages></Languages> from XML Application Model.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Languages.Languages.LanguagesList">
-            <summary>
-            List of <Language /> elements.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Languages.Languages.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Serialization.BaseNode">
+        <member name="T:Zambon.Core.Module.Model.Serialization.SerializeNodeBase">
             <summary>
             Base class that serialization will use when loading models.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Model.Serialization.BaseNode.Parent">
+        <member name="P:Zambon.Core.Module.Model.Serialization.SerializeNodeBase.Parent">
             <summary>
             The parent node instance.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.Merge(System.Object)">
+        <member name="M:Zambon.Core.Module.Model.Serialization.SerializeNodeBase.Merge(System.Object)">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
             <typeparam name="TObject">The element type of the objects.</typeparam>
             <param name="readObj">The source array, containing the original items values.</param>
         </member>
-        <member name="M:Zambon.Core.Module.Model.Serialization.BaseNode.MergeElements``2(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``1})">
+        <member name="M:Zambon.Core.Module.Model.Serialization.SerializeNodeBase.MergeElements``2(System.Collections.Generic.IList{``0},System.Collections.Generic.IList{``1})">
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
@@ -214,34 +151,12 @@
             <param name="read">The source array, containing the original items values.</param>
             <returns>Returns the target array plus all any new element from the source array.</returns>
         </member>
-        <member name="T:Zambon.Core.Module.Model.Serialization.ChildItemCollection`1">
-            <summary>
-            Collection of child items. This collection automatically set the
-            Parent property of the child items when they are added or removed
-            </summary>
-            <typeparam name="TChild">Type of the child items</typeparam>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Serialization.ModelSerializator">
-            <summary>
-            Responsible for opening the XML file and serializing it.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Views.Views">
-            <summary>
-            Represents a node <Views></Views> from XML Application Model.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Views.Views.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Services.BaseModelProvider`9.DefaultCulture">
+        <member name="P:Zambon.Core.Module.Services.BaseModelProvider`14.DefaultCulture">
             <summary>
             Default culture used by executing assembly.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Services.BaseModelProvider`9.GetModel(System.String)">
+        <member name="M:Zambon.Core.Module.Services.BaseModelProvider`14.GetModel(System.String)">
             <summary>
             Search for the specific model language and return it.
             </summary>

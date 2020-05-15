@@ -1,18 +1,32 @@
-﻿using Zambon.Core.Module.Interfaces.Models;
-using Zambon.Core.Module.Model.Abstractions;
+﻿using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.WebModule.Interfaces.Models;
 
 namespace Zambon.Core.WebModule.Model.Abstractions
 {
-    public class WebApplicationBase<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu> : ApplicationBase<TEntityTypesParent, TEntity, TPropertiesParent, TProperty, TStaticTextsParent, TStaticText, TNavigationParent, TMenu>
-        where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
-            where TEntity : IEntity<TPropertiesParent, TProperty>, IWebEntity
-                where TPropertiesParent : IPropertiesParent<TProperty>
-                    where TProperty : IProperty
-        where TStaticTextsParent : IStaticTextsParent<TStaticText>
-            where TStaticText : IStaticText
-        where TNavigationParent : INavigationParent<TMenu>
-            where TMenu : IMenu<TMenu>
+    public class WebApplicationBase<
+        TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
+        TEnumsParent, TEnum, TValue,
+        TStaticTextsParent, TStaticText,
+        TLanguagesParent, TLanguage,
+        TNavigationParent, TMenu> : ApplicationBase<
+            TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
+            TEnumsParent, TEnum, TValue,
+            TStaticTextsParent, TStaticText,
+            TLanguagesParent, TLanguage,
+            TNavigationParent, TMenu>
+        where TEntityTypesParent : WebEntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
+            where TEntity : WebEntityBase<TPropertiesParent, TProperty>, IWebEntity
+                where TPropertiesParent : PropertiesParentBase<TProperty>
+                    where TProperty : PropertyBase
+        where TEnumsParent : EnumsParentBase<TEnum, TValue>
+            where TEnum : EnumBase<TValue>
+                where TValue : ValueBase
+        where TStaticTextsParent : StaticTextsParentBase<TStaticText>
+            where TStaticText : StaticTextBase
+        where TLanguagesParent : LanguagesParentBase<TLanguage>
+            where TLanguage : LanguageBase
+        where TNavigationParent : NavigationParentBase<TMenu>
+            where TMenu : MenuBase<TMenu>
     {
     }
 }

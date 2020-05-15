@@ -5,7 +5,7 @@ using Zambon.Core.Module.Model.Serialization;
 namespace Zambon.Core.Module.Model.Abstractions
 {
     public abstract class StaticTextsParentBase<TStaticText> : SerializeNodeBase, IStaticTextsParent<TStaticText>
-        where TStaticText : IStaticText
+        where TStaticText : StaticTextBase
     {
         #region Constants
 

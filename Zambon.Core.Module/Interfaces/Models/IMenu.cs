@@ -1,18 +1,14 @@
-﻿using System;
+﻿using Zambon.Core.Module.Interfaces.Models.Common;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IMenu<TSubMenu> : IParent, IComparable
+    public interface IMenu<TSubMenu> : IParent, IIcon, IIndex
         where TSubMenu : IMenu<TSubMenu>
     {
         string Id { get; set; }
 
         string DisplayName { get; set; }
-
-        string Icon { get; set; }
-
-        int? Index { get; set; }
 
         string Type { get; set; }
 

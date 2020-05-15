@@ -5,7 +5,7 @@ using Zambon.Core.Module.Model.Serialization;
 namespace Zambon.Core.Module.Model.Abstractions
 {
     public class NavigationParentBase<TMenu> : SerializeNodeBase, INavigationParent<TMenu>
-        where TMenu : IMenu<TMenu>
+        where TMenu : MenuBase<TMenu>
     {
         #region Constants
 

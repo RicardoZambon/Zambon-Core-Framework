@@ -4,7 +4,8 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class PropertiesParentBase<TProperty> : SerializeNodeBase, IPropertiesParent<TProperty> where TProperty : IProperty
+    public abstract class PropertiesParentBase<TProperty> : SerializeNodeBase, IPropertiesParent<TProperty>
+        where TProperty : PropertyBase
     {
         #region Constants
 

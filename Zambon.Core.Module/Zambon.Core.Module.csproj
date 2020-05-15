@@ -59,4 +59,8 @@
     <ProjectReference Include="..\Zambon.Core.Database\Zambon.Core.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\Views\" />
+  </ItemGroup>
+
 </Project>

@@ -7,22 +7,21 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class MenuBase<TMenu> : SerializeNodeBase, IMenu<TMenu>
-        where TMenu : MenuBase<TMenu>
+    public abstract class ButtonBase : SerializeNodeBase, IButton
     {
-        #region Constants
-
-        private const string SUB_MENUS_NODE = "Menu";
-
-        #endregion
-
-        #region XML Attributes 
+        #region XML Attributes
 
         [XmlAttribute, MergeKey]
         public string Id { get; set; }
 
         [XmlAttribute]
         public string DisplayName { get; set; }
+
+        [XmlAttribute]
+        public string Target { get; set; }
+
+        [XmlAttribute]
+        public string ConfirmationMessage { get; set; }
 
         [XmlAttribute]
         public string Icon { get; set; }
@@ -35,30 +34,10 @@ namespace Zambon.Core.Module.Model.Abstractions
         }
 
         [XmlAttribute]
-        public string Type { get; set; }
+        public string Condition { get; set; }
 
         [XmlAttribute]
-        public string ViewID { get; set; }
-
-        [XmlAttribute, Browsable(false)]
-        public string BoolShowBadge
-        {
-            get { return ShowBadge?.ToString(); }
-            set { if (value != null) { bool.TryParse(value, out bool showBadge); ShowBadge = showBadge; } }
-        }
-
-        [XmlAttribute]
-        public string BadgeQuery { get; set; }
-
-        [XmlAttribute]
-        public string BadgeQueryArguments { get; set; }
-
-        #endregion
-
-        #region XML Elements
-
-        [XmlElement(nameof(SUB_MENUS_NODE))]
-        public ChildItemCollection<TMenu> SubMenus { get; set; }
+        public string ConditionArguments { get; set; }
 
         #endregion
 
@@ -66,18 +45,6 @@ namespace Zambon.Core.Module.Model.Abstractions
 
         [XmlIgnore]
         public int? Index { get; set; }
-
-        [XmlIgnore]
-        public bool? ShowBadge { get; set; }
-
-        #endregion
-
-        #region Constructors
-
-        public MenuBase()
-        {
-            SubMenus = new ChildItemCollection<TMenu>(this);
-        }
 
         #endregion
 
@@ -93,11 +60,11 @@ namespace Zambon.Core.Module.Model.Abstractions
         /// </returns>
         public int CompareTo(object obj)
         {
-            if (obj is MenuBase<TMenu> objMenu)
+            if (obj is ButtonBase objMenu)
             {
                 return (Index ?? 0).CompareTo(objMenu.Index ?? 0);
             }
-            throw new ArgumentException("Object is not a menu.");
+            throw new ArgumentException("Object is not a button.");
         }
 
         #endregion

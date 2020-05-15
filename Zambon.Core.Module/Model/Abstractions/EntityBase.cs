@@ -7,8 +7,8 @@ using Zambon.Core.Module.Model.Serialization;
 namespace Zambon.Core.Module.Model.Abstractions
 {
     public abstract class EntityBase<TPropertiesParent, TProperty> : SerializeNodeBase, IEntity<TPropertiesParent, TProperty>
-        where TPropertiesParent : IPropertiesParent<TProperty>
-            where TProperty : IProperty
+        where TPropertiesParent : PropertiesParentBase<TProperty>
+            where TProperty : PropertyBase
     {
         #region XML Attributes
 
