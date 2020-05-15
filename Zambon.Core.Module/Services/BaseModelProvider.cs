@@ -1,8 +1,5 @@
-﻿using Castle.Core.Internal;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,16 +7,19 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Xml.Serialization;
-using Zambon.Core.Database.Domain.Extensions;
-using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Exceptions;
 using Zambon.Core.Module.Interfaces;
-using Zambon.Core.Module.Model.Serialization;
+using Zambon.Core.Module.Model.Abstractions;
 
 namespace Zambon.Core.Module.Services
 {
-    public abstract class BaseModelProvider<T> : IModelProvider where T : BaseNode, new()
+    public abstract class BaseModelProvider<TApplication, TEntityTypes, TEntity, TProperties, TProperty> : IModelProvider
+        where TApplication : ApplicationBase<TEntityTypes, TEntity, TProperties, TProperty>, new()
+            where TEntityTypes : EntityTypesBase<TEntity, TProperties, TProperty>
+                where TEntity : EntityBase<TProperties, TProperty>
+                    where TProperties : PropertiesBase<TProperty>
+                        where TProperty : PropertyBase
     {
         #region Variables
 
@@ -52,7 +52,7 @@ namespace Zambon.Core.Module.Services
             }
         }
 
-        protected Dictionary<string, T> AvailableModels { get; set; }
+        protected Dictionary<string, TApplication> AvailableModels { get; set; }
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace Zambon.Core.Module.Services
         {
             _appSettings = appSettings.Value;
 
-            AvailableModels = new Dictionary<string, T>();
+            AvailableModels = new Dictionary<string, TApplication>();
             this._mainModule = mainModule;
         }
 
@@ -79,7 +79,7 @@ namespace Zambon.Core.Module.Services
                 var languages = new List<CultureInfo>() { DefaultCulture };
                 languages.AddRange(_appSettings.Languages.Select(x => new CultureInfo(x)).Where(x => x.Name != DefaultCulture.Name));
 
-                foreach(var language in languages)
+                foreach (var language in languages)
                 {
                     if (!AvailableModels.ContainsKey(language.Name))
                     {
@@ -101,9 +101,9 @@ namespace Zambon.Core.Module.Services
             }
         }
 
-        protected T SerializeModel(Type mainModelType, IList<IModule> modules, CultureInfo language)
+        protected TApplication SerializeModel(Type mainModelType, IList<IModule> modules, CultureInfo language)
         {
-            T model = null;
+            TApplication model = null;
             foreach (var module in modules)
             {
                 try
@@ -116,10 +116,7 @@ namespace Zambon.Core.Module.Services
 
                     using (var webModuleStream = assembly.GetManifestResourceStream($"{module.GetType().Assembly.GetName().Name}.{module.ApplicationModelName}.xml"))
                     {
-                        //var overrides = new XmlAttributeOverrides();
-                        //GetPropertyOverrides(module.ApplicationModelType, ref overrides);
-
-                        var serializer = new XmlSerializer(module.ApplicationModelType);//, overrides);
+                        var serializer = new XmlSerializer(module.ApplicationModelType);
 
                         if (webModuleStream != null)
                         {
@@ -127,12 +124,12 @@ namespace Zambon.Core.Module.Services
 
                             if (module.ApplicationModelType != mainModelType && model == null)
                             {
-                                model = new T();
+                                model = new TApplication();
                             }
 
                             if (model == null)
                             {
-                                model = (T)applicationModel;
+                                model = (TApplication)applicationModel;
                             }
                             else
                             {
@@ -149,36 +146,12 @@ namespace Zambon.Core.Module.Services
             return model;
         }
 
-        //protected void GetPropertyOverrides(Type modelType, ref XmlAttributeOverrides xmlOverrides)
-        //{
-        //    while (modelType.BaseType.Name != typeof(BaseNode).Name)
-        //    {
-        //        var properties = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(x => x.GetAttribute<XmlOverrideAttribute>() != null);
-        //        foreach (var property in properties)
-        //        {
-        //            xmlOverrides.Add(modelType.BaseType, property.Name, new XmlAttributes() { XmlIgnore = true });
-
-        //            if (property.PropertyType.ImplementsInterface<ISerializationNode>())
-        //            {
-        //                GetPropertyOverrides(property.PropertyType, ref xmlOverrides);
-        //            }
-        //            else if (property.PropertyType.ImplementsInterface<IEnumerable>()
-        //                && property.PropertyType.GenericTypeArguments.Count() > 0)
-        //            {
-        //                GetPropertyOverrides(property.PropertyType.GenericTypeArguments[0], ref xmlOverrides);
-        //            }
-        //        }
-        //        modelType = modelType.BaseType;
-        //    }
-        //}
-
-
         /// <summary>
         /// Search for the specific model language and return it.
         /// </summary>
         /// <param name="language">The language of the model.</param>
         /// <returns>Return the application model.</returns>
-        public T GetModel(string language)
+        public TApplication GetModel(string language)
         {
             if (!_modelsLoaded)
             {

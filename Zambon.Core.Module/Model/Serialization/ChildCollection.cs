@@ -13,7 +13,7 @@ namespace Zambon.Core.Module.Model.Serialization
     /// Parent property of the child items when they are added or removed
     /// </summary>
     /// <typeparam name="TChild">Type of the child items</typeparam>
-    public class ChildItemCollection<TChild> : BaseChildItemCollection, IList<TChild> where TChild : class, ISerializationNode, IParent
+    public class ChildItemCollection<TChild> : BaseChildItemCollection, IList<TChild> where TChild : IParent
     {
         private object _parent;
         private IList<TChild> _collection;

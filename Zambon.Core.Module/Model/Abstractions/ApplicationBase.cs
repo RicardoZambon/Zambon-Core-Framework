@@ -1,26 +1,28 @@
 ﻿using System.ComponentModel;
 using System.Xml.Serialization;
-using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.ModelAbstractions
+namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class ApplicationBase
-        <TEntityTypes, TEntity> : BaseNode
-        where TEntityTypes : EntityTypesBase<TEntity>, IEntityTypes<TEntity>
-            where TEntity : EntityBase, IEntity
+    public abstract class ApplicationBase<TEntityTypes, TEntity, TProperties, TProperty> : BaseNode, IApplication<TEntityTypes, TEntity, TProperties, TProperty>
+        where TEntityTypes : IEntityTypes<TEntity, TProperties, TProperty>
+            where TEntity : IEntity<TProperties, TProperty>
+                where TProperties : IProperties<TProperty>
+                    where TProperty : IProperty
     {
         #region Constants
 
-        private const string ENTITY_TYPES = "EntityTypes";
+        protected const string APPLICATION_NODE = "Application";
+
+        private const string ENTITY_TYPES_NODE = "EntityTypes";
 
         #endregion
 
         #region XML Elements
 
         private TEntityTypes _entityTypes;
-        [XmlElement(ENTITY_TYPES), Browsable(false)]
+        [XmlElement(ENTITY_TYPES_NODE), Browsable(false)]
         public TEntityTypes _EntityTypes
         {
             get => _entityTypes;
@@ -35,6 +37,5 @@ namespace Zambon.Core.Module.ModelAbstractions
         public ChildItemCollection<TEntity> Entities => _EntityTypes?.EntitiesList ?? new ChildItemCollection<TEntity>(null);
 
         #endregion
-
     }
 }

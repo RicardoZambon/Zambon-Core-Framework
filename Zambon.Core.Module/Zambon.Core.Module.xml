@@ -68,64 +68,29 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Zambon.Core.Module.Model.Application">
+        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.Name">
             <summary>
-            Represent the root XML node.
+            The property name.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.DisplayName">
+            <summary>
+            The text when displaying this property, default value from the DisplayName attribute.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.Prompt">
+            <summary>
+            The text when displaying the input for this property, default value from the DisplayName attribute.
+            </summary>
+        </member>
+        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.Description">
+            <summary>
+            The text when displaying the description for this property, default value from the DisplayName attribute.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Model.Configurations.ModuleConfigurations">
             <summary>
             Represents all configurations used by application in XML model file.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Entities.Entity">
-            <summary>
-            Represents entities listed under EntityTypes in XML model.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Entities.EntityTypes">
-            <summary>
-            Represents a list of entity types in XML model file.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Entities.Properties.Properties">
-            <summary>
-            Represents a list of properties in XML model file.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Properties.PropertiesList">
-            <summary>
-            List of all properties available in XML file.
-            </summary>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Entities.Properties.Properties.#ctor">
-            <summary>
-            Default constructor.
-            </summary>
-        </member>
-        <member name="T:Zambon.Core.Module.Model.Entities.Properties.Property">
-            <summary>
-            Represents properties listed under Entity in XML model.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.Name">
-            <summary>
-            The property name.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.DisplayName">
-            <summary>
-            The text when displaying this property, default value from the DisplayName attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.Prompt">
-            <summary>
-            The text when displaying the input for this property, default value from the DisplayName attribute.
-            </summary>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Entities.Properties.Property.Description">
-            <summary>
-            The text when displaying the description for this property, default value from the DisplayName attribute.
             </summary>
         </member>
         <member name="T:Zambon.Core.Module.Model.Enums.Enum">
@@ -303,6 +268,31 @@
             Default constructor.
             </summary>
         </member>
+        <member name="T:Zambon.Core.Module.Model.Nodes.Application">
+            <summary>
+            Represent the root XML node.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Nodes.Entities.Entity">
+            <summary>
+            Represents entities listed under EntityTypes in XML model.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Nodes.Entities.EntityTypes">
+            <summary>
+            Represents a list of entity types in XML model file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Nodes.Entities.Properties.Properties">
+            <summary>
+            Represents a list of properties in XML model file.
+            </summary>
+        </member>
+        <member name="T:Zambon.Core.Module.Model.Nodes.Entities.Properties.Property">
+            <summary>
+            Represents properties listed under Entity in XML model.
+            </summary>
+        </member>
         <member name="T:Zambon.Core.Module.Model.Serialization.BaseNode">
             <summary>
             Base class that serialization will use when loading models.
@@ -381,12 +371,12 @@
             Default constructor.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Services.BaseModelProvider`1.DefaultCulture">
+        <member name="P:Zambon.Core.Module.Services.BaseModelProvider`5.DefaultCulture">
             <summary>
             Default culture used by executing assembly.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Services.BaseModelProvider`1.GetModel(System.String)">
+        <member name="M:Zambon.Core.Module.Services.BaseModelProvider`5.GetModel(System.String)">
             <summary>
             Search for the specific model language and return it.
             </summary>

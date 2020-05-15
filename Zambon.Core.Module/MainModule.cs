@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zambon.Core.Module.Interfaces;
-using Zambon.Core.Module.Model;
+using Zambon.Core.Module.Model.Nodes;
 
 namespace Zambon.Core.Module
 {

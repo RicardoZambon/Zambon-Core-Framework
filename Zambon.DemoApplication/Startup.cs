@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces;
-using Zambon.Core.Module.Services;
+using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.WebModule.Configurations;
 using Zambon.Core.WebModule.Services;
 
@@ -44,13 +45,30 @@ namespace Zambon.DemoApplication
 
         public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var modelProvider = app.ApplicationServices.GetService<IModelProvider>();
+            var modelProvider = (WebModelProvider)app.ApplicationServices.GetService<IModelProvider>();
 
-            var model = ((WebModelProvider)modelProvider).GetModel("en");
+            var model = modelProvider.GetModel("pt-br");
             if (model != null)
             {
-
+                ReadEntityTypes(model._EntityTypes);
             }
+        }
+
+
+        public void ReadEntityTypes<TEntity, TProperties, TProperty>(IEntityTypes<TEntity, TProperties, TProperty> entityTypes)
+            where TEntity : IEntity<TProperties, TProperty>
+                where TProperties : IProperties<TProperty>
+                    where TProperty : IProperty
+        {
+            foreach (var entity in entityTypes.EntitiesList)
+            {
+                var id = entity.Id;
+                var displayName = entity.DisplayName;
+
+                Console.WriteLine($"ID: {id}. Display Name: {displayName}.");
+            }
+
+
         }
     }
 }

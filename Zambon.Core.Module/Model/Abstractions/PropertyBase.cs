@@ -1,13 +1,11 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
+using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Model.Entities.Properties
+namespace Zambon.Core.Module.Model.Abstractions
 {
-    /// <summary>
-    /// Represents properties listed under Entity in XML model.
-    /// </summary>
-    public class Property : BaseNode
+    public abstract class PropertyBase : BaseNode, IProperty
     {
         #region XML Attributes
 

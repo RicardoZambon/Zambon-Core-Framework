@@ -2,9 +2,12 @@
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.ModelAbstractions
+namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class EntityTypesBase<TEntity> : BaseNode, IEntityTypes<TEntity> where TEntity : EntityBase
+    public abstract class EntityTypesBase<TEntity, TProperties, TProperty> : BaseNode, IEntityTypes<TEntity, TProperties, TProperty>
+        where TEntity : IEntity<TProperties, TProperty>
+            where TProperties : IProperties<TProperty>
+                where TProperty : IProperty
     {
         #region Constants
 

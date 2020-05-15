@@ -44,7 +44,7 @@ namespace Zambon.Core.Module.Model.Serialization
 
         #region Methods
 
-        protected void SetParent<T>(T value, ref T prop) where T : class, IParent
+        protected void SetParent<T>(T value, ref T prop) where T : IParent
         {
             if (prop != null)
             {
