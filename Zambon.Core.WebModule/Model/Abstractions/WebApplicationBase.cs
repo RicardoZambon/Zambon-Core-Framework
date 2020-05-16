@@ -8,11 +8,13 @@ namespace Zambon.Core.WebModule.Model.Abstractions
         TEnumsParent, TEnum, TValue,
         TStaticTextsParent, TStaticText,
         TLanguagesParent, TLanguage,
+        TModuleConfigurationsParent,
         TNavigationParent, TMenu> : ApplicationBase<
             TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
             TEnumsParent, TEnum, TValue,
             TStaticTextsParent, TStaticText,
             TLanguagesParent, TLanguage,
+            TModuleConfigurationsParent,
             TNavigationParent, TMenu>
         where TEntityTypesParent : WebEntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
             where TEntity : WebEntityBase<TPropertiesParent, TProperty>, IWebEntity
@@ -25,6 +27,7 @@ namespace Zambon.Core.WebModule.Model.Abstractions
             where TStaticText : StaticTextBase
         where TLanguagesParent : LanguagesParentBase<TLanguage>
             where TLanguage : LanguageBase
+        where TModuleConfigurationsParent : ModuleConfigurationsParentBase
         where TNavigationParent : NavigationParentBase<TMenu>
             where TMenu : MenuBase<TMenu>
     {

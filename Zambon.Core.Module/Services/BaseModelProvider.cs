@@ -19,12 +19,14 @@ namespace Zambon.Core.Module.Services
         TEnumsParent, TEnum, TValue,
         TStaticTextsParent, TStaticText,
         TLanguagesParent, TLanguage,
+        TModuleConfigurationsParent,
         TNavigationParent, TMenu> : IModelProvider
         where TApplication : ApplicationBase
             <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
             TEnumsParent, TEnum, TValue,
             TStaticTextsParent, TStaticText,
             TLanguagesParent, TLanguage,
+            TModuleConfigurationsParent,
             TNavigationParent, TMenu>, new()
         where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
             where TEntity : EntityBase<TPropertiesParent, TProperty>
@@ -37,6 +39,7 @@ namespace Zambon.Core.Module.Services
             where TStaticText : StaticTextBase
         where TLanguagesParent : LanguagesParentBase<TLanguage>
             where TLanguage : LanguageBase
+        where TModuleConfigurationsParent : ModuleConfigurationsParentBase
         where TNavigationParent : NavigationParentBase<TMenu>
             where TMenu : MenuBase<TMenu>
     {

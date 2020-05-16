@@ -10,12 +10,14 @@ namespace Zambon.Core.Module.Model.Abstractions
         TEnumsParent, TEnum, TValue,
         TStaticTextsParent, TStaticText,
         TLanguagesParent, TLanguage,
+        TModuleConfigurationsParent,
         TNavigationParent, TMenu>
         : SerializeNodeBase, IApplication
             <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
             TEnumsParent, TEnum, TValue,
             TStaticTextsParent, TStaticText,
             TLanguagesParent, TLanguage,
+            TModuleConfigurationsParent,
             TNavigationParent, TMenu>
 
         where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
@@ -29,6 +31,7 @@ namespace Zambon.Core.Module.Model.Abstractions
             where TStaticText : StaticTextBase
         where TLanguagesParent : LanguagesParentBase<TLanguage>
             where TLanguage : LanguageBase
+        where TModuleConfigurationsParent : ModuleConfigurationsParentBase
         where TNavigationParent : NavigationParentBase<TMenu>
             where TMenu : MenuBase<TMenu>
     {
@@ -74,6 +77,14 @@ namespace Zambon.Core.Module.Model.Abstractions
         {
             get => _languages;
             set => SetParent(value, ref _languages);
+        }
+
+        private TModuleConfigurationsParent moduleConfigurations;
+        [XmlElement]
+        public TModuleConfigurationsParent ModuleConfigurations
+        {
+            get => moduleConfigurations;
+            set => SetParent(value, ref moduleConfigurations);
         }
 
         private TNavigationParent _navigation;

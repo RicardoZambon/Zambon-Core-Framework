@@ -8,6 +8,7 @@ namespace Zambon.Core.Module.Interfaces.Models
         TEnumsParent, TEnum, TValue,
         TStaticTextsParent, TStaticText,
         TLanguagesParent, TLanguage,
+        TModuleConfigurationsParent,
         TNavigationParent, TMenu>
 
         where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
@@ -21,6 +22,7 @@ namespace Zambon.Core.Module.Interfaces.Models
             where TStaticText : IStaticText
         where TLanguagesParent : ILanguagesParent<TLanguage>
             where TLanguage : ILanguage
+        where TModuleConfigurationsParent : IModuleConfigurationsParent
         where TNavigationParent : INavigationParent<TMenu>
             where TMenu : IMenu<TMenu>
     {
@@ -33,6 +35,8 @@ namespace Zambon.Core.Module.Interfaces.Models
         TStaticTextsParent _StaticTexts { get; set; }
 
         TLanguagesParent _Languages { get; set; }
+
+        TModuleConfigurationsParent ModuleConfigurations { get; set; }
 
         TNavigationParent _Navigation { get; set; }
 

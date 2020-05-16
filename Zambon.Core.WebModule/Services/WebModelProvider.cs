@@ -2,6 +2,7 @@
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Model.Languages;
+using Zambon.Core.Module.Model.Nodes.Configurations;
 using Zambon.Core.Module.Model.Nodes.Entities.Properties;
 using Zambon.Core.Module.Model.Nodes.Enums;
 using Zambon.Core.Module.Model.Nodes.Languages;
@@ -17,6 +18,7 @@ namespace Zambon.Core.WebModule.Services
         EnumsParent, Enum, Value,
         StaticTextsParent, StaticText,
         LanguagesParent, Language,
+        ModuleConfigurations,
         NavigationParent, Menu>
     {
         public WebModelProvider(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)

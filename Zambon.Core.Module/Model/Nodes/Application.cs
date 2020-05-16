@@ -1,6 +1,7 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.Module.Model.Languages;
+using Zambon.Core.Module.Model.Nodes.Configurations;
 using Zambon.Core.Module.Model.Nodes.Entities;
 using Zambon.Core.Module.Model.Nodes.Entities.Properties;
 using Zambon.Core.Module.Model.Nodes.Enums;
@@ -16,6 +17,7 @@ namespace Zambon.Core.Module.Model.Nodes
         EnumsParent, Enum, Value,
         StaticTextsParent, StaticText,
         LanguagesParent, Language,
+        ModuleConfigurations,
         NavigationParent, Menu>
     {
     }

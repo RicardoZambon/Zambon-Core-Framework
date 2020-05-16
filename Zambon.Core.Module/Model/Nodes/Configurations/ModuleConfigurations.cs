@@ -1,12 +1,8 @@
-﻿//using Zambon.Core.Module.Model.Serialization;
+﻿using Zambon.Core.Module.Model.Abstractions;
 
-//namespace Zambon.Core.Module.Model.Configurations
-//{
-//    /// <summary>
-//    /// Represents all configurations used by application in XML model file.
-//    /// </summary>
-//    public class ModuleConfigurations : SerializeNodeBase
-//    {
-
-//    }
-//}
+namespace Zambon.Core.Module.Model.Nodes.Configurations
+{
+    public class ModuleConfigurations : ModuleConfigurationsParentBase
+    {
+    }
+}
