@@ -6,16 +6,7 @@ using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public class ViewsParent : ViewsParentBase
-        <DetailView, ListView, LookupView,
-            SearchPropertiesParent, SearchProperty,
-            ButtonsParent, Button,
-            ColumnsParent, Column,
-            GridTemplatesParent, GridTemplate>
+    public class ListView : ListViewBase<SearchPropertiesParent, SearchProperty, ButtonsParent, Button, ColumnsParent, Column, GridTemplatesParent, GridTemplate>
     {
-        public ViewsParent() : base()
-        {
-
-        }
     }
 }

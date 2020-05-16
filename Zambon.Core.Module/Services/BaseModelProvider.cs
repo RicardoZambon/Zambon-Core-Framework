@@ -21,7 +21,11 @@ namespace Zambon.Core.Module.Services
         TLanguagesParent, TLanguage,
         TModuleConfigurationsParent,
         TNavigationParent, TMenu,
-        TViewsParent> : IModelProvider
+        TViewsParent, TDetailView, TListView, TLookupView,
+            TSearchPropertiesParent, TSearchProperty,
+            TButtonsParent, TButton,
+            TColumnsParent, TColumn,
+            TGridTemplatesParent, TGridTemplate> : IModelProvider
         where TApplication : ApplicationBase
             <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
             TEnumsParent, TEnum, TValue,
@@ -29,7 +33,11 @@ namespace Zambon.Core.Module.Services
             TLanguagesParent, TLanguage,
             TModuleConfigurationsParent,
             TNavigationParent, TMenu,
-            TViewsParent>, new()
+            TViewsParent, TDetailView, TListView, TLookupView,
+                TSearchPropertiesParent, TSearchProperty,
+                TButtonsParent, TButton,
+                TColumnsParent, TColumn,
+                TGridTemplatesParent, TGridTemplate>, new()
         where TEntityTypesParent : EntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
             where TEntity : EntityBase<TPropertiesParent, TProperty>
                 where TPropertiesParent : PropertiesParentBase<TProperty>
@@ -44,7 +52,19 @@ namespace Zambon.Core.Module.Services
         where TModuleConfigurationsParent : ModuleConfigurationsParentBase
         where TNavigationParent : NavigationParentBase<TMenu>
             where TMenu : MenuBase<TMenu>
-        where TViewsParent : ViewsParentBase
+        where TViewsParent : ViewsParentBase<TDetailView, TListView, TLookupView, TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+            where TDetailView : DetailViewBase<TButtonsParent, TButton>
+            where TListView : ListViewBase<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+            where TLookupView : LookupViewBase<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+
+            where TSearchPropertiesParent : SearchPropertiesParentBase<TSearchProperty>
+                where TSearchProperty : SearchPropertyBase
+            where TButtonsParent : ButtonsParentBase<TButton>
+                where TButton : ButtonBase
+            where TColumnsParent : ColumnsParentBase<TColumn>
+                where TColumn : ColumnBase
+            where TGridTemplatesParent : GridTemplatesParentBase<TGridTemplate>
+                where TGridTemplate : GridTemplateBase
     {
         #region Variables
 

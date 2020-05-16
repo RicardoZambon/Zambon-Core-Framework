@@ -10,7 +10,11 @@ namespace Zambon.Core.Module.Interfaces.Models
         TLanguagesParent, TLanguage,
         TModuleConfigurationsParent,
         TNavigationParent, TMenu,
-        TViewsParent>
+        TViewsParent, TDetailView, TListView, TLookupView,
+            TSearchPropertiesParent, TSearchProperty,
+            TButtonsParent, TButton,
+            TColumnsParent, TColumn,
+            TGridTemplatesParent, TGridTemplate>
 
         where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
             where TEntity : IEntity<TPropertiesParent, TProperty>
@@ -26,7 +30,19 @@ namespace Zambon.Core.Module.Interfaces.Models
         where TModuleConfigurationsParent : IModuleConfigurationsParent
         where TNavigationParent : INavigationParent<TMenu>
             where TMenu : IMenu<TMenu>
-        where TViewsParent : IViewsParent
+        where TViewsParent : IViewsParent<TDetailView, TListView, TLookupView, TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+            where TDetailView : IDetailView<TButtonsParent, TButton>
+            where TListView : IListView<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+            where TLookupView : ILookupView<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+
+            where TSearchPropertiesParent : ISearchPropertiesParent<TSearchProperty>
+                where TSearchProperty : ISearchProperty
+            where TButtonsParent : IButtonsParent<TButton>
+                where TButton : IButton
+            where TColumnsParent : IColumnsParent<TColumn>
+                where TColumn : IColumn
+            where TGridTemplatesParent : IGridTemplatesParent<TGridTemplate>
+                where TGridTemplate : IGridTemplate
     {
         #region XML Elements
 

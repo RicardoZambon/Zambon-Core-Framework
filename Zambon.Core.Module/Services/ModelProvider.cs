@@ -10,7 +10,11 @@ using Zambon.Core.Module.Model.Nodes.Enums;
 using Zambon.Core.Module.Model.Nodes.Languages;
 using Zambon.Core.Module.Model.Nodes.Navigation;
 using Zambon.Core.Module.Model.Nodes.StaticTexts;
-using Zambon.Core.Module.Model.Views;
+using Zambon.Core.Module.Model.Nodes.Views;
+using Zambon.Core.Module.Model.Nodes.Views.Buttons;
+using Zambon.Core.Module.Model.Nodes.Views.Columns;
+using Zambon.Core.Module.Model.Nodes.Views.GridTemplates;
+using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
 
 namespace Zambon.Core.Module.Services
 {
@@ -21,7 +25,11 @@ namespace Zambon.Core.Module.Services
         LanguagesParent, Language,
         ModuleConfigurationsParent,
         NavigationParent, Menu,
-        ViewsParent>
+        ViewsParent, DetailView, ListView, LookupView,
+            SearchPropertiesParent, SearchProperty,
+            ButtonsParent, Button,
+            ColumnsParent, Column,
+            GridTemplatesParent, GridTemplate>
     {
         public ModelProvider(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)
         {
