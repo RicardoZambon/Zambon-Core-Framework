@@ -13,20 +13,23 @@ namespace Zambon.Core.WebModule.Services
         TStaticTextsParent, TStaticText,
         TLanguagesParent, TLanguage,
         TModuleConfigurationsParent,
-        TNavigationParent, TMenu> : BaseModelProvider<TApplication,
+        TNavigationParent, TMenu,
+        TViewsParentBase> : BaseModelProvider<TApplication,
             TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
             TEnumsParent, TEnum, TValue,
             TStaticTextsParent, TStaticText,
             TLanguagesParent, TLanguage,
             TModuleConfigurationsParent,
-            TNavigationParent, TMenu>
+            TNavigationParent, TMenu,
+            TViewsParentBase>
         where TApplication : WebApplicationBase<
             TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
             TEnumsParent, TEnum, TValue,
             TStaticTextsParent, TStaticText,
             TLanguagesParent, TLanguage,
             TModuleConfigurationsParent,
-            TNavigationParent, TMenu>, new()
+            TNavigationParent, TMenu,
+            TViewsParentBase>, new()
         where TEntityTypesParent : WebEntityTypesParentBase<TEntity, TPropertiesParent, TProperty>
             where TEntity : WebEntityBase<TPropertiesParent, TProperty>
                 where TPropertiesParent : PropertiesParentBase<TProperty>
@@ -41,6 +44,7 @@ namespace Zambon.Core.WebModule.Services
         where TModuleConfigurationsParent : ModuleConfigurationsParentBase
         where TNavigationParent : NavigationParentBase<TMenu>
             where TMenu : MenuBase<TMenu>
+        where TViewsParentBase : ViewsParentBase
     {
         public WebModelProviderBase(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)
         {

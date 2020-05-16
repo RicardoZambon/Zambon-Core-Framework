@@ -8,6 +8,7 @@ using Zambon.Core.Module.Model.Nodes.Enums;
 using Zambon.Core.Module.Model.Nodes.Languages;
 using Zambon.Core.Module.Model.Nodes.Navigation;
 using Zambon.Core.Module.Model.Nodes.StaticTexts;
+using Zambon.Core.Module.Model.Views;
 
 namespace Zambon.Core.Module.Model.Nodes
 {
@@ -17,8 +18,9 @@ namespace Zambon.Core.Module.Model.Nodes
         EnumsParent, Enum, Value,
         StaticTextsParent, StaticText,
         LanguagesParent, Language,
-        ModuleConfigurations,
-        NavigationParent, Menu>
+        ModuleConfigurationsParent,
+        NavigationParent, Menu,
+        ViewsParent>
     {
     }
 }

@@ -10,6 +10,7 @@ using Zambon.Core.Module.Model.Nodes.Enums;
 using Zambon.Core.Module.Model.Nodes.Languages;
 using Zambon.Core.Module.Model.Nodes.Navigation;
 using Zambon.Core.Module.Model.Nodes.StaticTexts;
+using Zambon.Core.Module.Model.Views;
 
 namespace Zambon.Core.Module.Services
 {
@@ -18,8 +19,9 @@ namespace Zambon.Core.Module.Services
         EnumsParent, Enum, Value,
         StaticTextsParent, StaticText,
         LanguagesParent, Language,
-        ModuleConfigurations,
-        NavigationParent, Menu>
+        ModuleConfigurationsParent,
+        NavigationParent, Menu,
+        ViewsParent>
     {
         public ModelProvider(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)
         {

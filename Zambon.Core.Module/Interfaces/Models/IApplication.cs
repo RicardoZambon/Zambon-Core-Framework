@@ -9,7 +9,8 @@ namespace Zambon.Core.Module.Interfaces.Models
         TStaticTextsParent, TStaticText,
         TLanguagesParent, TLanguage,
         TModuleConfigurationsParent,
-        TNavigationParent, TMenu>
+        TNavigationParent, TMenu,
+        TViewsParent>
 
         where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
             where TEntity : IEntity<TPropertiesParent, TProperty>
@@ -25,6 +26,7 @@ namespace Zambon.Core.Module.Interfaces.Models
         where TModuleConfigurationsParent : IModuleConfigurationsParent
         where TNavigationParent : INavigationParent<TMenu>
             where TMenu : IMenu<TMenu>
+        where TViewsParent : IViewsParent
     {
         #region XML Elements
 
@@ -39,6 +41,8 @@ namespace Zambon.Core.Module.Interfaces.Models
         TModuleConfigurationsParent ModuleConfigurations { get; set; }
 
         TNavigationParent _Navigation { get; set; }
+
+        TViewsParent Views { get; set; }
 
         #endregion
 
