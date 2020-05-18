@@ -1,11 +1,11 @@
-﻿using Zambon.Core.Module.Model.Abstractions;
-using Zambon.Core.Module.Model.Nodes.Views.Columns;
-using Zambon.Core.Module.Model.Nodes.Views.GridTemplates;
-using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
+﻿using Zambon.Core.Module.Interfaces.Models;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public sealed class LookupView : LookupViewBase<SearchPropertiesParent, SearchProperty, ColumnsParent, Column, GridTemplatesParent, GridTemplate>
+    public class LookupView<TSearchProperty, TColumn, TGridTemplate> : ViewResultSetBase<TSearchProperty, TColumn, TGridTemplate>, ILookupView<TSearchProperty, TColumn, TGridTemplate>
+        where TSearchProperty : class, ISearchProperty
+        where TColumn : class, IColumn
+        where TGridTemplate : class, IGridTemplate
     {
     }
 }

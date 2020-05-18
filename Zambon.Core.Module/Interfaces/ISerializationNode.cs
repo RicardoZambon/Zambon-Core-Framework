@@ -5,6 +5,6 @@
     /// </summary>
     public interface ISerializationNode
     {
-        void Merge(object readObj); //where TObject : class, ISerializationNode;
+        void Merge(object readObj);
     }
 }

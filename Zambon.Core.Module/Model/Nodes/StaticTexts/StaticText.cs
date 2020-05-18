@@ -1,8 +1,20 @@
-﻿using Zambon.Core.Module.Model.Abstractions;
+﻿using System.Xml.Serialization;
+using Zambon.Core.Module.Atrributes;
+using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.StaticTexts
 {
-    public sealed class StaticText : StaticTextBase
+    public class StaticText : SerializeNodeBase, IStaticText
     {
+        #region XML Attributes
+
+        [XmlAttribute, MergeKey]
+        public string Key { get; set; }
+
+        [XmlAttribute]
+        public string Value { get; set; }
+
+        #endregion
     }
 }

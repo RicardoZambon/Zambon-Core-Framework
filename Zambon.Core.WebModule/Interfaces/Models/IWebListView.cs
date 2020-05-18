@@ -2,19 +2,11 @@
 
 namespace Zambon.Core.WebModule.Interfaces.Models
 {
-    public interface IWebListView
-        <TSearchPropertiesParent, TSearchProperty,
-        TButtonsParent, TButton,
-        TColumnsParent, TColumn,
-        TGridTemplatesParent, TGridTemplate> : IListView<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-        where TSearchPropertiesParent : ISearchPropertiesParent<TSearchProperty>
-            where TSearchProperty : ISearchProperty
-        where TButtonsParent : IButtonsParent<TButton>
-            where TButton : IWebButton
-        where TColumnsParent : IColumnsParent<TColumn>
-            where TColumn : IColumn
-        where TGridTemplatesParent : IGridTemplatesParent<TGridTemplate>
-            where TGridTemplate : IWebGridTemplate
+    public interface IWebListView<TSearchProperty, TButton, TColumn, TGridTemplate> : IListView<TSearchProperty, TButton, TColumn, TGridTemplate>
+        where TSearchProperty : ISearchProperty
+        where TButton : IWebButton
+        where TColumn : IColumn
+        where TGridTemplate : IWebGridTemplate
     {
         string ControllerName { get; set; }
 

@@ -1,8 +1,19 @@
-﻿using Zambon.Core.Module.Model.Abstractions;
+﻿using System.Xml.Serialization;
+using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Enums
 {
-    public sealed class Value : ValueBase
+    public class Value : SerializeNodeBase, IValue
     {
+        #region XML Attributes
+
+        [XmlAttribute]
+        public string Key { get; set; }
+
+        [XmlAttribute]
+        public string DisplayName { get; set; }
+
+        #endregion
     }
 }

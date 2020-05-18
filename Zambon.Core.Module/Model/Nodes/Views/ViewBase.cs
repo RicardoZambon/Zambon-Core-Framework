@@ -1,19 +1,21 @@
 ﻿using System.Xml.Serialization;
-using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Serialization;
 
-namespace Zambon.Core.Module.Model.Abstractions
+namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public abstract class StaticTextBase : SerializeNodeBase, IStaticText
+    public abstract class ViewBase : SerializeNodeBase, IView
     {
         #region XML Attributes
 
-        [XmlAttribute, MergeKey]
+        [XmlAttribute]
         public string Id { get; set; }
 
         [XmlAttribute]
-        public string Value { get; set; }
+        public string Title { get; set; }
+
+        [XmlAttribute]
+        public string EntityId { get; set; }
 
         #endregion
     }

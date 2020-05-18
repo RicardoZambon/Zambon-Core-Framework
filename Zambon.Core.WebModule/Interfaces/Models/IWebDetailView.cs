@@ -2,9 +2,7 @@
 
 namespace Zambon.Core.WebModule.Interfaces.Models
 {
-    public interface IWebDetailView<TButtonsParent, TButton> : IDetailView<TButtonsParent, TButton>
-        where TButtonsParent : IButtonsParent<TButton>
-            where TButton : IWebButton
+    public interface IWebDetailView<TButton> : IDetailView<TButton> where TButton : IWebButton
     {
         string ControllerName { get; set; }
 

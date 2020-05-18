@@ -1,78 +1,40 @@
-﻿using Zambon.Core.Module.Model.Abstractions;
-using Zambon.Core.Module.Model.Serialization;
+﻿using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IApplication
-        <TEntityTypesParent, TEntity, TPropertiesParent, TProperty,
-        TEnumsParent, TEnum, TValue,
-        TStaticTextsParent, TStaticText,
-        TLanguagesParent, TLanguage,
-        TModuleConfigurationsParent,
-        TNavigationParent, TMenu,
-        TViewsParent, TDetailView, TListView, TLookupView,
-            TSearchPropertiesParent, TSearchProperty,
-            TButtonsParent, TButton,
-            TColumnsParent, TColumn,
-            TGridTemplatesParent, TGridTemplate>
-
-        where TEntityTypesParent : IEntityTypesParent<TEntity, TPropertiesParent, TProperty>
-            where TEntity : IEntity<TPropertiesParent, TProperty>
-                where TPropertiesParent : IPropertiesParent<TProperty>
-                    where TProperty : IProperty
-        where TEnumsParent : IEnumsParent<TEnum, TValue>
-            where TEnum : IEnum<TValue>
-                where TValue : IValue
-        where TStaticTextsParent : IStaticTextsParent<TStaticText>
-            where TStaticText : IStaticText
-        where TLanguagesParent : ILanguagesParent<TLanguage>
-            where TLanguage : ILanguage
-        where TModuleConfigurationsParent : IModuleConfigurationsParent
-        where TNavigationParent : INavigationParent<TMenu>
-            where TMenu : IMenu<TMenu>
-        where TViewsParent : IViewsParent<TDetailView, TListView, TLookupView, TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-            where TDetailView : IDetailView<TButtonsParent, TButton>
-            where TListView : IListView<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-            where TLookupView : ILookupView<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-
-            where TSearchPropertiesParent : ISearchPropertiesParent<TSearchProperty>
-                where TSearchProperty : ISearchProperty
-            where TButtonsParent : IButtonsParent<TButton>
-                where TButton : IButton
-            where TColumnsParent : IColumnsParent<TColumn>
-                where TColumn : IColumn
-            where TGridTemplatesParent : IGridTemplatesParent<TGridTemplate>
-                where TGridTemplate : IGridTemplate
+    public interface IApplication : ISerializationNode
     {
-        #region XML Elements
 
-        TEntityTypesParent _EntityTypes { get; set; }
+    }
 
-        TEnumsParent _Enums { get; set; }
+    public interface IApplication<TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews> : IApplication
+        where TEntity : IEntity
+        where TEnum : IEnum
+        where TStaticText : IStaticText
+        where TLanguage : ILanguage
+        where TModuleConfigurations : IModuleConfigurations
+        where TMenu : IMenu<TMenu>
+        where TViews : IViews
+    {
+        #region XML Arrays
 
-        TStaticTextsParent _StaticTexts { get; set; }
+        ChildItemCollection<TEntity> EntityTypes { get; set; }
 
-        TLanguagesParent _Languages { get; set; }
+        ChildItemCollection<TEnum> Enums { get; set; }
 
-        TModuleConfigurationsParent ModuleConfigurations { get; set; }
+        ChildItemCollection<TStaticText> StaticTexts { get; set; }
 
-        TNavigationParent _Navigation { get; set; }
+        ChildItemCollection<TLanguage> Languages { get; set; }
 
-        TViewsParent Views { get; set; }
+        ChildItemCollection<TMenu> Menus { get; set; }
 
         #endregion
 
-        #region Properties
+        #region XML Elements
 
-        ChildItemCollection<TEntity> Entities { get; }
+        TModuleConfigurations ModuleConfigurations { get; set; }
 
-        ChildItemCollection<TEnum> Enums { get; }
-
-        ChildItemCollection<TStaticText> StaticTexts { get; }
-
-        ChildItemCollection<TLanguage> Languages { get; }
-
-        ChildItemCollection<TMenu> Menus { get; }
+        TViews Views { get; set; }
 
         #endregion
     }

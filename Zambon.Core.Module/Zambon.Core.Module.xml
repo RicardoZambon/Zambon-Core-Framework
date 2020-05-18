@@ -68,55 +68,55 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Zambon.Core.Module.Model.Abstractions.ButtonBase.CompareTo(System.Object)">
-            <summary>
-            Compares the Index with other menu object, to sort the menus array.
-            </summary>
-            <param name="obj">The menu object to compare to.</param>
-            <returns>A signed number indicating the relative values of this instance and value. Return
-                Value Description Less than zero: This instance is less than value. Zero: This
-                instance is equal to value. Greater than zero: This instance is greater than value.
-            </returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Abstractions.ColumnBase.CompareTo(System.Object)">
-            <summary>
-            Compares the Index with other menu object, to sort the menus array.
-            </summary>
-            <param name="obj">The menu object to compare to.</param>
-            <returns>A signed number indicating the relative values of this instance and value. Return
-                Value Description Less than zero: This instance is less than value. Zero: This
-                instance is equal to value. Greater than zero: This instance is greater than value.
-            </returns>
-        </member>
-        <member name="M:Zambon.Core.Module.Model.Abstractions.MenuBase`1.CompareTo(System.Object)">
-            <summary>
-            Compares the Index with other menu object, to sort the menus array.
-            </summary>
-            <param name="obj">The menu object to compare to.</param>
-            <returns>A signed number indicating the relative values of this instance and value. Return
-                Value Description Less than zero: This instance is less than value. Zero: This
-                instance is equal to value. Greater than zero: This instance is greater than value.
-            </returns>
-        </member>
-        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.Name">
+        <member name="P:Zambon.Core.Module.Model.Nodes.EntityTypes.Property.Name">
             <summary>
             The property name.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.DisplayName">
+        <member name="P:Zambon.Core.Module.Model.Nodes.EntityTypes.Property.DisplayName">
             <summary>
             The text when displaying this property, default value from the DisplayName attribute.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.Prompt">
+        <member name="P:Zambon.Core.Module.Model.Nodes.EntityTypes.Property.Prompt">
             <summary>
             The text when displaying the input for this property, default value from the DisplayName attribute.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Module.Model.Abstractions.PropertyBase.Description">
+        <member name="P:Zambon.Core.Module.Model.Nodes.EntityTypes.Property.Description">
             <summary>
             The text when displaying the description for this property, default value from the DisplayName attribute.
             </summary>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Nodes.Navigation.Menu`1.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other menu object, to sort the menus array.
+            </summary>
+            <param name="obj">The menu object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Nodes.Views.Buttons.Button.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other menu object, to sort the menus array.
+            </summary>
+            <param name="obj">The menu object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
+        </member>
+        <member name="M:Zambon.Core.Module.Model.Nodes.Views.Columns.Column.CompareTo(System.Object)">
+            <summary>
+            Compares the Index with other menu object, to sort the menus array.
+            </summary>
+            <param name="obj">The menu object to compare to.</param>
+            <returns>A signed number indicating the relative values of this instance and value. Return
+                Value Description Less than zero: This instance is less than value. Zero: This
+                instance is equal to value. Greater than zero: This instance is greater than value.
+            </returns>
         </member>
         <member name="T:Zambon.Core.Module.Model.Serialization.ChildItemCollection`1">
             <summary>
@@ -151,12 +151,12 @@
             <param name="read">The source array, containing the original items values.</param>
             <returns>Returns the target array plus all any new element from the source array.</returns>
         </member>
-        <member name="P:Zambon.Core.Module.Services.BaseModelProvider`14.DefaultCulture">
+        <member name="P:Zambon.Core.Module.Services.ModelProviderBase`1.DefaultCulture">
             <summary>
             Default culture used by executing assembly.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Services.BaseModelProvider`14.GetModel(System.String)">
+        <member name="M:Zambon.Core.Module.Services.ModelProviderBase`1.GetModel(System.String)">
             <summary>
             Search for the specific model language and return it.
             </summary>

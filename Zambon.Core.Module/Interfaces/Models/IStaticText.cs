@@ -2,7 +2,7 @@
 {
     public interface IStaticText : IParent
     {
-        string Id { get; set; }
+        string Key { get; set; }
 
         string Value { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using Zambon.Core.Module.Interfaces.Models.Common;
+﻿
+using Zambon.Core.Module.Interfaces.Models.Common;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {

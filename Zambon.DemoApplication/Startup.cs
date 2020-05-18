@@ -7,7 +7,9 @@ using System;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Model.Serialization;
 using Zambon.Core.WebModule.Configurations;
+using Zambon.Core.WebModule.Model.Nodes.Entities;
 using Zambon.Core.WebModule.Services;
 
 namespace Zambon.DemoApplication
@@ -50,17 +52,15 @@ namespace Zambon.DemoApplication
             var model = modelProvider.GetModel("pt-br");
             if (model != null)
             {
-                ReadEntityTypes(model._EntityTypes);
+                ReadEntityTypes(model.EntityTypes);
             }
         }
 
 
-        public void ReadEntityTypes<TEntity, TProperties, TProperty>(IEntityTypesParent<TEntity, TProperties, TProperty> entityTypes)
-            where TEntity : IEntity<TProperties, TProperty>
-                where TProperties : IPropertiesParent<TProperty>
-                    where TProperty : IProperty
+        public void ReadEntityTypes<TEntity>(ChildItemCollection<TEntity> entityTypes)
+            where TEntity : IEntity
         {
-            foreach (var entity in entityTypes.EntitiesList)
+            foreach (var entity in entityTypes)
             {
                 var id = entity.Id;
                 var displayName = entity.DisplayName;

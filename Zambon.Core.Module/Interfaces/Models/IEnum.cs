@@ -2,11 +2,14 @@
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IEnum<TValue> : IParent
-        where TValue : IValue
+    public interface IEnum : IParent
     {
         string Id { get; set; }
+    }
 
-        ChildItemCollection<TValue> ValuesList { get; set; }
+    public interface IEnum<TValue> : IEnum
+        where TValue : IValue
+    {
+        ChildItemCollection<TValue> Values { get; set; }
     }
 }

@@ -2,9 +2,12 @@
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IDetailView<TButtonsParent, TButton> : IView, IViewButtons<TButtonsParent, TButton>
-        where TButtonsParent : IButtonsParent<TButton>
-            where TButton : IButton
+    public interface IDetailView : IView
+    {
+    }
+
+    public interface IDetailView<TButton> : IDetailView, IViewButtons<TButton>
+        where TButton : IButton
     {
     }
 }

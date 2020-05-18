@@ -1,6 +1,6 @@
 ﻿namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IModuleConfigurationsParent : IParent
+    public interface IModuleConfigurations : IParent
     {
     }
 }

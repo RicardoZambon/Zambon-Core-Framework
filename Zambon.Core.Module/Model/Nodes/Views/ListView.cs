@@ -1,12 +1,29 @@
-﻿using Zambon.Core.Module.Model.Abstractions;
-using Zambon.Core.Module.Model.Nodes.Views.Buttons;
-using Zambon.Core.Module.Model.Nodes.Views.Columns;
-using Zambon.Core.Module.Model.Nodes.Views.GridTemplates;
-using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
+﻿using System.Xml.Serialization;
+using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public sealed class ListView : ListViewBase<SearchPropertiesParent, SearchProperty, ButtonsParent, Button, ColumnsParent, Column, GridTemplatesParent, GridTemplate>
+    public class ListView<TSearchProperty, TButton, TColumn, TGridTemplate> : ViewResultSetBase<TSearchProperty, TColumn, TGridTemplate>, IListView<TSearchProperty, TButton, TColumn, TGridTemplate>
+        where TSearchProperty : class, ISearchProperty
+        where TButton : class, IButton
+        where TColumn : class, IColumn
+        where TGridTemplate : class, IGridTemplate
     {
+        #region XML Arrays
+
+        [XmlArray]
+        public ChildItemCollection<TButton> Buttons { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public ListView()
+        {
+            Buttons = new ChildItemCollection<TButton>(this);
+        }
+
+        #endregion
     }
 }
