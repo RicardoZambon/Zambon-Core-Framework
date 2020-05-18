@@ -11,18 +11,18 @@ namespace Zambon.Core.Module.Model.Abstractions
             TGridTemplatesParent, TGridTemplate>
             : SerializeNodeBase,
                 IViewsParent<TDetailView, TListView, TLookupView, TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-        where TDetailView : IDetailView<TButtonsParent, TButton>
-        where TListView : IListView<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-        where TLookupView : ILookupView<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+        where TDetailView : DetailViewBase<TButtonsParent, TButton>
+        where TListView : ListViewBase<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+        where TLookupView : LookupViewBase<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
 
-        where TSearchPropertiesParent : ISearchPropertiesParent<TSearchProperty>
-            where TSearchProperty : ISearchProperty
-        where TButtonsParent : IButtonsParent<TButton>
-            where TButton : IButton
-        where TColumnsParent : IColumnsParent<TColumn>
-            where TColumn : IColumn
-        where TGridTemplatesParent : IGridTemplatesParent<TGridTemplate>
-            where TGridTemplate : IGridTemplate
+        where TSearchPropertiesParent : SearchPropertiesParentBase<TSearchProperty>
+            where TSearchProperty : SearchPropertyBase
+        where TButtonsParent : ButtonsParentBase<TButton>
+            where TButton : ButtonBase
+        where TColumnsParent : ColumnsParentBase<TColumn>
+            where TColumn : ColumnBase
+        where TGridTemplatesParent : GridTemplatesParentBase<TGridTemplate>
+            where TGridTemplate : GridTemplateBase
     {
         #region XML Elements
 

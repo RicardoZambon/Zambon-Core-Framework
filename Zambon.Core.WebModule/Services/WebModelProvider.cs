@@ -15,6 +15,9 @@ using Zambon.Core.Module.Model.Nodes.Views.GridTemplates;
 using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
 using Zambon.Core.WebModule.Model.Nodes;
 using Zambon.Core.WebModule.Model.Nodes.Entities;
+using Zambon.Core.WebModule.Model.Nodes.Views;
+using Zambon.Core.WebModule.Model.Nodes.Views.Buttons;
+using Zambon.Core.WebModule.Model.Nodes.Views.GridTemplates;
 
 namespace Zambon.Core.WebModule.Services
 {
@@ -25,11 +28,11 @@ namespace Zambon.Core.WebModule.Services
         LanguagesParent, Language,
         ModuleConfigurationsParent,
         NavigationParent, Menu,
-        ViewsParent, DetailView, ListView, LookupView,
+        WebViewsParent, WebDetailView, WebListView, WebLookupView,
             SearchPropertiesParent, SearchProperty,
-            ButtonsParent, Button,
+            WebButtonsParent, WebButton,
             ColumnsParent, Column,
-            GridTemplatesParent, GridTemplate>
+            WebGridTemplatesParent, WebGridTemplate>
     {
         public WebModelProvider(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)
         {

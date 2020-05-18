@@ -6,13 +6,14 @@ using Zambon.Core.Module.Model.Nodes.Enums;
 using Zambon.Core.Module.Model.Nodes.Languages;
 using Zambon.Core.Module.Model.Nodes.Navigation;
 using Zambon.Core.Module.Model.Nodes.StaticTexts;
-using Zambon.Core.Module.Model.Nodes.Views;
-using Zambon.Core.Module.Model.Nodes.Views.Buttons;
 using Zambon.Core.Module.Model.Nodes.Views.Columns;
 using Zambon.Core.Module.Model.Nodes.Views.GridTemplates;
 using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
 using Zambon.Core.WebModule.Model.Abstractions;
 using Zambon.Core.WebModule.Model.Nodes.Entities;
+using Zambon.Core.WebModule.Model.Nodes.Views;
+using Zambon.Core.WebModule.Model.Nodes.Views.Buttons;
+using Zambon.Core.WebModule.Model.Nodes.Views.GridTemplates;
 
 namespace Zambon.Core.WebModule.Model.Nodes
 {
@@ -24,11 +25,11 @@ namespace Zambon.Core.WebModule.Model.Nodes
         LanguagesParent, Language,
         ModuleConfigurationsParent,
         NavigationParent, Menu,
-        ViewsParent, DetailView, ListView, LookupView,
+        WebViewsParent, WebDetailView, WebListView, WebLookupView,
             SearchPropertiesParent, SearchProperty,
-            ButtonsParent, Button,
+            WebButtonsParent, WebButton,
             ColumnsParent, Column,
-            GridTemplatesParent, GridTemplate>
+            WebGridTemplatesParent, WebGridTemplate>
     {
     }
 }

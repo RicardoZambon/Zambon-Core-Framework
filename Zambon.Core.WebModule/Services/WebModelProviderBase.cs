@@ -58,19 +58,19 @@ namespace Zambon.Core.WebModule.Services
         where TModuleConfigurationsParent : ModuleConfigurationsParentBase
         where TNavigationParent : NavigationParentBase<TMenu>
             where TMenu : MenuBase<TMenu>
-        where TViewsParent : ViewsParentBase<TDetailView, TListView, TLookupView, TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-            where TDetailView : DetailViewBase<TButtonsParent, TButton>
-            where TListView : ListViewBase<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
-            where TLookupView : LookupViewBase<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+        where TViewsParent : WebViewsParentBase<TDetailView, TListView, TLookupView, TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+            where TDetailView : WebDetailViewBase<TButtonsParent, TButton>
+            where TListView : WebListViewBase<TSearchPropertiesParent, TSearchProperty, TButtonsParent, TButton, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
+            where TLookupView : WebLookupViewBase<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
 
             where TSearchPropertiesParent : SearchPropertiesParentBase<TSearchProperty>
                 where TSearchProperty : SearchPropertyBase
-            where TButtonsParent : ButtonsParentBase<TButton>
-                where TButton : ButtonBase
+            where TButtonsParent : WebButtonsParentBase<TButton>
+                where TButton : WebButtonBase
             where TColumnsParent : ColumnsParentBase<TColumn>
                 where TColumn : ColumnBase
-            where TGridTemplatesParent : GridTemplatesParentBase<TGridTemplate>
-                where TGridTemplate : GridTemplateBase
+            where TGridTemplatesParent : WebGridTemplatesParentBase<TGridTemplate>
+                where TGridTemplate : WebGridTemplateBase
     {
         public WebModelProviderBase(IOptions<AppSettings> appSettings, IModule mainModule) : base(appSettings, mainModule)
         {

@@ -42,6 +42,9 @@ namespace Zambon.Core.Module.Model.Abstractions
             set { if (value != null) { int.TryParse(value, out int index); Index = index; } }
         }
 
+        [XmlAttribute]
+        public string NullValue { get; set; }
+
         #endregion
 
         #region Properties

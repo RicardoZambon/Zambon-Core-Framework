@@ -19,5 +19,7 @@ namespace Zambon.Core.Module.Interfaces.Models
         string FormatRegex { get; set; }
 
         string FormatRegexReplacement { get; set; }
+
+        string NullValue { get; set; }
     }
 }

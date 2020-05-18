@@ -5,8 +5,8 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
 {
-    public abstract class ViewResultSetBase<
-        TSearchPropertiesParent, TSearchProperty,
+    public abstract class ViewResultSetBase
+        <TSearchPropertiesParent, TSearchProperty,
         TColumnsParent, TColumn,
         TGridTemplatesParent, TGridTemplate> : ViewBase, IViewResultSet<TSearchPropertiesParent, TSearchProperty, TColumnsParent, TColumn, TGridTemplatesParent, TGridTemplate>
         where TSearchPropertiesParent : SearchPropertiesParentBase<TSearchProperty>

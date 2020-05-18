@@ -7,5 +7,12 @@ namespace Zambon.Core.WebModule.Model.Abstractions
             where TPropertiesParent : PropertiesParentBase<TProperty>
                 where TProperty : PropertyBase
     {
+        #region Constructors
+
+        public WebEntityTypesParentBase() : base()
+        {
+        }
+
+        #endregion
     }
 }
