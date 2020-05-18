@@ -17,7 +17,7 @@ using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
 namespace Zambon.Core.Module.Model.Nodes
 {
     [XmlRoot]
-    public class Application : ApplicationBase<
+    public sealed class Application : ApplicationBase<
         EntityTypesParent, Entity, PropertiesParent, Property,
         EnumsParent, Enum, Value,
         StaticTextsParent, StaticText,

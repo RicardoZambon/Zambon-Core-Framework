@@ -2,7 +2,7 @@
 {
     public interface IValue : IParent
     {
-        string Value { get; set; }
+        string Key { get; set; }
 
         string DisplayName { get; set; }
     }

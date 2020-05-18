@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Enums
 {
-    public class Enum : EnumBase<Value>
+    public sealed class Enum : EnumBase<Value>
     {
         public Enum() : base()
         {

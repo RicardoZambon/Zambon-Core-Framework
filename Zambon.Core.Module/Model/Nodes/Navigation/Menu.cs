@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Navigation
 {
-    public class Menu : MenuBase<Menu>
+    public sealed class Menu : MenuBase<Menu>
     {
     }
 }

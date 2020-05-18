@@ -3,7 +3,7 @@ using Zambon.Core.WebModule.Model.Abstractions;
 
 namespace Zambon.Core.WebModule.Model.Nodes.Entities
 {
-    public class WebEntity : WebEntityBase<PropertiesParent, Property>
+    public sealed class WebEntity : WebEntityBase<PropertiesParent, Property>
     {
     }
 }

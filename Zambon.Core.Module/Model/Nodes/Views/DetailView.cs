@@ -3,7 +3,7 @@ using Zambon.Core.Module.Model.Nodes.Views.Buttons;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public class DetailView : DetailViewBase<ButtonsParent, Button>
+    public sealed class DetailView : DetailViewBase<ButtonsParent, Button>
     {
     }
 }

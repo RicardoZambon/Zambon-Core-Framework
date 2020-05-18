@@ -5,7 +5,7 @@ using Zambon.Core.Module.Model.Nodes.Views.SearchProperties;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public class LookupView : LookupViewBase<SearchPropertiesParent, SearchProperty, ColumnsParent, Column, GridTemplatesParent, GridTemplate>
+    public sealed class LookupView : LookupViewBase<SearchPropertiesParent, SearchProperty, ColumnsParent, Column, GridTemplatesParent, GridTemplate>
     {
     }
 }

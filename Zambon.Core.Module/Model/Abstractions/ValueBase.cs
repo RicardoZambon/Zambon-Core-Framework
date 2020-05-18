@@ -9,7 +9,7 @@ namespace Zambon.Core.Module.Model.Abstractions
         #region XML Attributes
 
         [XmlAttribute]
-        public string Value { get; set; }
+        public string Key { get; set; }
 
         [XmlAttribute]
         public string DisplayName { get; set; }

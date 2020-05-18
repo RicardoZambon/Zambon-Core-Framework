@@ -6,7 +6,7 @@ using Zambon.Core.WebModule.Model.Nodes.Views.GridTemplates;
 
 namespace Zambon.Core.WebModule.Model.Nodes.Views
 {
-    public class WebViewsParent : WebViewsParentBase
+    public sealed class WebViewsParent : WebViewsParentBase
         <WebDetailView, WebListView, WebLookupView,
             SearchPropertiesParent, SearchProperty,
             WebButtonsParent, WebButton,

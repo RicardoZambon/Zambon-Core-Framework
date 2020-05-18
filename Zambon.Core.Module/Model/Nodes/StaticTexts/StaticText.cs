@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.StaticTexts
 {
-    public class StaticText : StaticTextBase
+    public sealed class StaticText : StaticTextBase
     {
     }
 }

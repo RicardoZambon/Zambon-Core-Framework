@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Entities.Properties
 {
-    public class Property : PropertyBase
+    public sealed class Property : PropertyBase
     {
     }
 }

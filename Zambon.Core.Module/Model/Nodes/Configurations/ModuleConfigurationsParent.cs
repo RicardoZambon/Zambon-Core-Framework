@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Configurations
 {
-    public class ModuleConfigurationsParent : ModuleConfigurationsParentBase
+    public sealed class ModuleConfigurationsParent : ModuleConfigurationsParentBase
     {
     }
 }

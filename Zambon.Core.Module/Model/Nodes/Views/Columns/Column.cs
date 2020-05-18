@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Views.Columns
 {
-    public class Column : ColumnBase
+    public sealed class Column : ColumnBase
     {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Languages
 {
-    public class Language : LanguageBase
+    public sealed class Language : LanguageBase
     {
     }
 }

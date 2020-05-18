@@ -18,7 +18,7 @@ using Zambon.Core.WebModule.Model.Nodes.Views.GridTemplates;
 namespace Zambon.Core.WebModule.Model.Nodes
 {
     [XmlRoot(APPLICATION_NODE)]
-    public class WebApplication : WebApplicationBase<
+    public sealed class WebApplication : WebApplicationBase<
         WebEntityTypesParent, WebEntity, PropertiesParent, Property,
         EnumsParent, Enum, Value,
         StaticTextsParent, StaticText,

@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.WebModule.Model.Nodes.Views.Buttons
 {
-    public class WebButton : WebButtonBase
+    public sealed class WebButton : WebButtonBase
     {
     }
 }

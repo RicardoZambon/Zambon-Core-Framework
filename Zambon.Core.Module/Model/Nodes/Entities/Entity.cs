@@ -3,7 +3,7 @@ using Zambon.Core.Module.Model.Nodes.Entities.Properties;
 
 namespace Zambon.Core.Module.Model.Nodes.Entities
 {
-    public class Entity : EntityBase<Properties.PropertiesParent, Property>
+    public sealed class Entity : EntityBase<Properties.PropertiesParent, Property>
     {
     }
 }

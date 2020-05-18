@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.WebModule.Model.Nodes.Views.Buttons
 {
-    public class WebButtonsParent : WebButtonsParentBase<WebButton>
+    public sealed class WebButtonsParent : WebButtonsParentBase<WebButton>
     {
         #region Constructors
 

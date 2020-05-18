@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Views.Columns
 {
-    public class ColumnsParent : ColumnsParentBase<Column>
+    public sealed class ColumnsParent : ColumnsParentBase<Column>
     {
     }
 }

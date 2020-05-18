@@ -4,7 +4,7 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Entities.Properties
 {
-    public class PropertiesParent : PropertiesParentBase<Property>
+    public sealed class PropertiesParent : PropertiesParentBase<Property>
     {
     }
 }

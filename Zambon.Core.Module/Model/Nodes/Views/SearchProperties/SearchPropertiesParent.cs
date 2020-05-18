@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Views.SearchProperties
 {
-    public class SearchPropertiesParent : SearchPropertiesParentBase<SearchProperty>
+    public sealed class SearchPropertiesParent : SearchPropertiesParentBase<SearchProperty>
     {
     }
 }

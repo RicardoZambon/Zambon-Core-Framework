@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Views.GridTemplates
 {
-    public class GridTemplatesParent : GridTemplatesParentBase<GridTemplate>
+    public sealed class GridTemplatesParent : GridTemplatesParentBase<GridTemplate>
     {
     }
 }

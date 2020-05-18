@@ -2,7 +2,7 @@
 
 namespace Zambon.Core.Module.Model.Nodes.Views.Buttons
 {
-    public class Button : ButtonBase
+    public sealed class Button : ButtonBase
     {
     }
 }

@@ -5,7 +5,7 @@ using Zambon.Core.WebModule.Model.Nodes.Views.GridTemplates;
 
 namespace Zambon.Core.WebModule.Model.Nodes.Views
 {
-    public class WebLookupView : WebLookupViewBase<SearchPropertiesParent, SearchProperty, ColumnsParent, Column, WebGridTemplatesParent, WebGridTemplate>
+    public sealed class WebLookupView : WebLookupViewBase<SearchPropertiesParent, SearchProperty, ColumnsParent, Column, WebGridTemplatesParent, WebGridTemplate>
     {
     }
 }
