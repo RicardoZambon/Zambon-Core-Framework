@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Model.Nodes.Views.Buttons;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
@@ -8,7 +9,7 @@ namespace Zambon.Core.Module.Model.Nodes.Views
     {
         #region XML Arrays
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(nameof(Button))]
         public ChildItemCollection<TButton> Buttons { get; set; }
 
         #endregion

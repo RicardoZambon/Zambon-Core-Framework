@@ -34,8 +34,17 @@ namespace Zambon.Core.Module.Model.Nodes.EntityTypes
 
         #region XML Arrays
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(nameof(Property))]
         public ChildItemCollection<TProperty> Properties { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public Entity()
+        {
+            Properties = new ChildItemCollection<TProperty>(this);
+        }
 
         #endregion
     }

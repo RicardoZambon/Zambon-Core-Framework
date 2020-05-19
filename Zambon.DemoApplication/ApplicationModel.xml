@@ -1,4 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application>
-  
+  <Views>
+    <DetailView Id="Test">
+      <Buttons>
+        <Button Id="btnTst" />
+      </Buttons>
+    </DetailView>
+  </Views>
 </Application>

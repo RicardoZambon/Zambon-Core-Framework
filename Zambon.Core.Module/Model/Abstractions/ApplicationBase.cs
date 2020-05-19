@@ -1,5 +1,8 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Model.Nodes.Languages;
+using Zambon.Core.Module.Model.Nodes.Navigation;
+using Zambon.Core.Module.Model.Nodes.StaticTexts;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Abstractions
@@ -17,23 +20,27 @@ namespace Zambon.Core.Module.Model.Abstractions
 
         protected const string APPLICATION_NODE = "Application";
 
+        protected const string ENTITYTYPES_ELEMENT_NODE = "Entity";
+
+        protected const string ENUMS_ELEMENT_NODE = "Enum";
+
         #endregion
 
         #region XML Arrays
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(ENTITYTYPES_ELEMENT_NODE)]
         public ChildItemCollection<TEntity> EntityTypes { get; set; }
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(ENUMS_ELEMENT_NODE)]
         public ChildItemCollection<TEnum> Enums { get; set; }
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(nameof(StaticText))]
         public ChildItemCollection<TStaticText> StaticTexts { get; set; }
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(nameof(Language))]
         public ChildItemCollection<TLanguage> Languages { get; set; }
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(nameof(Menu))]
         public ChildItemCollection<TMenu> Menus { get; set; }
 
         #endregion

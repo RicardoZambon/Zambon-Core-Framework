@@ -11,10 +11,10 @@ namespace Zambon.Core.Module.Interfaces.Models
         where TListView : IListView
         where TLookupView : ILookupView
     {
-        //ChildItemCollection<TDetailView> DetailViews { get; set; }
+        ChildItemCollection<TDetailView> DetailViews { get; set; }
 
-        //ChildItemCollection<TListView> ListViews { get; set; }
+        ChildItemCollection<TListView> ListViews { get; set; }
 
-        //ChildItemCollection<TLookupView> LookupViews { get; set; }
+        ChildItemCollection<TLookupView> LookupViews { get; set; }
     }
 }

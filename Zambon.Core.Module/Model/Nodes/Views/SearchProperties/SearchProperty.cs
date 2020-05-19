@@ -9,7 +9,7 @@ namespace Zambon.Core.Module.Model.Nodes.Views.SearchProperties
     {
         #region XML Attributes
 
-        [XmlAnyAttribute, MergeKey]
+        [XmlAttribute, MergeKey]
         public string PropertyName { get; set; }
 
         [XmlAttribute]
