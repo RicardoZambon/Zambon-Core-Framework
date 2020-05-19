@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces;
-using Zambon.Core.Module.Interfaces.Models;
 
 namespace Zambon.Core.Module.Model.Serialization
 {
@@ -42,7 +41,7 @@ namespace Zambon.Core.Module.Model.Serialization
 
         #region Methods
 
-        //public virtual void ValidateNode<T>(T application) where T : class, IApplication
+        //public virtual void ValidateNode()
         //{
         //}
 
@@ -71,7 +70,7 @@ namespace Zambon.Core.Module.Model.Serialization
         /// </summary>
         /// <typeparam name="TObject">The element type of the objects.</typeparam>
         /// <param name="readObj">The source array, containing the original items values.</param>
-        public void Merge(object readObj) //where TObject : class, ISerializationNode
+        public void Merge(object readObj)
         {
             if (readObj != null)
             {
@@ -120,7 +119,8 @@ namespace Zambon.Core.Module.Model.Serialization
         /// <summary>
         /// Merges two arrays of objects that implements the interface IMergeable.
         /// </summary>
-        /// <typeparam name="TWObject">The element type of the array.</typeparam>
+        /// <typeparam name="TWObject">The element type of the array to write the values.</typeparam>
+        /// <typeparam name="TRObject">The element type of the array to read the values.</typeparam>
         /// <param name="write">The target array, that will have the items with null values set.</param>
         /// <param name="read">The source array, containing the original items values.</param>
         /// <returns>Returns the target array plus all any new element from the source array.</returns>
