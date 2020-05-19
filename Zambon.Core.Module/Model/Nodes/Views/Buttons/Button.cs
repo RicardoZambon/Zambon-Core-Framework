@@ -7,7 +7,8 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Views.Buttons
 {
-    public class Button : SerializeNodeBase, IButton
+    public abstract class Button<TSubButton> : SerializeNodeBase, IButton<TSubButton>
+        where TSubButton : class, IButton<TSubButton>
     {
         #region XML Attributes
 
@@ -41,10 +42,26 @@ namespace Zambon.Core.Module.Model.Nodes.Views.Buttons
 
         #endregion
 
+        #region XML Arrays
+
+        [XmlArray, XmlArrayItem(nameof(Button))]
+        public ChildItemCollection<TSubButton> SubButtons { get; set; }
+
+        #endregion
+
         #region Properties
 
         [XmlIgnore]
         public int? Index { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public Button()
+        {
+            SubButtons = new ChildItemCollection<TSubButton>(this);
+        }
 
         #endregion
 
@@ -68,5 +85,10 @@ namespace Zambon.Core.Module.Model.Nodes.Views.Buttons
         }
 
         #endregion
+    }
+
+    public sealed class Button : Button<Button>
+    {
+
     }
 }

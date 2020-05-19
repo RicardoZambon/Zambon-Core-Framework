@@ -3,13 +3,12 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces.Models;
-using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Navigation
 {
     public abstract class Menu<TMenu> : SerializeNodeBase, IMenu<TMenu>
-        where TMenu : Menu<TMenu>
+        where TMenu : class, IMenu<TMenu>
     {
         #region XML Attributes 
 
@@ -52,7 +51,7 @@ namespace Zambon.Core.Module.Model.Nodes.Navigation
 
         #region XML Arrays
 
-        [XmlArray]
+        [XmlArray, XmlArrayItem(nameof(Menu))]
         public ChildItemCollection<TMenu> SubMenus { get; set; }
 
         #endregion

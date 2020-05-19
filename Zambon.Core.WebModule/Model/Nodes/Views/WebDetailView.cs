@@ -4,7 +4,7 @@ using Zambon.Core.WebModule.Interfaces.Models;
 
 namespace Zambon.Core.WebModule.Model.Nodes.Views
 {
-    public sealed class WebDetailView<TButton> : DetailView<TButton>, IWebDetailView<TButton> where TButton : class, IWebButton
+    public class WebDetailView<TButton> : DetailView<TButton>, IWebDetailView<TButton> where TButton : class, IWebButton<TButton>
     {
         #region XML Attributes
 

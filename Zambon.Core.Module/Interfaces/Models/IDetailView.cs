@@ -7,7 +7,7 @@ namespace Zambon.Core.Module.Interfaces.Models
     }
 
     public interface IDetailView<TButton> : IDetailView, IViewButtons<TButton>
-        where TButton : IButton
+        where TButton : IButton<TButton>
     {
     }
 }

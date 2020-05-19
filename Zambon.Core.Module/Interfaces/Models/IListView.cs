@@ -8,7 +8,7 @@ namespace Zambon.Core.Module.Interfaces.Models
 
     public interface IListView<TSearchProperty, TButton, TColumn, TGridTemplate> : IListView, IViewResultSet<TSearchProperty, TColumn, TGridTemplate>, IViewButtons<TButton>
         where TSearchProperty : ISearchProperty
-        where TButton : IButton
+        where TButton : IButton<TButton>
         where TColumn : IColumn
         where TGridTemplate : IGridTemplate
     {

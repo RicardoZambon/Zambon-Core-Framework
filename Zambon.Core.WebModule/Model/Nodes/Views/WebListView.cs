@@ -7,7 +7,7 @@ namespace Zambon.Core.WebModule.Model.Nodes.Views
 {
     public sealed class WebListView<TSearchProperty, TButton, TColumn, TGridTemplate> : ListView<TSearchProperty, TButton, TColumn, TGridTemplate>, IWebListView<TSearchProperty, TButton, TColumn, TGridTemplate>
         where TSearchProperty : class, ISearchProperty
-        where TButton : class, IWebButton
+        where TButton : class, IWebButton<TButton>
         where TColumn : class, IColumn
         where TGridTemplate : class, IWebGridTemplate
     {

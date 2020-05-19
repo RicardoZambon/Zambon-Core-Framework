@@ -2,11 +2,11 @@
 using System.Xml.Serialization;
 using Zambon.Core.Module.Model.Nodes.Views.Buttons;
 using Zambon.Core.WebModule.Interfaces.Models;
-using Zambon.Core.WebModule.Model.Abstractions;
 
 namespace Zambon.Core.WebModule.Model.Nodes.Views.Buttons
 {
-    public sealed class WebButton : Button, IWebButton
+    public abstract class WebButton<TSubButton> : Button<TSubButton>, IWebButton<TSubButton>
+        where TSubButton : class, IWebButton<TSubButton>
     {
         #region XML Attributes
 
@@ -40,5 +40,10 @@ namespace Zambon.Core.WebModule.Model.Nodes.Views.Buttons
         public bool? UseFormPost { get; set; }
 
         #endregion
+    }
+
+    public sealed class WebButton : WebButton<WebButton>
+    {
+
     }
 }

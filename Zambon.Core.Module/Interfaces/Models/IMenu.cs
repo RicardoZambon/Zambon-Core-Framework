@@ -20,7 +20,6 @@ namespace Zambon.Core.Module.Interfaces.Models
 
         string BadgeQueryArguments { get; set; }
 
-
         ChildItemCollection<TSubMenu> SubMenus { get; set; }
     }
 }

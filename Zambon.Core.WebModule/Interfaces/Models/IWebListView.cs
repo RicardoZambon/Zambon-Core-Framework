@@ -4,7 +4,7 @@ namespace Zambon.Core.WebModule.Interfaces.Models
 {
     public interface IWebListView<TSearchProperty, TButton, TColumn, TGridTemplate> : IListView<TSearchProperty, TButton, TColumn, TGridTemplate>
         where TSearchProperty : ISearchProperty
-        where TButton : IWebButton
+        where TButton : IWebButton<TButton>
         where TColumn : IColumn
         where TGridTemplate : IWebGridTemplate
     {

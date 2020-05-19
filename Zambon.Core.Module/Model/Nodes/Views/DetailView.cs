@@ -5,7 +5,7 @@ using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Views
 {
-    public class DetailView<TButton> : ViewBase, IDetailView<TButton> where TButton : class, IButton
+    public class DetailView<TButton> : ViewBase, IDetailView<TButton> where TButton : class, IButton<TButton>
     {
         #region XML Arrays
 

@@ -24,6 +24,8 @@ namespace Zambon.Core.Module.Model.Abstractions
 
         protected const string ENUMS_ELEMENT_NODE = "Enum";
 
+        protected const string NAVIGATION_NODE = "Navigation";
+
         #endregion
 
         #region XML Arrays
@@ -40,7 +42,7 @@ namespace Zambon.Core.Module.Model.Abstractions
         [XmlArray, XmlArrayItem(nameof(Language))]
         public ChildItemCollection<TLanguage> Languages { get; set; }
 
-        [XmlArray, XmlArrayItem(nameof(Menu))]
+        [XmlArray(NAVIGATION_NODE), XmlArrayItem(nameof(Menu))]
         public ChildItemCollection<TMenu> Menus { get; set; }
 
         #endregion

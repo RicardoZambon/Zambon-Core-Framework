@@ -2,7 +2,8 @@
 
 namespace Zambon.Core.WebModule.Interfaces.Models
 {
-    public interface IWebButton : IButton
+    public interface IWebButton<TSubButton> : IButton<TSubButton>
+        where TSubButton : IButton<TSubButton>
     {
         string CssClass { get; set; }
 

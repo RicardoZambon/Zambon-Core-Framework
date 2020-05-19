@@ -98,7 +98,7 @@
                 instance is equal to value. Greater than zero: This instance is greater than value.
             </returns>
         </member>
-        <member name="M:Zambon.Core.Module.Model.Nodes.Views.Buttons.Button.CompareTo(System.Object)">
+        <member name="M:Zambon.Core.Module.Model.Nodes.Views.Buttons.Button`1.CompareTo(System.Object)">
             <summary>
             Compares the Index with other menu object, to sort the menus array.
             </summary>

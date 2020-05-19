@@ -7,7 +7,7 @@ namespace Zambon.Core.Module.Model.Nodes.Views
 {
     public class ListView<TSearchProperty, TButton, TColumn, TGridTemplate> : ViewResultSetBase<TSearchProperty, TColumn, TGridTemplate>, IListView<TSearchProperty, TButton, TColumn, TGridTemplate>
         where TSearchProperty : class, ISearchProperty
-        where TButton : class, IButton
+        where TButton : class, IButton<TButton>
         where TColumn : class, IColumn
         where TGridTemplate : class, IGridTemplate
     {
