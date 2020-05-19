@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,14 +9,24 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Exceptions;
+using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Interfaces.Models;
 
 namespace Zambon.Core.Module.Services
 {
-    public abstract class ModelProviderBase<TApplication> : IModelProvider where TApplication : class, IApplication, new()
+    public abstract class ModelProviderBase<TApplication, TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews> : IModelProvider
+        where TApplication : class, IApplication<TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews>, new()
+        where TEntity : class, IEntity, new()
+        where TEnum : class, IEnum
+        where TStaticText : class, IStaticText
+        where TLanguage : class, ILanguage
+        where TModuleConfigurations : class, IModuleConfigurations
+        where TMenu : class, IMenu<TMenu>
+        where TViews : class, IViews
     {
         #region Variables
 
@@ -24,6 +36,7 @@ namespace Zambon.Core.Module.Services
 
         #region Services
 
+        private readonly CoreDbContext _coreDbContext;
         private readonly AppSettings _appSettings;
         private readonly IModule _mainModule;
 
@@ -53,12 +66,13 @@ namespace Zambon.Core.Module.Services
 
         #region Constructors
 
-        public ModelProviderBase(IOptions<AppSettings> appSettings, IModule mainModule)
+        public ModelProviderBase(DbContextOptions dbOptions, IOptions<AppSettings> appSettings, IModule mainModule)
         {
+            _coreDbContext = new CoreDbContext(dbOptions);
             _appSettings = appSettings.Value;
+            _mainModule = mainModule;
 
             AvailableModels = new Dictionary<string, TApplication>();
-            this._mainModule = mainModule;
         }
 
         #endregion
@@ -84,10 +98,16 @@ namespace Zambon.Core.Module.Services
                         {
                             throw new NullReferenceException($"Was not possible find any model for the language {language.Name}.");
                         }
-                        else if (language.Name != DefaultCulture.Name)
+                        else if (language.Name == DefaultCulture.Name)
+                        {
+                            model.Merge((TApplication)Activator.CreateInstance(typeof(TApplication), new object[] { _coreDbContext }));
+                        }
+                        else
                         {
                             model.Merge(AvailableModels[DefaultCulture.Name]);
                         }
+
+                        //TODO: Validate model.
 
                         AvailableModels.Add(language.Name, model);
                     }
@@ -121,7 +141,7 @@ namespace Zambon.Core.Module.Services
                             {
                                 model = new TApplication();
                             }
-
+                            
                             if (model == null)
                             {
                                 model = (TApplication)applicationModel;
@@ -140,6 +160,7 @@ namespace Zambon.Core.Module.Services
             }
             return model;
         }
+
 
         /// <summary>
         /// Search for the specific model language and return it.

@@ -1,4 +1,5 @@
-﻿using Zambon.Core.Module.Interfaces.Models;
+﻿using Zambon.Core.Database;
+using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.WebModule.Interfaces.Models;
 
@@ -13,5 +14,16 @@ namespace Zambon.Core.WebModule.Model.Abstractions
         where TMenu : class, IMenu<TMenu>
         where TViews : class, IViews
     {
+        #region Constructors
+
+        public WebApplicationBase() : base()
+        {
+        }
+
+        public WebApplicationBase(CoreDbContext coreDbContext) : base(coreDbContext)
+        {
+        }
+
+        #endregion
     }
 }

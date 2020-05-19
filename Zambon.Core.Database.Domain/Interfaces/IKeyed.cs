@@ -8,6 +8,6 @@
         /// <summary>
         /// Primary key of the database entity.
         /// </summary>
-        int ID { get; set; }
+        int Id { get; set; }
     }
 }

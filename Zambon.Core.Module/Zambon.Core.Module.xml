@@ -151,12 +151,12 @@
             <param name="read">The source array, containing the original items values.</param>
             <returns>Returns the target array plus all any new element from the source array.</returns>
         </member>
-        <member name="P:Zambon.Core.Module.Services.ModelProviderBase`1.DefaultCulture">
+        <member name="P:Zambon.Core.Module.Services.ModelProviderBase`8.DefaultCulture">
             <summary>
             Default culture used by executing assembly.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Module.Services.ModelProviderBase`1.GetModel(System.String)">
+        <member name="M:Zambon.Core.Module.Services.ModelProviderBase`8.GetModel(System.String)">
             <summary>
             Search for the specific model language and return it.
             </summary>

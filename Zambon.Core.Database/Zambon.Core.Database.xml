@@ -341,7 +341,7 @@
             List of assemblies names.
             </summary>
         </member>
-        <member name="M:Zambon.Core.Database.Services.DbAdditionalAssemblies`1.#ctor(System.String[])">
+        <member name="M:Zambon.Core.Database.Services.DbAdditionalAssemblies`1.#ctor(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Default constructor.
             </summary>

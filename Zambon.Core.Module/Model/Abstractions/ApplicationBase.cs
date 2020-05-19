@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Nodes.Languages;
 using Zambon.Core.Module.Model.Nodes.Navigation;
@@ -76,6 +78,14 @@ namespace Zambon.Core.Module.Model.Abstractions
             StaticTexts = new ChildItemCollection<TStaticText>(this);
             Languages = new ChildItemCollection<TLanguage>(this);
             Menus = new ChildItemCollection<TMenu>(this);
+        }
+
+        public ApplicationBase(CoreDbContext coreDbContext) : this()
+        {
+            foreach (var dbEntity in coreDbContext.Model.GetEntityTypes())
+            {
+                EntityTypes.Add((TEntity)Activator.CreateInstance(typeof(TEntity), new object[] { dbEntity }));
+            }
         }
 
         #endregion

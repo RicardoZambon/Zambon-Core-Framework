@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Interfaces.Models;
 
 namespace Zambon.Core.Module.Model.Serialization
 {
@@ -40,6 +41,10 @@ namespace Zambon.Core.Module.Model.Serialization
         #endregion
 
         #region Methods
+
+        //public virtual void ValidateNode<T>(T application) where T : class, IApplication
+        //{
+        //}
 
         protected void SetParent<T>(T value, ref T prop) where T : IParent
         {
@@ -78,7 +83,7 @@ namespace Zambon.Core.Module.Model.Serialization
                     if (readProperty.SetMethod != null && readProperty.Name != nameof(Parent)
                         && readProperty.GetValue(readObj) is object readValue)
                     {
-                        var writeProperty = GetType().GetProperty(readProperty.Name);// .GetPropertyFromParents(readProperty.Name);
+                        var writeProperty = GetType().GetProperty(readProperty.Name);
                         var writeValue = writeProperty.GetValue(this);
 
                         if (readProperty.PropertyType.ImplementsInterface<ISerializationNode>())
@@ -96,7 +101,7 @@ namespace Zambon.Core.Module.Model.Serialization
                                 }
                             }
 
-                            GetType().GetMethod(nameof(Merge))/*.MakeGenericMethod(property.PropertyType)*/.Invoke(writeValue, new object[] { readValue });
+                            GetType().GetMethod(nameof(Merge)).Invoke(writeValue, new object[] { readValue });
                         }
                         else if (readProperties[i].PropertyType.ImplementsInterface<IEnumerable>() && readProperties[i].PropertyType.GenericTypeArguments.Count() > 0
                             && readProperties[i].PropertyType.GenericTypeArguments[0] is Type elementType && elementType.ImplementsInterface<ISerializationNode>())
@@ -145,7 +150,7 @@ namespace Zambon.Core.Module.Model.Serialization
 
                 foreach (var readValue in read)
                 {
-                    TWObject writeValue = write.FirstOrDefault(w => keyWProperties.Select(x => x.Value.GetValue(w) == keyRProperties[x.Key].GetValue(readValue)).Count() == keyWProperties.Count());
+                    TWObject writeValue = write.FirstOrDefault(w => keyWProperties.Count(x => x.Value.GetValue(w).Equals(keyRProperties[x.Key].GetValue(readValue))) == keyWProperties.Count());
                     if (writeValue == null)
                     {
                         writeValue = Activator.CreateInstance<TWObject>();

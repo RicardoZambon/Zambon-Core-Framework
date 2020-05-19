@@ -1,5 +1,6 @@
 ﻿using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
+using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Serialization;
 
@@ -32,6 +33,26 @@ namespace Zambon.Core.Module.Model.Nodes.EntityTypes
         /// </summary>
         [XmlAttribute]
         public string Description { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        public Property()
+        {
+
+        }
+
+        public Property(Microsoft.EntityFrameworkCore.Metadata.IProperty dbProperty) : this()
+        {
+            Name = dbProperty.Name;
+
+            dbProperty.PropertyInfo.GetDisplay(out var displayName, out var prompt, out var description);
+
+            DisplayName = displayName;
+            Prompt = prompt;
+            Description = description;
+        }
 
         #endregion
     }

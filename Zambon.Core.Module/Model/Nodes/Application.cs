@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Module.Model.Abstractions;
 using Zambon.Core.Module.Model.Nodes.Configurations;
 using Zambon.Core.Module.Model.Nodes.EntityTypes;
@@ -22,5 +23,16 @@ namespace Zambon.Core.Module.Model.Nodes
             LookupView<SearchProperty, Column, GridTemplate>
         >>
     {
+        #region Constructors
+
+        public Application() : base()
+        {
+        }
+
+        public Application(CoreDbContext coreDbContext) : base(coreDbContext)
+        {
+        }
+
+        #endregion
     }
 }

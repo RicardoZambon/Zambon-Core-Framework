@@ -1,4 +1,6 @@
-﻿namespace Zambon.Core.Database.Services
+﻿using System.Collections.Generic;
+
+namespace Zambon.Core.Database.Services
 {
     /// <summary>
     /// Defines additional assemblies to use when configuring the database.
@@ -8,6 +10,6 @@
         /// <summary>
         /// List of assemblies names.
         /// </summary>
-        string[] ReferencedAssemblies { get; }
+        IEnumerable<string> ReferencedAssemblies { get; }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 using Zambon.Core.Module.Atrributes;
+using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Serialization;
 
@@ -44,6 +46,17 @@ namespace Zambon.Core.Module.Model.Nodes.EntityTypes
         public Entity()
         {
             Properties = new ChildItemCollection<TProperty>(this);
+        }
+
+        public Entity(Microsoft.EntityFrameworkCore.Metadata.IEntityType dbEntity) : this()
+        {
+            Id = dbEntity.ClrType.Name;
+            DisplayName = dbEntity.ClrType.GetDisplayName();
+
+            foreach (var dbProperty in dbEntity.GetProperties())
+            {
+                Properties.Add((TProperty)Activator.CreateInstance(typeof(TProperty), new object[] { dbProperty }));
+            }
         }
 
         #endregion

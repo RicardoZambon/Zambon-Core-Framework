@@ -194,7 +194,7 @@ namespace Zambon.Core.Database
         /// <param name="SaveIntoTemp">If should save into temp or in tracked items.</param>
         public void ApplyEntryChanges<T>(EntityEntry<T> entry, bool SaveIntoTemp = false) where T : class, ITrackableEntity
         {
-            if (entry.Entity is IKeyed baseDBEntity && baseDBEntity.ID == 0)
+            if (entry.Entity is IKeyed baseDBEntity && baseDBEntity.Id == 0)
             {
                 Add(entry.Entity);
             }

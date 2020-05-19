@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace Zambon.Core.Database.Services
 {
@@ -10,13 +11,13 @@ namespace Zambon.Core.Database.Services
         /// <summary>
         /// List of assemblies names.
         /// </summary>
-        public string[] ReferencedAssemblies { get; private set; }
+        public IEnumerable<string> ReferencedAssemblies { get; }
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="referencedAssemblies">List of assemblies names.</param>
-        public DbAdditionalAssemblies(string[] referencedAssemblies)
+        public DbAdditionalAssemblies(IEnumerable<string> referencedAssemblies)
         {
             ReferencedAssemblies = referencedAssemblies;
         }
