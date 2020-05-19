@@ -94,6 +94,10 @@ namespace Zambon.Core.Module.Model.Nodes.Navigation
             throw new ArgumentException("Object is not a menu.");
         }
 
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
         #endregion
     }
 

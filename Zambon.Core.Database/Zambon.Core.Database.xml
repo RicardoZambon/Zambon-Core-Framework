@@ -107,7 +107,7 @@
             Represents base database classes with primary key.
             </summary>
         </member>
-        <member name="P:Zambon.Core.Database.Entities.BaseDBObject.ID">
+        <member name="P:Zambon.Core.Database.Entities.BaseDBObject.Id">
             <summary>
             Primary key of the entity.
             </summary>

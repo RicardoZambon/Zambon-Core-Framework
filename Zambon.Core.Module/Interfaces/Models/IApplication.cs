@@ -1,10 +1,12 @@
-﻿using Zambon.Core.Module.Model.Serialization;
+﻿using Zambon.Core.Database;
+using Zambon.Core.Module.Configurations;
+using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
     public interface IApplication : ISerializationNode
     {
-
+        void Validate<T>(CoreDbContext coreDbContext, AppSettings settings, T applicationModel) where T : IApplication;
     }
 
     public interface IApplication<TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews> : IApplication
@@ -35,6 +37,12 @@ namespace Zambon.Core.Module.Interfaces.Models
         TModuleConfigurations ModuleConfigurations { get; set; }
 
         TViews Views { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        void Validate<T>(CoreDbContext coreDbContext, AppSettings settings, T applicationModel) where T : IApplication, IApplication<TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews>;
 
         #endregion
     }

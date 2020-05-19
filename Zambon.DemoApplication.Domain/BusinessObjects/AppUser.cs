@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Zambon.Core.Database.Entities;
+﻿using Zambon.Core.Database.Entities;
 
 namespace Zambon.DemoApplication.Domain.BusinessObjects
 {

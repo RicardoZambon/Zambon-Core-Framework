@@ -27,9 +27,9 @@ namespace Zambon.Core.Database.Entities
         /// <param name="entityBuilder">The object that can be used to configure a given entity type in the model.</param>
         public virtual void OnConfiguringEntity(EntityTypeBuilder entityBuilder)
         {
-            entityBuilder.Property<int>("ID").UseIdentityColumn();
-            entityBuilder.Property<int>("ID").ValueGeneratedOnAdd();
-            entityBuilder.Property<int>("ID").Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
+            entityBuilder.Property<int>(nameof(Id)).UseIdentityColumn();
+            entityBuilder.Property<int>(nameof(Id)).ValueGeneratedOnAdd();
+            entityBuilder.Property<int>(nameof(Id)).Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
         }
 
 

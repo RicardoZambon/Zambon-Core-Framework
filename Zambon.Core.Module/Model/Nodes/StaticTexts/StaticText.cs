@@ -16,5 +16,13 @@ namespace Zambon.Core.Module.Model.Nodes.StaticTexts
         public string Value { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
+        #endregion
     }
 }

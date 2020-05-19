@@ -1,10 +1,10 @@
-﻿
-using Zambon.Core.Module.Interfaces.Models.Common;
+﻿using Zambon.Core.Module.Interfaces.Models.Common;
+using Zambon.Core.Module.Interfaces.Models.Validations;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IButton<TSubButton> : IParent, IIcon, IIndex, ICondition
+    public interface IButton<TSubButton> : IParent, IIcon, IIndex, ICondition, IModelValidation
         where TSubButton : IButton<TSubButton>
     {
         string Id { get; set; }

@@ -28,7 +28,7 @@ namespace Zambon.Core.Database.Entities
             {
                 entityBuilder.HasQueryFilter(System.Linq.Dynamic.Core.DynamicExpressionParser.ParseLambda(GetType(), typeof(bool), "!IsDeleted", this));
             }
-            entityBuilder.Property("IsDeleted").HasDefaultValueSql("0");
+            entityBuilder.Property(nameof(IsDeleted)).HasDefaultValueSql("0");
         }
     }
 }

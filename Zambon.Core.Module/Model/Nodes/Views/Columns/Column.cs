@@ -73,6 +73,10 @@ namespace Zambon.Core.Module.Model.Nodes.Views.Columns
             throw new ArgumentException("Object is not a column.");
         }
 
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
         #endregion
     }
 }

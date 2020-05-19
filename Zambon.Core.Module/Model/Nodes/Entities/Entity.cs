@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces.Models;
@@ -57,6 +58,14 @@ namespace Zambon.Core.Module.Model.Nodes.EntityTypes
             {
                 Properties.Add((TProperty)Activator.CreateInstance(typeof(TProperty), new object[] { dbProperty }));
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void Validate(CoreDbContext coreDbContext)
+        {
         }
 
         #endregion

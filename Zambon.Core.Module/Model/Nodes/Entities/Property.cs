@@ -1,4 +1,5 @@
 ﻿using System.Xml.Serialization;
+using Zambon.Core.Database;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces.Models;
@@ -52,6 +53,14 @@ namespace Zambon.Core.Module.Model.Nodes.EntityTypes
             DisplayName = displayName;
             Prompt = prompt;
             Description = description;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void Validate(CoreDbContext coreDbContext)
+        {
         }
 
         #endregion

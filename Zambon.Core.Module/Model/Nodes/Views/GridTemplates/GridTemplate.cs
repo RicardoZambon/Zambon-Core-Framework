@@ -22,5 +22,13 @@ namespace Zambon.Core.Module.Model.Nodes.Views.GridTemplates
         public string ConditionArguments { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
+        #endregion
     }
 }

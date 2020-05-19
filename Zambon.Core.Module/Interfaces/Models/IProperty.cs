@@ -1,6 +1,8 @@
-﻿namespace Zambon.Core.Module.Interfaces.Models
+﻿using Zambon.Core.Module.Interfaces.Models.Validations;
+
+namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IProperty : IParent
+    public interface IProperty : IParent, IDbValidation
     {
         string Name { get; set; }
 

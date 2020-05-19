@@ -1,5 +1,7 @@
 ﻿using System.Xml.Serialization;
+using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces.Models;
+using Zambon.Core.Module.Interfaces.Models.Validations;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Model.Nodes.Languages
@@ -19,6 +21,14 @@ namespace Zambon.Core.Module.Model.Nodes.Languages
 
         [XmlElement]
         public string Icon { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void Validate(AppSettings settings)
+        {
+        }
 
         #endregion
     }

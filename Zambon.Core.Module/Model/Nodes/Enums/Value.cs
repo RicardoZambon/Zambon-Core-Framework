@@ -15,5 +15,13 @@ namespace Zambon.Core.Module.Model.Nodes.Enums
         public string DisplayName { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
+        #endregion
     }
 }

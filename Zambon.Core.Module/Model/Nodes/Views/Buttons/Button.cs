@@ -84,6 +84,10 @@ namespace Zambon.Core.Module.Model.Nodes.Views.Buttons
             throw new ArgumentException("Object is not a button.");
         }
 
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
         #endregion
     }
 

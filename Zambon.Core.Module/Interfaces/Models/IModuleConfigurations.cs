@@ -1,6 +1,8 @@
-﻿namespace Zambon.Core.Module.Interfaces.Models
+﻿using Zambon.Core.Module.Interfaces.Models.Validations;
+
+namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IModuleConfigurations : IParent
+    public interface IModuleConfigurations : IParent, IModelValidation
     {
     }
 }

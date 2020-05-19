@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using System.Xml.Serialization;
 using Zambon.Core.Database;
 using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Exceptions;
-using Zambon.Core.Module.Extensions;
 using Zambon.Core.Module.Interfaces;
 using Zambon.Core.Module.Interfaces.Models;
 
@@ -107,7 +105,7 @@ namespace Zambon.Core.Module.Services
                             model.Merge(AvailableModels[DefaultCulture.Name]);
                         }
 
-                        //TODO: Validate model.
+                        model.Validate(_coreDbContext, _appSettings, model);
 
                         AvailableModels.Add(language.Name, model);
                     }
@@ -141,7 +139,7 @@ namespace Zambon.Core.Module.Services
                             {
                                 model = new TApplication();
                             }
-                            
+
                             if (model == null)
                             {
                                 model = (TApplication)applicationModel;

@@ -1,9 +1,10 @@
 ﻿using Zambon.Core.Module.Interfaces.Models.Common;
+using Zambon.Core.Module.Interfaces.Models.Validations;
 using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IMenu<TSubMenu> : IParent, IIcon, IIndex
+    public interface IMenu<TSubMenu> : IParent, IIcon, IIndex, IModelValidation
         where TSubMenu : IMenu<TSubMenu>
     {
         string Id { get; set; }

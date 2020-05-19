@@ -1,8 +1,9 @@
-﻿using Zambon.Core.Module.Model.Serialization;
+﻿using Zambon.Core.Module.Interfaces.Models.Validations;
+using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IViews : IParent
+    public interface IViews : IParent, IModelValidation
     {
     }
 

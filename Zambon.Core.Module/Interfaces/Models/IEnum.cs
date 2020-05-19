@@ -1,8 +1,9 @@
-﻿using Zambon.Core.Module.Model.Serialization;
+﻿using Zambon.Core.Module.Interfaces.Models.Validations;
+using Zambon.Core.Module.Model.Serialization;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IEnum : IParent
+    public interface IEnum : IParent, IModelValidation
     {
         string Id { get; set; }
     }

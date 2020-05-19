@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 using Zambon.Core.Database;
+using Zambon.Core.Module.Configurations;
 using Zambon.Core.Module.Interfaces.Models;
 using Zambon.Core.Module.Model.Nodes.Languages;
 using Zambon.Core.Module.Model.Nodes.Navigation;
@@ -86,6 +87,23 @@ namespace Zambon.Core.Module.Model.Abstractions
             {
                 EntityTypes.Add((TEntity)Activator.CreateInstance(typeof(TEntity), new object[] { dbEntity }));
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void Validate<T>(CoreDbContext coreDbContext, AppSettings settings, T applicationModel) where T : IApplication, IApplication<TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews>
+        {
+            foreach (var entity in EntityTypes)
+            {
+                entity.Validate(coreDbContext);
+            }
+        }
+
+        void IApplication.Validate<T>(CoreDbContext coreDbContext, AppSettings settings, T applicationModel)
+        {
+            Validate(coreDbContext, settings, (IApplication<TEntity, TEnum, TStaticText, TLanguage, TModuleConfigurations, TMenu, TViews>)applicationModel);
         }
 
         #endregion

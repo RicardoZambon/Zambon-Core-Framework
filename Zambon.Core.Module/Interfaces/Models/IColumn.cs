@@ -1,8 +1,9 @@
 ﻿using Zambon.Core.Module.Interfaces.Models.Common;
+using Zambon.Core.Module.Interfaces.Models.Validations;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IColumn : IParent, IIndex
+    public interface IColumn : IParent, IIndex, IModelValidation
     {
         string Id { get; set; }
 

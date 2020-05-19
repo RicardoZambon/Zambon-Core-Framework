@@ -18,5 +18,13 @@ namespace Zambon.Core.Module.Model.Nodes.Views
         public string EntityId { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
+        #endregion
     }
 }

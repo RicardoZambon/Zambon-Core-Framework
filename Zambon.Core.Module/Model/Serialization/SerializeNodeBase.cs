@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using Zambon.Core.Database.Domain.Extensions;
 using Zambon.Core.Module.Atrributes;
 using Zambon.Core.Module.Interfaces;
+using Zambon.Core.Module.Interfaces.Models;
 
 namespace Zambon.Core.Module.Model.Serialization
 {
@@ -41,9 +42,9 @@ namespace Zambon.Core.Module.Model.Serialization
 
         #region Methods
 
-        //public virtual void ValidateNode()
-        //{
-        //}
+        public virtual void ValidateNode<T>(T application) where T : class, IApplication
+        {
+        }
 
         protected void SetParent<T>(T value, ref T prop) where T : IParent
         {

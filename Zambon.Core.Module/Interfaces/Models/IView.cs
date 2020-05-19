@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Zambon.Core.Module.Interfaces.Models.Validations;
 
 namespace Zambon.Core.Module.Interfaces.Models
 {
-    public interface IView : IParent
+    public interface IView : IParent, IModelValidation
     {
         string Id { get; set; }
 

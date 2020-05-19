@@ -29,5 +29,13 @@ namespace Zambon.Core.Module.Model.Nodes.Enums
         }
 
         #endregion
+
+        #region Methods
+
+        public virtual void Validate(IApplication applicationModel)
+        {
+        }
+
+        #endregion
     }
 }

@@ -146,7 +146,8 @@
             <summary>
             Merges two arrays of objects that implements the interface IMergeable.
             </summary>
-            <typeparam name="TWObject">The element type of the array.</typeparam>
+            <typeparam name="TWObject">The element type of the array to write the values.</typeparam>
+            <typeparam name="TRObject">The element type of the array to read the values.</typeparam>
             <param name="write">The target array, that will have the items with null values set.</param>
             <param name="read">The source array, containing the original items values.</param>
             <returns>Returns the target array plus all any new element from the source array.</returns>
